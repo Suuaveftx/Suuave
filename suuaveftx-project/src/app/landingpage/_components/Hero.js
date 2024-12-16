@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 const HeroSection = () => {
   return (
@@ -26,6 +27,7 @@ const HeroSection = () => {
         Unlock the potential of fashion collaboration and merge creativity, culture, and
         expertise to create groundbreaking culturally-rich designs.
       </p>
+      <Link href={"/onboarding"}>
       <button
         className="text-[#035A7A] px-6 py-3 rounded-full transition hover:opacity-90"
         style={{
@@ -34,6 +36,7 @@ const HeroSection = () => {
       >
         Get Started
       </button>
+      </Link>
     </div>
   
     {/* Right Section */}
