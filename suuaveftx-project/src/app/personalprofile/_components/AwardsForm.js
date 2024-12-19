@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 const AwardsForm = () => {
@@ -74,12 +75,16 @@ const AwardsForm = () => {
           >
             Skip
           </button>
+          <Link href={
+            '/jobpost'
+          } >
           <button
             onClick={handleAwardSubmit} // Call form submission on button click
             className="bg-[#E8E8E8] text-[#BFBFBF] font-semibold pl-[24px] pr-[24px] pt-[16px] pb-[16px] rounded-full w-32"
           >
             Submit
           </button>
+          </Link>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
-// components/JobPost.jsx
-'use client'
+'use client';
+import Image from 'next/image';
 import React, { useState } from 'react';
+
 const JobPost = () => {
   const [activeTab, setActiveTab] = useState('recent');
 
@@ -15,8 +16,7 @@ const JobPost = () => {
     {
       status: 'Active',
       title: 'Fashion Illustrator For African Attire Design',
-      details:
-        'Fixed Price | Posted 2 days ago',
+      details: 'Fixed Price | Posted 2 days ago',
       description:
         'We are seeking a talented and creative Fashion Illustrator to collaborate with our design team on a new line of African-inspired attire. The ideal candidate will have a strong understanding of African fashion, culture, and textile patterns. You will be responsible for bringing our design concepts to life through detailed illus... ',
       budget: '$200',
@@ -24,7 +24,7 @@ const JobPost = () => {
   ];
 
   return (
-    <div className="p-6mx-auto">
+    <div className="p-6 mx-auto">
       {/* Tab Bar */}
       <div className="flex space-x-4 border-b mb-4">
         <div
@@ -46,20 +46,37 @@ const JobPost = () => {
         {[...Array(4)].map((_, index) => (
           <div
             key={index}
-            className="p-8 bg-white border-2 border-[#E0E0E0] rounded-lg shadow-sm"
+            className="relative p-8 bg-white border-2 border-[#E0E0E0] rounded-lg shadow-sm"
           >
+            {/* Top-right Images */}
+            <div className="absolute mt-0 right-2 flex space-x-2">
+              <Image
+                src="/dev-images/Share.png" // Replace with your actual image path
+                alt="Icon 1"
+                className="w-6 h-6"
+                width={20}
+                height={20}
+              />
+              <Image
+                src="/dev-images/Bookmark.png" // Replace with your actual image path
+                alt="Icon 2"
+                className="w-6 h-6"
+                width={20}
+                height={20}
+              />
+            </div>
+
+            {/* Job Information */}
             <p className="text-gray-600">
               Job Status: <span className="text-green-600">{jobData[0].status}</span>
             </p>
-            <h2 className="text-lg font-bold mt-2">
-              {jobData[0].title}
-            </h2>
-            <p className="text-sm text-gray-500 mt-1">
-              {jobData[0].details}
-            </p>
+            <h2 className="text-lg font-bold mt-2">{jobData[0].title}</h2>
+            <p className="text-sm text-gray-500 mt-1">{jobData[0].details}</p>
             <p className="text-sm text-[#727272] mt-2">
               {jobData[0].description}
-              <a href="#" className="text-[#3A98BB] underline">Read More</a>
+              <a href="#" className="text-[#3A98BB] underline">
+                Read More
+              </a>
             </p>
             <div className="flex space-x-2 mt-4">
               {['Native', 'African', 'Native'].map((btn, idx) => (
