@@ -13,8 +13,8 @@ import {
 } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { SvgCautionIcon } from "../../utils/SvgIcons";
-import CustomButton from "../../../components/CustomButton";
+import { SvgCautionIcon } from "../../../utils/SvgIcons";
+import CustomButton from "../../../../components/CustomButton";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { IoBookmark } from "react-icons/io5";

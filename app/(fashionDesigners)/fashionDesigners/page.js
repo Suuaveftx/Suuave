@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 // import imageUrl from "/dev-images/fashionImg1.png";
 import FashionDesignersCard from "./_components/FashionDesignersCard";
-import Footer from "../landingpage/_components/Footer";
+import Footer from "../../landingpage/_components/Footer";
 
 const Page = () => {
   const [isVisible, setIsVisible] = useState(true);

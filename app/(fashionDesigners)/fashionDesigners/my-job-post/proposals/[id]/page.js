@@ -1,7 +1,7 @@
 "use client";
 import { Avatar, Button, Card, CardBody } from "@heroui/react";
 import React, { use } from "react";
-import CustomButton from "../../../../../components/CustomButton";
+import CustomButton from "../../../../../../components/CustomButton";
 import { TiLocation } from "react-icons/ti";
 import { FaStar } from "react-icons/fa";
 

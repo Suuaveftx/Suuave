@@ -17,7 +17,7 @@ import {
   Scale,
   Server,
   TagUser,
-} from "../../utils/SvgIcons";
+} from "../../../utils/SvgIcons";
 import Link from "next/link";
 
 export function NavLinks() {
