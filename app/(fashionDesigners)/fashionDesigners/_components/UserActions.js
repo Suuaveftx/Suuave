@@ -11,8 +11,8 @@ import {
 // import { Icon } from "@iconify/react";
 import { FaBell } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
-import CustomButton from "../../../components/CustomButton";
-import { ChevronDown } from "../../utils/SvgIcons";
+import CustomButton from "../../../../components/CustomButton";
+import { ChevronDown } from "../../../utils/SvgIcons";
 import { LuCircleUser } from "react-icons/lu";
 import { HiOutlinePhone } from "react-icons/hi";
 import { TbSettings } from "react-icons/tb";
@@ -97,7 +97,7 @@ export function UserActions() {
             </DropdownItem>
             <DropdownItem
               startContent={<HiOutlinePhone className="size-4" />}
-              key="profile"
+              key="support"
             >
               Support
             </DropdownItem>
