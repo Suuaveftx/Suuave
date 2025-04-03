@@ -19,15 +19,15 @@ const Navbars = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
-    { label: "Jobs", href: "/jobpost" },
-    { label: "Proposals", href: "/tableproposals" },
-    { label: "My Contracts", href: "/completedcontracts" },
+    { label: "Jobs", href: "/fashionartistpage/jobpost" },
+    { label: "Proposals", href: "/fashionartistpage/tableproposals" },
+    { label: "My Contracts", href: "/fashionartistpage/completedcontracts" },
   ];
 
   const mobileMenuItems = [
     { label: "Home", href: "/" },
-    { label: "Jobs", href: "/jobpost" },
-    { label: "Proposals", href: "/proposals" },
+    { label: "Jobs", href: "/fashionartistpage/jobpost" },
+    { label: "Proposals", href: "/fashionartistpage/proposals" },
     { label: "My Contracts", href: "/contracts" },
     { label: "Profile", href: "/profile" },
     { label: "Settings", href: "/settings" },
@@ -45,7 +45,7 @@ const Navbars = () => {
     >
       {/* LOGO */}
       <div>
-        <Link href="/jobpost">
+        <Link href="/fashionartistpage/jobpost">
         <Image
           src="/dev-images/logocombo.png"
           alt="Logo"
@@ -68,14 +68,14 @@ const Navbars = () => {
       {/* LOGIN & BUTTON */}
       <NavbarContent justify="end" className="gap-8">
         <NavbarItem>
-          <CustomButton className="hidden lg:flex" text="License Your Designs" href={"/license"} />
+          <CustomButton className="hidden lg:flex" text="License Your Designs" href={"/fashionartistpage/license"} />
         </NavbarItem>
         <div className="flex gap-2">
           <NavbarItem className="hidden lg:flex">
             <Image src="/dev-images/Bell.png" alt="Bell" width={24} height={24} />
           </NavbarItem>
           <NavbarItem className="hidden lg:flex">
-            <Link href="/messages">
+            <Link href="/fashionartistpage/messages">
             <Image src="/dev-images/Messages.png" alt="Messages" width={24} height={24} />
             </Link>
           </NavbarItem>
@@ -90,16 +90,16 @@ const Navbars = () => {
       {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2">
-          <Link href="/fashionprofile" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+          <Link href="/fashionartistpage/fashionprofile" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
             My Profile
           </Link>
-          <Link href="/payment" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+          <Link href="/fashionartistpage/payment" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
             Wallet
           </Link>
-          <Link href="/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+          <Link href="/fashionartistpage/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
             Support
           </Link>
-          <Link href="/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+          <Link href="/fashionartistpage/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
             Settings
           </Link>
           <Link href="/#" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">

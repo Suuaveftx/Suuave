@@ -21,7 +21,7 @@ const ChooseFashion = () => {
         Sign up as a Fashion Artist or a Fashion Brand/Designer
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-8">
-  <Link href="/signup">
+  <Link href="fashionartistpage/signup">
     <div className="bg-white  rounded-[16px] shadow-md pl-[24px] pr-[24px] pt-[32px] pb-[32px] flex flex-col justify-between items-center text-center border hover:border-[#CCE7F2] transition-all">
       <Image
         src="/dev-images/Artist.png"
@@ -57,7 +57,7 @@ const ChooseFashion = () => {
   </Link>
 </div>
   <div className="mt-16">
-    <CustomButton className="ml-14 w-80 text-lg h-[52px]" text="Continue" href='/signup' />
+    <CustomButton className="ml-14 w-80 text-lg h-[52px]" text="Continue" href='fashionartistpage/signup' />
   </div>
 
     </div>

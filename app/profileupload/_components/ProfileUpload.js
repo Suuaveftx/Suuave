@@ -17,25 +17,24 @@ const ProfileUpload = () => {
       />
       {/* Tab component */}
       <Tabs />
-      {/* Back arrow at the top-left */}
       <div className="w-[358px] flex justify-start pl-4 mt-4">
         {" "}
-        {/* Full-width container for left alignment */}
+      
         <Link href={"/personalprofile"}>
           <button className="flex items-center">
             <Image
-              src="/dev-images/ArrowLeft.png" // Add your image icon path here
+              src="/dev-images/ArrowLeft.png" 
               alt="Back Arrow"
-              width={24} // Adjust the size as needed
-              height={24} // Adjust the size as needed
+              width={24} 
+              height={24} 
             />
           </button>
         </Link>
       </div>
-      {/* Header and description */}
+      
       <div className="mt-8 w-[358px]">
         {" "}
-        {/* Make sure this div is full width */}
+      
         <div className="bg-[#FAFAFA] w-full flex flex-col justify-start p-4 mt-4 mb-4">
           <h2 className="text-[22px] text-[#444444] font-semibold mb-1">
             Give your profile a face
@@ -43,7 +42,6 @@ const ProfileUpload = () => {
           <p className="text-sm text-gray-500 mt-2">Upload a profile picture</p>
         </div>
       </div>
-      {/* Circle with profile image icon */}
       <div className="bg-[#FAFAFA] pl-[16px] pr-[16px] pt-[20px] pb-[20px] w-[358px]">
         {/* Center the circle */}
         <div className="flex justify-center mt-6">
