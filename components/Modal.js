@@ -29,7 +29,7 @@ import CustomButton from "./CustomButton";
                 <h4 className="text-lg font-bold">Proposal Sent</h4>
                 <span className="whitespace-nowrap text-sm">Your proposal has been sent to Tolu Yola</span>
                 <div className="mt-4">
-                  <CustomButton text="Ok" className="w-32" href="/tableproposals" />
+                  <CustomButton text="Ok" className="w-32" href="/fashionartistpage/tableproposals" />
                 </div>
                 </div> 
                 </ModalBody>
