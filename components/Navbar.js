@@ -68,7 +68,10 @@ const CustomNavbar = () => {
       </NavbarContent>
       <NavbarContent justify="end" className="space">
         <NavbarItem className="hidden lg:flex">
-          <Link href="#" className={` text-white transition duration-300`}>
+          <Link
+            href="/login-"
+            className={` text-white transition duration-300`}
+          >
             Login
           </Link>
         </NavbarItem>

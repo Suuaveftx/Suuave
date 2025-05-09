@@ -99,7 +99,7 @@ const FashionDesignersCard = ({
   const router = useRouter();
   const goToProduct = () => {
     if (!productID) return;
-    router.push(`/fashionDesigners/${productID}`);
+    router.push(`/fashion-designers/${productID}`);
   };
 
   return (

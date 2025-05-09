@@ -19,6 +19,7 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { IoBookmark } from "react-icons/io5";
 import { TiLocation } from "react-icons/ti";
+import LicenseModal from "../_components/licenseModal";
 
 const ProductDetails = ({ params }) => {
   const { id } = params; // Extract 'id' from the params object
@@ -156,7 +157,7 @@ const ProductDetails = ({ params }) => {
               </Popover>
             </div>
             <CustomButton
-              text="Buy Collection"
+              text="Get License"
               className="font-semibold w-52 h-12 mt-6"
             />
           </CardBody>
@@ -209,6 +210,7 @@ const ProductDetails = ({ params }) => {
           </div>
         </div>
       </div>
+      <LicenseModal />
     </div>
   );
 };
