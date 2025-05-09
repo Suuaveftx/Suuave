@@ -14,12 +14,12 @@ const PersonalProfile2 = () => {
 
   const togglePersonalDropdown = () => {
     setIsPersonalDropdownOpen(!isPersonalDropdownOpen);
-    setActiveFormStep(1); // Reset to personal details
+    setActiveFormStep(1); 
   };
 
   const toggleProfessionalDropdown = () => {
     setIsProfessionalDropdownOpen(!isProfessionalDropdownOpen);
-    setActiveFormStep(2); // Show professional information (skills)
+    setActiveFormStep(2); 
   };
 
   const toggleAwardsDropdown = () => {
