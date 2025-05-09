@@ -44,7 +44,7 @@ import {
                     <CustomButton
                       text="Ok"
                       className="w-32"
-                      href="/fashionartistpage/contractdetails"
+                      href="/artist-page/contract-details"
                     />
                   </div>
                 </div>
