@@ -1,10 +1,10 @@
 import React from 'react'
-import AwardMobile from './_components/AwardsMobile'
+import SkillsFormMobile from './_components/Skills-Mobile'
 
 const page = () => {
   return (
     <div>
-        <AwardMobile />
+        <SkillsFormMobile />
     </div>
   )
 }

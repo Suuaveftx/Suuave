@@ -1,10 +1,10 @@
 import React from 'react'
-import NationalityMobile from './_components/NationalityMobile'
+import ProfileUpload from './_components/Profile-Upload'
 
 const page = () => {
   return (
     <div>
-        <NationalityMobile />
+        <ProfileUpload />
     </div>
   )
 }

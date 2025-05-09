@@ -1,10 +1,10 @@
 import React from 'react'
-import SkillsFormMobile from './_components/SkillsMobile'
+import NationalityMobile from './_components/Nationality-Mobile'
 
 const page = () => {
   return (
     <div>
-        <SkillsFormMobile />
+        <NationalityMobile />
     </div>
   )
 }

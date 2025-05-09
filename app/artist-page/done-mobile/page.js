@@ -1,5 +1,5 @@
 import React from "react";
-import DoneMobile from "./_components/DoneMobile";
+import DoneMobile from "./_components/Done-Mobile";
 import AppLayout from "../../../components/Applayout";
 
 const page = () => {

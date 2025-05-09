@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useState } from 'react';
-import PersonalDetailsForm2 from './PersonalDetailsForm2';
+import PersonalDetailsForm2 from './Personal-Details-Form-2';
 
 const PersonalProfile2 = () => {
   const [activeLink, setActiveLink] = useState('Full Name');
