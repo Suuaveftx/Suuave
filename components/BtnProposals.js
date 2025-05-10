@@ -8,7 +8,7 @@ const BtnProposals = () => {
       <CardBody className="overflow-visible py-2">
         <div className='flex flex-col gap-4 justify-center items-center'>
       <div>
-        <CustomButton text='Send Proposal' className="w-48" href='/sendproposal' />
+        <CustomButton text='Send Proposal' className="w-48" href='/artist-page/send-proposal' />
       </div>
       <div>
         <CustomButton text='Save Post' className="w-48 bg-transparent border-1 border-[#3A98BB]" />

@@ -1,18 +1,17 @@
 "use client";
 
 import { HeroUIProvider } from "@heroui/react";
-import CustomNavbar from "../../components/Navbar";
-import Footer from "../landing-page/_components/Footer";
+import Navbars from "../../../components/Navbar2";
+
 
 export default function Layout({ children }) {
   return (
     <HeroUIProvider>
-      <div className="max-w-[1700px] mx-auto bg-customNavBg">
+      <div className="max-w-[1700px] mx-auto">
         {/* Navbar */}
-        <CustomNavbar />
+        <Navbars />
         {/* Main Content */}
         <main className="font-proximanova">{children}</main>
-        <Footer />
       </div>
     </HeroUIProvider>
   );

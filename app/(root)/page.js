@@ -1,13 +1,13 @@
 "use client";
-import HeroSection from "../landingpage/_components/Hero";
+import HeroSection from "../landing-page/_components/Hero";
 import AppLayout2 from "../../components/Applayout2";
-import WhySuaave from "../landingpage/_components/WhySuaave";
-import HowItWorks from "../landingpage/_components/HowitWorks";
-import ImageFashion from "../landingpage/_components/ImageFashion";
-import ImageDesigners from "../landingpage/_components/ImageDesigners";
-import ExploreComponent from "../landingpage/_components/Explore";
-import Banner from "../landingpage/_components/Banner";
-import Footer from "../landingpage/_components/Footer";
+import WhySuaave from "../landing-page/_components/WhySuaave";
+import HowItWorks from "../landing-page/_components/HowitWorks";
+import ImageFashion from "../landing-page/_components/ImageFashion";
+import ImageDesigners from "../landing-page/_components/ImageDesigners";
+import ExploreComponent from "../landing-page/_components/Explore";
+import Banner from "../landing-page/_components/Banner";
+import Footer from "../landing-page/_components/Footer";
 
 export default function Home() {
   return (
