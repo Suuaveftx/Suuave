@@ -11,11 +11,10 @@ const Page = () => {
         <LogoImg />
       </div>
 
-    
       <div className=" mt-16 mb-32 bg-[#F]">
         <div className="w-full">
           <div className="shadow-lg rounded-md">
-           <CreateAccount/>
+            <CreateAccount />
           </div>
         </div>
       </div>

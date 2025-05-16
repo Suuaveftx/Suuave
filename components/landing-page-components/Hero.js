@@ -1,16 +1,18 @@
 "use client";
 import React from "react";
-import { BackgroundBeams } from "../../../components/BackgroundBeam";
+
 import { Image } from "@heroui/react";
-import CustomButton from "../../../components/CustomButton";
-import HeroSlimCard from "../../../components/HeroSlimCard";
+
+import { ScrollParallax } from "react-just-parallax";
+import { BackgroundBeams } from "../BackgroundBeam";
+import CustomButton from "../CustomButton";
+import HeroSlimCard from "../HeroSlimCard";
 import {
   SvgCollabIcon,
   SvgCopyRightIcon,
   SvgCUserIcon,
   SvgProtectIcon,
 } from "../../utils/SvgIcons";
-import { ScrollParallax } from "react-just-parallax";
 
 const HeroSection = () => {
   return (
@@ -48,7 +50,10 @@ const HeroSection = () => {
             culture and expertise to create groundbreaking culturally-rich
             designs.
           </p>
-          <CustomButton className="ml-14 w-40 text-lg h-[52px]" href={"/choose-category"} />
+          <CustomButton
+            className="ml-14 w-40 text-lg h-[52px]"
+            href="/onboarding/choose-category"
+          />
         </div>
         <div className="lg:pr-14 py-14 relative pr-5 px-5 lg:px-0 lg:mt-0 mt-7">
           <ScrollParallax isAbsolutelyPositioned strength={0.1} zIndex={30}>

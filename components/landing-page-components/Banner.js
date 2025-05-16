@@ -1,5 +1,5 @@
 import Image from "next/image";
-import CustomButton from "../../../components/CustomButton";
+import CustomButton from "../CustomButton";
 
 const Banner = () => {
   return (
@@ -18,6 +18,7 @@ const Banner = () => {
         </h1>
         <CustomButton
           text="Join Suuave"
+          href="/onboarding"
           className="w-44 h-14 font-semibold text-lg"
         />
       </div>

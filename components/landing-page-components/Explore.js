@@ -1,6 +1,7 @@
 import React from "react";
-import CustomButton from "../../../components/CustomButton";
+
 import { Image } from "@heroui/react";
+import CustomButton from "../CustomButton";
 
 const ExploreComponent = () => {
   return (

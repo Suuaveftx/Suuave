@@ -1,6 +1,6 @@
 import React from "react";
 import { fashionDsignRightSection } from "../../utils/utils";
-import FashionDesignSectionCard from "../../../components/FashionDesignSectionCard";
+import FashionDesignSectionCard from "../FashionDesignSectionCard";
 
 const ImageDesigners = () => {
   return (
