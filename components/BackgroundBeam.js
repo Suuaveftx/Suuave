@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { cn } from "../app/utils/utils";
+import { cn } from "../utils/utils";
+// import { cn } from "../app/utils/utils";
 
 export const BackgroundBeams = React.memo(({ className }) => {
   const paths = [

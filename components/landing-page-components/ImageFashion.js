@@ -1,5 +1,6 @@
 import React from "react";
-import FashionArtistGroup from "../../../components/FashionArtistGroup";
+import { FaCircleCheck } from "react-icons/fa6";
+import { ScrollParallax } from "react-just-parallax";
 import { fashionSection } from "../../utils/utils";
 import { IoArrowForwardOutline } from "react-icons/io5";
 import {
@@ -11,8 +12,8 @@ import {
   Image,
   Skeleton,
 } from "@heroui/react";
-import { FaCircleCheck } from "react-icons/fa6";
-import { ScrollParallax } from "react-just-parallax";
+
+import FashionArtistGroup from "../FashionArtistGroup";
 
 const ImageFashion = () => {
   return (

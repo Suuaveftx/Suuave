@@ -6,12 +6,14 @@ import {
   FaGavel,
   FaBullseye,
 } from "react-icons/fa";
-import { homePageCardData } from "../../utils/utils";
-import WhySuuaveCard from "../../../components/WhySuuaveCard";
-import CustomButton from "../../../components/CustomButton";
+
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import CustomButton from "../CustomButton";
+import WhySuuaveCard from "../WhySuuaveCard";
+import { homePageCardData } from "../../utils/utils";
+
 const WhySuaave = () => {
   const settings = {
     className: "center",

@@ -2,7 +2,7 @@
 
 import { HeroUIProvider } from "@heroui/react";
 import CustomNavbar from "../../components/Navbar";
-import Footer from "../landing-page/_components/Footer";
+import Footer from "../../components/landing-page-components/Footer";
 
 export default function Layout({ children }) {
   return (
