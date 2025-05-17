@@ -107,7 +107,7 @@ import Image from "next/image";
                 {/* Buttons */}
                 <div className="flex justify-start gap-4 mt-4">
                   <CustomButton text="Cancel" className="bg-[#EEEEEE]" />
-                  <CustomButton text="Submit Project" className="bg-[#CCE7F2] text-[#222222]" icon={<Image src={"/dev-images/Arrowup.png"} alt="submit" width={15} height={15} />} href={"/submitcontract"} />
+                  <CustomButton text="Submit Project" className="bg-[#CCE7F2] text-[#222222]" icon={<Image src={"/dev-images/Arrowup.png"} alt="submit" width={15} height={15} />} href={"/artist-page/submit-contract-information"} />
                 </div>
               </ModalBody>
             )}

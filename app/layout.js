@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import "./globals.css";
-import CustomNavbar from "../components/Navbar";
+import Layout from "./(main)/layout";
 
 // Metadata
 export const metadata = {

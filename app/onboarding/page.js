@@ -1,12 +1,7 @@
-import React from 'react'
-import ChooseFashion from './_components/ChooseFashion'
+import { redirect } from "next/navigation";
 
-const page = () => {
-  return (
-    <div>
-        <ChooseFashion />
-    </div>
-  )
+function OnboardingPage() {
+  redirect("/onboarding/choose-category");
 }
 
-export default page
+export default OnboardingPage;
