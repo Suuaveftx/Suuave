@@ -68,14 +68,19 @@ const CustomNavbar = () => {
       </NavbarContent>
       <NavbarContent justify="end" className="space">
         <NavbarItem className="hidden lg:flex">
-          <Link href="#" className={` text-white transition duration-300`}>
+          <Link href="/auth" className={` text-white transition duration-300`}>
             Login
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <CustomButton className="hidden lg:flex" />
+          <CustomButton
+            href="onboarding/choose-category"
+            className="hidden lg:flex"
+          />
         </NavbarItem>
-        <Link className="lg:hidden text-white">Login</Link>
+        <Link href="/auth" className="lg:hidden text-white">
+          Login
+        </Link>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className={`sm:hidden text-white font-bold text-lg size-6`}

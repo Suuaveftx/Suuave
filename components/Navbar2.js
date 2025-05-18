@@ -93,7 +93,7 @@ const Navbars = () => {
           <Link href="/artist-page/profile-for-artist" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
             My Profile
           </Link>
-          <Link href="/artist-page/wallet" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+          <Link href="/artist-page/payment" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
             Wallet
           </Link>
           <Link href="/artist-page/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">

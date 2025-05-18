@@ -1,10 +1,10 @@
 import React from 'react'
-import AvailabilityMobile from './_components/AvailabilityMobile'
+import Login from './_components/Login'
 
 const page = () => {
   return (
     <div>
-        <AvailabilityMobile />
+        <Login />
     </div>
   )
 }
