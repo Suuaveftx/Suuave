@@ -9,13 +9,14 @@ import PendingProjects from "./PendingProject";
 const cn = (...classes) => classes.filter(Boolean).join(" ");
 
 const tabs = [
+  { id: "pending", label: "Pending Contracts(2)" },
   { id: "ongoing", label: "Ongoing Contracts(3)" },
   { id: "completed", label: "Completed Contracts(4)" },
-  { id: "pending", label: "Pending Contracts(2)" },
+ 
 ];
 
 export default function UnderlinedTabs() {
-  const [activeTab, setActiveTab] = useState("completed"); // Default tab
+  const [activeTab, setActiveTab] = useState("pending"); 
 
   return (
     <div className="w-full mx-auto">

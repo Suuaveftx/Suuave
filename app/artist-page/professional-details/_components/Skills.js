@@ -165,7 +165,7 @@ const Skills = ({ setActiveProfessionalLink }) => {
         {/* Continue Button */}
         <div className="flex items-center gap-8 justify-end text-[12px]">
           <span className='text-[#2C7A9C] font-bold'>Skip</span>
-         <CustomButton text='continue' className="w-32" href='/artist-page/awards' />
+         <CustomButton text='continue' className="w-32" href='/artist-page/awards-and-certification' />
         </div>
       </div>
     </div>

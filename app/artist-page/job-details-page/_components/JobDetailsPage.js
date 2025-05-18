@@ -5,7 +5,7 @@ import CustomButton from '../../../../components/CustomButton';
 const JobDetailsPage = () => {
   return (
     <>
-    <h1 className='ml-8 font-bold text-2xl'>Post Details</h1>
+    <h1 className='ml-8 font-bold text-2xl'>Job Details</h1>
     <hr></hr>
     <Card className="py-4 border-2 border-[#D3D3D3] ml-8 mb-4 mt-4 bg-[#FAFAFA] p-4">
   <CardHeader className="pb-0 pt-2 px-4 flex flex-col items-start">

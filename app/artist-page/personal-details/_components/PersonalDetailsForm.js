@@ -226,7 +226,7 @@ const PersonalDetailsForm = ({ setActiveLink, setActiveProfessionalLink, setIsEd
 
 </div>
   <div className='flex w-full justify-end items-end'>
-    <CustomButton text='continue' className="w-32" href='/artist-page/skills' />
+    <CustomButton text='continue' className="w-32" href='/artist-page/professional-details' />
   </div>
     </Form>
        
