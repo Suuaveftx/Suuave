@@ -19,6 +19,7 @@ import { TbSettings } from "react-icons/tb";
 import { TbLogout2 } from "react-icons/tb";
 import { Bell, ClipboardList, Mail } from "lucide-react";
 import CustomButton from "../../../components/CustomButton";
+import Link from "next/link";
 
 export function UserActions() {
   return (
@@ -26,10 +27,12 @@ export function UserActions() {
       {/* <Button className="bg-[#A0D3E8] text-[#007B7F] font-bold hover:bg-[#007B7F] hover:text-white transition-colors shadow-[0px_2px_4px_rgba(0,0,0,0.1)] rounded-lg">
         Post a Job
       </Button> */}
-      <CustomButton
-        text="Post a Job"
-        className="font-semibold px-9 py-1 lg:flex hidden"
-      />
+      <Link href="/fashion-designers/post-project">
+        <CustomButton
+          text="Post Project"
+          className="font-semibold px-9 py-1 lg:flex hidden"
+        />
+      </Link>
 
       <div className="flex items-center gap-6">
         <Badge
