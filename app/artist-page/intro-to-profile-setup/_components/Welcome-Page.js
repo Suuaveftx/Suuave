@@ -43,7 +43,11 @@ const WelcomePage = () => {
 
       {/* Continue Button */}
       <div className="mt-8">
+<<<<<<<< HEAD:app/artist-page/intro-to-profile-setup/_components/Welcome-Page.js
+        <CustomButton text="continue" href="/artist-page/personal-details" className="lg:w-32 w-full" />
+========
         <CustomButton text="continue" href="/artist-page/profile-personal-profile" className="lg:w-32 w-full" />
+>>>>>>>> 325f0a950e904904b411cd920d7c1c9f2ffac0dd:app/category/welcome-page/_components/Welcome-Page.js
       </div>
     </div>
   </div>

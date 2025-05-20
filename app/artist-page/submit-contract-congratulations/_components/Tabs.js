@@ -1,22 +1,18 @@
 "use client";
-
 import { useState } from "react";
-import OngoingContracts from "./OngoingContracts";
-import CompletedContracts from "./CompletedContracts";
-import PendingProjects from "./PendingProject";
-
+import OngoingContracts from "./SubmitContract";
+import CompletedContracts from "./SubmitContract2";
 
 const cn = (...classes) => classes.filter(Boolean).join(" ");
 
 const tabs = [
-  { id: "pending", label: "Pending Contracts(2)" },
-  { id: "ongoing", label: "Ongoing Contracts(3)" },
-  { id: "completed", label: "Completed Contracts(4)" },
- 
+  { id: "ongoing", label: "Ongoing Contracts" },
+  { id: "completed", label: "Completed Contracts" },
+  { id: "pending", label: "Pending Contracts" },
 ];
 
 export default function UnderlinedTabs() {
-  const [activeTab, setActiveTab] = useState("pending"); 
+  const [activeTab, setActiveTab] = useState("ongoing"); // Default tab
 
   return (
     <div className="w-full mx-auto">
@@ -41,7 +37,7 @@ export default function UnderlinedTabs() {
       <div className="mt-4">
         {activeTab === "ongoing" && <OngoingContracts />}
         {activeTab === "completed" && <CompletedContracts />}
-        {activeTab === "pending" && <PendingProjects />}
+        {activeTab === "pending" && <div>Pending Contracts Component</div>}
       </div>
     </div>
   );

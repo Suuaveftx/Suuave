@@ -226,7 +226,11 @@ const PersonalDetailsForm = ({ setActiveLink, setActiveProfessionalLink, setIsEd
 
 </div>
   <div className='flex w-full justify-end items-end'>
+<<<<<<<< HEAD:app/artist-page/personal-details/_components/PersonalDetailsForm.js
+    <CustomButton text='continue' className="w-32" href='/artist-page/professional-details' />
+========
     <CustomButton text='continue' className="w-32" href='/artist-page/skills' />
+>>>>>>>> 325f0a950e904904b411cd920d7c1c9f2ffac0dd:app/artist-page/profile-personal-profile/_components/PersonalDetailsForm.js
   </div>
     </Form>
        

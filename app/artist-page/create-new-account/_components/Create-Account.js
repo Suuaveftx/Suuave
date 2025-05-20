@@ -218,7 +218,11 @@ const CreateAccount = () => {
           {errors.terms && <span className="text-danger text-small">{errors.terms}</span>}
 
           <div className="flex flex-col w-full">
+<<<<<<<< HEAD:app/artist-page/create-new-account/_components/Create-Account.js
+            <CustomButton text="Create Account" className="w-96" href={"/artist-page/email-confirmation"} />
+========
             <CustomButton text="Create Account" className="w-96" href={"/artist-page/otp"} />
+>>>>>>>> 325f0a950e904904b411cd920d7c1c9f2ffac0dd:app/category/create-account/_components/Create-Account.js
 
 
             <div className="mt-4 text-center pb-8">

@@ -7,6 +7,16 @@ const BtnProposals = () => {
   return (
     <Card className="py-4 w-64">
       <CardBody className="overflow-visible py-2">
+<<<<<<< HEAD
+        <div className='flex flex-col gap-4 justify-center items-center'>
+      <div>
+        <CustomButton text='Send Proposal' className="w-48" href='/artist-page/send-proposal' />
+      </div>
+      <div>
+        <CustomButton text='Save Post' className="w-48 bg-transparent border-1 border-[#3A98BB]" />
+      </div>
+      </div>
+=======
         <div className="flex flex-col gap-4 justify-center items-center">
           <div>
             <CustomButton
@@ -22,6 +32,7 @@ const BtnProposals = () => {
             />
           </div>
         </div>
+>>>>>>> 325f0a950e904904b411cd920d7c1c9f2ffac0dd
       </CardBody>
     </Card>
   );

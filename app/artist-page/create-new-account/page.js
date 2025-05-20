@@ -14,7 +14,11 @@ const Page = () => {
       <div className=" mt-16 mb-32 bg-[#F]">
         <div className="w-full">
           <div className="shadow-lg rounded-md">
+<<<<<<<< HEAD:app/artist-page/create-new-account/page.js
+           <CreateAccount/>
+========
             <CreateAccount />
+>>>>>>>> 325f0a950e904904b411cd920d7c1c9f2ffac0dd:app/category/create-account/page.js
           </div>
         </div>
       </div>
