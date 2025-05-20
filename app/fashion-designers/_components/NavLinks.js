@@ -42,10 +42,10 @@ export function NavLinks() {
         Designs
       </Link>
       <Link
-        href="/fashion-designers/post-job"
+        href="/fashion-designers/my-projects"
         className="text-[#1A1A1A] hover:text-[#B0B0B0] text-[15px] transition-colors"
       >
-        My Job Posts
+        My Projects
       </Link>
       <Link
         href="/fashion-designers/contracts"
