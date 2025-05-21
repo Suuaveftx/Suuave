@@ -68,7 +68,7 @@ const SkillsFormMobile = () => {
 };
 
 // Main Page Component
-const page = () => {
+const Page = () => {
   return (
     <>
       {/* Mobile view */}
@@ -93,4 +93,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

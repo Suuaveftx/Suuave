@@ -1,7 +1,7 @@
 import React from 'react'
 import ProfileUpload from './_components/Profile-Upload'
 
-const page = () => {
+const Page = () => {
   return (
     <div>
         <ProfileUpload />
@@ -9,4 +9,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

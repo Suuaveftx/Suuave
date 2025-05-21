@@ -2,7 +2,7 @@ import React from "react";
 import ProposalTables from "./_components/TableProposals";
 import Footer from "../../../components/landing-page-components/Footer";
 
-const page = () => {
+const Page = () => {
   return (
     <div>
       <ProposalTables />
@@ -13,4 +13,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
