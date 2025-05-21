@@ -3,7 +3,7 @@ import React from 'react'
 import UnderlinedTabs from './_components/Tabs'
 import SearchBar from '../../../components/Searchbar'
 
-const page = () => {
+const Page = () => {
   return (
     <div>
       <div className='text-2xl font-bold ml-8 mt-8 text-[#767676]'>
@@ -14,4 +14,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

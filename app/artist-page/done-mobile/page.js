@@ -2,7 +2,7 @@ import React from "react";
 import DoneMobile from "./_components/Done-Mobile";
 import AppLayout from "../../../components/Applayout";
 
-const page = () => {
+const Page = () => {
   return (
     <AppLayout>
       <DoneMobile />
@@ -10,4 +10,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

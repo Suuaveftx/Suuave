@@ -3,7 +3,7 @@ import ProfileArtist from './_components/Profile'
 import FashionCards from './_components/FashionCard'
 
 
-const page = () => {
+const Page = () => {
   return (
     <div className='flex'>
         <ProfileArtist />
@@ -12,4 +12,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

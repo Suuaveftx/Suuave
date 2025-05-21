@@ -1,7 +1,7 @@
 import React from 'react'
 import Chat from './_components/Chat'
 
-const page = () => {
+const Page = () => {
   return (
     <div>
         <Chat />
@@ -9,4 +9,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

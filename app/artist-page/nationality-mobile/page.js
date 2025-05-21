@@ -1,7 +1,7 @@
 import React from 'react'
 import NationalityMobile from './_components/Nationality-Mobile'
 
-const page = () => {
+const Page = () => {
   return (
     <div>
         <NationalityMobile />
@@ -9,4 +9,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

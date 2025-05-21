@@ -218,7 +218,7 @@ const CreateAccount = () => {
           {errors.terms && <span className="text-danger text-small">{errors.terms}</span>}
 
           <div className="flex flex-col w-full">
-            <CustomButton text="Create Account" className="w-96" href={"/artist-page/otp"} />
+            <CustomButton text="Create Account" className="w-96" href={"/artist-page/email-confirmation"} />
 
 
             <div className="mt-4 text-center pb-8">

@@ -118,7 +118,7 @@ const Login = () => {
 
     {/* Login Button */}
     <div className="flex justify-center">
-      <CustomButton text="Login" className="w-96" href="/artist-page/welcome-page" />
+      <CustomButton text="Login" className="w-96" href="/artist-page/intro-to-profile-setup" />
     </div>
 
     {/* Don't have an account prompt */}

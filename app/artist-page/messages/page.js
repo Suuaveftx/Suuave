@@ -1,7 +1,7 @@
 import React from 'react'
 import Messages from './_components/Messages'
 
-const page = () => {
+const Page = () => {
   return (
     <div>
         <Messages />
@@ -9,4 +9,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

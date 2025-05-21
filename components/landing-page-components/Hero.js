@@ -52,7 +52,7 @@ const HeroSection = () => {
           </p>
           <CustomButton
             className="ml-14 w-40 text-lg h-[52px]"
-            href="/onboarding/choose-category"
+            href="/onboarding/category"
           />
         </div>
         <div className="lg:pr-14 py-14 relative pr-5 px-5 lg:px-0 lg:mt-0 mt-7">

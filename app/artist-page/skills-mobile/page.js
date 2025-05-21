@@ -1,7 +1,7 @@
 import React from 'react'
 import SkillsFormMobile from './_components/Skills-Mobile'
 
-const page = () => {
+const Page = () => {
   return (
     <div>
         <SkillsFormMobile />
@@ -10,4 +10,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

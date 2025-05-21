@@ -1,7 +1,7 @@
 import React from 'react'
 import AwardMobile from './_components/Awards-Mobile'
 
-const page = () => {
+const Page = () => {
   return (
     <div>
         <AwardMobile />
@@ -9,4 +9,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

@@ -45,7 +45,7 @@ const ProjectPage = () => {
       {/* Job Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
   {[...Array(6)].map((_, index) => (
-    <Link key={index} href={`/artist-page/project-details`} className="block">
+    <Link key={index} href={`/artist-page/job-details-page`} className="block">
       <div className="relative p-8 bg-white border-2 border-[#E0E0E0] rounded-lg shadow-sm cursor-pointer">
         {/* Top-right Images */}
         <div className="absolute mt-0 right-2 flex space-x-2">

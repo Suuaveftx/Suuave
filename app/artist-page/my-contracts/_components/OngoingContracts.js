@@ -51,7 +51,7 @@ const OngoingContracts = () => {
                 <CustomButton
                   text="Chat Client"
                   className="bg-transparent border-1 border-[#767676] text-[#767676]"
-                  href={"/artist-page/chat"}
+                  href={"/artist-page/chat-client"}
                 />
                 <span className="text-blue-500 cursor-pointer text-sm sm:text-lg">
                   More......
