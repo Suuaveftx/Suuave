@@ -46,7 +46,7 @@ const ProporsalModal = ({ proposals }) => {
 
   const goToProduct = (productID) => {
     if (!productID) return;
-    router.push(`/fashionDesigners/my-job-post/proposals/${productID}`);
+    router.push(`/fashion-designers/my-projects/proposals/${productID}`);
   };
   return (
     <>

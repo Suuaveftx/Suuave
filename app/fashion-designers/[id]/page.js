@@ -14,12 +14,13 @@ import {
 import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { SvgCautionIcon } from "../../../utils/SvgIcons";
-import CustomButton from "../../../../components/CustomButton";
+// import CustomButton from "../../../../components/CustomButton";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { IoBookmark } from "react-icons/io5";
 import { TiLocation } from "react-icons/ti";
 import LicenseModal from "../_components/licenseModal";
+import CustomButton from "../../../components/CustomButton";
 
 const ProductDetails = ({ params }) => {
   const { id } = params; // Extract 'id' from the params object

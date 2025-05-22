@@ -6,8 +6,9 @@ import {
   Button,
   useDisclosure,
 } from "@heroui/react";
-import CustomButton from "../../../../components/CustomButton";
+// import CustomButton from "../../../../components/CustomButton";
 import { useEffect } from "react";
+import CustomButton from "../../../components/CustomButton";
 
 export default function LicenseModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
