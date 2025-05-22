@@ -15,7 +15,7 @@ export default function LicenseModal() {
 
   useEffect(() => {
     onOpen();
-  }, []);
+  }, [onOpen]);
 
   return (
     <>

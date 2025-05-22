@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -11,11 +12,17 @@ const NavBar = () => {
       {/* Logo */}
       <div className="flex items-center gap-2 ">
         <Link href="/">
-          <img
+          {/* <img
             src={"/icons/logo.png"}
             alt=" Suuave Logo"
             width={100}
             height={100}
+          /> */}
+          <Image
+            width={100}
+            height={100}
+            src={"/icons/logo.png"}
+            alt=" Suuave Logo"
           />
         </Link>
         <span className="text-white font-semibold text-2xl"></span>
