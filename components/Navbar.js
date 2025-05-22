@@ -34,11 +34,13 @@ const CustomNavbar = () => {
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarBrand>
-        <Image
-          src="/dev-images/navLogo.png"
-          alt="Logo"
-          className="lg:w-40 py-4 w-32" // Reduced space between the logo and form
-        />
+        <Link href="/">
+          <Image
+            src="/dev-images/navLogo.png"
+            alt="Logo"
+            className="lg:w-40 py-4 w-32" // Reduced space between the logo and form
+          />
+        </Link>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-14 " justify="center">
         <NavbarMenuToggle
@@ -61,7 +63,10 @@ const CustomNavbar = () => {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="#" className={` text-white transition duration-300`}>
+          <Link
+            href="/about-page"
+            className={` text-white transition duration-300`}
+          >
             About us
           </Link>
         </NavbarItem>
