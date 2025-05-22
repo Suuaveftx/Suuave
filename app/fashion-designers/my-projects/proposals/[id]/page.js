@@ -1,9 +1,10 @@
 "use client";
 import { Avatar, Button, Card, CardBody } from "@heroui/react";
 import React, { use } from "react";
-import CustomButton from "../../../../../../components/CustomButton";
+// import CustomButton from "../../../../../../components/CustomButton";
 import { TiLocation } from "react-icons/ti";
 import { FaStar } from "react-icons/fa";
+import CustomButton from "../../../../../components/CustomButton";
 
 const Page = ({ params }) => {
   const { id } = use(params); // Unwrap the promise before accessing `id`

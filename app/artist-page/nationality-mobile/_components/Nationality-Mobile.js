@@ -1,7 +1,8 @@
-import Tabs from "../../../components/Tabs";
+// import Tabs from "../../../components/Tabs";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import Tabs from "../../../../components/Tabs";
 
 const NationalityMobile = () => {
   return (
