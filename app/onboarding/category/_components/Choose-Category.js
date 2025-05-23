@@ -2,10 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import CustomButton from "../../../../components/CustomButton";
 
 const ChooseCategory = () => {
+  const [activeCategory, setActiveCategory] = useState("");
+
+  const handleCategoryChange = (category) => {
+    setActiveCategory(category);
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-[#F9FAFB] px-4 md:px-10 py-6">
       <div className="w-full flex justify-start">
@@ -21,8 +27,26 @@ const ChooseCategory = () => {
         Sign up as a Fashion Artist or a Fashion Brand/Designer
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-8">
-        <Link href="artist-page/create-new-account">
-          <div className="bg-white  rounded-[16px] shadow-md pl-[24px] pr-[24px] pt-[32px] pb-[32px] flex flex-col justify-between items-center text-center border hover:border-[#CCE7F2] transition-all">
+        <label htmlFor="Fashion Artist">
+          <div
+            className={`bg-white cursor-pointer rounded-[16px] shadow-md pl-[24px] pr-[24px] pt-[32px] pb-[32px] flex flex-col 
+              justify-between items-center text-center border-2 hover:border-[#CCE7F2] transition-all ${
+                activeCategory === "Fashion Artist"
+                  ? "border-[#3A98BB]"
+                  : "border-transparent"
+              }`}
+          >
+            <div className="flex justify-end w-full">
+              <input
+                id="Fashion Artist"
+                type="radio"
+                className="w-8 h-8 accent-[#3A98BB]"
+                name="category"
+                value="Fashion Artist"
+                checked={activeCategory === "Fashion Artist"}
+                onChange={() => handleCategoryChange("Fashion Artist")}
+              />
+            </div>
             <Image
               src="/dev-images/Artist.png"
               alt="Fashion Artist"
@@ -32,14 +56,32 @@ const ChooseCategory = () => {
             />
             <div>
               <h2 className="text-[22px] font-bold pt-1">Fashion Artist</h2>
-              <p className="text-gray-500 text-sm mt-2  whitespace-nowrap">
+              <p className="text-gray-500 text-sm mt-2 whitespace-nowrap">
                 Including 3D Designers, Illustrators, Sketchers, etc.
               </p>
             </div>
           </div>
-        </Link>
-        <Link href="">
-          <div className="bg-white  rounded-[16px] shadow-md pl-[24px] pr-[24px] pt-[32px] pb-[32px] flex flex-col justify-between items-center text-center border hover:border-[#CCE7F2] transition-all">
+        </label>
+        <label htmlFor="Fashion Designer">
+          <div
+            className={`bg-white cursor-pointer rounded-[16px] shadow-md pl-[24px] pr-[24px] pt-[32px] pb-[32px] flex flex-col 
+              justify-between items-center text-center border-2 hover:border-[#CCE7F2] transition-all ${
+                activeCategory === "Fashion Designer"
+                  ? "border-[#3A98BB]"
+                  : "border-transparent"
+              }`}
+          >
+            <div className="flex justify-end w-full">
+              <input
+                id="Fashion Designer"
+                type="radio"
+                className="w-8 h-8 accent-[#3A98BB]"
+                name="category"
+                value="Fashion Designer"
+                checked={activeCategory === "Fashion Designer"}
+                onChange={() => handleCategoryChange("Fashion Designer")}
+              />
+            </div>
             <Image
               src="/dev-images/Designers.png"
               alt="Fashion Designer"
@@ -54,13 +96,13 @@ const ChooseCategory = () => {
               </p>
             </div>
           </div>
-        </Link>
+        </label>
       </div>
       <div className="mt-16">
         <CustomButton
           className="ml-14 w-80 text-lg h-[52px]"
           text="Continue"
-          href="artist-page/create-account"
+          href="/onboarding/create-new-account"
         />
       </div>
     </div>

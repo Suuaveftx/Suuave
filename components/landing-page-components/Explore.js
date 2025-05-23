@@ -77,6 +77,7 @@ const ExploreComponent = () => {
           <CustomButton
             text="Explore More"
             className="mt-4 place-self-center items-center size-36"
+            href="/onboarding"
           />
         </div>
       </div>

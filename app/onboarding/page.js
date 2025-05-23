@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 function OnboardingPage() {
-  redirect("/onboarding/choose-category");
+  redirect("/onboarding/category");
 }
 
 export default OnboardingPage;

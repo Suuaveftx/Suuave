@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { Button, Link } from "@heroui/react";
 import Image from "next/image";
 
@@ -28,7 +28,14 @@ const Footer = () => {
           </h2>
           <ul className="space-y-2 text-sm font-thin text-[#C8C8C8]">
             <li>Contact Us</li>
-            <li>About Us</li>
+            <li>
+              <Link
+                href="/about-page"
+                className=" text-sm font-thin text-[#C8C8C8]"
+              >
+                About Us
+              </Link>
+            </li>
             <li>Help and Support</li>
           </ul>
         </div>

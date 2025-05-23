@@ -63,7 +63,7 @@ const InfoSection = () => {
           </div>
 
           <h2 className="text-2xl md:text-3xl font-bold mb-6">
-            Together, let &aposs inspire, create,
+            Together, let &#39;s inspire, create,
             <br /> and celebrate the beauty <br /> of African fashion.
           </h2>
           <p className="text-gray-600 mb-4">

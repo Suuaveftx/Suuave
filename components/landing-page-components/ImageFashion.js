@@ -14,6 +14,7 @@ import {
 } from "@heroui/react";
 
 import FashionArtistGroup from "../FashionArtistGroup";
+import Link from "next/link";
 
 const ImageFashion = () => {
   return (
@@ -40,8 +41,10 @@ const ImageFashion = () => {
         <p className=" text-customWhiteBgText font-medium lg:text-3xl text-xl">
           Begin your journey to success
         </p>
-        <div className="flex items-center gap-2 mt-4 cursor-pointer text-customWhiteBgText font-medium hover:underline">
-          <p>Get Started</p>
+        <div className="flex items-center gap-2 mt-4 cursor-pointer text-[#CCE7F2] font-medium hover:underline">
+          <Link href="/onboarding" className="no-underline hover:no-underline">
+            Get Started
+          </Link>
           <IoArrowForwardOutline />
         </div>
       </div>

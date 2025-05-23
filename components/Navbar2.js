@@ -25,12 +25,12 @@ const Navbars = () => {
   ];
 
   const mobileMenuItems = [
-    { label: "Home", href: "/" },
+    { label: "Home", href: "/artist-page" },
     { label: "Jobs", href: "/artist-page/project-page" },
     { label: "Proposals", href: "/artist-page/my-proposals" },
-    { label: "My Contracts", href: "/contracts" },
-    { label: "Profile", href: "/profile" },
-    { label: "Settings", href: "/settings" },
+    { label: "My Contracts", href: "/artist-page/contracts" },
+    { label: "Profile", href: "/artist-page/profile-for-artist" },
+    { label: "Settings", href: "/artist-page/settings" },
   ];
 
   return (
@@ -45,20 +45,26 @@ const Navbars = () => {
     >
       {/* LOGO */}
       <div>
-        <Link href="/fashionartistpage/jobpost">
-        <Image
-          src="/dev-images/logocombo.png"
-          alt="Logo"
-          className="lg:w-32 w-24 h-auto object-contain"
-        />
+        <Link href="/artist-page">
+          <Image
+            src="/dev-images/logocombo.png"
+            alt="Logo"
+            className="lg:w-32 w-24 h-auto object-contain"
+          />
         </Link>
       </div>
 
       {/* MENU */}
-      <NavbarContent className="hidden sm:flex gap-8 ml-8 font-bold" justify="center">
+      <NavbarContent
+        className="hidden sm:flex gap-8 ml-8 font-bold"
+        justify="center"
+      >
         {menuItems.map((item, index) => (
           <NavbarItem key={index}>
-            <Link href={item.href} className={`${textStyle} transition duration-300`}>
+            <Link
+              href={item.href}
+              className={`${textStyle} transition duration-300`}
+            >
               {item.label}
             </Link>
           </NavbarItem>
@@ -68,47 +74,88 @@ const Navbars = () => {
       {/* LOGIN & BUTTON */}
       <NavbarContent justify="end" className="gap-8">
         <NavbarItem>
-          <CustomButton className="hidden lg:flex" text="License Your Designs" href={"/artist-page/license-your-design"} />
+          <CustomButton
+            className="hidden lg:flex"
+            text="License Your Designs"
+            href={"/artist-page/license-your-design"}
+          />
         </NavbarItem>
         <div className="flex gap-2">
           <NavbarItem className="hidden lg:flex">
-            <Image src="/dev-images/Bell.png" alt="Bell" width={24} height={24} />
+            <Image
+              src="/dev-images/Bell.png"
+              alt="Bell"
+              width={24}
+              height={24}
+            />
           </NavbarItem>
           <NavbarItem className="hidden lg:flex">
             <Link href="/artist-page/messages">
-            <Image src="/dev-images/Messages.png" alt="Messages" width={24} height={24} />
+              <Image
+                src="/dev-images/Messages.png"
+                alt="Messages"
+                width={24}
+                height={24}
+              />
             </Link>
           </NavbarItem>
         </div>
         <div className="relative">
-      {/* Profile Image with Downward Arrow */}
-      <button onClick={() => setIsOpen(!isOpen)} className="flex items-center space-x-2 focus:outline-none">
-        <Image src="/dev-images/Avatar.png" alt="Avatar" width={48} height={48} className="cursor-pointer rounded-full" />
-        <ChevronDown className={`w-5 h-5 text-gray-600 transition-transform ${isOpen ? "rotate-180" : ""}`} />
-      </button>
+          {/* Profile Image with Downward Arrow */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex items-center space-x-2 focus:outline-none"
+          >
+            <Image
+              src="/dev-images/Avatar.png"
+              alt="Avatar"
+              width={48}
+              height={48}
+              className="cursor-pointer rounded-full"
+            />
+            <ChevronDown
+              className={`w-5 h-5 text-gray-600 transition-transform ${
+                isOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
 
-      {/* Dropdown Menu */}
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2">
-          <Link href="/artist-page/profile-for-artist" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-            My Profile
-          </Link>
-          <Link href="/artist-page/wallet" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-            Wallet
-          </Link>
-          <Link href="/artist-page/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-            Support
-          </Link>
-          <Link href="/rtist-page/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-            Settings
-          </Link>
-          <Link href="/#" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-            Logout
-          </Link>
-          
+          {/* Dropdown Menu */}
+          {isOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2">
+              <Link
+                href="/artist-page/profile-for-artist"
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >
+                My Profile
+              </Link>
+              <Link
+                href="/artist-page/wallet"
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >
+                Wallet
+              </Link>
+              <Link
+                href="/artist-page/settings"
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >
+                Support
+              </Link>
+              <Link
+                href="/artist-page/settings"
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >
+                Settings
+              </Link>
+              <Link
+                href="/#"
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >
+                Logout
+              </Link>
+            </div>
+          )}
         </div>
-      )}
-    </div>
         <Link className="lg:hidden text-black">Login</Link>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -120,7 +167,11 @@ const Navbars = () => {
       <NavbarMenu>
         {mobileMenuItems.map((item, index) => (
           <NavbarMenuItem key={index}>
-            <Link className="w-full text-black transition duration-300" href={item.href} size="lg">
+            <Link
+              className="w-full text-black transition duration-300"
+              href={item.href}
+              size="lg"
+            >
               {item.label}
             </Link>
           </NavbarMenuItem>
