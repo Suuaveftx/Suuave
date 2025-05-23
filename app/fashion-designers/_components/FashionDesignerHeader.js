@@ -23,7 +23,9 @@ const FashionDesignerHeader = () => {
       className="h-[80px] border-b lg:bg-white/40 bg-[#CCE7F2]"
     >
       <NavbarBrand>
-        <Image src="/black-logo.png" alt="Suaave" className=" w-40" />
+        <Link href="/fashion-designers">
+          <Image src="/black-logo.png" alt="Suaave" className=" w-40" />
+        </Link>
       </NavbarBrand>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">

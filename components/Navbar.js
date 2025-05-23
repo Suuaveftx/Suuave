@@ -78,10 +78,7 @@ const CustomNavbar = () => {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <CustomButton
-            href="onboarding/choose-category"
-            className="hidden lg:flex"
-          />
+          <CustomButton href="/onboarding" className="hidden lg:flex" />
         </NavbarItem>
         <Link href="/auth" className="lg:hidden text-white">
           Login

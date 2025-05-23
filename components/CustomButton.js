@@ -2,6 +2,16 @@ import { Button } from "@heroui/react";
 import Link from "next/link";
 import React from "react";
 
+/**
+ * CustomButton component for rendering a button with optional link and icon.
+ *
+ * @param {string} text - Button text (default: "Get Started").
+ * @param {string} [href] - Optional link URL.
+ * @param {string} [className] - Additional CSS classes.
+ * @param {Function} [onPress] - Click handler function.
+ * @param {React.ReactNode} [icon] - Optional icon component.
+ */
+
 const CustomButton = ({
   text = "Get Started",
   href,
