@@ -1,7 +1,7 @@
 'use client'
 import { Card, CardBody, Input, Switch } from "@heroui/react";
 
-const SettingsCard2 = () => {
+const NotificationSettings = () => {
   return (
     <Card className="w-3/5 h-96  p-4 bg-white shadow-md rounded-lg">
       <CardBody className="space-y-4">
@@ -67,4 +67,4 @@ const SettingsCard2 = () => {
   );
 };
 
-export default SettingsCard2;
+export default NotificationSettings;
