@@ -20,12 +20,12 @@ export const Global = () => {
                 {/* Partner With Us Section */}
         <section className="py-16 bg-[#012A39] text-center">
           <div className="container mx-auto px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-[#CCD6F6] mb-4">PARTNER WITH US</h2>
+            <h2 className="text-3xl font-bold text-[#EEEEEE] mb-4">PARTNER WITH US</h2>
             <p className="text-[#A8B2D1] mb-8">
               We are open for partnership and sponsorships to help us
               expand our global reach and improve this product.
             </p>
-            <button className="bg-[#CCE7F2] text-[#0A192F] font-semibold rounded-full py-3 px-8 hover:bg-[#EAF9FF] transition duration-300 ">
+            <button className="bg-[#CCE7F2] text-[#035A7A] font-semibold rounded-full py-3 px-8 hover:bg-[#EAF9FF] transition duration-300 ">
               Build With Us
             </button>
           </div>
