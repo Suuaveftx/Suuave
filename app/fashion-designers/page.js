@@ -4,7 +4,7 @@ import { Alert, Chip, Input, Tab, Tabs } from "@heroui/react";
 import React, { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 // import imageUrl from "/dev-images/fashionImg1.png";
-import FashionDesignersCard from "./_components/FashionDesignersCard";
+import FashionDesignersCard from "./_components/studio-page-components/FashionDesignersCard";
 // import Footer from "../../landingpage/_components/Footer";
 
 const Page = () => {
