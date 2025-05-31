@@ -52,8 +52,8 @@ const TeamSection = () => {
       <div className="container mx-auto px-6 lg:px-8 text-center ">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">MEET OUR TEAM</h2>
         <p className="text-gray-600 mb-8">
-          We are the people that make up the SUUAVE team. Diverse in skills and abilities,<br />
-          but united by one vision and mission.
+           “A diverse collective of passionate individuals united by a shared mission and vision”
+
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ">
           {teamMembers.map((member, index) => (

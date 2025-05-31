@@ -9,7 +9,7 @@ const CoreValues = () => {
             OUR CORE VALUES
           </h2>
           <div className=""></div>
-          <Image src="/icons/ve.svg" alt="" width={0} height={0} />
+          <Image src="/icons/ve.svg" alt="" width={110} height={26} />
         </div>
         <p className="text-2xl lg:text-4xl font-bold text-[#CCD6F6] mb-10">
           We are driven by a set of core values that <br /> guide every aspect
