@@ -19,8 +19,8 @@ const NavBar = () => {
             height={100}
           /> */}
           <Image
-            width={100}
-            height={100}
+            width={177}
+            height={50}
             src={"/icons/logo.png"}
             alt=" Suuave Logo"
           />
