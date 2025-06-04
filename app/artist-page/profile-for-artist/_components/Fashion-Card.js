@@ -2,11 +2,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Eye} from "lucide-react";
-import ThreeDotsDropdown from "./ThreeDotsDropDown";
+import ThreeDotsDropdown from "./ThreeDots-DropDown";
 import CustomButton from "../../../../components/CustomButton";
 
 
-const FashionCard = () => {
+const Fashion_Card = () => {
   const [activeTab, setActiveTab] = useState("design");
 
   const tabs = [
@@ -135,4 +135,4 @@ const FashionCard = () => {
   );
 };
 
-export default FashionCard;
+export default Fashion_Card;

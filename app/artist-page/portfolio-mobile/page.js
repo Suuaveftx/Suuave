@@ -1,10 +1,10 @@
 import React from 'react'
-import PortfolioMobile from './_components/Portfolio-Mobile'
+import Portfolio_Mobile from './_components/Portfolio-Mobile'
 
 const Page = () => {
   return (
     <div>
-        <PortfolioMobile />
+        <Portfolio_Mobile />
     </div>
   )
 }

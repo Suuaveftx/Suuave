@@ -1,13 +1,13 @@
 import React from 'react'
-import ProfileArtist from './_components/Profile'
-import FashionCards from './_components/FashionCard'
+import Fashion_Card from './_components/Fashion-Card'
+import Profile_Artist from './_components/Profile-Artist'
 
 
 const Page = () => {
   return (
     <div className='flex'>
-        <ProfileArtist />
-        <FashionCards />
+        <Profile_Artist />
+        <Fashion_Card />
     </div>
   )
 }

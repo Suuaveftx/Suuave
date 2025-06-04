@@ -1,10 +1,10 @@
 import React from 'react'
-import SendProposal from './_components/SendProposal'
+import Send_Proposal from './_components/Send-Proposal'
 
 const Page = () => {
   return (
     <div>
-        <SendProposal />
+        <Send_Proposal />
     </div>
   )
 }

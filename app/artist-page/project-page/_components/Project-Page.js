@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 
-const ProjectPage = () => {
+const Project_Page = () => {
   const [activeTab, setActiveTab] = useState('recent');
 
   const tabClasses = (tab) =>
@@ -79,4 +79,4 @@ const ProjectPage = () => {
   );
 };
 
-export default ProjectPage;
+export default Project_Page;

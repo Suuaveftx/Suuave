@@ -4,7 +4,7 @@ import {Card, CardHeader, CardBody, Image, Textarea, Input, RadioGroup, Radio, c
 import CustomButton from '../../../../components/CustomButton';
 import Link from 'next/link';
 import ModalComponent from '../../../../components/Modal';
-const SendProposal = (props) => {
+const Send_Proposal = (props) => {
     const {children, ...otherProps} = props;
     const [selected, setSelected] = useState("");
     const handleSelect = (value) => {
@@ -155,4 +155,4 @@ const SendProposal = (props) => {
   )
 }
 
-export default SendProposal;
+export default Send_Proposal;

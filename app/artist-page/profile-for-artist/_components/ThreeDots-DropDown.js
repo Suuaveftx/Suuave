@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { MoreHorizontal } from "lucide-react";
 
-const ThreeDotsDropdown = () => {
+const ThreeDots_Dropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -58,4 +58,4 @@ const ThreeDotsDropdown = () => {
   );
 };
 
-export default ThreeDotsDropdown;
+export default ThreeDots_Dropdown;

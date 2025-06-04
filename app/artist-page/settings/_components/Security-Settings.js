@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SecuritySettings = () => {
+const Security_Settings = () => {
   return (
     <div>
         <h1 className='font-extrabold text-2xl ml-2'>Security Settings</h1>
@@ -9,4 +9,4 @@ const SecuritySettings = () => {
   )
 }
 
-export default SecuritySettings;
+export default Security_Settings;

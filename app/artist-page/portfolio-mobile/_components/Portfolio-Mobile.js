@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const PortfolioMobile = () => {
+const Portfolio_Mobile = () => {
   return (
     <>
       {/* Centered Logo */}
@@ -74,4 +74,4 @@ const PortfolioMobile = () => {
   );
 };
 
-export default PortfolioMobile;
+export default Portfolio_Mobile;

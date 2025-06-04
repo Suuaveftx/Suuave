@@ -3,7 +3,7 @@ import Image from "next/image";
 import Tabs from "../../../../components/Tabs"; // Assuming Tabs component is already created
 import Link from "next/link";
 
-const ProfileUpload = () => {
+const Profile_Upload = () => {
   return (
     <div className="sm:hidden flex flex-col justify-center items-center">
       {" "}
@@ -138,4 +138,4 @@ const ProfileUpload = () => {
   );
 };
 
-export default ProfileUpload;
+export default Profile_Upload;

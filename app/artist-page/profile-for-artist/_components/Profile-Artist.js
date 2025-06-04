@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Button } from "@heroui/react";
 import CustomButton from "../../../../components/CustomButton";
 
-const ProfileArtist = () => {
+const Profile_Artist = () => {
   return (
     <div className="max-w-xs mx-auto p-4 bg-white rounded-lg  space-y-2 text-left max-h-[630px] overflow-hidden">
       <div className="space-y-3 border-b pb-3">
@@ -64,4 +64,4 @@ const ProfileArtist = () => {
   );
 };
 
-export default ProfileArtist;
+export default Profile_Artist;
