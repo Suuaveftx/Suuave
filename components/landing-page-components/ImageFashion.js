@@ -18,7 +18,7 @@ import Link from "next/link";
 
 const ImageFashion = () => {
   return (
-    <div className="lg:px-14  px-4 bg-customBgBlack min-h-60 py-10 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] lg:gap-4 gap-0 -z-30">
+    <div className="lg:px-14  px-4 bg-customBgBlack min-h-60 py-14  grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] lg:gap-4 gap-0 -z-30">
       <div className="col-span-2 lg:w-[56%] w-full">
         <p className="text-customWhiteBgText font-medium lg:text-2xl text-lg">
           FOR FASHION ARTISTS
@@ -27,8 +27,8 @@ const ImageFashion = () => {
           Get global exposure and monetize your creativity.
         </p>
       </div>
-      <div>
-        <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 gap-x-20 mb-16 lg:w-[87%] mt-8 w-full">
+      <div className="mt-auto">
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 gap-y-14 gap-x-20 mb-16 lg:w-[87%] mt-8 w-full">
           {fashionSection.map((group, index) => (
             <FashionArtistGroup
               key={index}
@@ -41,7 +41,7 @@ const ImageFashion = () => {
         <p className=" text-customWhiteBgText font-medium lg:text-3xl text-xl">
           Begin your journey to success
         </p>
-        <div className="flex items-center gap-2 mt-4 cursor-pointer text-[#CCE7F2] font-medium hover:underline">
+        <div className="flex items-center w-fit gap-2 mt-4 cursor-pointer text-[#CCE7F2] font-medium hover:underline">
           <Link href="/onboarding" className="no-underline hover:no-underline">
             Get Started
           </Link>
@@ -87,7 +87,7 @@ const ImageFashion = () => {
           </Card>
         </ScrollParallax>
         <Image
-          src="/dev-images/womanDesigning.png"
+          src="/dev-images/womanSectionImg.png"
           className=" -z-0"
           alt="woman Designing"
         />

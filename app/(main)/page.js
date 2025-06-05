@@ -24,7 +24,7 @@ export default function Home() {
       <HowItWorks />
 
       <ImageFashion />
-      <div className="h-11 bg-white" />
+      <div className="h-12 bg-white" />
       <ImageDesigners />
 
       <ExploreComponent />

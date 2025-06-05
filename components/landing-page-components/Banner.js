@@ -14,7 +14,7 @@ const Banner = () => {
         <h1 className="lg:text-[44px] text-[24px] font-medium mb-12 lg:w-[1100px] text-center">
           The home of
           <span className="italic font-thin"> African fashion artists</span> and
-          licensable stunning designs
+          licensable stunning designs.
         </h1>
         <CustomButton
           text="Join Suuave"

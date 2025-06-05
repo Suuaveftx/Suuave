@@ -2,11 +2,11 @@ import { Image } from "@heroui/react";
 
 const HowItWorks = () => {
   return (
-    <div className="lg:px-14 px-4 bg-customWhite py-5">
+    <div className="lg:px-14 px-4 bg-customWhite py-5 pb-14">
       {/* Grouped Section */}
       <div className="">
         {/* Disabled Button */}
-        <button className="bg-[#EAF9FF] text-[#035A7A] px-6 py-3 cursor-default rounded-full text-lg  flex items-center gap-2">
+        <button className="bg-[#EAF9FF] text-[#035A7A] px-4 py-3 cursor-default rounded-lg text-lg  flex items-center gap-2">
           <Image
             src="/dev-images/Microphone.png" // Replace with your icon's path
             alt="Icon"
@@ -37,7 +37,7 @@ const HowItWorks = () => {
           className="w-full hidden sm:block" // Show only on larger screens
         />
       </div> */}
-      <div className="w-full max-w-6xl aspect-video mx-auto mt-4">
+      <div className="w-full  aspect-video mx-auto mt-4">
         <iframe
           className="w-full h-full rounded-lg"
           src="https://www.youtube.com/embed/ONVt56eek8s?si=0im4jvm4a9ZA2Nmh"
