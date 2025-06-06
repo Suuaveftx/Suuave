@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card } from '@heroui/react';
 
-const SidebarMenuCard = ({ menuItems, activeItem, setActiveItem }) => {
+const Sidebar_MenuCard = ({ menuItems, activeItem, setActiveItem }) => {
   return (
     <Card className="w-64 h-80 p-0 bg-white shadow-md rounded-lg">
       <div>
@@ -43,4 +43,4 @@ const SidebarMenuCard = ({ menuItems, activeItem, setActiveItem }) => {
   );
 };
 
-export default SidebarMenuCard;
+export default Sidebar_MenuCard;

@@ -1,13 +1,18 @@
 'use client';
+
 import React, { useState } from 'react';
-import {
-  LucideBell,
-  LucideLock,
-  LucideHelpCircle,
-  LucidePhone,
-  LucideCircleUserRound,
-} from 'lucide-react';
 import Sidebar_MenuCard from './Sidebar-MenuCard';
+import NotificationSettings from './Notification-Settings';
+import SecuritySettings from './Security-Settings';
+
+
+import {
+  Bell as LucideBell,
+  Lock as LucideLock,
+  HelpCircle as LucideHelpCircle,
+  Phone as LucidePhone,
+  CircleUserRound as LucideCircleUserRound,
+} from 'lucide-react';
 
 const settingsMenu = [
   { id: 'profile', label: 'Profile Settings', icon: LucideCircleUserRound },
@@ -17,18 +22,31 @@ const settingsMenu = [
   { id: 'help', label: 'Help', icon: LucidePhone },
 ];
 
-const SettingsPage = () => {
+const SettingsPageClient = () => {
   const [activeItem, setActiveItem] = useState('profile');
 
+  const renderActiveComponent = () => {
+    switch (activeItem) {
+      case 'notifications':
+        return <NotificationSettings />;
+      case 'security':
+        return <SecuritySettings />;
+      case 'profile':
+      default:
+        return <div>Select a setting.</div>;
+    }
+  };
+
   return (
-    <div className="p-4">
+    <>
       <Sidebar_MenuCard
         menuItems={settingsMenu}
         activeItem={activeItem}
         setActiveItem={setActiveItem}
       />
-    </div>
+      <div className="flex-1">{renderActiveComponent()}</div>
+    </>
   );
 };
 
-export default SettingsPage;
+export default SettingsPageClient;
