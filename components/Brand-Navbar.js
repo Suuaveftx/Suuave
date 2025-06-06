@@ -36,7 +36,7 @@ const Navbars = () => {
   return (
     <Navbar
       shouldHideOnScroll
-      className="w-full bg-white items-center font-satoshi shadow-md px-2 flex-nowrap"
+      className="w-full bg-[#CCE7F2] items-center font-satoshi shadow-md px-2 flex-nowrap"
       classNames={{ wrapper: "max-w-[1700px]" }}
       onScrollPositionChange={(position) => {
         setTextStyle(position > 600 ? "text-yellow-500" : "text-black");
