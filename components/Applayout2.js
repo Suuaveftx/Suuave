@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Navbar2 from "./Navbar2";
+import Navbar2 from "./Navbar-Alt";
 import { HeroUIProvider } from "@heroui/react";
 
 const AppLayout2 = ({ children }) => {
