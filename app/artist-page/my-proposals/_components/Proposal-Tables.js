@@ -2,7 +2,7 @@
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@heroui/react";
 import { TrashIcon } from "@heroicons/react/24/outline";
 
-export default function ProposalTables() {
+export default function Proposal_Tables() {
   const proposals = [
     { id: 1, title: "Fashion Native Bridal illustration", date: "June,12,2024", status: "Active" },
     { id: 2, title: "Fashion Native Bridal illustration", date: "June,12,2024", status: "Active" },
