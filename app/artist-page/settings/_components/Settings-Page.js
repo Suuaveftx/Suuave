@@ -22,7 +22,7 @@ const settingsMenu = [
   { id: 'help', label: 'Help', icon: LucidePhone },
 ];
 
-const SettingsPageClient = () => {
+const SettingsPage = () => {
   const [activeItem, setActiveItem] = useState('profile');
 
   const renderActiveComponent = () => {
@@ -49,4 +49,4 @@ const SettingsPageClient = () => {
   );
 };
 
-export default SettingsPageClient;
+export default SettingsPage;

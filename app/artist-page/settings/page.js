@@ -1,14 +1,13 @@
-import SettingsPageClient from "./_components/Settings-Page";
-import SettingsPage from "./_components/Settings-Page";
-
+import React from 'react'
+import SettingsPage from './_components/Settings-Page'
 
 const Page = () => {
- 
-<div>
-  <SettingsPageClient / >
-</div>
- 
-
+  return (
+    <div className='flex gap-8 mt-16 ml-16'>
+      <SettingsPage />
+    </div>
+  )
 }
 
-export default Page;
+export default Page
+
