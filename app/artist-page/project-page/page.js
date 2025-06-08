@@ -19,7 +19,7 @@ const Page = () => {
           height={24}
         />
         <h3 className="ml-2">
-          Verify your phone number to be easily accessible by clients.
+          Complete your profile setup
         </h3>
       </div>
 
