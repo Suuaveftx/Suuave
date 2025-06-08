@@ -1,12 +1,3 @@
-import {
-  FaLock,
-  FaCopyright,
-  FaUserCheck,
-  FaExchangeAlt,
-  FaGavel,
-  FaBullseye,
-} from "react-icons/fa";
-
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -70,16 +61,6 @@ const WhySuaave = () => {
           href="/onboarding"
         />
       </div>
-      {/* <div className="text-center mt-[8px] md:mt-[-250px]">
-        <button
-          className="text-[#035A7A] font-bold px-8 py-3 rounded-full text-lg hover:opacity-90 transition"
-          style={{
-            background: "radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)",
-          }}
-        >
-          Join 5000+ Members
-        </button>
-      </div> */}
     </div>
   );
 };
