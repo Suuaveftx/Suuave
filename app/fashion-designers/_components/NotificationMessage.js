@@ -21,7 +21,7 @@ const NotificationMessage = ({ title, message, time }) => {
 
   return (
     <Card
-      className="border-b-2 w-full rounded-t-md max-w-[350px] focus:scale-100 items-start gap-1.5 py-3.5 text-start px-2"
+      className="border-b-2 w-full rounded-t-md max-w-[350px] items-start gap-1.5 py-3.5 text-start px-2"
       radius="none"
       shadow="none"
       isPressable
