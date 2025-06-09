@@ -13,7 +13,7 @@ const Page = () => {
     <>
       <div className="hidden lg:flex bg-[#EFF8FB] text-[#3A98BB] p-4 rounded-md mt-4  ml-4 mr-4 mb-8">
         <Image
-          src={"/dev-images/ExclamationOutline.png"} // Replace with your actual image path
+          src={"/dev-images/ExclamationOutline.png"} 
           alt="Exclamation"
           width={24}
           height={24}
