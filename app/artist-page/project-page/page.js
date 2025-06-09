@@ -11,15 +11,15 @@ import ProjectPage from "./_components/Project-Page";
 const Page = () => {
   return (
     <>
-      <div className="hidden lg:flex bg-[#FF8024] text-white p-4 rounded-md mt-4  ml-4 mr-4 mb-8">
+      <div className="hidden lg:flex bg-[#EFF8FB] text-[#3A98BB] p-4 rounded-md mt-4  ml-4 mr-4 mb-8">
         <Image
-          src={"/dev-images/Exclamation.png"}
+          src={"/dev-images/ExclamationOutline.png"} 
           alt="Exclamation"
           width={24}
           height={24}
         />
         <h3 className="ml-2">
-          Verify your phone number to be easily accessible by clients.
+          Complete your profile set-up
         </h3>
       </div>
 
