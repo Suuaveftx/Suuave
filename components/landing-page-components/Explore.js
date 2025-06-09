@@ -5,11 +5,11 @@ import CustomButton from "../CustomButton";
 
 const ExploreComponent = () => {
   return (
-    <div className="lg:p-14 pt-12 lg:pt-0 p-4 bg-[#fafafa] lg:pb-36 pb-14">
-      <div className="p-3 py-2 bg-customPrimary w-fit text-customWhiteBgText  font-medium">
+    <div className="lg:p-14 pt-12 lg:pt-20 p-4 bg-[#fafafa] lg:pb-36 pb-14">
+      <div className="p-3 py-2 bg-customPrimary w-fit text-customWhiteBgText rounded-lg  font-medium">
         FIND TALENTED FASHION ARTISTS
       </div>
-      <p className="mt-1 lg:font-semibold lg:text-[40px] text-[26px] font-medium text-[#404040] lg:w-[38%]">
+      <p className="my-4 lg:font-medium lg:text-[36px] text-[26px] font-medium text-[#404040] lg:w-[38%]">
         Explore and get license to our top-rated designs.
       </p>
       <div className=" gap-3 grid-cols-[1fr_1fr_1.3fr] hidden lg:grid">
@@ -76,7 +76,7 @@ const ExploreComponent = () => {
           </p>
           <CustomButton
             text="Explore More"
-            className="mt-4 place-self-center items-center size-36"
+            className="mt-4 w-44 h-14 font-semibold text-lg items-center"
             href="/onboarding"
           />
         </div>
