@@ -140,8 +140,13 @@ import Link from "next/link";
 
 const ImageFashion = () => {
   return (
-    <div className="lg:px-14  px-4 bg-customBgBlack min-h-60 py-14  grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] lg:gap-4 gap-0 -z-30">
+    <div className="lg:px-14  px-4 bg-customBgBlack min-h-60 lg:py-14 py-6  grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] lg:gap-4 gap-0 -z-30">
       <div className="col-span-2 lg:w-[56%] w-full">
+        <Image
+          src="/dev-images/womanSectionImg.png"
+          className="lg:hidden  mb-16 "
+          alt="woman Designing"
+        />
         <p className="text-customWhiteBgText font-medium lg:text-2xl text-lg">
           FOR FASHION ARTISTS
         </p>
@@ -150,7 +155,7 @@ const ImageFashion = () => {
         </p>
       </div>
       <div className="mt-auto">
-        <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 gap-y-14 gap-x-20 mb-16 lg:w-[87%] mt-8 w-full">
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 gap-y-14 gap-x-20 mb-10 lg:mb-16 lg:w-[87%] mt-8 w-full">
           {fashionSection.map((group, index) => (
             <FashionArtistGroup
               key={index}
@@ -160,8 +165,8 @@ const ImageFashion = () => {
             />
           ))}
         </div>
-        <p className=" text-customWhiteBgText font-medium lg:text-3xl text-xl">
-          Begin your journey to success
+        <p className=" text-customWhiteBgText font-medium lg:text-3xl text-2xl">
+          Begin your journey to success.
         </p>
         <div className="flex items-center w-fit gap-2 mt-4 cursor-pointer text-[#CCE7F2] font-medium hover:underline">
           <Link href="/onboarding" className="no-underline hover:no-underline">

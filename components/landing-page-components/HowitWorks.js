@@ -3,10 +3,9 @@ import { Image } from "@heroui/react";
 const HowItWorks = () => {
   return (
     <div className="lg:px-14 px-4 bg-customWhite py-5 pb-14">
-
       {/* Grouped Section */}
       <div className="">
-        <button className="bg-[#EAF9FF] text-[#035A7A] px-4 py-3 cursor-default rounded-lg text-lg  flex items-center gap-2">
+        <button className="bg-[#EAF9FF] text-[#035A7A] px-4 py-3 cursor-default rounded-lg text-lg uppercase font-medium flex items-center gap-2">
           <Image
             src="/dev-images/Microphone.png" // icon's path
             alt="Icon"

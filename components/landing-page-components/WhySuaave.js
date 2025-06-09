@@ -16,7 +16,7 @@ const WhySuaave = () => {
   };
   return (
     <div className="py-8  bg-customWhite">
-      <div className="text-center mb-4 font-medium  text-lg uppercase p-2 mx-auto text-customWhiteBgText bg-customPrimary w-fit rounded-md">
+      <div className="text-center mb-4 font-medium  text-lg uppercase px-4 p-2 mx-auto text-customWhiteBgText bg-customPrimary w-fit rounded-md">
         Why Suuave ?
       </div>
 
