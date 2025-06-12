@@ -9,7 +9,7 @@ import {
 } from '@heroui/react';
 import { TrashIcon } from '@heroicons/react/24/outline';
 
-export default function Proposal_Tables() {
+export default function ProposalTables() {
   const proposals = [
     { id: 1, title: 'Fashion Native Bridal illustration', date: 'June,12,2024', status: 'Active' },
     { id: 2, title: 'Fashion Native Bridal illustration', date: 'June,12,2024', status: 'Active' },

@@ -1,7 +1,6 @@
 import React from "react";
 import Footer from "../../../components/landing-page-components/Footer";
-import ProposalTables from "./_components/Proposal-Tables";
-
+import ProposalTables from "./_components/ProposalTables";
 const Page = () => {
   return (
     <div>
