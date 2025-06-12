@@ -67,7 +67,7 @@ const Navbar3 = () => {
       {/* LOGIN & BUTTON */}
       <NavbarContent justify="end" className="gap-8">
         <NavbarItem>
-          <CustomButton className="hidden lg:flex" text="License Your Designs" href={"/license"} />
+          <CustomButton className="hidden lg:flex bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A]" text="License Your Designs" href={"/license"} />
         </NavbarItem>
         <div className="flex gap-2">
           <NavbarItem className="hidden lg:flex">
