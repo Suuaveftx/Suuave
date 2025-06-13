@@ -16,6 +16,7 @@ const BtnProposals = () => {
               href="/artist-page/send-proposal"
             />
           </div>
+
        <div>
   <CustomButton
     className="w-48 !bg-transparent border border-[#3A98BB] text-[#767676] flex items-center justify-center gap-2"
@@ -30,6 +31,7 @@ const BtnProposals = () => {
     <span>Save Job</span>
   </CustomButton>
 </div>
+
 
         </div>
       </CardBody>
