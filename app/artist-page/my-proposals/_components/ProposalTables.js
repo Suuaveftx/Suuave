@@ -33,7 +33,7 @@ export default function ProposalTables() {
           className="bg-[#FAFAFA] text-black w-4/5 flex flex-col  items-center rounded-2xl"
         >
         <TableHeader className="!bg-[#FAFAFA] border-b border-[#EAEAEA] w-full">
-  <TableColumn className="font-bold">Job Post</TableColumn>
+  <TableColumn className="font-bold">Job Posts</TableColumn>
   <TableColumn className="font-bold pl-8">Date</TableColumn>
   <TableColumn className="font-bold flex items-center justify-end">Status</TableColumn>
 </TableHeader>
