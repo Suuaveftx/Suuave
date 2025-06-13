@@ -1,5 +1,8 @@
 import Image from 'next/image';
 import React from 'react';
+import Link from "next/link";
+import { FaInstagram, FaFacebookF, FaXTwitter, FaLinkedinIn } from "react-icons/fa6";
+
 
 const Footer3 = () => {
   return (
@@ -21,7 +24,6 @@ const Footer3 = () => {
           <ul className="space-y-2">
             <li>Job Posts</li>
             <li>Explore Talents</li>
-            <li>How it Works</li>
             <li>How it Works</li>
           </ul>
         </div>
@@ -57,11 +59,36 @@ const Footer3 = () => {
       <div className=" border-gray-400 mt-8 pt-6">
         <div className="container mx-auto px-6">
           <h3 className="text-lg font-bold mb-2 border-b">OUR SOCIALS</h3>
-          <div className="flex space-x-4">
-            <Image src="/dev-images/insta1.png" alt="Instagram" className="w-8 h-8" width={15} height={15} />
-            <Image src="/dev-images/face1.png" alt="Facebook" className="w-8 h-8" width={15} height={15} />
-            <Image src="/dev-images/x1.png" alt="X (Twitter)" className="w-8 h-8" width={15} height={15} />
-          </div>
+<div className="flex space-x-4">
+  <Link href="https://www.instagram.com" passHref>
+    
+      <div className="w-12 h-12 rounded-full bg-pink-600 flex items-center justify-center hover:opacity-80">
+        <FaInstagram className="w-6 h-6 text-white" />
+      </div>
+    
+  </Link>
+  <Link href="https://www.facebook.com" passHref>
+  
+      <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center hover:opacity-80">
+        <FaFacebookF className="w-6 h-6 text-white" />
+      </div>
+    
+  </Link>
+  <Link href="https://www.twitter.com" passHref>
+
+      <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center hover:opacity-80">
+        <FaXTwitter className="w-6 h-6 text-white" />
+      </div>
+    
+  </Link>
+  <Link href="https://www.linkedin.com" passHref>
+  
+      <div className="w-12 h-12 rounded-full bg-blue-700 flex items-center justify-center hover:opacity-80">
+        <FaLinkedinIn className="w-6 h-6 text-white" />
+      </div>
+    
+  </Link>
+</div>
         </div>
       </div>
     </footer>
