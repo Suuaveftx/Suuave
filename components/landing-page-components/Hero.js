@@ -51,7 +51,7 @@ const HeroSection = () => {
             designs.
           </p>
           <CustomButton
-            className="ml-14 w-40 text-lg h-[52px]"
+            className="lg:ml-14 mx-auto w-40 text-lg h-[52px]"
             href="/onboarding/category"
           />
         </div>

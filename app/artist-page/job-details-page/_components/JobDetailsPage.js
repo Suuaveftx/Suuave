@@ -5,13 +5,13 @@ import CustomButton from '../../../../components/CustomButton';
 const JobDetailsPage = () => {
   return (
     <>
-    <h1 className='ml-8 font-bold text-2xl'>Post Details</h1>
+    <h1 className='ml-8 font-bold text-2xl'>Job Details</h1>
     <hr></hr>
-    <Card className="py-4 border-2 border-[#D3D3D3] ml-8 mb-4 mt-4 bg-[#FAFAFA] p-4">
+    <Card className="py-4 border-2 border-[#D3D3D3] ml-8 mb-4 mt-8 bg-[#FAFAFA] p-4">
   <CardHeader className="pb-0 pt-2 px-4 flex flex-col items-start">
     <div className="flex gap-64">
-      <p className="text-sm font-medium">Fixed Price | Posted 2 days ago</p>
-      <p className="text-sm font-medium">
+      <p className="text-sm font-medium text-[#767676]">Posted 2 days ago</p>
+      <p className="text-sm font-medium text-[#767676]">
       Job Status: <span className="text-green-600">Active</span>
     </p>
     <div className="absolute mt-0 right-2 flex space-x-2">
@@ -34,7 +34,7 @@ const JobDetailsPage = () => {
     <h2 className="font-bold text-2xl mt-4">Modern Fashion Attire Illustration</h2>
   </CardHeader>
   <CardBody className="overflow-visible py-2">
-   <div>
+   <div className='text-[#767676]'>
     <h6>Job Description</h6>
     <p>We are seeking a talented and creative Fashion Illustrator to collaborate with our design team on a new line of African-inspired attire. The ideal candidate will have a strong understanding of African fashion, culture, and textile patterns. You will be responsible for bringing our design concepts to life through detailed illustrations, contributing to the development of unique, culturally resonant fashion pieces.<br/>
 Key Responsibilities: <br/>

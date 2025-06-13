@@ -21,7 +21,7 @@ const CustomButton = ({
 }) => {
   return (
     <Button
-      className={`flex items-center justify-center gap-2 font-proximanova bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#0A4A66] font-medium px-6 py-3 rounded-full shadow-md ${className}`}
+      className={`flex items-center justify-center gap-2 font-proximanova   font-medium px-6 py-3 rounded-full shadow-md ${className}`}
       onClick={onPress}
     >
       {href ? (

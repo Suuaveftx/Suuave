@@ -1,14 +1,13 @@
 import React from 'react'
-import SettingsCard from './_components/SettingsCard'
-import SettingsCard2 from './_components/SettingsCard2'
+import SettingsPage from './_components/Settings-Page'
 
 const Page = () => {
   return (
-    <div className='mt-16 ml-4 flex gap-4 h-auto'>
-        <SettingsCard />
-        <SettingsCard2 />
+    <div className='flex gap-8 mt-16 ml-16'>
+      <SettingsPage />
     </div>
   )
 }
 
 export default Page
+
