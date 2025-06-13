@@ -33,15 +33,15 @@ const HeroSection = () => {
             <Image
               src="/dev-images/rating.png" // Replace with your mobile image path
               alt="African Fashion Artist"
-              className="w-[120px] "
-              width={120}
+              className="w-[100px] "
+              width={100}
               // height={120}
               disableSkeleton
               draggable={false}
             />
             <p className="text-white z-20">Over 5000 Fashion Artists</p>
           </div>
-          <p className="font-medium lg:text-[48px] text-[37px] text-white lg:pl-14 pl-0 md:p-2 leading-[60px] z-30 lg:w-[84%] lg:text-start text-center w-full">
+          <p className="font-medium lg:text-[48px] text-[33px] text-white lg:pl-14 pl-0 md:p-2 lg:leading-[60px] leading-[40px] z-30 lg:w-[84%] lg:text-start text-center w-full ">
             Find and Collaborate with the Ideal{" "}
             <span className="italic font-[40]">African</span> Fashion Artists.
           </p>
