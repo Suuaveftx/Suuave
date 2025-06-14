@@ -9,7 +9,6 @@ import {
   DropdownItem,
 } from "@heroui/react";
 // import { Icon } from "@iconify/react";
-import { FaBell } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
 
 import { ChevronDown } from "../../../utils/SvgIcons";
@@ -20,6 +19,7 @@ import { TbLogout2 } from "react-icons/tb";
 import { Bell, ClipboardList, Mail } from "lucide-react";
 import CustomButton from "../../../components/CustomButton";
 import Link from "next/link";
+import Notification from "./Notification";
 
 export function UserActions() {
   return (
@@ -35,26 +35,7 @@ export function UserActions() {
       </Link>
 
       <div className="flex items-center gap-6">
-        <Badge
-          //   content="3"
-          content={<p className="text-[10px]">3</p>}
-          color="primary"
-          showOutline={false}
-          className="h-4 w-4 hidden lg:flex"
-          shape="circle"
-        >
-          <Button
-            isIconOnly
-            variant="bordered"
-            radius="full"
-            className="text-[#1A1A1A] hidden lg:flex"
-            size="sm"
-          >
-            {/* <Icon icon="lucide:bell" className="w-5 h-5" /> */}
-            <FaBell className="w-4 h-4" />
-          </Button>
-        </Badge>
-
+        <Notification />
         <Button
           isIconOnly
           variant="bordered"

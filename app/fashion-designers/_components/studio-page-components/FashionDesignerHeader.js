@@ -9,8 +9,8 @@ import {
   NavbarMenuToggle,
 } from "@heroui/react";
 import React from "react";
-import { UserActions } from "./UserActions";
-import { NavLinks } from "./NavLinks";
+import { UserActions } from "../UserActions";
+import { NavLinks } from "../NavLinks";
 
 const FashionDesignerHeader = () => {
   const menuItems = ["Designs", "My Job Posts", "My Contracts"];
