@@ -20,7 +20,7 @@ const FashionDesignerHeader = () => {
     <Navbar
       shouldHideOnScroll
       maxWidth="full"
-      className="h-[80px] border-b lg:bg-white/40 bg-[#CCE7F2]"
+      className="h-[80px] border-b bg-[#CCE7F2]"
     >
       <NavbarBrand>
         <Link href="/fashion-designers">

@@ -170,3 +170,62 @@
   background-color: transparent !important;
   box-shadow: none !important;
 }
+
+/* Custom styles for React Slick carousel */
+.slider-container .slick-slider {
+  height: 320px;
+}
+
+.slider-container .slick-list {
+  height: 100%;
+}
+
+.slider-container .slick-track {
+  height: 100%;
+}
+
+.slider-container .slick-slide {
+  height: 320px;
+}
+
+.slider-container .slick-slide > div {
+  height: 100%;
+}
+
+.custom-dots {
+  bottom: 20px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.custom-dots li {
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+}
+
+.custom-dots li div {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+  border: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.custom-dots li div:hover {
+  background: rgba(255, 255, 255, 0.8) !important;
+  transform: scale(1.2);
+}
+
+.custom-dots li.slick-active div {
+  background: #3a98bb !important;
+  transform: scale(1.2);
+}
+
+.custom-dots li div:before {
+  display: none !important;
+}

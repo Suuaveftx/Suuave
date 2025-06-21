@@ -57,10 +57,11 @@ const Notification = () => {
   return (
     <Popover offset={27}>
       <Badge
-        content={<p className="text-[10px]">{notificationMessage.length}</p>}
-        color="primary"
+        content={
+          <p className="text-[10px] text-white">{notificationMessage.length}</p>
+        }
         showOutline={false}
-        className="h-4 w-4 hidden lg:flex"
+        className="h-4 w-4 hidden lg:flex bg-customDarkBlue"
         shape="circle"
       >
         <PopoverTrigger>
@@ -69,7 +70,7 @@ const Notification = () => {
             variant="bordered"
             radius="full"
             className="text-[#1A1A1A] hidden lg:flex"
-            size="sm"
+            size="md"
           >
             <FaBell className="w-4 h-4" />
           </Button>
