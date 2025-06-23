@@ -26,7 +26,7 @@ const Navbar3 = () => {
   const mobileMenuItems = [
     { label: "Home", href: "/" },
     { label: "Jobs", href: "/jobpost" },
-    { label: "Proposals", href: "/proposals" },
+    { label: "My Proposals", href: "/proposals" },
     { label: "My Contracts", href: "/contracts" },
     { label: "Profile", href: "/profile" },
     { label: "Settings", href: "/settings" },
