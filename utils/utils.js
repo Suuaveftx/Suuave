@@ -5,6 +5,21 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
+export function formatToNaira(amount) {
+  return `₦${amount.toLocaleString("en-NG")}`;
+}
+
+export function formatNumberShort(num) {
+  if (num < 1000) return num.toString();
+
+  const units = ["", "k", "M", "B", "T"];
+  const order = Math.floor(Math.log10(num) / 3);
+  const unit = units[order];
+  const scaled = num / Math.pow(1000, order);
+
+  return `${scaled.toFixed(scaled < 10 ? 1 : 0)}${unit}`;
+}
+
 export const homePageCardData = [
   {
     title: "Secure Transaction",

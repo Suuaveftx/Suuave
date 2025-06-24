@@ -3,9 +3,7 @@
 import { Alert, Chip, Input, Tab, Tabs } from "@heroui/react";
 import React, { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
-// import imageUrl from "/dev-images/fashionImg1.png";
-import FashionDesignersCard from "./_components/FashionDesignersCard";
-// import Footer from "../../landingpage/_components/Footer";
+import FashionDesignersCard from "./_components/studio-page-components/FashionDesignersCard";
 
 const Page = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -13,111 +11,184 @@ const Page = () => {
   const cardsData = [
     {
       id: crypto.randomUUID(),
-      author: "Tega Isama",
-      title: "Modern Style Dress",
-      description:
-        "Description of style by the illustrator and everything about it!",
-      price: "$340",
-      imageUrl: "/dev-images/fashionImg1.png",
+      user: {
+        id: crypto.randomUUID(),
+        userName: "Amira Bashir",
+        photo: "userImg",
+        handle: "@amirabash",
+        description: "Textile alchemist, silhouette enthusiast 👗✨",
+        followers: 45800,
+        following: 124,
+      },
+      title: "Flowy linen sets for summer brunch elegance",
+      price: 128000,
+      images: ["/dev-images/fashionImg1.png"],
     },
     {
       id: crypto.randomUUID(),
-      author: "Tega Isama",
-      title: "Modern Style Dress",
-      description:
-        "Description of style by the illustrator and everything about it! Description of style by the illustrator and everything about it! Description of style by the illustrator and everything about it!",
-      price: "$340",
-      imageUrl: "/dev-images/fashionImg1.png",
+      user: {
+        id: crypto.randomUUID(),
+        userName: "Leo Tang",
+        photo: "userImg",
+        handle: "@leotang",
+        description: "Menswear visionary — structure meets soul 🧵 he/him",
+        followers: 89200,
+        following: 312,
+      },
+      title: "Tailored modern suits inspired by Tokyo streetwear",
+      price: 265000,
+      images: [
+        "/dev-images/fashionImg1.png",
+        "/dev-images/fashionImg2.png",
+        "/dev-images/fashionImg3.png",
+      ],
     },
     {
       id: crypto.randomUUID(),
-      author: "Tega Isama",
-      title: "Modern Style Dress",
-      description:
-        "Description of style by the illustrator and everything about it!",
-      price: "$340",
-      imageUrl: "/dev-images/fashionImg1.png",
+      user: {
+        id: crypto.randomUUID(),
+        userName: "Tega Isama",
+        photo: "userImg",
+        handle: "@tega",
+        description: "Fashion designer, fabric whisperer ✂️ she/her ✨",
+        followers: 97100,
+        following: 7,
+      },
+      title: "Experimental silhouettes with a minimalist heart",
+      price: 34034000,
+      images: ["/dev-images/fashionImg1.png"],
     },
     {
       id: crypto.randomUUID(),
-      author: "Tega Isama",
-      title: "Modern Style Dress",
-      description:
-        "Description of style by the illustrator and everything about it!",
-      price: "$340",
-      imageUrl: "/dev-images/fashionImg1.png",
+      user: {
+        id: crypto.randomUUID(),
+        userName: "Kai Nwosu",
+        photo: "userImg",
+        handle: "@kai_nwosu",
+        description: "Couture meets culture, Lagos born 🪡🌍",
+        followers: 60200,
+        following: 98,
+      },
+      title: "Ankara-inspired gowns with futuristic detailing",
+      price: 487500,
+      images: [
+        "/dev-images/fashionImg1.png",
+        "/dev-images/fashionImg2.png",
+        "/dev-images/fashionImg3.png",
+      ],
     },
     {
       id: crypto.randomUUID(),
-      author: "Tega Isama",
-      title: "Modern Style Dress",
-      description:
-        "Description of style by the illustrator and everything about it!",
-      price: "$340",
-      imageUrl: "/dev-images/fashionImg1.png",
+      user: {
+        id: crypto.randomUUID(),
+        userName: "Yuna Lee",
+        photo: "userImg",
+        handle: "@yunalee.studio",
+        description: "Soft tailoring & fluid forms 🌸 she/her",
+        followers: 120900,
+        following: 43,
+      },
+      title: "Spring drop: silk layers & modular design",
+      price: 219900,
+      images: [
+        "/dev-images/fashionImg1.png",
+        "/dev-images/fashionImg2.png",
+        "/dev-images/fashionImg3.png",
+      ],
     },
     {
       id: crypto.randomUUID(),
-      author: "Tega Isama",
-      title: "Modern Style Dress",
-      description:
-        "Description of style by the illustrator and everything about it!",
-      price: "$340",
-      imageUrl: "/dev-images/fashionImg1.png",
+      user: {
+        id: crypto.randomUUID(),
+        userName: "Obadea Isama",
+        photo: "userImg",
+        handle: "@isama",
+        description: "Modern textures. Timeless cuts. ✂️ she/her ✨",
+        followers: 97100,
+        following: 7,
+      },
+      title: "Draped elegance with a bold color story",
+      price: 187000,
+      images: [
+        "/dev-images/fashionImg1.png",
+        "/dev-images/fashionImg2.png",
+        "/dev-images/fashionImg3.png",
+      ],
     },
     {
       id: crypto.randomUUID(),
-      author: "Tega Isama",
-      title: "Modern Style Dress",
-      description:
-        "Description of style by the illustrator and everything about it!",
-      price: "$340",
-      imageUrl: "/dev-images/fashionImg1.png",
+      user: {
+        id: crypto.randomUUID(),
+        userName: "Nico Arora",
+        photo: "userImg",
+        handle: "@nico.designs",
+        description: "Eco-fashion crusader 🌱✂️ he/they",
+        followers: 42200,
+        following: 214,
+      },
+      title: "Recycled denim reinvented into high-street staples",
+      price: 142300,
+      images: ["/dev-images/fashionImg1.png", "/dev-images/fashionImg2.png"],
     },
     {
       id: crypto.randomUUID(),
-      author: "Tega Isama",
-      title: "Modern Style Dress",
-      description:
-        "Description of style by the illustrator and everything about it!",
-      price: "$340",
-      imageUrl: "/dev-images/fashionImg1.png",
+      user: {
+        id: crypto.randomUUID(),
+        userName: "Zoé Marchand",
+        photo: "userImg",
+        handle: "@zoemarchand",
+        description: "Paris-based romanticism in ready-to-wear 🥀 she/her",
+        followers: 110500,
+        following: 89,
+      },
+      title: "Sheer layers and lace — dreamy yet grounded",
+      price: 398000,
+      images: ["/dev-images/fashionImg1.png", "/dev-images/fashionImg3.png"],
     },
     {
       id: crypto.randomUUID(),
-      author: "Tega Isama",
-      title: "Modern Style Dress",
-      description:
-        "Description of style by the illustrator and everything about it!",
-      price: "$340",
-      imageUrl: "/dev-images/fashionImg1.png",
+      user: {
+        id: crypto.randomUUID(),
+        userName: "Luca Bianchi",
+        photo: "userImg",
+        handle: "@bianchi.studio",
+        description: "Geometry meets glamor. 🇮🇹🧷 he/him",
+        followers: 88000,
+        following: 51,
+      },
+      title: "Architectural cuts blended with silk and shimmer",
+      price: 504500,
+      images: ["/dev-images/fashionImg1.png", "/dev-images/fashionImg2.png"],
     },
     {
       id: crypto.randomUUID(),
-      author: "Tega Isama",
-      title: "Modern Style Dress",
-      description:
-        "Description of style by the illustrator and everything about it!",
-      price: "$340",
-      imageUrl: "/dev-images/fashionImg1.png",
+      user: {
+        id: crypto.randomUUID(),
+        userName: "Nyah Okeke",
+        photo: "userImg",
+        handle: "@nyah.okeke",
+        description: "Bold prints, bolder stories 🎨 she/her",
+        followers: 75000,
+        following: 60,
+      },
+      title: "Statement pieces with Afro-urban narratives",
+      price: 298700,
+      images: ["/dev-images/fashionImg2.png", "/dev-images/fashionImg3.png"],
     },
     {
       id: crypto.randomUUID(),
-      author: "Tega Isama",
-      title: "Modern Style Dress",
-      description:
-        "Description of style by the illustrator and everything about it!",
-      price: "$340",
-      imageUrl: "/dev-images/fashionImg1.png",
-    },
-    {
-      id: crypto.randomUUID(),
-      author: "Tega Isama",
-      title: "Modern Style Dress",
-      description:
-        "Description of style by the illustrator and everything about it!",
-      price: "$340",
-      imageUrl: "/dev-images/fashionImg1.png",
+      user: {
+        id: crypto.randomUUID(),
+        userName: "Nyah Okeke",
+        photo: "userImg",
+        handle: "@nyah.okeke",
+        description: "Bold prints, bolder stories 🎨 she/her",
+        followers: 75000,
+        following: 60,
+      },
+      title: "Statement pieces with Afro-urban narratives",
+      price: 298700,
+      images: ["/dev-images/fashionImg2.png", "/dev-images/fashionImg3.png"],
     },
   ];
 
@@ -129,7 +200,7 @@ const Page = () => {
         title={
           <p className="font-normal">
             You have{" "}
-            <span className="font-semibold text-[#73D9FF]">
+            <span className="font-semibold text-[#73D9FF] cursor-pointer">
               1 Project Submission
             </span>
           </p>
@@ -191,7 +262,7 @@ const Page = () => {
           variant="underlined"
         >
           <Tab
-            key="photos"
+            key="recent"
             title={
               <p className="flex items-center space-x-2">Recently Posted</p>
             }
@@ -200,20 +271,20 @@ const Page = () => {
               {cardsData.map((card, index) => (
                 <FashionDesignersCard
                   key={index}
-                  image={card.imageUrl}
-                  title={card.title}
-                  price={card.price}
-                  userName={card.author}
-                  description={card.description}
-                  productID={card.id}
+                  images={card?.images}
+                  title={card?.title}
+                  price={card?.price}
+                  userName={card?.user.userName}
+                  productID={card?.id}
                   idx={index}
+                  userData={card.user}
                 />
               ))}
             </div>
           </Tab>
 
           <Tab
-            key="videos"
+            key="saved"
             title={
               <div className="flex items-center space-x-2">
                 <span>Saved Posts</span>
@@ -224,16 +295,16 @@ const Page = () => {
             }
           >
             <div className="grid grid-cols-2 gap-3 mt-6 lg:gap-6 lg:grid-cols-4  ">
-              {cardsData.slice(0, 6).map((card, index) => (
+              {cardsData.slice(3, 9).map((card, index) => (
                 <FashionDesignersCard
                   key={index}
-                  image={card.imageUrl}
-                  title={card.title}
-                  price={card.price}
-                  userName={card.author}
-                  description={card.description}
-                  productID={card.id}
+                  images={card?.images}
+                  title={card?.title}
+                  price={card?.price}
+                  userName={card?.user.userName}
+                  productID={card?.id}
                   idx={index}
+                  userData={card.user}
                 />
               ))}
             </div>

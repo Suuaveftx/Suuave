@@ -32,13 +32,17 @@ const ProjectPage = () => {
           className={tabClasses('recent')}
           onClick={() => setActiveTab('recent')}
         >
+
           Recently
+
         </div>
         <div
           className={tabClasses('saved')}
           onClick={() => setActiveTab('saved')}
         >
+
           Saved
+
         </div>
       </div>
 

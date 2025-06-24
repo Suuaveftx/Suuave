@@ -6,17 +6,17 @@ const ImageDesigners = () => {
   return (
     <div className="grid lg:grid-cols-2 min-h-96">
       <div
-        className="bg-cover  h-[510px] lg:h-full"
+        className="bg-cover h-[510px] lg:h-full"
         style={{
           backgroundImage: `url('/dev-images/ImageDesigners.png')`,
         }}
       />
       {/* Right section */}
-      <div className="bg-[#124456] lg:px-14 px-4  lg:pt-8 pt-12 pb-14">
-        <p className="text-[#049AD1] lg:font-medium font-normal lg:text-2xl text-[18px]">
+      <div className="bg-[#124456] lg:px-14 px-4   pt-12 pb-14">
+        <p className="text-[#049AD1] lg:font-medium font-normal text-[18px]">
           FOR FASHION DESIGNERS / BRANDS
         </p>
-        <p className="lg:font-medium lg:text-[50px] text-[28px] text-white mt-3 lg:leading-[54px]">
+        <p className="lg:font-medium lg:text-[44px] text-[28px] text-white mt-3 lg:leading-[54px]">
           Access Africa’s top fashion{" "}
           <span className="italic font-thin">artists</span> in few steps.
         </p>

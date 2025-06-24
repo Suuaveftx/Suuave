@@ -9,8 +9,8 @@ import {
   NavbarMenuToggle,
 } from "@heroui/react";
 import React from "react";
-import { UserActions } from "./UserActions";
-import { NavLinks } from "./NavLinks";
+import { UserActions } from "../UserActions";
+import { NavLinks } from "../NavLinks";
 
 const FashionDesignerHeader = () => {
   const menuItems = ["Designs", "My Job Posts", "My Contracts"];
@@ -20,7 +20,7 @@ const FashionDesignerHeader = () => {
     <Navbar
       shouldHideOnScroll
       maxWidth="full"
-      className="h-[80px] border-b lg:bg-white/40 bg-[#CCE7F2]"
+      className="h-[80px] border-b bg-[#CCE7F2]"
     >
       <NavbarBrand>
         <Link href="/fashion-designers">

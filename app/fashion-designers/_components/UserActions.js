@@ -9,7 +9,6 @@ import {
   DropdownItem,
 } from "@heroui/react";
 // import { Icon } from "@iconify/react";
-import { FaBell } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
 
 import { ChevronDown } from "../../../utils/SvgIcons";
@@ -20,6 +19,7 @@ import { TbLogout2 } from "react-icons/tb";
 import { Bell, ClipboardList, Mail } from "lucide-react";
 import CustomButton from "../../../components/CustomButton";
 import Link from "next/link";
+import Notification from "./Notification";
 
 export function UserActions() {
   return (
@@ -28,41 +28,34 @@ export function UserActions() {
         Post a Job
       </Button> */}
       <Link href="/fashion-designers/post-project">
-        <CustomButton
-          text="Post Project"
-          className="font-semibold px-9 py-1 lg:flex hidden"
-        />
+        {/* <Button
+          className={` items-center justify-center gap-2 font-proximanova  rounded-full shadow-md font-semibold px-9 py-1 lg:flex hidden`}
+          style={{ background: "radial-gradient(circle, #CCE7F2, white)" }}
+        >
+          Post Project
+        </Button> */}
+        <Button
+          className="rounded-full px-9 py-2 shadow-md font-proximanova font-semibold  items-center justify-center gap-2 lg:flex hidden border border-neutral-400"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
+          }}
+        >
+          Post Project
+        </Button>
+
+        {/* <CustomButton text="" className=" bg-[#CCE7F2]" /> */}
       </Link>
 
       <div className="flex items-center gap-6">
-        <Badge
-          //   content="3"
-          content={<p className="text-[10px]">3</p>}
-          color="primary"
-          showOutline={false}
-          className="h-4 w-4 hidden lg:flex"
-          shape="circle"
-        >
-          <Button
-            isIconOnly
-            variant="bordered"
-            radius="full"
-            className="text-[#1A1A1A] hidden lg:flex"
-            size="sm"
-          >
-            {/* <Icon icon="lucide:bell" className="w-5 h-5" /> */}
-            <FaBell className="w-4 h-4" />
-          </Button>
-        </Badge>
-
+        <Notification />
         <Button
           isIconOnly
           variant="bordered"
           radius="full"
           className="text-[#1A1A1A] hidden lg:flex"
-          size="sm"
+          size="md"
         >
-          {/* <Icon icon="lucide:mail" className="w-5 h-5" /> */}
           <IoMail className="w-4 h-4" />
         </Button>
 
@@ -106,16 +99,16 @@ export function UserActions() {
               Help & Support
             </DropdownItem>
             <DropdownItem
-              startContent={<TbSettings className="size-4" />}
-              key="settings"
-            >
-              Settings
-            </DropdownItem>
-            <DropdownItem
               startContent={<ClipboardList className="size-4" />}
               key="transaction-history"
             >
               Transaction History
+            </DropdownItem>
+            <DropdownItem
+              startContent={<TbSettings className="size-4" />}
+              key="settings"
+            >
+              Settings
             </DropdownItem>
             <DropdownItem
               startContent={<TbLogout2 className="size-4" />}

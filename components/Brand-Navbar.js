@@ -20,7 +20,7 @@ const Navbars = () => {
 
   const menuItems = [
     { label: "Jobs", href: "/artist-page/project-page" },
-    { label: "Proposals", href: "/artist-page/my-proposals" },
+    { label: "My Proposals", href: "/artist-page/my-proposals" },
     { label: "My Contracts", href: "/artist-page/my-contracts" },
   ];
 

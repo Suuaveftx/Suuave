@@ -1,7 +1,7 @@
 "use client";
 
 import Footer from "../../components/landing-page-components/Footer";
-import FashionDesignerHeader from "./_components/FashionDesignerHeader";
+import FashionDesignerHeader from "./_components/studio-page-components/FashionDesignerHeader";
 
 export default function Layout({ children }) {
   return (
