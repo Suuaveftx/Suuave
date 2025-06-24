@@ -28,10 +28,23 @@ export function UserActions() {
         Post a Job
       </Button> */}
       <Link href="/fashion-designers/post-project">
-        <CustomButton
-          text="Post Project"
-          className="font-semibold px-9 py-1 lg:flex hidden"
-        />
+        {/* <Button
+          className={` items-center justify-center gap-2 font-proximanova  rounded-full shadow-md font-semibold px-9 py-1 lg:flex hidden`}
+          style={{ background: "radial-gradient(circle, #CCE7F2, white)" }}
+        >
+          Post Project
+        </Button> */}
+        <Button
+          className="rounded-full px-9 py-2 shadow-md font-proximanova font-semibold  items-center justify-center gap-2 lg:flex hidden border border-neutral-400"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
+          }}
+        >
+          Post Project
+        </Button>
+
+        {/* <CustomButton text="" className=" bg-[#CCE7F2]" /> */}
       </Link>
 
       <div className="flex items-center gap-6">
@@ -41,9 +54,8 @@ export function UserActions() {
           variant="bordered"
           radius="full"
           className="text-[#1A1A1A] hidden lg:flex"
-          size="sm"
+          size="md"
         >
-          {/* <Icon icon="lucide:mail" className="w-5 h-5" /> */}
           <IoMail className="w-4 h-4" />
         </Button>
 
@@ -87,16 +99,16 @@ export function UserActions() {
               Help & Support
             </DropdownItem>
             <DropdownItem
-              startContent={<TbSettings className="size-4" />}
-              key="settings"
-            >
-              Settings
-            </DropdownItem>
-            <DropdownItem
               startContent={<ClipboardList className="size-4" />}
               key="transaction-history"
             >
               Transaction History
+            </DropdownItem>
+            <DropdownItem
+              startContent={<TbSettings className="size-4" />}
+              key="settings"
+            >
+              Settings
             </DropdownItem>
             <DropdownItem
               startContent={<TbLogout2 className="size-4" />}
