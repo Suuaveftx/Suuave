@@ -101,7 +101,7 @@ const Navbars = () => {
           </NavbarItem>
         </div>
         <div className="relative">
-          {/* Profile Image with Downward Arrow */}
+          
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="flex items-center space-x-2 focus:outline-none"
