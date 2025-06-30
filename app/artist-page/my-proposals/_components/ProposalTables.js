@@ -1,72 +1,80 @@
 'use client';
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-} from '@heroui/react';
 import { TrashIcon } from '@heroicons/react/24/outline';
 
-export default function ProposalTables() {
+const ProposalTables = () => {
   const proposals = [
-    { id: 1, title: 'Fashion Native Bridal illustration', date: 'June,12,2024', status: 'Active' },
-    { id: 2, title: 'Fashion Native Bridal illustration', date: 'June,12,2024', status: 'Active' },
-    { id: 3, title: 'Fashion Native Bridal illustration', date: 'June,12,2024', status: 'inactive' },
-    { id: 4, title: 'Fashion Native Bridal illustration', date: 'June,12,2024', status: 'Active' },
-    { id: 5, title: 'Fashion Native Bridal illustration', date: 'June,12,2024', status: 'Active' },
-    { id: 6, title: 'Fashion Native Bridal illustration', date: 'June,12,2024', status: 'inactive' },
-    { id: 7, title: 'Fashion Native Bridal illustration', date: 'June,12,2024', status: 'Active' },
-    { id: 8, title: 'Fashion Native Bridal illustration', date: 'June,12,2024', status: 'Active' },
-    { id: 9, title: 'Fashion Native Bridal illustration', date: 'June,12,2024', status: 'inactive' },
-    { id: 10, title: 'Fashion Native Bridal illustration', date: 'June,12,2024', status: 'Active' },
+    { id: 1, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
+    { id: 2, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
+    { id: 3, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'inactive' },
+    { id: 4, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
+    { id: 5, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
+    { id: 6, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'inactive' },
+    { id: 7, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
+    { id: 8, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
+    { id: 9, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'inactive' },
+    { id: 10, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
   ];
 
+  const statusColors = {
+    Active: 'text-green-800',
+    inactive: 'text-red-500',
+  };
+
+  const handleDelete = (id) => {
+    console.log(`Deleting proposal ${id}`);
+    // Add your delete logic here
+  };
+
   return (
-    <>
-      <h1 className="font-bold text-2xl ml-4 mt-16 border-b border-gray-300">My Proposals</h1>
-      <div className="flex items-start min-h-screen mt-12 ml-4">
-        <Table
-          removeWrapper
-          aria-label="Proposal table"
-          className="bg-[#FAFAFA] text-black w-4/5 flex flex-col  items-center rounded-2xl"
-        >
-        <TableHeader className="!bg-[#FAFAFA] border-b border-[#EAEAEA] w-full">
-  <TableColumn className="font-bold">Job Posts</TableColumn>
-  <TableColumn className="font-bold pl-8">Date</TableColumn>
-  <TableColumn className="font-bold flex items-center justify-end">Status</TableColumn>
-</TableHeader>
-
-
-          <TableBody>
-            {proposals.map((proposal) => (
-              <TableRow key={proposal.id} className="border-b border-gray-300">
-                <TableCell
-                  className={`font-bold  ${
-                    proposal.status === 'inactive' ? 'text-[#BABABA]' : 'text-[#222222]'
-                  }`}
+    <div >
+      <h1 className="text-xl font-bold lg:ml-16 ml-4 mt-8 mb-[30px] border-b border-gray-300 pb-1">
+        My Proposals
+      </h1>
+ <section className='w-screen  max-w-[1149px]'>
+   <div className='bg-[#FAFAFA] w-full max-w-[1149px] lg:ml-16 lg:mr-[299px] rounded-2xl mb-[239px] lg:px-8 lg:py-8 px-0'>
+    <div className='flex  justify-between font-bold px-8 py-4 border-b-1'>
+      <h4>Job Posts</h4> 
+      <h4>Date</h4>
+      <h4>Status</h4>
+    </div>
+    <div>
+      {proposals.map((proposal) => (
+        <div
+        key={proposal.id}
+         className="flex items-center justify-between text-base text-gray-900 px-8 py-4 border-b-1">
+        <div
+  className={`font-bold text-base break-words tracking-[0.33px] w-full max-w-[110px] lg:w-full lg:max-w-[250px] ${
+    proposal.status === 'inactive' ? 'text-gray-400' : 'text-gray-900 '
+  }`}
+>
+  {proposal.title}
+</div>
+  {/* Date */}
+              <div className="text-gray-600 lg:mr-32">
+                {proposal.date}
+              </div>
+              {/* Status and Actions */}
+              <div className="flex items-center gap-2">
+                <span className={statusColors[proposal.status]}>
+                  {proposal.status}
+                </span>
+                <button 
+                  onClick={() => handleDelete(proposal.id)}
+                  className="text-gray-500 hover:text-red-500 transition-colors"
+                  aria-label="Delete proposal"
                 >
-                  {proposal.title}
-                </TableCell>
-                <TableCell className="text-[#565656]">{proposal.date}</TableCell>
-                <TableCell>
-                  <div className="flex items-center justify-end gap-2">
-                    <span
-                      className={`${
-                        proposal.status === 'inactive' ? 'text-[#FF5757]' : 'text-[#056d16]'
-                      }`}
-                    >
-                      {proposal.status}
-                    </span>
-                    <TrashIcon className="h-4 w-4  text-gray-500 cursor-pointer hover:text-red-500" />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </>
+                  <TrashIcon className="h-4 w-4" />
+                </button>
+              </div>
+        </div>
+      ))}
+    </div>
+   </div>
+ </section>
+
+
+    </div>
   );
-}
+};
+
+export default ProposalTables;
