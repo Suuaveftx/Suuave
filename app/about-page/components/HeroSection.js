@@ -1,20 +1,31 @@
+import React from "react";
+import NavBar from "./NavBar";
+
 const HeroSection = () => {
-    return (
-        <section className="relative flex flex-col items-center justify-center text-center bg-[#012D3E] bg-cover bg-center py-28 px-4 overflow-hidden ">
-                 <div className="absolute inset-0 bg-[url('/icons/hero.png')] bg-cover bg-center opacity-20 "></div>
-                     <div className="absolute inset-0 bg-gradient-to-b from-[#012D3E] to-[#012D3E] opacity-80"></div>
-                 <div className="relative z-10 max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-6">
+  return (
+    <header className="relative bg-[#012D3E] bg-cover bg-center  overflow-hidden pt-[52px] md:pt-0 ">
+      <NavBar />
+      <section className="text-[#EEEEEE] font-proximanova flex flex-col items-center justify-center text-center pt-[85.5px] md:pt-[95.73px] pb-[117px] md:pb-[104px] px-[20.76px]   ">
+        <div className="absolute inset-0 bg-[url('/about-page-assets/about-hero-bg.png')] bg-cover bg-center opacity-30 "></div>
+        {/* <div className="absolute inset-0 bg-gradient-to-b from-[#012D3E] to-[#012D3E] opacity-80"></div> */}
+        <div className="relative z-10 max-w-4xl mx-auto">
+          <h1 className="text-5xl md:text-[70px] font-bold  leading-tight mb-[20px]">
             About us
           </h1>
-          <p className="text-lg md:text-xl text-gray-300">
-           
-Connecting fashion designers and brands with African fashion <br /> artists
-to inspire collaboration for optimum creativity,<br /> productivity and exposure
+          <p className="text-base hidden md:block  md:text-xl md:text-center  leading-[160%]">
+            Connecting fashion designers and brands with African fashion <br />{" "}
+            artists to inspire collaboration for optimum creativity,
+            <br /> productivity and exposure
+          </p>
+          <p className="text-base md:hidden text-center  md:text-xl md:text-center  leading-[160%]">
+            Connecting fashion designers and brands with African fashion artists
+            to inspire collaboration for optimum creativity,productivity and
+            exposure
           </p>
         </div>
       </section>
-    );
+    </header>
+  );
 };
 
 export default HeroSection;
