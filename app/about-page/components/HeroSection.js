@@ -7,7 +7,7 @@ const HeroSection = () => {
       <NavBar />
       <section className="text-[#EEEEEE] font-proximanova flex flex-col items-center justify-center text-center pt-[85.5px] md:pt-[95.73px] pb-[117px] md:pb-[104px] px-[20.76px]   ">
         <div className="absolute inset-0 bg-[url('/about-page-assets/about-hero-bg.png')] bg-cover bg-center opacity-30 "></div>
-        {/* <div className="absolute inset-0 bg-gradient-to-b from-[#012D3E] to-[#012D3E] opacity-80"></div> */}
+
         <div className="relative z-10 max-w-4xl mx-auto">
           <h1 className="text-5xl xl:text-6xl 2xl:text-[70px] font-bold  leading-tight mb-[20px]">
             About us

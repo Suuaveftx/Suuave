@@ -52,9 +52,9 @@ const InfoSection = () => {
             trend-setting creations can be realized.
           </p>
           <p className="text-base  text-[#767676]  text-center lg:text-start  mt-6 lg:mt-4  xl:text-base   2xl:text-xl tracking-[0.33px]">
-            By embracing the rich tapestry of African culture and{" "}
+            By embracing the rich tapestry of African culture and
             <br className="hidden lg:block" />
-            integrating it into the global fashion landscape, we aim to{" "}
+            integrating it into the global fashion landscape, we aim to
             <br className="hidden lg:block" />
             contribute to the evolution and amplification of African fashion
             <br className="hidden lg:block" />
