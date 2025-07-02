@@ -21,7 +21,7 @@ const TeamSection = () => {
       name: "WISDOM LAMODOT",
       title: "Co-founder & CTO",
       details: "Full Stack Developer",
-      imageSrc: "/team/lamodots.jfif",
+      imageSrc: "/team/lamodots.JPG",
       linkedinUrl: "https://www.linkedin.com/in/lamodot/",
     },
     {

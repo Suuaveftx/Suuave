@@ -117,7 +117,6 @@ const InfoSection = () => {
           <Image
             width={677.79}
             height={646}
-            className=""
             src="/about-page-assets/about-us-illus.png"
             alt="shape"
           />
@@ -131,7 +130,7 @@ const InfoSection = () => {
               <Image
                 width={100}
                 height={100}
-                className=" hidden lg:block stroke-2 stroke-black  "
+                className=" hidden lg:block stroke-2 stroke-black"
                 src="/icons/vec.svg"
                 alt="vec"
               />
@@ -151,13 +150,13 @@ const InfoSection = () => {
             <br className="hidden lg:block" />
             potential of creativity. By bringing together fashion designers
             <br className="hidden lg:block" />
-            and brands with African fashion illustrators, we envision a{" "}
+            and brands with African fashion illustrators, we envision a
             <br className="hidden lg:block" />
-            dynamic environment that encourages the exploration of fresh{" "}
+            dynamic environment that encourages the exploration of fresh
             <br className="hidden lg:block" />
-            perspectives, cultural influences, and innovative designs.{" "}
+            perspectives, cultural influences, and innovative designs.
             <br className="hidden lg:block" />
-            Through this synergy, we believe that groundbreaking and{" "}
+            Through this synergy, we believe that groundbreaking and
             <br className="hidden lg:block" />
             trend-setting creations can be realized.
           </p>
