@@ -10,7 +10,7 @@ import Global from "./components/Global";
 export default function Home() {
   return (
     <main className="bg-white text-gray-900">
-      <NavBar />
+      {/* <NavBar /> */}
       <HeroSection />
       <InfoSection />
       <Misson />
