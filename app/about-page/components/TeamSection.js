@@ -14,7 +14,7 @@ const TeamSection = () => {
       name: "CHINEDU J. OZULU",
       title: "Co-founder & COO",
       details: "Product Designer and Web Developer",
-      imageSrc: "/team/five.jpg",
+      imageSrc: "/team/chinedu.png",
       linkedinUrl: "https://www.linkedin.com/in/chinedu-ozulu/",
     },
     {

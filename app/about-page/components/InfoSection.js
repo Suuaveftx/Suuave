@@ -143,7 +143,6 @@ const InfoSection = () => {
           </h2> */}
           <h2 className=" text-center text-[24px] mt-4 lg:mt-0 md:text-start font-semibold text-[#222222] lg:text-[32px] xl:text-[42px] ">
             Together, let&apos;s inspire, create,
-
             <br className="hidden lg:block" /> and celebrate the beauty of
             African fashion.
           </h2>
@@ -185,7 +184,7 @@ const InfoSection = () => {
             className={`text-[#3A98BB]   lg:hidden`}
             onClick={() => setReadMore(!readMore)}
           >
-            Read more
+            {readMore ? " " : "Read more"}
           </span>
         </p>
         <p className={`${readMore ? "block" : "hidden"} lg:block`}>
@@ -193,7 +192,13 @@ const InfoSection = () => {
           collaboration, and cultural appreciation. Join us as we strive to
           revolutionize the fashion industry by connecting fashion designers and
           brands with African fashion illustrators, allowing for the realization
-          of extraordinary and boundary-pushing creations.
+          of extraordinary and boundary-pushing creations.{" "}
+          <span
+            className={`text-[#3A98BB]   lg:hidden`}
+            onClick={() => setReadMore(!readMore)}
+          >
+            Read less
+          </span>
         </p>
       </div>
     </section>
