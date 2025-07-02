@@ -2,7 +2,7 @@ import Image from "next/image"; // Ensure you import the Next.js Image component
 const Footer = () => {
   return (
     <footer className="bg-[#223B44] py-12 text-white text-sm mt-7">
-      <div className="container mx-auto px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="  px-5 lg:px-8 xl:pl-[68.5px] xl:pr-[66.5px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div className="hidden lg:block">
           <div className="flex items-center mb-4">
             <Image

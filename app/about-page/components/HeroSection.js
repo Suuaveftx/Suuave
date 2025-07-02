@@ -9,7 +9,7 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-[url('/about-page-assets/about-hero-bg.png')] bg-cover bg-center opacity-30 "></div>
         {/* <div className="absolute inset-0 bg-gradient-to-b from-[#012D3E] to-[#012D3E] opacity-80"></div> */}
         <div className="relative z-10 max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-[70px] font-bold  leading-tight mb-[20px]">
+          <h1 className="text-5xl xl:text-6xl 2xl:text-[70px] font-bold  leading-tight mb-[20px]">
             About us
           </h1>
           <p className="text-base hidden md:block  md:text-xl md:text-center  leading-[160%]">
