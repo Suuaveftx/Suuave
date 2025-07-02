@@ -143,6 +143,7 @@ const InfoSection = () => {
           </h2> */}
           <h2 className=" text-center text-[24px] mt-4 lg:mt-0 md:text-start font-semibold text-[#222222] lg:text-[32px] xl:text-[42px] ">
             Together, let&apos;s inspire, create,
+
             <br className="hidden lg:block" /> and celebrate the beauty of
             African fashion.
           </h2>
