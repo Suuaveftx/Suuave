@@ -1,76 +1,48 @@
 'use client'
 import React from 'react'
-import {Card, CardHeader, CardBody, Image} from "@heroui/react";
-import CustomButton from '../../../../components/CustomButton';
+import { HiShare } from "react-icons/hi";
+import { HiBookmark } from "react-icons/hi2";
 const JobDetailsPage = () => {
   return (
     <>
-    <h1 className='ml-8 font-bold text-2xl'>Job Details</h1>
-    <hr></hr>
-    <Card className="py-4 border-2 border-[#D3D3D3] ml-8 mb-4 mt-8 bg-[#FAFAFA] p-4">
-  <CardHeader className="pb-0 pt-2 px-4 flex flex-col items-start">
-    <div className="flex gap-64">
-      <p className="text-sm font-medium text-[#767676]">Posted 2 days ago</p>
-      <p className="text-sm font-medium text-[#767676]">
-      Job Status: <span className="text-green-600">Active</span>
-    </p>
-    <div className="absolute mt-0 right-2 flex space-x-2">
-                  <Image
-                    src="/dev-images/Share.png" // Replace with your actual image path
-                    alt="Icon 1"
-                    className="w-6 h-6"
-                    width={20}
-                    height={20}
-                  />
-                  <Image
-                    src="/dev-images/Bookmark.png" // Replace with your actual image path
-                    alt="Icon 2"
-                    className="w-6 h-6"
-                    width={20}
-                    height={20}
-                  />
-                </div>
-    </div>
-    <h2 className="font-bold text-2xl mt-4">Modern Fashion Attire Illustration</h2>
-  </CardHeader>
-  <CardBody className="overflow-visible py-2">
-   <div className='text-[#767676]'>
-    <h6>Job Description</h6>
-    <p>We are seeking a talented and creative Fashion Illustrator to collaborate with our design team on a new line of African-inspired attire. The ideal candidate will have a strong understanding of African fashion, culture, and textile patterns. You will be responsible for bringing our design concepts to life through detailed illustrations, contributing to the development of unique, culturally resonant fashion pieces.<br/>
-Key Responsibilities: <br/>
-Collaborate with the fashion design team to create detailed illustrations of African attire, including dresses, tunics, and traditional garments.<br/>
-Develop sketches and renderings that capture the essence of African culture and heritage.<br/>
-Interpret design briefs to create visually appealing and accurate illustrations.<br/>
-Incorporate traditional African patterns, motifs, and fabrics into designs while staying true to the brand`&apposs aesthetic.<br/>
-Work closely with the design team to ensure illustrations align with the overall vision of the collection.<br/>
-Make revisions to designs based on feedback and ensure final illustrations are production-ready.<br/>
-Stay updated on the latest trends in African fashion and integrate them into your work. <br/>
-Qualifications: <br/>
-Proven experience as a Fashion Illustrator or similar role.<br/>
-Strong portfolio showcasing your expertise in fashion illustration, particularly with African attire.<br/>
-Deep understanding of African fashion, culture, and traditional textiles.<br/>
-Proficiency in design software such as Adobe Illustrator, Photoshop, and CorelDRAW. <br/>
-Excellent drawing and sketching skills, with an eye for detail.<br/>
-Ability to translate ideas and concepts into visually stunning illustrations.<br/>
-Strong communication skills and the ability to work collaboratively in a team.<br/>
-Ability to meet deadlines and manage multiple projects simultaneously.<br/>
-Preferred Qualifications: <br/>
-Experience working with African fashion brands or designers.<br/>
-Knowledge of garment construction and fabric selection.<br/>
-Familiarity with fashion trends in both African and global markets.</p>
-   </div>
-   <div className='mt-8'>
-    <h4 className='font-bold text-2xl'>Skill Requirements</h4>
-    <div>
-        <div className='flex gap-12 mt-4'>
-            <CustomButton text='3D Artist' className="w-32 bg-[#F0F0F0]" />
-            <CustomButton text='Africa' className="w-32 bg-[#F0F0F0]" />
-            <CustomButton text='Native' className="w-32 bg-[#F0F0F0]" />
+    <section className='lg:mb-[29.34px] lg:mt-[45px]'>
+    <h1 className='ml-16 font-bold text-2xl border-b lg:flex hidden'>Job Details</h1>
+  </section>
+  <section>
+    <div className='bg-[#FAFAFA] lg:px-8 lg:py-8 lg:pb-[42px] lg:mx-16 rounded-2xl lg:w-screen lg:max-w-[85%] lg:h-auto  w-screen max-w-[90%] px-4 pt-8 pb-6  mx-4'>  
+      <div className='text-sm text-[#767676] tracking-[0.33px] flex justify-between lg:mb-8 mb-4'>
+        <div className='lg:flex hidden'>
+     <span>Posted 2 days ago</span>
+     </div>
+     <div className='flex gap-1'>
+      <span>Job status:</span>
+      <span className='text-[#056D16]'>Active</span>
+     </div>
+     <div className='flex gap-6'>
+      <HiShare style={{color:"#878787"}} />
+      <div className='lg:flex hidden'>
+      <HiBookmark style={{color:"3A98BB"}} />
+      </div>
+     </div>
+      </div>
+      <div className='lg:font-bold lg:text-[22px] lg:w-screen lg:max-w-[100%] w-screen max-w-[100%]'>
+        <h4 className='font-bold text-[20px] leading-6 whitespace-nowrap'>Modern Fashion Attire Illustration</h4>
+         <span className='lg:hidden lg:mt-0 mt-2 text-sm text-[#767676] leading-[18px] tracking-[0.33px]'>Posted 2 days ago</span>
+        <div className='lg:mt-7 mt-4 text-[#222222] lg:w-screen lg:max-w-[100%]'>
+          <h5 className='text-base font-normal lg:flex hidden'>Job Description</h5>
+          <span className='text-base font-normal tracking-[0.33px] whitespace-normal'>We are seeking a talented and creative Fashion Illustrator to collaborate with our design team on a new line of African-inspired attire. The ideal candidate will have a strong understanding of African fashion, culture, and textile patterns. You will be responsible for bringing our design concepts to life through detailed illustrations, contributing to the development of unique, culturally resonant fashion pieces.
+Key Responsibilities:
+Collaborate with the fashion design team to create detailed illustrations of African attire, including dresses, tunics, and traditional garments.
+Develop sketches and renderings that capture the essence of African culture and heritage.
+Interpret design briefs to create visually appealing and accurate illustrations.
+Incorporate traditional African patterns, motifs, and fabrics into designs while staying true to the brand's aesthetic.
+Work closely with the design team to ensure illustrations align with the overall vision of the collection.
+Make revisions to designs based on feedback and ensure final illustrations are production-ready.
+Stay updated on the latest trends in African fashion and integrate them into your work.</span>
         </div>
+      </div>
     </div>
-   </div>
-  </CardBody>
-</Card>
+  </section>
 </>
   )
 }
