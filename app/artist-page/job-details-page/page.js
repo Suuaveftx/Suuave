@@ -3,20 +3,31 @@ import JobDetailsPage from './_components/JobDetailsPage';
 import BtnProposals from '../../../components/BtnProposals';
 import Abouttheclient from '../../../components/Abouttheclient';
 import Budgets from './_components/Budgets';
+import DesignStyle from './_components/DesignStyle';
+import SkillRequirement from './_components/SkillRequirement';
 
 const Page = () => {
   return (
-    <div className="grid grid-cols-10 gap-8 p-4 justify-start items-start">
+    <div className="grid grid-cols-10">
       {/* Job Details (70%) */}
-      <div className="col-span-7 gap-8">
+      <div className="lg:col-span-7 col-span-10">
         <JobDetailsPage />
+        <div className='lg:hidden w-screen max-w-[100%]'>
+          <BtnProposals />
+        </div>
+        <DesignStyle />
+        <SkillRequirement />
         <Budgets />
       </div>
 
       {/* Button Proposals (30%) */}
-      <div className="col-span-3 mt-12 flex flex-col gap-4">
+      <div className="col-span-3 mt-28 flex flex-col">
+        <div className='lg:flex hidden lg:mb-[30px]'>
         <BtnProposals />
+        </div>
+        <div className='lg:mt-[30px]'>
         <Abouttheclient />
+        </div>
       </div>
     </div>
   );
