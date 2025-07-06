@@ -19,7 +19,7 @@ const Page = () => {
           height={24}
         />
         <h3 className="ml-2">
-          Complete your profile set-up
+          Complete your profile Setup
         </h3>
       </div>
 
