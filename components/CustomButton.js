@@ -18,11 +18,20 @@ const CustomButton = ({
   className,
   onPress,
   icon,
+   style = {}, // Allow incoming style override
 }) => {
+   // Default radial background
+  const defaultStyle = {
+    background: "radial-gradient(circle at top left, #ff7e5f, #feb47b)",
+    color: "white",
+    ...style, // style prop overrides defaultStyle
+  };
+
   return (
     <Button
       className={`flex items-center justify-center gap-2 font-proximanova   font-medium px-6 py-3 rounded-full shadow-md ${className}`}
       onClick={onPress}
+       style={defaultStyle}
     >
       {href ? (
         <Link href={href} className="flex items-center">
