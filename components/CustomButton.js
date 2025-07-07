@@ -18,13 +18,13 @@ const CustomButton = ({
   className,
   onPress,
   icon,
-   style = {}, // Allow incoming style override
+   style = {}, 
 }) => {
    // Default radial background
   const defaultStyle = {
     background: "radial-gradient(circle at top left, #ff7e5f, #feb47b)",
     color: "white",
-    ...style, // style prop overrides defaultStyle
+    ...style, 
   };
 
   return (
