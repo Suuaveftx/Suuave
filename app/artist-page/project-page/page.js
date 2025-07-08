@@ -5,6 +5,7 @@ import Image from "next/image";
 import Footer3 from "../../../components/Footer3";
 import SearchBar from "../../../components/Searchbar";
 import ProjectPage from "./_components/Project-Page";
+import { BsExclamationTriangle } from "react-icons/bs";
 
 
 
@@ -12,14 +13,9 @@ const Page = () => {
   return (
     <>
       <div className="hidden lg:flex bg-[#EFF8FB] text-[#3A98BB] p-4 rounded-md mt-4  ml-4 mr-4 mb-8">
-        <Image
-          src={"/dev-images/ExclamationOutline.png"} 
-          alt="Exclamation"
-          width={24}
-          height={24}
-        />
+        <BsExclamationTriangle className="text-2xl" />
         <h3 className="ml-2">
-          Complete your profile set-up
+          Complete your profile Setup
         </h3>
       </div>
 
