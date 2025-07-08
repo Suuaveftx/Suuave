@@ -22,8 +22,8 @@ const CustomButton = ({
 }) => {
    // Default radial background
   const defaultStyle = {
-    background: "radial-gradient(circle at top left, #ff7e5f, #feb47b)",
-    color: "white",
+    background: "radial-gradient(circle at top left, #FFFFFF, #CCE7F2)",
+    color: "#767676",
     ...style, 
   };
 
