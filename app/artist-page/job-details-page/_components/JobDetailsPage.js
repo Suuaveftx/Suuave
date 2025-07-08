@@ -9,7 +9,7 @@ const JobDetailsPage = () => {
     <h1 className='ml-16 font-bold text-2xl border-b lg:flex hidden'>Job Details</h1>
   </section>
   <section>
-    <div className='bg-[#FAFAFA] lg:px-8 lg:py-8 lg:pb-[42px] lg:mx-16 rounded-2xl lg:w-screen lg:max-w-[85%] lg:h-auto  w-screen max-w-[90%] px-4 pt-8 pb-6  mx-4'>  
+    <div className='bg-[#FAFAFA] lg:px-8 lg:py-8 lg:pb-[42px] lg:mx-16 rounded-2xl lg:w-screen lg:max-w-[85%] lg:h-auto  w-screen max-w-[90%] px-4 pt-8 pb-6  mx-4 mt-[19px]'>  
       <div className='text-sm text-[#767676] tracking-[0.33px] flex justify-between lg:mb-8 mb-4'>
         <div className='lg:flex hidden'>
      <span>Posted 2 days ago</span>

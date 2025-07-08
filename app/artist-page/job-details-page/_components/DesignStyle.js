@@ -9,16 +9,18 @@ const DesignStyle = () => {
      <div className='lg:mb-4 text-[#222222]'>
         <h4 className='tracking-[0.33px]'>Design Style</h4>
      </div>
-     <div className='flex gap-[11px]'>
-        <CustomButton
-        text="Casual"
-        class  />
-        <CustomButton
-        text="Ethnic" />
-        <CustomButton
-        text="Street Wear"
-        className="!bg-[#F0F0F0] text-base text-[#222222]" />
-     </div>
+    <div className='flex gap-[11px] mt-4 lg:w-screen lg:max-w-[50%] w-full'>
+  <div className='bg-[#F0F0F0] px-[10px] py-2 rounded-[32px] w-screen max-w-[30%] flex justify-center items-center text-[#222222] text-sm font-normal opacity-50 pointer-events-none cursor-not-allowed'>
+    Casual
+  </div>
+  <div className='bg-[#F0F0F0] px-[10px] py-2 rounded-[32px] w-screen max-w-[30%] flex justify-center items-center text-[#222222] text-sm font-normal opacity-50 pointer-events-none cursor-not-allowed'>
+    Ethnic
+  </div>
+  <div className='bg-[#F0F0F0] px-[10px] py-2 rounded-[32px] w-screen max-w-[30%] flex justify-center items-center text-[#222222] text-sm font-normal opacity-50 pointer-events-none cursor-not-allowed'>
+    Streetwear
+  </div>
+</div>
+
     </div>
     </>
   )
