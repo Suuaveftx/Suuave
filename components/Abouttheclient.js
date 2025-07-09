@@ -53,19 +53,19 @@ const Abouttheclient = () => {
     <div className='flex flex-col gap-4'>
     <div className='flex items-center gap-2'>
      <FaRegUser color='#3A98BB' />
-     <span>Identity Verified</span>
+     <span className='#text-[#767676'>Identity Verified</span>
     </div>
     <div className='flex items-center gap-2'>
      <MdOutlineMailOutline color='#3A98BB' />
-     <span>Email Address Verified</span>
+     <span className='text-[#767676'>Email Address Verified</span>
     </div>
      <div className='flex items-center gap-2'>
      <MdOutlinePhone color='#3A98BB' />
-     <span>Phone Number Verified</span>
+     <span className='text-[#767676]'>Phone Number Verified</span>
     </div>
     <div className='flex items-center gap-2'>
      <LuCreditCard color='#3A98BB' />
-     <span>Payment Method Verified</span>
+     <span className='text-[#767676'>Payment Method Verified</span>
     </div>
     </div>
     </div>
