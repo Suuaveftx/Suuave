@@ -6,7 +6,7 @@ const Budgets = () => {
   return (
     
 
-      <div className='flex flex-col gap-4 bg-[#F9F9F9] lg:mx-16 mx-4 lg:px-8 px-4 py-4 lg:py-6  lg:w-full lg:max-w-[85%] lg:mt-2 mt-[22px] lg:rounded-2xl rounded-[8px] lg:mb-[92.82px]'>
+      <div className='flex flex-col gap-4 bg-[#F9F9F9] lg:mx-16 mx-4 lg:px-8 px-4 py-4 lg:py-6  lg:w-full lg:max-w-[85%] lg:mt-2 mt-[22px] lg:rounded-2xl rounded-[8px] lg:mb-[92.82px] mb-[3px]'>
   <h4 className='font-bold text-[22px] text-[#222222] lg:flex hidden'>Payment And Project Duration</h4>
     <div > 
       <div className='flex items-center gap-2'>
