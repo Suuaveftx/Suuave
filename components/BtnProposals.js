@@ -3,6 +3,18 @@ import React from "react";
 import CustomButton from "./CustomButton";
 import { MdOutlineBookmarkBorder } from "react-icons/md";
 
+
+/**
+ * ProposalButtons component to render a reusable "Send Proposal" and "Save Job" button block.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} [props.sendText] - Text for the send button (default: "Send Proposal").
+ * @param {string} [props.saveText] - Text for the save button (default: "Save Job").
+ * @param {string} [props.sendHref] - Href for the send button (default: "/artist-page/send-proposal").
+ * @param {React.ReactNode} [props.saveIcon] - Icon for the save button (default: bookmark icon).
+ * @param {Object} [props.saveButtonStyle] - Inline styles for the save button.
+ * @param {string} [props.containerClassName] - Additional classes for the outer container.
+ */
 const  BtnProposals = ({
   sendText = "Send Proposal",
   saveText = "Save Job",
