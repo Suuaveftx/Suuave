@@ -21,11 +21,11 @@ const Page = () => {
       </div>
 
       {/* Button Proposals (30%) */}
-      <div className="col-span-3 mt-28 flex flex-col">
-        <div className='lg:flex hidden lg:mb-[30px]'>
+      <div className="col-span-3 lg:mt-28 flex flex-col">
+        <div className='lg:flex hidden lg:mb-[30px] mb-3'>
         <BtnProposals />
         </div>
-        <div className='lg:mt-[30px]'>
+        <div className='lg:mt-[30px] mt-3'>
         <Abouttheclient />
         </div>
       </div>
