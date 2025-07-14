@@ -1,158 +1,158 @@
 'use client'
-import React, { useState } from 'react'
-import {Card, CardHeader, CardBody, Image, Textarea, Input, RadioGroup, Radio, cn, Select, SelectItem} from "@heroui/react";
-import CustomButton from '../../../../components/CustomButton';
-import Link from 'next/link';
-import ModalComponent from '../../../../components/Modal';
-const SendProposal = (props) => {
-    const {children, ...otherProps} = props;
-    const [selected, setSelected] = useState("");
-    const handleSelect = (value) => {
-        setSelected((prev) => (prev === value ? "" : value)); // Toggles selection
-      };
-    const [uploadedFile, setUploadedFile] = useState(null);
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        setUploadedFile(file);
-        console.log('Uploaded file:', file);
-      };
+import React, {useState} from 'react'
+import { Paperclip } from 'lucide-react';
+import {Textarea} from "@heroui/react";
+import { FaChevronLeft } from "react-icons/fa";
+import { IoMdInformationCircleOutline } from "react-icons/io";
+const SendProposal = () => {
+   const [isExpanded, setIsExpanded] = useState(false);
+   const fullText = "Yorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis. Ut commodo efficitur neque.";
+  const previewText = fullText.substring(0, 120); // Adjust character limit as needed
+   const [selected, setSelected] = useState("5 Days");
+  const [open, setOpen] = useState(false);
+
+  const options = ["1 Day", "3 Days", "5 Days", "7 Days", "10 Days"];
   return (
     <>
-    <h1 className='ml-8 font-bold text-2xl'>Send Proposal</h1>
-    <hr></hr>
-    <Card className="py-4 border-2 border-[#D3D3D3] ml-8 mb-4 mt-4 bg-[#FAFAFA] p-4 w-3/4">
-  <CardHeader className="pb-0 pt-2 px-4 flex flex-col items-start">
-    <div className="flex justify-between w-full">
-      <p className="text-sm font-medium">Posted: 23-06-2024</p>
-      <p className="text-sm font-medium">
-      Job Status: <span className="text-green-600">Active</span>
-    </p>
-    </div>
-    <h2 className="font-bold text-2xl mt-4">Modern Fashion Attire Illustration</h2>
-  </CardHeader>
-  <CardBody className="overflow-visible py-2">
-   <div>
-   <p>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus feugiat urna at fermentum vehicula. 
-  Ligula erat suscipit lorem, sit amet tincidunt dolor nisi ac risus. Vestibulum id justo et sapien malesuada elementum. 
-  Donec euismod, eros at hendrerit ullamcorper, nulla risus scelerisque ligula...  
-  <Link href="/post-details" className="text-[#3A98BB] underline">
-    view post
-  </Link>
-</p>
-
-
-
-   </div>
-   <div className='mt-8 w-full block'>
-   <Textarea
-      className="w-full bg-transparent"
-      label="Write Proposal"
-      labelPlacement="outside"
-      placeholder="Write your proposal"
-    />
-   </div>
-   <div className="mt-4 w-full">
-          <label className="block text-[12px] font-medium mb-1 text-[#444444]">Attach File (Optional)</label>
-          <p className='text-sm'>You can upload samples of your work or projects. This helps to showcase your skill level to the client</p>
-          <div className="border border-gray-300 rounded-md p-4 h-20 flex items-center justify-center cursor-pointer w-full mt-2">
-            <Input
-              type="file"
-              className="hidden"
-              id="portfolioUpload"
-              onChange={handleFileChange}
-            />
-            <label htmlFor="portfolioUpload" className="flex items-center gap-4">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4 16V17C4 17.7956 4.31607 18.5587 4.87868 19.1213C5.44129 19.6839 6.20435 20 7 20H17C17.7956 20 18.5587 19.6839 19.1213 19.1213C19.6839 18.5587 20 17.7956 20 17V16M16 8L12 4M12 4L8 8M12 4V16" stroke="#3A98BB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-</svg>
-              <span className='text-[#878787] text-[12px]'>Upload necessary file</span>
-            </label>
-          </div>
-          {uploadedFile && (
-            <p className="text-sm text-gray-600 mt-2">Uploaded: {uploadedFile.name}</p>
-          )}
-        </div>
-        <div className='mt-8'>
-            <h4 className='font-bold text-base'>How Much Are You Charging For This Work ?</h4>
-        </div>
-        <div>
-            <div className='flex gap-2'>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M13 16H12V12H11M12 8H12.01M21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12Z" stroke="#878787" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-</svg>
-<p className='text-base text-[#767676] font-bold'>Suuave charge 10% applies to the total amount</p>
-            </div>
-        </div>
-
-        <div className="mt-8 relative flex flex-col">
-        <label className="block text-sm font-bold text-gray-700 mb-2">
-        Accept Client&apos;s Price
-      </label>
-      <div className='mt-2'>
-      <RadioGroup value={selected} onValueChange={handleSelect}>
-        <Radio
-          value="N200,000"
-          className="inline-flex flex-row-reverse w-64 cursor-pointer rounded-lg gap-4 p-4 border-2 border-[#d1d1d1] font-bold data-[selected=true]:border-primary"
-        >
-          <span className="text-[#3A98BB] font-bold">N200,000</span> {/* Text Comes First */}
-        </Radio>
-      </RadioGroup>
+    <div className='flex items-center lg:mt-0 mt-4 px-4 py-[10px] mx-4'>
+      <div className='lg:hidden'>
+      <FaChevronLeft color='#878787' />
       </div>
+    <h4 className='font-bold lg:text-[34px] lg:text-[#222222] text-[22px] text-[#444444] lg:mx-16 mx-4'>Send Proposals</h4>
     </div>
-    <div className="mt-8 relative flex flex-col">
-        <label className="block text-sm font-bold text-gray-700 mb-2">
-        Quote New Amount
-      </label>
-      <div className='mt-2'>
-      <RadioGroup value={selected} onValueChange={handleSelect}>
-        <Radio
-          value="N200,000"
-          className="inline-flex flex-row-reverse w-64 cursor-pointer rounded-lg gap-4 p-4 border-2 border-[#d1d1d1] font-bold data-[selected=true]:border-primary"
-        >
-          <span className="text-[#878787] font-bold">N0,000</span> {/* Text Comes First */}
-        </Radio>
-      </RadioGroup>
+    <div className='bg-[#FAFAFA] lg:flex lg:flex-col hidden text-[#222222] px-8 py-8 lg:ml-16 mx-4 w-[90%] mt-[39.68px] rounded-2xl border-1 border-[#EAEAEA] '>
+      <h4 className='font-bold leading-7'>Related Job</h4>
+      <div className='flex justify-between mt-6'>
+        <div className='text-sm text-[#767676] leading-[18px] tracking-[0.33px]'>
+          <span>Posted: 23-06-2024</span>
+        </div>
+        <div className='flex gap-2 text-sm leading-[18px] tracking-[0.33px]'>
+          <span className='text-[#767676]'>Job Status:</span>
+          <span className='text-[#056D16]'>Active</span>
+        </div>
       </div>
-      
-    </div>
-    <div className='mt-16'>
-        <hr></hr>
-    </div>
-   <div className='mt-4'>
-   <Select
-          isRequired
-          label="How Long Will It Take You To Complete This Work ?"
-          labelPlacement="outside"
-          name="country"
-          placeholder="Five Days"
-          className='w-64 whitespace-nowrap'
+      <div className='font-bold text-[#222222] mt-4'>
+        Modern Fashion Attire Illustration
+      </div>
+      <div className="mt-4 text-[#767676]">
+      {isExpanded ? fullText : `${previewText}... `}
+      {!isExpanded && (
+        <span 
+          onClick={() => setIsExpanded(true)} 
+          className="text-[#3A98BB] cursor-pointer"
         >
-          <SelectItem key="ar" value="ar">
-            Argentina
-          </SelectItem>
-          <SelectItem key="us" value="us">
-            United States
-          </SelectItem>
-          <SelectItem key="ca" value="ca">
-            Canada
-          </SelectItem>
-          <SelectItem key="uk" value="uk">
-            United Kingdom
-          </SelectItem>
-          <SelectItem key="au" value="au">
-            Australia
-          </SelectItem>
-        </Select>
-   </div>
-   <div className='mt-16 flex gap-8'>
-    <CustomButton text='Cancel' className="w-32 bg-[#EEEEEE]"  />
-    <ModalComponent />
-   </div>
-  </CardBody>
-</Card>
-</>
+          View Post
+        </span>
+      )}
+    </div>
+    </div>
+    <div className='bg-[#FAFAFA] flex flex-col  gap-2 border-1 border-[#EAEAEA] px-8 py-8 pb-[42px] lg:mx-16  mx-auto mt-4 rounded-2xl lg:w-[90%] w-[80%] lg:mb-[240.32px] '>
+      <div className='lg:flex  font-bold hidden text-2xl leading-6 rounded-2xl'>
+        Write Proposal
+      </div>
+      <div className=''>
+       <Textarea
+  className="lg:w-full w-[90%] h-auto px-[10px] py-[10px] border-[#D1D1D1]"
+  label="Cover Letter"
+  labelPlacement="outside"
+  placeholder="Write your proposal..."
+  variant="bordered"
+  classNames={{
+    label: "text-[#222222] font-semibold text-base tracking-[0.33px]", // 👈 Change label color here
+  }}
+/>
+      </div>
+     <div className=''>
+      <h4 className="text-base font-semibold">
+        Attach File <span className="text-sm text-gray-500">(Optional)</span>
+      </h4>
+      <span className='text-sm leading-[18px] tracking-[0.33px] mt-1 block'>
+        You can upload a sample of your work or projects. This helps to showcase your skill level to the client.
+      </span>
+<div className="mt-4 flex items-center gap-2 w-full">
+        <label
+          htmlFor="file-upload"
+          className="w-full  flex items-center justify-center gap-2 border border-gray-300 rounded-lg cursor-pointer text-sm text-gray-700 hover:bg-gray-100 transition px-8 py-8"
+        >
+          <Paperclip className="text-[#035A7A] w-5 h-5" />
+          Upload necessary file
+        </label>
+        <input
+          id="file-upload"
+          type="file"
+          className="w-full hidden"
+        />
+      </div>    
+    </div>
+    <div className="mt-6 space-y-2">
+  <label className="text-base text-[#222222] font-semibold block">
+    How much are you charging for this work?
+  </label>
+
+  <div className="flex items-center gap-2 text-sm text-[#767676]">
+   <IoMdInformationCircleOutline color='#878787' />
+    <span>
+      10% commission charge applies{" "}
+      <a href="#" className="text-[#3A98BB]">
+        Learn More
+      </a>
+    </span>
+  </div>
+
+  <input
+    type="text"
+    value="N200,00"
+    style={{ color: '#3A98BB'}}
+    readOnly
+    className="w-full border border-gray-300 rounded-md px-[10px] py-[10px] text-base text-gray-700 bg-gray-50"
+  />
+</div>
+ <div className="mt-6 relative inline-block w-full">
+      <label className="text-base font-semibold block mb-2">
+        How long will it take you to complete this work?
+      </label>
+
+      <button
+        type="button"
+        className="w-[50%] border border-gray-300 rounded-md px-4 py-2 bg-white text-sm flex justify-between items-center"
+        onClick={() => setOpen((prev) => !prev)}
+      >
+        <span>{selected}</span>
+
+        {/* Dropdown Arrow Icon */}
+        <svg
+          className={`w-4 h-4 ml-2 transform transition-transform ${
+            open ? "rotate-180" : "rotate-0"
+          }`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {open && (
+        <ul className="absolute left-0 w-full bg-white border border-gray-200 shadow-md rounded-md mt-1 z-10">
+          {options.map((option) => (
+            <li
+              key={option}
+              className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+              onClick={() => {
+                setSelected(option);
+                setOpen(false);
+              }}
+            >
+              {option}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+    </div>
+    </>
   )
 }
 
-export default SendProposal;
+export default SendProposal
