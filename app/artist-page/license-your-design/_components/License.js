@@ -3,6 +3,8 @@ import React from 'react';
 import { Input, Textarea, Select, Checkbox, SelectItem } from '@heroui/react';
 import { CiImageOn } from "react-icons/ci";
 import CustomButton from '../../../../components/CustomButton';
+import Link from 'next/link';
+import { color } from 'framer-motion';
 
 
 const License = () => {
@@ -13,7 +15,7 @@ const License = () => {
             <div className='lg:w-4/5 w-full max-w-[90%] px-2 py-2 lg:mx-16 mx-4 mt-8 rounded-lg bg-gradient-to-b from-[#CCE7F2] via-[#A1DCF3] to-[#49C0F0] text-[#393939]'>
                 <h1 className='text-[34px] font-bold'>License Your Design</h1>
                 <p className='text-base'>Ensure you are the original creator or rightful owner of the design you wish to upload. Uploading someone else’s work without permission may infringe their copyright.
-                    By uploading, you confirm you have the necessary rights and permissions. Learn more
+                    By uploading, you confirm you have the necessary rights and permissions. <Link className='text-[#3A98BB]' href={"/"}>Learn more </Link> 
                 </p>
             </div>
             
@@ -26,14 +28,19 @@ const License = () => {
                         labelPlacement="outside"
                         name="name"
                         placeholder="What is the title of your design?"
-                        className='font-bold border-2 border-[#d1d1d1] rounded-lg'
+                        className='font-bold border-2 border-[#d1d1d1] rounded-lg text-base'
                     />
-                    <Textarea
-                        className="w-full font-bold"
-                        label="Design Description"
-                        labelPlacement="outside"
-                        placeholder="Describe your design in detail"
-                    />
+                   <div className="w-full">
+  <label htmlFor="design-description" className="block text-base font-semibold mb-2">
+    Design Description
+  </label>
+  <textarea
+    id="design-description"
+    placeholder="Describe your design in detail"
+    className="w-full h-40 p-3 border rounded-md  focus:outline-none"
+  />
+</div>
+
                 </div>
                 
                 {/* Fashion Style */}
@@ -82,7 +89,7 @@ const License = () => {
                 
                 {/* Choose Sales Type */}
                 <div className='flex flex-col gap-2'>
-                    <h3 className='text-lg font-semibold'>Choose Sales Type</h3>
+                    <h3 className='text-lg font-semibold hidden'>Choose Sales Type</h3>
                     <Select placeholder="Negotiable" className="border-2 border-[#d1d1d1] rounded-lg">
     <SelectItem key="exclusive">Exclusive Rights</SelectItem>
     <SelectItem key="non-exclusive">Non-Exclusive Rights</SelectItem>
@@ -98,10 +105,12 @@ const License = () => {
                     <p className='text-sm'>By publishing, you confirm you have the necessary rights and permission to the ownership of this design. <a href="#" className='text-blue-600 underline'>Learn More</a></p>
                 </div>
                 <div className='flex gap-4 w-full lg:justify-start justify-center'>
-                  <CustomButton text='Save as Draft' className="bg-[#F0F0F0] text-[#222222]" style={{
+                  <CustomButton text='Save as Draft' className="bg-[#F0F0F0] text-[#222222] lg:hidden" style={{
                     background: "#EDEDED"
                   }} />
-                  <CustomButton text='Publish Project' />
+                  <CustomButton text='Publish Project' style={{
+                    color: "#035A7A",
+                  }} />
                 </div>
             </div>
         </div>
