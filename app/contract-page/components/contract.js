@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Tabs, Tab, Input, Card, CardBody, Button, Alert } from "@heroui/react";
 import Navbar3 from "../../../components/Navbar3";
+import ContractHeader from "./contract-header";
 
 export default function ContractPage() {
   const [activeTab, setActiveTab] = useState("pending");
@@ -43,19 +44,7 @@ export default function ContractPage() {
   return (
     <div className="bg-[#EAEAEA]  min-h-screen ">
       <Navbar3 />
-      <div className="max-w-6xl mx-auto my-8">
-        <h1 className=" text-3xl font-semibold text-[#444444] flex items-center gap-2">
-          {/* Show the arrow only on mobile view (sm and below) */}
-          <Button
-            isIconOnly
-            variant="flat"
-            className="block lg:hidden ml-2 bg-transparent -mr-2"
-          >
-            <ChevronLeftIcon width={20} height={20} />
-          </Button>
-          My Contracts
-        </h1>
-      </div>
+      <ContractHeader title="Contracts" />
       <div className="max-w-6xl mx-auto bg-white px-2 md:px-8 my-6 ">
         <div className=" py-8 font-satoshi  ">
           {/* Tab Navigation */}
