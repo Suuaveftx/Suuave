@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import {
   MagnifyingGlassIcon,
   ExclamationTriangleIcon,
+  AdjustmentsHorizontalIcon,
+  EllipsisHorizontalIcon,
+  ChevronLeftIcon,
 } from "@heroicons/react/24/outline";
 import { Tabs, Tab, Input, Card, CardBody, Button, Alert } from "@heroui/react";
 import Navbar3 from "../../../components/Navbar3";
@@ -41,7 +44,17 @@ export default function ContractPage() {
     <div className="bg-[#EAEAEA]  min-h-screen ">
       <Navbar3 />
       <div className="max-w-6xl mx-auto my-8">
-        <h1 className="text-3xl font-semibold text-[#444444]">My Contracts</h1>
+        <h1 className=" text-3xl font-semibold text-[#444444] flex items-center gap-2">
+          {/* Show the arrow only on mobile view (sm and below) */}
+          <Button
+            isIconOnly
+            variant="flat"
+            className="block lg:hidden ml-2 bg-transparent -mr-2"
+          >
+            <ChevronLeftIcon width={20} height={20} />
+          </Button>
+          My Contracts
+        </h1>
       </div>
       <div className="max-w-6xl mx-auto bg-white px-2 md:px-8 my-6 ">
         <div className=" py-8 font-satoshi  ">
@@ -98,21 +111,32 @@ export default function ContractPage() {
           {/* Search */}
           {activeTab === "pending" && (
             <div className="mb-6">
-              <Input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search by job title"
-                startContent={
-                  <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-                }
-                className="max-w-md"
-                classNames={{
-                  input: "text-sm",
-                  inputWrapper:
-                    "border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500",
-                }}
-              />
+              <div className="flex items-center gap-3">
+                <Input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search by job title"
+                  startContent={
+                    <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+                  }
+                  className="flex-1 md:max-w-md md:flex-none"
+                  classNames={{
+                    input: "text-sm",
+                    inputWrapper:
+                      "border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500",
+                  }}
+                />
+                {/* for mobile view */}
+                <Button
+                  isIconOnly
+                  variant="ghost"
+                  className="md:hidden p-2 border-0 -ml-4"
+                  aria-label="Filter"
+                >
+                  <AdjustmentsHorizontalIcon className="h-5 w-5 text-gray-600" />
+                </Button>
+              </div>
             </div>
           )}
 
@@ -125,30 +149,47 @@ export default function ContractPage() {
                   className="bg-white border border-gray-200 hover:shadow-md transition-shadow"
                   shadow="none"
                 >
-                  <CardBody className="px-6 py-4">
-                    <div className="flex justify-between items-center w-full">
-                      <div className="flex-1 flex justify-between">
-                        <h3 className="text-md font-semibold text-gray-900 mb-1">
+                  <CardBody className="md:px-6 px-3 py-4">
+                    <div className="flex md:justify-between items-start w-full">
+                      <div className="flex-1 flex items-start flex-col md:flex-row md:justify-between">
+                        <h3 className="md:text-md text-sm font-semibold text-gray-900 mb-1 md:truncate">
                           {contract.title} ({contract.id})
                         </h3>
-                        <p className="text-sm text-gray-600">
-                          Pending Since -{" "}
-                          <span className="font-semibold">
-                            {contract.pendingSince}{" "}
-                          </span>
-                          / Expires in -{" "}
-                          <span className="font-semibold">
-                            {contract.expiresIn}
-                          </span>
-                        </p>
+                        <div className="md:flex items-center justify-center md:gap-1">
+                          <p className="text-sm text-gray-600">
+                            Pending Since -{" "}
+                            <span className="font-semibold">
+                              {contract.pendingSince}
+                            </span>
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            <span className="max-[860px]:hidden">/</span>{" "}
+                            Expires in -{" "}
+                            <span className="font-semibold">
+                              {contract.expiresIn}
+                            </span>
+                          </p>
+                        </div>
+
+                        {/* Desktop Cancel Button */}
                         <Button
-                          className="-mt-1 border px-12 py-4 shadow-lg bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full"
+                          className="mt-4 md:-mt-1 border px-12 py-4 shadow-lg bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full shrink-0 hidden md:flex"
                           size="sm"
                           radius="full"
                         >
                           Cancel
                         </Button>
                       </div>
+
+                      {/* Mobile 3 Dots Menu */}
+                      <Button
+                        isIconOnly
+                        variant="ghost"
+                        className="md:hidden p-2 shrink-0 border-0 flex"
+                        aria-label="More options"
+                      >
+                        <EllipsisHorizontalIcon className="h-5 w-5 text-gray-600 -mt-4" />
+                      </Button>
                     </div>
                   </CardBody>
                 </Card>

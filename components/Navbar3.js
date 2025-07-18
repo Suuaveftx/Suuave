@@ -45,19 +45,25 @@ const Navbar3 = () => {
       {/* LOGO */}
       <div>
         <Link href="/jobpost">
-        <Image
-          src="/dev-images/logocombo.png"
-          alt="Logo"
-          className="lg:w-32 w-24 h-auto object-contain"
-        />
+          <Image
+            src="/dev-images/logocombo.png"
+            alt="Logo"
+            className="lg:w-32 w-24 h-auto object-contain"
+          />
         </Link>
       </div>
 
       {/* MENU */}
-      <NavbarContent className="hidden sm:flex gap-8 ml-8 font-bold" justify="center">
+      <NavbarContent
+        className="hidden sm:flex gap-8 ml-8 font-bold"
+        justify="center"
+      >
         {menuItems.map((item, index) => (
           <NavbarItem key={index}>
-            <Link href={item.href} className={`${textStyle} transition duration-300`}>
+            <Link
+              href={item.href}
+              className={`${textStyle} transition duration-300`}
+            >
               {item.label}
             </Link>
           </NavbarItem>
@@ -67,20 +73,39 @@ const Navbar3 = () => {
       {/* LOGIN & BUTTON */}
       <NavbarContent justify="end" className="gap-8">
         <NavbarItem>
-          <CustomButton className="hidden lg:flex bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A]" text="License Your Designs" href={"/license"} />
+          <CustomButton
+            className="hidden lg:flex bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A]"
+            text="License Your Designs"
+            href={"/license"}
+          />
         </NavbarItem>
         <div className="flex gap-2">
           <NavbarItem className="hidden lg:flex">
-            <Image src="/dev-images/Bell.png" alt="Bell" width={24} height={24} />
+            <Image
+              src="/dev-images/Bell.png"
+              alt="Bell"
+              width={24}
+              height={24}
+            />
           </NavbarItem>
           <NavbarItem className="hidden lg:flex">
             <Link href="/messages">
-            <Image src="/dev-images/Messages.png" alt="Messages" width={24} height={24} />
+              <Image
+                src="/dev-images/Messages.png"
+                alt="Messages"
+                width={24}
+                height={24}
+              />
             </Link>
           </NavbarItem>
         </div>
         <NavbarItem className="hidden lg:flex">
-          <Image src="/dev-images/Avatar.png" alt="Avatar" width={48} height={48} />
+          <Image
+            src="/dev-images/Avatar.png"
+            alt="Avatar"
+            width={48}
+            height={48}
+          />
         </NavbarItem>
         <Link className="lg:hidden text-black">Login</Link>
         <NavbarMenuToggle
@@ -93,7 +118,11 @@ const Navbar3 = () => {
       <NavbarMenu>
         {mobileMenuItems.map((item, index) => (
           <NavbarMenuItem key={index}>
-            <Link className="w-full text-black transition duration-300" href={item.href} size="lg">
+            <Link
+              className="w-full text-black transition duration-300"
+              href={item.href}
+              size="lg"
+            >
               {item.label}
             </Link>
           </NavbarMenuItem>
