@@ -2,17 +2,16 @@
 
 import React from "react";
 import {
-  ChevronLeftIcon,
+  MapPinIcon,
   PaperClipIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
 import { Card, CardBody, Button, Avatar, Chip } from "@heroui/react";
-import { useRouter } from "next/navigation";
+
 import Navbar3 from "../../../components/Navbar3";
 import ContractHeader from "./contract-header";
 
 export default function ContractDetailsPage({ params }) {
-  const router = useRouter();
   const contractId = params?.id || "24t64754"; // fallback for demo
   console.log(contractId);
   // Mock data - replace with actual data fetching based on contractId
@@ -29,18 +28,14 @@ export default function ContractDetailsPage({ params }) {
       { name: "DocE75", type: "legal" },
     ],
     artist: {
-      name: "Tolu Otou",
+      name: "Tolu",
+      username: "tolu",
       role: "Fashion Designer",
       location: "Lagos, Nigeria",
       rating: 4.0,
       reviews: 2,
-      avatar: "/logo.png",
+      avatar: "/contract/designer.jpg",
     },
-  };
-
-  // Function to handle back navigation
-  const handleBack = () => {
-    router.back();
   };
 
   // Function to get color based on status
@@ -60,87 +55,59 @@ export default function ContractDetailsPage({ params }) {
   return (
     <div className="bg-[#EAEAEA] min-h-screen">
       <Navbar3 />
-      <ContractHeader
-        title="Contract Information"
-        showBack
-        onBack={handleBack}
-      />
+      <ContractHeader title="Contract Information" />
 
-      <div className="max-w-6xl mx-auto px-2 md:px-8 my-6">
+      <div className="max-w-6xl mx-auto px-2 md:px-0 pb-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Contract Details & Documents */}
           <div className="lg:col-span-2 space-y-6">
             {/* Contract Details Card */}
             <Card className="bg-white border border-gray-200" shadow="none">
-              <CardBody className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-lg font-semibold text-gray-900">
+              <CardBody className="p-6 pb-12">
+                <div className="flex items-center justify-between mb-6 border-b pb-2">
+                  <h2 className="md:text-2xl text-lg font-semibold text-gray-900">
                     Contract Details
                   </h2>
                   <Chip
                     color={getStatusColor(contractData.status)}
                     variant="flat"
-                    size="sm"
-                    className="font-medium"
+                    size="lg"
+                    className="font-medium text-[#035A7A]"
                   >
                     {contractData.status}
                   </Chip>
                 </div>
 
                 <div className="space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center">
-                    <span className="text-sm text-gray-600 w-32 mb-1 sm:mb-0">
-                      Job Title -
-                    </span>
-                    <span className="text-sm font-medium text-gray-900">
-                      {contractData.jobTitle}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row sm:items-center">
-                    <span className="text-sm text-gray-600 w-32 mb-1 sm:mb-0">
-                      Contract Number -
-                    </span>
-                    <span className="text-sm font-medium text-gray-900">
-                      {contractData.contractNumber}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row sm:items-center">
-                    <span className="text-sm text-gray-600 w-32 mb-1 sm:mb-0">
-                      Contract Type -
-                    </span>
-                    <span className="text-sm font-medium text-gray-900">
-                      {contractData.contractType}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row sm:items-center">
-                    <span className="text-sm text-gray-600 w-32 mb-1 sm:mb-0">
-                      Role -
-                    </span>
-                    <span className="text-sm font-medium text-gray-900">
-                      {contractData.role}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row sm:items-center">
-                    <span className="text-sm text-gray-600 w-32 mb-1 sm:mb-0">
-                      Budget -
-                    </span>
-                    <span className="text-sm font-medium text-gray-900">
-                      {contractData.budget}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row sm:items-center">
-                    <span className="text-sm text-gray-600 w-32 mb-1 sm:mb-0">
-                      Contract Duration -
-                    </span>
-                    <span className="text-sm font-medium text-gray-900">
-                      {contractData.duration}
-                    </span>
-                  </div>
+                  {[
+                    { label: "Job Title", value: contractData.jobTitle },
+                    {
+                      label: "Contract Number",
+                      value: contractData.contractNumber,
+                    },
+                    {
+                      label: "Contract Type",
+                      value: contractData.contractType,
+                    },
+                    { label: "Role", value: contractData.role },
+                    { label: "Budget", value: contractData.budget },
+                    {
+                      label: "Contract Duration",
+                      value: contractData.duration,
+                    },
+                  ].map((item, index) => (
+                    <div
+                      key={index}
+                      className="grid grid-cols-[8rem_1fr] gap-4 items-start"
+                    >
+                      <span className="md:text-md text-sm w-32 mb-1 sm:mb-0 font-light ">
+                        {item.label} -
+                      </span>
+                      <span className="md:text-md text-sm font-proximanova">
+                        {item.value}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </CardBody>
             </Card>
@@ -148,33 +115,24 @@ export default function ContractDetailsPage({ params }) {
             {/* Attached Documents Card */}
             <Card className="bg-white border border-gray-200" shadow="none">
               <CardBody className="p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                <h2 className="md:text-2xl text-lg font-semibold mb-2">
                   Attached Documents
                 </h2>
 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {contractData.attachedDocuments.map((doc, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer"
+                      className="flex flex-col items-start gap-2 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer "
                     >
-                      <PaperClipIcon className="h-5 w-5 text-gray-500" />
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">
-                          {doc.name}
-                        </p>
-                        <p className="text-xs text-gray-500 capitalize">
-                          {doc.type} Document
-                          {doc.type === "legal" ? " (NDA)" : ""}
-                        </p>
+                      <p className="text-md capitalize">
+                        {doc.type} Document
+                        {doc.type === "legal" ? " (NDA)" : ""}
+                      </p>
+                      <div className="flex items-center justify-center gap-2">
+                        <PaperClipIcon className="h-5 w-5" />
+                        <p className="text-md text-[#3A98BB]">{doc.name}</p>
                       </div>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                      >
-                        View
-                      </Button>
                     </div>
                   ))}
                 </div>
@@ -183,20 +141,20 @@ export default function ContractDetailsPage({ params }) {
           </div>
 
           {/* Right Column - Artist Info & Actions */}
-          <div className="space-y-6">
+          <div className="space-y-6 flex flex-col-reverse lg:flex-col space-y-reverse lg:space-y-4">
             {/* Action Buttons */}
             <Card className="bg-white border border-gray-200" shadow="none">
-              <CardBody className="p-4 space-y-3">
+              <CardBody className="py-6 px-12 space-y-6">
                 <Button
-                  className="w-full bg-[#3A98BB] text-white font-medium rounded-full"
-                  size="md"
+                  className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
+                  size="lg"
                 >
                   Message Artist
                 </Button>
                 <Button
                   variant="bordered"
-                  className="w-full border-red-300 text-red-600 hover:bg-red-50 font-medium rounded-full"
-                  size="md"
+                  className="w-full bg-radial from-[#EAF9FF] to-[#E8E8E8] text-[#222222] font-medium rounded-full border-0 shadow-sm"
+                  size="lg"
                 >
                   Cancel Project
                 </Button>
@@ -204,29 +162,38 @@ export default function ContractDetailsPage({ params }) {
             </Card>
 
             {/* Artist Information Card */}
-            <Card className="bg-white border border-gray-200" shadow="none">
+            <Card
+              className="bg-white border font-satoshi border-gray-200"
+              shadow="none"
+            >
               <CardBody className="p-6">
-                <div className="text-center">
+                <div className="text-center font-satoshi">
+                  <h3 className="text-2xl font-bold mb-6">About Artist</h3>
                   <Avatar
                     src={contractData.artist.avatar}
-                    className="w-20 h-20 mx-auto mb-4"
+                    className="w-28 h-28 mx-auto mb-4 rounded-full"
                     name={contractData.artist.name}
                   />
 
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                  <h3 className="text-md font-proximanova mb-1 text-[#3A98BB]">
                     {contractData.artist.name}
+                    <span className="font-satoshi text-[#222222]">
+                      {" "}
+                      @{contractData.artist.username}
+                    </span>
                   </h3>
 
-                  <p className="text-sm text-gray-600 mb-2">
+                  <p className="text-sm  text-[#222222] mb-4">
                     {contractData.artist.role}
                   </p>
 
-                  <p className="text-sm text-gray-500 mb-4">
-                    📍 {contractData.artist.location}
-                  </p>
+                  <div className="flex items-center justify-center gap-1 text-sm  text-[#222222] mb-2">
+                    <MapPinIcon className="h-5 w-5 text-[#878787]" />
+                    <span>{contractData.artist.location}</span>
+                  </div>
 
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="text-sm font-medium">Ratings</span>
+                  <div className="flex items-center justify-center gap-2 mb-6  text-[#222222]">
+                    <span>Ratings</span>
                     <div className="flex items-center gap-1">
                       {[...Array(5)].map((_, i) => (
                         <StarIcon
@@ -234,14 +201,13 @@ export default function ContractDetailsPage({ params }) {
                           className={`h-4 w-4 ${
                             i < Math.floor(contractData.artist.rating)
                               ? "text-yellow-400 fill-current"
-                              : "text-gray-300"
+                              : "text-[#ACACAC] border-none"
                           }`}
                         />
                       ))}
                     </div>
-                    <span className="text-sm text-gray-600">
-                      {contractData.artist.rating} (
-                      {contractData.artist.reviews} Reviews)
+                    <span className="text-sm text-[#3A98BB]">
+                      ({contractData.artist.reviews} Reviews)
                     </span>
                   </div>
                 </div>
