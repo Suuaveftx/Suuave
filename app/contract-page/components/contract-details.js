@@ -32,8 +32,8 @@ export default function ContractDetailsPage({ params }) {
       username: "tolu",
       role: "Fashion Designer",
       location: "Lagos, Nigeria",
-      rating: 4.0,
-      reviews: 2,
+      rating: 0.0,
+      reviews: 0,
       avatar: "/contract/designer.jpg",
     },
   };
@@ -56,11 +56,10 @@ export default function ContractDetailsPage({ params }) {
     <div className="bg-[#EAEAEA] min-h-screen">
       <Navbar3 />
       <ContractHeader title="Contract Information" />
-
-      <div className="max-w-6xl mx-auto px-2 md:px-0 pb-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="max-w-6xl mx-auto px-2 md:px-0 pb-6 ">
+        <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-1">
           {/* Left Column - Contract Details & Documents */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-2">
             {/* Contract Details Card */}
             <Card className="bg-white border border-gray-200" shadow="none">
               <CardBody className="p-6 pb-12">
@@ -119,32 +118,26 @@ export default function ContractDetailsPage({ params }) {
                   Attached Documents
                 </h2>
 
-                <div className="space-y-2">
-                  {contractData.attachedDocuments.map((doc, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-col items-start gap-2 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer "
-                    >
-                      <p className="text-md capitalize">
-                        {doc.type} Document
-                        {doc.type === "legal" ? " (NDA)" : ""}
-                      </p>
-                      <div className="flex items-center justify-center gap-2">
-                        <PaperClipIcon className="h-5 w-5" />
-                        <p className="text-md text-[#3A98BB]">{doc.name}</p>
-                      </div>
+                {contractData.attachedDocuments.map((doc, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col items-start p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer "
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      <PaperClipIcon className="h-5 w-5" />
+                      <p className="text-md text-[#3A98BB]">{doc.name}</p>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </CardBody>
             </Card>
           </div>
 
           {/* Right Column - Artist Info & Actions */}
-          <div className="space-y-6 flex flex-col-reverse lg:flex-col space-y-reverse lg:space-y-4">
+          <div className="flex space-y-2 gap-2 flex-col-reverse lg:flex-col">
             {/* Action Buttons */}
             <Card className="bg-white border border-gray-200" shadow="none">
-              <CardBody className="py-6 px-12 space-y-6">
+              <CardBody className="lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col">
                 <Button
                   className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
                   size="lg"
@@ -163,10 +156,10 @@ export default function ContractDetailsPage({ params }) {
 
             {/* Artist Information Card */}
             <Card
-              className="bg-white border font-satoshi border-gray-200"
+              className="bg-white border font-satoshi border-gray-200 hidden lg:block"
               shadow="none"
             >
-              <CardBody className="p-6">
+              <CardBody className="">
                 <div className="text-center font-satoshi">
                   <h3 className="text-2xl font-bold mb-6">About Artist</h3>
                   <Avatar
