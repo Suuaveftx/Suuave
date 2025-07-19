@@ -1,3 +1,8 @@
+"use client";
+
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { collectionData } from "../../my-collection/data";
 import {
   Modal,
   ModalContent,
@@ -6,40 +11,157 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@heroui/react";
-import Image from "next/image";
-import Link from "next/link";
 import Gallery from "./Gallery";
+import React, { useEffect } from "react";
 
-export default function ProductDetails({ event }) {
+const ProductDetails = ({ id }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { url, title, id, details } = event;
+  console.log(id);
+
+  const collection = collectionData.find((item) => item.id.toString() === id);
+
+  console.log(collection);
+  // Open modal on mount (desktop)
+  useEffect(() => {
+    if (window.innerWidth >= 768) {
+      onOpen();
+    }
+  }, []);
+
+  // Close modal if window resized below md breakpoint (mobile)
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 768 && isOpen) {
+        onOpenChange(false); // close modal
+      }
+      // Optional: reopen modal if resized back to desktop and modal closed
+      if (window.innerWidth >= 768 && !isOpen) {
+        onOpen();
+      }
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isOpen, onOpen, onOpenChange]);
+
+  const router = useRouter();
+
+  const handleBack = () => {
+    router.back();
+  };
+  // If invalid collection id
+  if (!collection) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        Collection not found
+      </div>
+    );
+  }
+
+  const { details, url, title } = collection;
 
   return (
     <>
-      {/* Desktop view */}
-      <div
-        onClick={onOpen}
-        className="bg-[#FAFAFA] rounded-lg pb-2 drop-shadow-md cursor-pointer hidden md:block"
-      >
-        <Image src={`${url}`} alt="image" width={300} height={300} />
-        <p className="text-[#767676] font-satoshi font-normal mt-3 text-xs md:text-sm mx-2">
-          {title}
-        </p>
+      <div className="md:hidden">
+        <div className="w-full px-4 flex items-center gap-2 border-b-1 border-divider">
+          <button onClick={handleBack} className="outline-0 cursor-pointer ">
+            <Image
+              src="/collectionImage/icons/arrow-left.svg"
+              alt="icon"
+              width={24}
+              height={24}
+              className=" "
+            />
+          </button>
+
+          <h1 className="text-[#767676] py-3 font-satoshi font-bold text-xl md:text-2xl ">
+            My Collections
+          </h1>
+        </div>
+        {/* Product Gallery */}
+        <div className=" mt-4">
+          <Image
+            src={url}
+            alt={title}
+            className="w-full px-4"
+            width={0}
+            height={300}
+          />
+          <p className="mt-4 px-4 text-[#222222] font-bold text-sm font-satoshi border-b-1 border-divider py-4">
+            {details.title}
+          </p>
+          {/* Description */}
+          <Header>Description</Header>
+          <Text>
+            This illustration showcases a regal Nigerian Agbada, blending
+            tradition and contemporary style. The design features a flowing,
+            triple-layered
+          </Text>
+          {/* Collection Files */}
+          <Header>Collection Files</Header>
+          <div className=" border-b-1 border-divider mt-2 pb-4 px-4">
+            {details.collectionFiles.map((file, index) => (
+              <p
+                key={index}
+                className="text-[#767676] font-satoshi font-normal text-xs "
+              >
+                {file}
+              </p>
+            ))}
+          </div>
+          {/* Price */}
+          <Header>Price</Header>
+          <Text>{details.price}</Text>
+          {/* Licensed Date */}
+          <Header>Licensed Date</Header>
+          <Text>{details.purchasedDate}</Text>
+          {/* Artist */}
+          <Header>Artist</Header>
+          <span className="flex items-center gap-2  border-b-1 border-divider mt-2 pb-4 px-4">
+            <Image
+              src={details?.artist?.image}
+              alt="image"
+              width={30}
+              height={30}
+            />
+            <p className="text-[#3A98BB] font-satoshi font-normal text-xs ">
+              {details?.artist?.name}
+            </p>
+          </span>
+        </div>
       </div>
 
-      <Modal
-        isDismissable={false}
-        isKeyboardDismissDisabled={true}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        size="4xl"
-      >
-        <ModalContent>
-          {(onClose) => (
+      {/* Desktop view */}
+
+      <div className="hidden md:block h-screen">
+        <Modal
+          isDismissable={false}
+          hideCloseButton={true}
+          isKeyboardDismissDisabled={true}
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          size="5xl"
+          className=""
+        >
+          <ModalContent>
             <>
-              <ModalHeader className="flex flex-col mt-6 gap-1  py-1 text-[#222222] font-bold text-xl font-satoshi">
-                Collection Details
-              </ModalHeader>
+              <div className="w-full flex items-center justify-between mt-6 gap-1  py-1 px-6 ">
+                <h1 className="text-[#222222] font-bold text-xl font-satoshi">
+                  Collection Details
+                </h1>
+                <button
+                  onClick={handleBack}
+                  className="outline-0 cursor-pointer"
+                >
+                  <Image
+                    src="/collectionImage/icons/closeIcon.svg"
+                    alt="icon"
+                    width={22}
+                    height={22}
+                  />
+                </button>
+              </div>
               <ModalBody>
                 <div className="flex gap-16 py-5 border-t-2 border-divider">
                   {/* Product details model */}
@@ -123,20 +245,23 @@ export default function ProductDetails({ event }) {
                 </div>
               </ModalFooter>
             </>
-          )}
-        </ModalContent>
-      </Modal>
-
-      {/* Mobile view  */}
-      <Link
-        href={`/fashion-designers/my-collection/${id}`}
-        className="bg-[#FAFAFA] rounded-lg pb-2 drop-shadow-md cursor-pointer md:hidden"
-      >
-        <Image src={`${url}`} alt="image" width={300} height={300} />
-        <p className="text-[#767676] font-satoshi font-normal mt-3 text-xs md:text-sm mx-2">
-          {title}
-        </p>
-      </Link>
+          </ModalContent>
+        </Modal>
+      </div>
     </>
   );
-}
+};
+
+export default ProductDetails;
+
+const Header = ({ children }) => (
+  <h2 className="text-[#222222] font-satoshi font-medium text-sm mt-2 px-4">
+    {children}
+  </h2>
+);
+
+const Text = ({ children }) => (
+  <p className="text-[#767676] px-4 font-satoshi font-normal text-xs  border-b-1 border-divider mt-2 pb-4">
+    {children}
+  </p>
+);

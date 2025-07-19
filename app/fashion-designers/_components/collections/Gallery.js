@@ -10,7 +10,7 @@ const Gallery = ({ details }) => {
   return (
     <div className="flex items-start gap-3 justify-between w-[50%] ">
       {/* Main Display Area */}
-      <div className="  w-[70%] h-[320px] ">
+      <div className="  w-[70%] ">
         {/* Main Image */}
         <Image
           src={images[selectedIndex]}

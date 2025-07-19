@@ -1,5 +1,5 @@
-import MobileDetails from "../../_components/collections/MobileDetails";
+import ProductDetails from "../../_components/collections/ProductDetails";
 
 export default function page({ params }) {
-  return <MobileDetails id={params.id} />;
+  return <ProductDetails id={params.id} />;
 }

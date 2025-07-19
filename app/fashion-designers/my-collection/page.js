@@ -3,7 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import { collectionData } from "./data";
-import ProductDetails from "../_components/collections/ProductDetails";
+// import ProductDetails from "../_components/collections/ProductDetails";
+import Link from "next/link";
 
 const page = () => {
   return (
@@ -48,8 +49,25 @@ const page = () => {
         </div>
         {/*  Products */}
         <div className="mt-11 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
-          {collectionData.map((items) => (
+          {/* {collectionData.map((items) => (
             <ProductDetails key={items.id} event={items} />
+          ))} */}
+          {collectionData.map((items) => (
+            <Link
+              key={items.id}
+              href={`/fashion-designers/my-collection/${items.id}`}
+              className="bg-[#FAFAFA] rounded-lg pb-2 drop-shadow-md cursor-pointer"
+            >
+              <Image
+                src={`${items.url}`}
+                alt="image"
+                width={300}
+                height={300}
+              />
+              <p className="text-[#767676] font-satoshi font-normal mt-3 text-xs md:text-sm mx-2">
+                {items.title}
+              </p>
+            </Link>
           ))}
         </div>
       </div>
