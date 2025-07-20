@@ -1,46 +1,43 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  MagnifyingGlassIcon,
-  ExclamationTriangleIcon,
-  AdjustmentsHorizontalIcon,
-  EllipsisHorizontalIcon,
-  ChevronLeftIcon,
-} from "@heroicons/react/24/outline";
-import { Tabs, Tab, Input, Card, CardBody, Button, Alert } from "@heroui/react";
+import { Tabs, Tab } from "@heroui/react";
 import Navbar3 from "../../../components/Navbar3";
 import ContractHeader from "./contract-header";
+
 import { useRouter } from "next/navigation";
+import PendingContracts from "./pending-contracts";
+import OngoingContracts from "./ongoing-contracts";
+
 export default function ContractPage() {
   const [activeTab, setActiveTab] = useState("pending");
   const [search, setSearch] = useState("");
-  const router = useRouter(); //router for navigation
+  const router = useRouter();
+  const [sortBy, setSortBy] = useState("date");
+
   const allContracts = [
     {
       title: "Modern Fashion Attire Illustration",
       id: "24t64754",
       pendingSince: "18, June, 2024",
+
       expiresIn: "2days",
     },
     {
       title: "Modern Fashion Attire Illustration",
-      id: "24t64754",
+      id: "24t64755",
       pendingSince: "18, June, 2024",
+
       expiresIn: "2days",
     },
     {
-      // added this for testing
       title: "Logo Design for Tech Startup",
-      id: "24t64755",
+      id: "24t64756",
       pendingSince: "20, June, 2024",
+
       expiresIn: "1day",
     },
   ];
-
-  const filtered = allContracts.filter((c) =>
-    c.title.toLowerCase().includes(search.toLowerCase())
-  );
 
   const tabs = [
     { id: "pending", label: "Pending Contracts", count: 2 },
@@ -48,22 +45,62 @@ export default function ContractPage() {
     { id: "completed", label: "Completed Contracts", count: 5 },
   ];
 
-  //handle navigation to details page
   const handleContractClick = (contractId) => {
     router.push(`/contract-page/${contractId}`);
   };
 
-  // Function to handle back navigation
+  const handleCancelContract = (contractId) => {
+    console.log("Cancel contract:", contractId);
+    // Add your cancel logic here
+  };
+
   const handleBack = () => {
     router.back();
   };
 
+  // Sample data structure for ongoing contracts:
+  const ongoingContracts = [
+    {
+      id: "24t64754",
+      title: "Modern Fashion Attire Illustration",
+      status: "Waiting Approval", // optional
+      startDate: "18, June, 2024",
+      endDate: "25, June, 2024",
+      isLate: false, // optional
+      daysLate: null, // optional, only if isLate is true
+    },
+    {
+      id: "24t64755",
+      title: "Modern Fashion Attire Illustration",
+      startDate: "18, June, 2024",
+      endDate: "25, June, 2024",
+      isLate: true,
+      daysLate: "10",
+    },
+    // ... more contracts
+  ];
+
+  // Handler functions:
+  const handleApproveWork = (contract) => {
+    console.log("Approve work for:", contract.title);
+    // Add your approval logic here
+  };
+
+  const handleMessageArtist = (contract) => {
+    console.log("Message artist for:", contract.title);
+    // Add your messaging logic here
+  };
+
+  const handleMoreOptions = (contract) => {
+    console.log("More options for:", contract.title);
+    // Add your more options logic here
+  };
   return (
-    <div className="bg-[#EAEAEA]  min-h-screen ">
+    <div className="bg-[#EAEAEA] min-h-screen">
       <Navbar3 />
       <ContractHeader title="Contracts" />
-      <div className="max-w-6xl mx-auto bg-white px-2 md:px-8 my-6 ">
-        <div className=" py-8 font-satoshi  ">
+      <div className="max-w-6xl mx-auto bg-white px-2 md:px-8 my-6">
+        <div className="py-8 font-satoshi">
           {/* Tab Navigation */}
           <div className="flex w-full flex-col">
             <Tabs
@@ -89,138 +126,35 @@ export default function ContractPage() {
             </Tabs>
           </div>
 
-          {/* Alert */}
+          {/* Tab Content for pending contracts */}
           {activeTab === "pending" && (
-            <div className="my-6 ">
-              <Alert
-                hideIcon
-                color="primary"
-                variant="flat"
-                startContent={
-                  <ExclamationTriangleIcon className="h-5 w-5 text-[#3A98BB] flex-shrink-0" />
-                }
-                className="bg-transparent border-none text-[#3A98BB] my-2 px-0"
-              >
-                <div className="text-sm">
-                  <p className="font-semibold">
-                    These contracts are yet to be accepted by Artists.
-                  </p>
-                  <p>
-                    Artists have 2 days to accept offers, else, the contract
-                    will be canceled automatically.
-                  </p>
-                </div>
-              </Alert>
-            </div>
+            <PendingContracts
+              contracts={allContracts}
+              search={search}
+              onSearchChange={setSearch}
+              onContractClick={handleContractClick}
+              onCancelContract={handleCancelContract}
+            />
           )}
 
-          {/* Search */}
-          {activeTab === "pending" && (
-            <div className="mb-6">
-              <div className="flex items-center gap-3">
-                <Input
-                  type="text"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search by job title"
-                  startContent={
-                    <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-                  }
-                  className="flex-1 md:max-w-md md:flex-none"
-                  classNames={{
-                    input: "text-sm",
-                    inputWrapper:
-                      "border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500",
-                  }}
-                />
-                {/* for mobile view */}
-                <Button
-                  isIconOnly
-                  variant="ghost"
-                  className="md:hidden p-2 border-0 -ml-4"
-                  aria-label="Filter"
-                >
-                  <AdjustmentsHorizontalIcon className="h-5 w-5 text-gray-600" />
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* Contract Cards */}
-          {activeTab === "pending" && (
-            <div className="space-y-4">
-              {filtered.map((contract, index) => (
-                <Card
-                  key={index}
-                  className="bg-white border border-gray-200 hover:shadow-md transition-shadow"
-                  shadow="none"
-                >
-                  <div
-                    className="cursor-pointer"
-                    //Handle card click to navigate to details
-                    onClick={() => handleContractClick(contract.id)}
-                  >
-                    {" "}
-                    <CardBody className="md:px-6 px-3 py-4">
-                      <div className="flex md:justify-between items-start w-full">
-                        <div className="flex-1 flex items-start flex-col md:flex-row md:justify-between">
-                          <h3 className="md:text-md text-sm font-semibold text-gray-900 mb-1 md:truncate">
-                            {contract.title} ({contract.id})
-                          </h3>
-                          <div className="md:flex items-center justify-center md:gap-1">
-                            <p className="text-sm text-gray-600">
-                              Pending Since -{" "}
-                              <span className="font-semibold">
-                                {contract.pendingSince}
-                              </span>
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              <span className="max-[860px]:hidden">/</span>{" "}
-                              Expires in -{" "}
-                              <span className="font-semibold">
-                                {contract.expiresIn}
-                              </span>
-                            </p>
-                          </div>
-
-                          {/* Desktop Cancel Button */}
-                          <Button
-                            className="mt-4 md:-mt-1 border px-12 py-4 shadow-lg bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full shrink-0 hidden md:flex"
-                            size="sm"
-                            radius="full"
-                            //Add onPress handler and prevent event bubbling
-                            onPress={(e) => {
-                              e.stopPropagation(); // Prevent card click when button is clicked
-                              // Handle cancel logic here
-                              console.log("Cancel contract:", contract.id);
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                        </div>
-
-                        {/* Mobile 3 Dots Menu */}
-                        <Button
-                          isIconOnly
-                          variant="ghost"
-                          className="md:hidden p-2 shrink-0 border-0 flex"
-                          aria-label="More options"
-                        >
-                          <EllipsisHorizontalIcon className="h-5 w-5 text-gray-600 -mt-4" />
-                        </Button>
-                      </div>
-                    </CardBody>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          )}
-
-          {/* Empty states for other tabs */}
-          {activeTab === "ongoing" && (
+          {/*  {activeTab === "ongoing" && (
             <div className="text-center py-12">
               <p className="text-gray-500">No ongoing contracts</p>
             </div>
+          )} */}
+
+          {activeTab === "ongoing" && (
+            <OngoingContracts
+              contracts={ongoingContracts}
+              search={search}
+              onSearchChange={setSearch}
+              onContractClick={handleContractClick}
+              onApproveWork={handleApproveWork}
+              onMessageArtist={handleMessageArtist}
+              onMoreOptions={handleMoreOptions}
+              sortBy={sortBy}
+              onSortChange={setSortBy}
+            />
           )}
 
           {activeTab === "completed" && (
