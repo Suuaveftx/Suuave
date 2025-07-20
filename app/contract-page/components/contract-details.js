@@ -17,7 +17,7 @@ export default function ContractDetailsPage({ params }) {
   // Mock data - replace with actual data fetching based on contractId
   const contractData = {
     jobTitle: "Modern Fashion Attire Illustration",
-    contractNumber: "24t64755",
+    contractNumber: "24t64754",
     contractType: "Hire",
     role: "Fashion Artist",
     budget: "₦200,000",
@@ -114,18 +114,20 @@ export default function ContractDetailsPage({ params }) {
             {/* Attached Documents Card */}
             <Card className="bg-white border border-gray-200" shadow="none">
               <CardBody className="p-6">
-                <h2 className="md:text-2xl text-lg font-semibold mb-2">
+                <h2 className="md:text-2xl text-lg font-semibold md:mb-2 -mt-2">
                   Attached Documents
                 </h2>
 
                 {contractData.attachedDocuments.map((doc, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-start p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer "
+                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer "
                   >
                     <div className="flex items-center justify-center gap-2">
-                      <PaperClipIcon className="h-5 w-5" />
-                      <p className="text-md text-[#3A98BB]">{doc.name}</p>
+                      <PaperClipIcon className="md:h-5 md:w-5 h-4 w-4" />
+                      <p className="md:text-md text-sm font-proximanova text-[#3A98BB]">
+                        {doc.name}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -140,14 +142,16 @@ export default function ContractDetailsPage({ params }) {
               <CardBody className="lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col">
                 <Button
                   className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
-                  size="lg"
+                  size="md"
+                  radius="full"
                 >
                   Message Artist
                 </Button>
                 <Button
                   variant="bordered"
                   className="w-full bg-radial from-[#EAF9FF] to-[#E8E8E8] text-[#222222] font-medium rounded-full border-0 shadow-sm"
-                  size="lg"
+                  size="md"
+                  radius="full"
                 >
                   Cancel Project
                 </Button>
@@ -156,7 +160,7 @@ export default function ContractDetailsPage({ params }) {
 
             {/* Artist Information Card */}
             <Card
-              className="bg-white border font-satoshi border-gray-200 hidden lg:block"
+              className="bg-white border font-satoshi border-gray-200 "
               shadow="none"
             >
               <CardBody className="">

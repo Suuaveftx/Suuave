@@ -5,6 +5,7 @@ import {
   MagnifyingGlassIcon,
   AdjustmentsHorizontalIcon,
   EllipsisHorizontalIcon,
+  ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 import { Input, Card, CardBody, Button } from "@heroui/react";
 
@@ -29,7 +30,7 @@ const OngoingContracts = ({
       {/* Search and Filter Bar */}
       <div className="my-6">
         <div className="flex items-center justify-between gap-4">
-          {/* Search Input */}
+          {/* Search Input - Always left-aligned */}
           <div className="flex items-center gap-3 flex-1">
             <Input
               type="text"
@@ -46,30 +47,37 @@ const OngoingContracts = ({
                   "border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500",
               }}
             />
-            {/* for mobile view */}
+          </div>
+
+          {/* Sort & Filter Section */}
+          <div className="relative flex items-center gap-2">
+            {/* Filter Icon - Only for mobile view */}
             <Button
               isIconOnly
               variant="ghost"
-              className="md:hidden p-2 border-0 -ml-4"
+              className="md:hidden p-2 border-0"
               aria-label="Filter"
             >
               <AdjustmentsHorizontalIcon className="h-5 w-5 text-gray-600" />
             </Button>
-          </div>
 
-          {/* Sort Dropdown - Desktop */}
-          <div className="hidden md:flex items-center">
-            <div className="relative">
-              {/* Icon inside the select box */}
-              <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                <AdjustmentsHorizontalIcon className="h-4 w-4 text-gray-500" />
+            {/* Desktop Dropdown with Filter Icon inside */}
+            <div className="relative hidden md:flex items-center">
+              {/* Left-aligned Filter Icon */}
+              <div className="absolute left-0 pl-3 flex items-center pointer-events-none">
+                <AdjustmentsHorizontalIcon className="h-4 w-4 text-gray-400" />
               </div>
 
-              {/* Select with left padding to avoid overlapping the icon */}
+              {/* Chevron on the right */}
+              <div className="absolute right-0 pr-3 flex items-center pointer-events-none">
+                <ChevronDownIcon className="h-4 w-4 text-gray-400" />
+              </div>
+
+              {/* Select input */}
               <select
                 value={sortBy}
                 onChange={(e) => onSortChange(e.target.value)}
-                className="text-sm text-gray-700 border border-gray-300 rounded-full pl-8 pr-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                className="text-sm text-gray-700 border border-gray-300 rounded-full pl-10 pr-10 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none w-full"
               >
                 <option value="date">Sort by Date</option>
                 <option value="title">Sort by Title</option>
@@ -88,100 +96,81 @@ const OngoingContracts = ({
             className="bg-white border border-gray-200 hover:shadow-md transition-shadow"
             shadow="none"
           >
-            <CardBody className="md:px-6 px-3 py-4">
-              <div className="flex items-center justify-between">
-                {/* Contract Info */}
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3
-                      className="text-gray-900 font-medium text-base cursor-pointer hover:text-blue-600"
-                      onClick={() => onContractClick(contract.id)}
-                    >
-                      {contract.title}
-                    </h3>
+            <CardBody className="md:px-4 px-2 py-4 relative">
+              {/* Desktop & Mobile Grid Layout */}
+              <div className="md:grid md:grid-cols-3 md:gap-6 md:items-start">
+                {/* Column 1: Title and Status */}
+                <div className="flex flex-col items-start">
+                  <h3
+                    className="font-proximanova text-md w-full truncate cursor-pointer mb-1"
+                    onClick={() => onContractClick(contract.id)}
+                  >
+                    {contract.title}
+                  </h3>
+                  <div className="flex items-center gap-1">
                     {contract.status && (
-                      <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-medium">
+                      <span className="bg-[#E0F2FE] text-[#2563EB] px-2 py-1 rounded text-xs">
                         {contract.status}
                       </span>
                     )}
                     {contract.isLate && (
-                      <span className="text-red-500 text-xs font-medium">
+                      <span className="text-red-500 text-xs">
                         ({contract.daysLate}d late)
                       </span>
                     )}
                   </div>
-                  <div className="flex gap-6 text-sm text-gray-600">
-                    <div>
-                      <span className="font-medium">Start Date:</span>{" "}
-                      {contract.startDate}
-                    </div>
-                    <div>
-                      <span className="font-medium">End Date:</span>{" "}
-                      {contract.endDate}
-                    </div>
+                </div>
+
+                {/* Column 2: Start and End Dates */}
+                <div className="block mt-2 md:mt-0 md:flex flex-col items-start text-sm font-proximanova text-gray-600">
+                  <div className="mb-1">
+                    <span className="text-xs font-satoshi">Start Date:</span>{" "}
+                    {contract.startDate}
+                  </div>
+                  <div>
+                    <span className="text-xs font-satoshi">End Date:</span>{" "}
+                    {contract.endDate}
                   </div>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex items-center gap-3 ml-4">
-                  {/* Desktop Buttons */}
-                  <div className="hidden md:flex items-center gap-3">
+                {/* Column 3: Action Buttons */}
+                <div className="flex flex-col-reverse md:flex-row justify-end items-start gap-2 -ml-4">
+                  <div className=" hidden md:flex items-center gap-2">
                     <Button
+                      className="mt-4 md:-mt-1 border px-4 py-4 shadow-lg bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-proximanova rounded-full shrink-0 hidden md:flex"
                       size="sm"
-                      className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                      radius="full"
                       onPress={() => onApproveWork(contract)}
                     >
                       Approve Work
                     </Button>
                     <Button
+                      className="mt-4 md:-mt-1 border px-4 py-4 shadow-lg bg-radial from-white to-white text-[#222222] font-proximanova rounded-full shrink-0 hidden md:flex"
                       size="sm"
+                      radius="full"
                       variant="bordered"
-                      className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors border-gray-300"
                       onPress={() => onMessageArtist(contract)}
                     >
                       Message Artist
                     </Button>
+                  </div>
+
+                  {/* Three-dot button that is top-right on mobile, inline on desktop */}
+                  <div className="absolute top-5 right-2 md:static md:top-auto md:right-auto flex items-center lg:pl-6 -mt-2">
+                    <span className="text-sm font-proximanova hidden md:flex">
+                      More
+                    </span>
                     <Button
                       isIconOnly
-                      variant="ghost"
-                      size="sm"
-                      className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      variant="faded"
+                      size="md"
+                      className="bg-transparent border-0 rounded-lg transition-colors hover:bg-transparent"
                       onPress={() => onMoreOptions(contract)}
                     >
                       <EllipsisHorizontalIcon className="w-5 h-5 text-gray-500" />
                     </Button>
                   </div>
-
-                  {/* Mobile More Button */}
-                  <Button
-                    isIconOnly
-                    variant="ghost"
-                    className="md:hidden p-2 shrink-0 border-0"
-                    aria-label="More options"
-                    onPress={() => onMoreOptions(contract)}
-                  >
-                    <EllipsisHorizontalIcon className="h-5 w-5 text-gray-600" />
-                  </Button>
                 </div>
-              </div>
-
-              {/* Mobile Action Buttons */}
-              <div className="md:hidden mt-4 flex gap-2">
-                <Button
-                  size="sm"
-                  className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex-1"
-                  onPress={() => onApproveWork(contract)}
-                >
-                  Approve Work
-                </Button>
-                <Button
-                  size="sm"
-                  variant="bordered"
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors border-gray-300 flex-1"
-                  onPress={() => onMessageArtist(contract)}
-                >
-                  Message Artist
-                </Button>
               </div>
             </CardBody>
           </Card>

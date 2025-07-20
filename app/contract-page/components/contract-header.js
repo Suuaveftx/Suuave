@@ -15,7 +15,7 @@ export default function ContractHeader({ title }) {
 
   return (
     <div className="max-w-6xl mx-auto md:my-8 my-4">
-      <h1 className=" text-2xl md:text-4xl font-semibold text-[#444444] flex items-center gap-2">
+      <h1 className="text-2xl md:text-4xl font-semibold flex items-center gap-2">
         {/* Show the arrow only on mobile view (sm and below) */}
         <Button
           isIconOnly

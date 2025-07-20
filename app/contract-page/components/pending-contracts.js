@@ -94,20 +94,20 @@ const PendingContracts = ({
               <CardBody className="md:px-6 px-3 py-4">
                 <div className="flex md:justify-between items-start w-full">
                   <div className="flex-1 flex items-start flex-col md:flex-row md:justify-between">
-                    <h3 className="md:text-md text-sm font-semibold text-gray-900 mb-1 md:truncate">
+                    <h3 className="md:text-md text-sm font-proximanova mb-1 md:truncate">
                       {contract.title} ({contract.id})
                     </h3>
                     <div className="md:flex items-center justify-center md:gap-1">
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm font-satoshi">
                         Pending Since -{" "}
-                        <span className="font-semibold">
+                        <span className="font-proximanova">
                           {contract.pendingSince}
                         </span>
                       </p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm font-satoshi">
                         <span className="max-[860px]:hidden">/</span> Expires in
                         -{" "}
-                        <span className="font-semibold">
+                        <span className="font-proximanova">
                           {contract.expiresIn}
                         </span>
                       </p>
