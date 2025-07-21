@@ -8,6 +8,8 @@ import ContractHeader from "./contract-header";
 import { useRouter } from "next/navigation";
 import PendingContracts from "./pending-contracts";
 import OngoingContracts from "./ongoing-contracts";
+import CompletedContractsTable from "./completed-contracts";
+import CompletedContracts from "./completed-contracts";
 
 export default function ContractPage() {
   const [activeTab, setActiveTab] = useState("pending");
@@ -137,12 +139,7 @@ export default function ContractPage() {
             />
           )}
 
-          {/*  {activeTab === "ongoing" && (
-            <div className="text-center py-12">
-              <p className="text-gray-500">No ongoing contracts</p>
-            </div>
-          )} */}
-
+          {/* Tab Content for ongoing contracts */}
           {activeTab === "ongoing" && (
             <OngoingContracts
               contracts={ongoingContracts}
@@ -157,11 +154,8 @@ export default function ContractPage() {
             />
           )}
 
-          {activeTab === "completed" && (
-            <div className="text-center py-12">
-              <p className="text-gray-500">No completed contracts</p>
-            </div>
-          )}
+          {/* Tab Content for completed contracts */}
+          {activeTab === "completed" && <CompletedContracts />}
         </div>
       </div>
     </div>
