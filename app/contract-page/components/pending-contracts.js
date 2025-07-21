@@ -119,7 +119,7 @@ const PendingContracts = ({
                       size="sm"
                       radius="full"
                       onPress={(e) => {
-                        e.stopPropagation();
+                        /*  e.stopPropagation(); */
                         onCancelContract(contract.id);
                       }}
                     >

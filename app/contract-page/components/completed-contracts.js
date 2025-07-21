@@ -17,6 +17,8 @@ import {
   MagnifyingGlassIcon,
   AdjustmentsHorizontalIcon,
   ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 
 export default function CompletedContracts() {
@@ -84,26 +86,6 @@ export default function CompletedContracts() {
       paymentValue: 500,
       status: "completed",
     },
-    {
-      id: 7,
-      date: "03 May, 2024",
-      dateValue: new Date("2024-05-03"),
-      project: "Logo Design and Branding",
-      artist: "SARAH JOHNSON",
-      payment: "$800",
-      paymentValue: 800,
-      status: "completed",
-    },
-    {
-      id: 8,
-      date: "01 May, 2024",
-      dateValue: new Date("2024-05-01"),
-      project: "Social Media Graphics Package",
-      artist: "MIKE RODRIGUEZ",
-      payment: "$450",
-      paymentValue: 450,
-      status: "completed",
-    },
   ];
 
   const columns = [
@@ -151,10 +133,12 @@ export default function CompletedContracts() {
 
   const onSearchChange = (value) => {
     setSearch(value);
+    setCurrentPage(1); // reset to the first page
   };
 
   const onSortChange = (value) => {
     setSortBy(value);
+    setCurrentPage(1); // reset to the first page
   };
 
   const renderCell = React.useCallback((contract, columnKey) => {
@@ -177,10 +161,10 @@ export default function CompletedContracts() {
           </Link>
         );
       case "payment":
-        return <div className="font-satoshi text-sm">{cellValue}</div>;
+        return <div className="font-satoshi text-sm ">{cellValue}</div>;
       case "status":
         return (
-          <Chip color="none" size="sm" variant="flat" className="capitalize">
+          <Chip color="none" size="md" variant="flat" className=" capitalize">
             {cellValue}
           </Chip>
         );
@@ -188,6 +172,16 @@ export default function CompletedContracts() {
         return cellValue;
     }
   }, []);
+
+  // Pagination calculations
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
+  const totalPages = Math.ceil(
+    filteredAndSortedContracts.length / itemsPerPage
+  );
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredAndSortedContracts.slice(startIndex, endIndex);
 
   return (
     <div className="w-full max-w-6xl mx-auto ">
@@ -275,19 +269,20 @@ export default function CompletedContracts() {
             classNames={{
               wrapper: "shadow-none rounded-none",
               th: "bg-[#CCE7F2] text-xs uppercase tracking-wide",
-              td: "py-4 px-4",
+              td: "py-4 px-1",
               tbody: "divide-y divide-gray-100",
             }}
           >
             <TableHeader columns={columns}>
               {(column) => (
-                <TableColumn key={column.uid} className="text-left">
+                <TableColumn key={column.uid} className="text-justify">
                   {column.name}
                 </TableColumn>
               )}
             </TableHeader>
             <TableBody
-              items={filteredAndSortedContracts}
+              /* items={filteredAndSortedContracts} */
+              items={currentItems}
               emptyContent={
                 <div className="text-center py-8">
                   <p className="text-gray-500">
@@ -304,7 +299,7 @@ export default function CompletedContracts() {
                   className="hover:bg-gray-50 transition-colors duration-200"
                 >
                   {(columnKey) => (
-                    <TableCell className="py-4">
+                    <TableCell className="py-3 text-left">
                       {renderCell(item, columnKey)}
                     </TableCell>
                   )}
@@ -314,6 +309,46 @@ export default function CompletedContracts() {
           </Table>
         </CardBody>
       </Card>
+
+      {/* Pagination */}
+      {totalPages > 0 && (
+        <div className="flex items-center justify-center gap-2 mt-6">
+          <div className="flex items-center gap-2">
+            {/* Results info */}
+            <span className="text-sm text-gray-600 mr-4">
+              {startIndex + 1} -{" "}
+              {Math.min(endIndex, filteredAndSortedContracts.length)} of{" "}
+              {filteredAndSortedContracts.length}
+            </span>
+
+            {/* Previous button */}
+            <Button
+              isIconOnly
+              variant="flat"
+              size="sm"
+              radius="none"
+              isDisabled={currentPage === 1}
+              onPress={() => setCurrentPage(currentPage - 1)}
+              className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer"
+            >
+              <ChevronLeftIcon className="h-4 w-4" />
+            </Button>
+
+            {/* Next button */}
+            <Button
+              isIconOnly
+              variant="flat"
+              size="sm"
+              radius="none"
+              isDisabled={currentPage === totalPages}
+              onPress={() => setCurrentPage(currentPage + 1)}
+              className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2"
+            >
+              <ChevronRightIcon className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
