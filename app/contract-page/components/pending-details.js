@@ -21,7 +21,7 @@ export default function PendingDetailsPage({ params }) {
     contractType: "Hire",
     role: "Fashion Artist",
     budget: "₦200,000",
-    duration: "Within A Month",
+    timeframe: "1 Month",
     status: "Pending",
     attachedDocuments: [
       { name: "DocTGFile", type: "document" },
@@ -91,8 +91,8 @@ export default function PendingDetailsPage({ params }) {
                     { label: "Role", value: contractData.role },
                     { label: "Budget", value: contractData.budget },
                     {
-                      label: "Contract Duration",
-                      value: contractData.duration,
+                      label: "Contract Timeframe",
+                      value: contractData.timeframe,
                     },
                   ].map((item, index) => (
                     <div
