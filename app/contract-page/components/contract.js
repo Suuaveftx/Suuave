@@ -8,7 +8,7 @@ import ContractHeader from "./contract-header";
 import { useRouter } from "next/navigation";
 import PendingContracts from "./pending-contracts";
 import OngoingContracts from "./ongoing-contracts";
-import CompletedContractsTable from "./completed-contracts";
+
 import CompletedContracts from "./completed-contracts";
 
 export default function ContractPage() {
@@ -17,26 +17,23 @@ export default function ContractPage() {
   const router = useRouter();
   const [sortBy, setSortBy] = useState("date");
 
-  const allContracts = [
+  const pendingContracts = [
     {
       title: "Modern Fashion Attire Illustration",
       id: "24t64754",
       pendingSince: "18, June, 2024",
-
       expiresIn: "2days",
     },
     {
       title: "Modern Fashion Attire Illustration",
       id: "24t64755",
       pendingSince: "18, June, 2024",
-
       expiresIn: "2days",
     },
     {
       title: "Logo Design for Tech Startup",
       id: "24t64756",
       pendingSince: "20, June, 2024",
-
       expiresIn: "1day",
     },
   ];
@@ -47,9 +44,19 @@ export default function ContractPage() {
     { id: "completed", label: "Completed Contracts", count: 5 },
   ];
 
-  const handleContractClick = (contractId) => {
-    router.push(`/contract-page/${contractId}`);
+  //handle pending contract click
+  const handlePendingClick = (contractId) => {
+    router.push(`/contract-page/pending/${contractId}`);
   };
+
+  //handle ongoing contract click
+  const handleOngoingClick = (contractId) => {
+    router.push(`/contract-page/ongoing/${contractId}`);
+  };
+
+  /*  const handleContractClick = (contractId) => {
+    router.push(`/contract-page/${contractId}`);
+  }; */
 
   const handleCancelContract = (contractId) => {
     console.log("Cancel contract:", contractId);
@@ -131,10 +138,10 @@ export default function ContractPage() {
           {/* Tab Content for pending contracts */}
           {activeTab === "pending" && (
             <PendingContracts
-              contracts={allContracts}
+              contracts={pendingContracts}
               search={search}
               onSearchChange={setSearch}
-              onContractClick={handleContractClick}
+              onContractClick={handlePendingClick}
               onCancelContract={handleCancelContract}
             />
           )}
@@ -145,7 +152,7 @@ export default function ContractPage() {
               contracts={ongoingContracts}
               search={search}
               onSearchChange={setSearch}
-              onContractClick={handleContractClick}
+              onContractClick={handleOngoingClick}
               onApproveWork={handleApproveWork}
               onMessageArtist={handleMessageArtist}
               onMoreOptions={handleMoreOptions}

@@ -20,6 +20,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
 
 export default function CompletedContracts() {
   const [search, setSearch] = useState("");
@@ -87,6 +88,13 @@ export default function CompletedContracts() {
       status: "completed",
     },
   ];
+
+  const router = useRouter();
+
+  //handle ongoing contract click
+  const handleCompletedClick = (contractId) => {
+    router.push(`/contract-page/completed/${contractId}`);
+  };
 
   const columns = [
     { name: "DATE", uid: "date" },
@@ -296,7 +304,8 @@ export default function CompletedContracts() {
               {(item) => (
                 <TableRow
                   key={item.id}
-                  className="hover:bg-gray-50 transition-colors duration-200"
+                  className="hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+                  onClick={() => handleCompletedClick(item.id)}
                 >
                   {(columnKey) => (
                     <TableCell className="py-3 text-left">

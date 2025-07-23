@@ -11,7 +11,7 @@ import { Card, CardBody, Button, Avatar, Chip } from "@heroui/react";
 import Navbar3 from "../../../components/Navbar3";
 import ContractHeader from "./contract-header";
 
-export default function ContractDetailsPage({ params }) {
+export default function PendingDetailsPage({ params }) {
   const contractId = params?.id || "24t64754"; // fallback for demo
   console.log(contractId);
   // Mock data - replace with actual data fetching based on contractId
