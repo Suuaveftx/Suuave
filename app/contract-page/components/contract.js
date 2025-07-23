@@ -77,6 +77,15 @@ export default function ContractPage() {
       endDate: "25, June, 2024",
       isLate: false, // optional
       daysLate: null, // optional, only if isLate is true
+      artist: {
+        name: "Aliu",
+        username: "aliu",
+        role: "Fashion Designer",
+        location: "Lagos, Nigeria",
+        rating: 0.0,
+        reviews: 0,
+        avatar: "/contract/designer.jpg",
+      },
     },
     {
       id: "24t64755",
@@ -85,6 +94,15 @@ export default function ContractPage() {
       endDate: "25, June, 2024",
       isLate: true,
       daysLate: "10",
+      artist: {
+        name: "Adeniji",
+        username: "adeniji",
+        role: "Fashion Designer",
+        location: "Lagos, Nigeria",
+        rating: 0.0,
+        reviews: 0,
+        avatar: "/contract/designer.jpg",
+      },
     },
     // ... more contracts
   ];

@@ -1,12 +1,26 @@
 "use client";
 
 import React from "react";
+
+import { useState } from "react";
 import {
   MapPinIcon,
   PaperClipIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
-import { Card, CardBody, Button, Avatar, Chip } from "@heroui/react";
+import {
+  Card,
+  CardBody,
+  Button,
+  Avatar,
+  Chip,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
+} from "@heroui/react";
 
 import Navbar3 from "../../../components/Navbar3";
 import ContractHeader from "./contract-header";
@@ -50,6 +64,27 @@ export default function OngoingDetailsPage({ params }) {
       default:
         return "default";
     }
+  };
+
+  // approval modal implementation
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const handleApproval = () => {
+    // You can trigger an API call or update state here
+    console.log("Contract approved");
+    onOpenChange(); // Close approval modal
+    setShowCongratulationsModal(true); // Show congratulations modal
+  };
+
+  //congrat modal
+  const [showCongratulationsModal, setShowCongratulationsModal] =
+    useState(false);
+
+  //function to handle the Rate Ocean button
+  const handleRateOcean = () => {
+    setShowCongratulationsModal(false);
+    // Handle rating functionality here
+    console.log("Rate Ocean clicked");
   };
 
   return (
@@ -144,6 +179,7 @@ export default function OngoingDetailsPage({ params }) {
                   className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
                   size="md"
                   radius="full"
+                  onPress={onOpen}
                 >
                   Approve Work
                 </Button>
@@ -213,6 +249,143 @@ export default function OngoingDetailsPage({ params }) {
           </div>
         </div>
       </div>
+      {/* Approval Modal Implemetation */}
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        classNames={{
+          base: "bg-white w-[90vw] max-w-md",
+          backdrop: "bg-black/50",
+          header: "border-b-0 pb-2",
+          body: "py-4",
+          footer: "pt-4 border-t-0",
+        }}
+        size="md"
+        backdrop="blur"
+        hideCloseButton
+        placement="center"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody>
+                <p className="text-sm font-satoshi leading-relaxed px-1 pt-2 text-left">
+                  <span className="font-semibold">Note: </span>Once you confirm
+                  this project as completed, the contract will be considered
+                  concluded and payment will be released to{" "}
+                  {contractData.artist.name}.
+                </p>
+              </ModalBody>
+              <ModalFooter className="w-full flex justify-center items-center  font-satoshi gap-5 -mt-4">
+                <Button
+                  variant="bordered"
+                  onPress={onClose}
+                  className="w-full bg-radial from-[#EAF9FF] to-[#E8E8E8] text-[#222222] font-medium rounded-full border-0 shadow-sm"
+                  radius="full"
+                  size="md"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
+                  radius="full"
+                  size="md"
+                  variant="bordered"
+                  onPress={handleApproval}
+                >
+                  Yes, I approve
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
+      {/* Congratulations Modal */}
+      <Modal
+        isOpen={showCongratulationsModal}
+        onOpenChange={setShowCongratulationsModal}
+        classNames={{
+          base: "bg-white w-[90vw] max-w-sm mx-auto",
+          backdrop: "bg-black/50",
+          body: "px-8 py-8",
+        }}
+        size="sm"
+        backdrop="blur"
+        hideCloseButton
+        placement="center"
+        isDismissable={false}
+      >
+        <ModalContent>
+          <ModalBody className="text-center">
+            {/* Celebration Icon */}
+            <div className="flex justify-center mb-6">
+              <div className="relative">
+                {/* Main party popper emoji */}
+                <div className="text-6xl mb-2">🎉</div>
+
+                {/* Decorative confetti elements */}
+                <div
+                  className="absolute -top-1 -right-1 text-lg rotate-12 animate-pulse"
+                  style={{ animationDelay: "0.2s" }}
+                >
+                  🟡
+                </div>
+                <div
+                  className="absolute -top-2 -left-2 text-sm rotate-45 animate-pulse"
+                  style={{ animationDelay: "0.4s" }}
+                >
+                  🔴
+                </div>
+                <div
+                  className="absolute -bottom-1 -right-3 text-sm -rotate-12 animate-pulse"
+                  style={{ animationDelay: "0.6s" }}
+                >
+                  🟢
+                </div>
+                <div
+                  className="absolute -bottom-2 -left-1 text-lg rotate-45 animate-pulse"
+                  style={{ animationDelay: "0.8s" }}
+                >
+                  🔵
+                </div>
+                <div
+                  className="absolute top-1 -right-4 text-xs rotate-12 animate-pulse"
+                  style={{ animationDelay: "1s" }}
+                >
+                  🟠
+                </div>
+                <div
+                  className="absolute top-2 -left-4 text-xs -rotate-45 animate-pulse"
+                  style={{ animationDelay: "1.2s" }}
+                >
+                  🟣
+                </div>
+              </div>
+            </div>
+
+            {/* Congratulations Text */}
+            <h2 className="text-4xl font-bold text-gray-900 mb-1 font-satoshi">
+              Congratulations
+            </h2>
+
+            <p className="text-gray-600 text-sm mb-8 font-satoshi leading-relaxed">
+              Your project has been successfully completed.
+            </p>
+
+            {/* Rate Ocean Button */}
+            <Button
+              className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-proximanova text-md border-0 shadow-sm"
+              size="lg"
+              radius="full"
+              variant="bordered"
+              onPress={handleRateOcean}
+            >
+              Rate Ocean
+            </Button>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }
