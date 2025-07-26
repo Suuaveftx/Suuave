@@ -141,7 +141,7 @@ export default function CompletedContracts() {
     });
 
     return sorted;
-  }, [search, sortBy]);
+  }, [search, sortBy, contracts]);
 
   const onSearchChange = (value) => {
     setSearch(value);
