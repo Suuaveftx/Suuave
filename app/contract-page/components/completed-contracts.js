@@ -112,9 +112,13 @@ export default function CompletedContracts() {
     if (search) {
       filtered = contracts.filter(
         (contract) =>
-          contract.project.toLowerCase().includes(search.toLowerCase()) ||
-          contract.artist.toLowerCase().includes(search.toLowerCase()) ||
-          contract.date.toLowerCase().includes(search.toLowerCase())
+          (contract.project ?? "")
+            .toLowerCase()
+            .includes(search.toLowerCase()) ||
+          (contract.artist ?? "")
+            .toLowerCase()
+            .includes(search.toLowerCase()) ||
+          (contract.date ?? "").toLowerCase().includes(search.toLowerCase())
       );
     }
 
@@ -150,7 +154,7 @@ export default function CompletedContracts() {
   };
 
   const renderCell = React.useCallback((contract, columnKey) => {
-    const cellValue = contract[columnKey];
+    const cellValue = contract[columnKey] ?? "";
 
     switch (columnKey) {
       case "date":
