@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import RatingStar from "../_components/RatingStar";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   EditAboutMe,
   EditAward,
@@ -41,29 +41,31 @@ const Page = () => {
   );
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [previewProfileUrl, setPreviewProfileUrl] = useState(null);
-  const [selectedAward, setSetectedAward] = useState(null);
+  const [selectedAward, setSelectedAward] = useState(null);
   const [previewAwardUrl, setPreviewAwardUrl] = useState(null);
 
-  // Function handling change of profile photo
-
-  const handleFileChange = (e) => {
+  // Generic file handler
+  const createFileHandler = (setFile, setPreviewUrl) => (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      setSelectedProfile(file);
-      setPreviewProfileUrl(URL.createObjectURL(file)); // Show preview
+      // Revoke previous URL to prevent memory leaks
+      setPreviewUrl((prevUrl) => {
+        if (prevUrl) URL.revokeObjectURL(prevUrl);
+        return URL.createObjectURL(file);
+      });
+      setFile(file);
     }
   };
 
-  // Function handling change of award photo
-
-  const handleAwardChange = (e) => {
-    const file = e.target.files?.[0];
-    console.log(file);
-    if (file) {
-      setSetectedAward(file);
-      setPreviewAwardUrl(URL.createObjectURL(file)); // Show preview
-    }
-  };
+  // Usage
+  const handleFileChange = createFileHandler(
+    setSelectedProfile,
+    setPreviewProfileUrl
+  );
+  const handleAwardChange = createFileHandler(
+    setSelectedAward,
+    setPreviewAwardUrl
+  );
 
   // See more initial function & logic
 
@@ -79,9 +81,14 @@ const Page = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const words = fullText.split(" ");
-  const displayedText =
-    isMobile && !showFull ? words.slice(0, 30).join(" ") + "..." : fullText;
+  const words = useMemo(() => fullText.split(/\s+/), [fullText]);
+
+  const displayedText = useMemo(() => {
+    if (isMobile && !showFull) {
+      return words.slice(0, 30).join(" ") + "...";
+    }
+    return fullText;
+  }, [fullText, isMobile, showFull, words]);
 
   return (
     <div className=" md:bg-[#F1F1F1] md:px-12">
