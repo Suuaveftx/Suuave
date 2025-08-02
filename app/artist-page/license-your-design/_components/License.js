@@ -12,14 +12,14 @@ const License = () => {
   
     return (
         <div>
-            <div className='lg:w-4/5 w-full max-w-[90%] px-2 py-2 lg:mx-16 mx-4 mt-8 rounded-lg bg-gradient-to-b from-[#CCE7F2] via-[#A1DCF3] to-[#49C0F0] text-[#393939]'>
+            <div className='lg:w-full w-full max-w-[90%] px-6 py-2 lg:mx-16 mx-4 mt-8 rounded-lg bg-gradient-to-b from-[#CCE7F2] via-[#A1DCF3] to-[#49C0F0] text-[#393939]'>
                 <h1 className='text-[34px] font-bold'>License Your Design</h1>
-                <p className='text-base'>Ensure you are the original creator or rightful owner of the design you wish to upload. Uploading someone else’s work without permission may infringe their copyright.
+                <p className='text-base text-[#393939]'>Ensure you are the original creator or rightful owner of the design you wish to upload. Uploading someone else’s work without permission may infringe their copyright.
                     By uploading, you confirm you have the necessary rights and permissions. <Link className='text-[#3A98BB]' href={"/"}>Learn more </Link> 
                 </p>
             </div>
             
-            <div className='bg-[#FAFAFA] border-1 border-[#DDDDDD] lg:w-4/5 w-full max-w-[90%] text-[#222222] lg:mx-16 mx-4 px-6 pt-[24px] pb-[32px] mt-7 mb-[99px] flex flex-col gap-6'>
+            <div className='bg-[#FAFAFA] border-1 border-[#DDDDDD]  w-full max-w-[90%] text-[#222222] lg:mx-16 mx-4 px-6 pt-[24px] pb-[32px] mt-7 mb-[99px] flex flex-col gap-6 rounded-[8px]'>
                 {/* Design Title & Description */}
                 <div className='flex flex-col gap-4 w-full'>
                     <Input
@@ -32,7 +32,7 @@ const License = () => {
                     />
                    <div className="w-full">
   <label htmlFor="design-description" className="block text-base font-semibold mb-2">
-    Design Description
+    Design Descriptions
   </label>
   <textarea
     id="design-description"
@@ -84,31 +84,25 @@ const License = () => {
                 {/* Asking Price */}
                 <div className='flex flex-col gap-2'>
                     <h3 className='text-lg font-semibold'>Asking Price</h3>
-                    <Input placeholder='0.0 $' className='border-2 border-[#d1d1d1] rounded-lg' />
+                    <Input placeholder='0.0 $' className='border-2 border-[#d1d1d1] rounded-lg lg:w-full lg:max-w-[50%]' />
                 </div>
                 
                 {/* Choose Sales Type */}
                 <div className='flex flex-col gap-2'>
                     <h3 className='text-lg font-semibold hidden'>Choose Sales Type</h3>
-                    <Select placeholder="Negotiable" className="border-2 border-[#d1d1d1] rounded-lg">
-    <SelectItem key="exclusive">Exclusive Rights</SelectItem>
-    <SelectItem key="non-exclusive">Non-Exclusive Rights</SelectItem>
-    <SelectItem key="subscription">Subscription</SelectItem>
-</Select>
-
-
+                    
                 </div>
                 
                 {/* Confirmation Checkbox */}
                 <div className='flex items-start gap-2'>
                     <Checkbox />
-                    <p className='text-sm'>By publishing, you confirm you have the necessary rights and permission to the ownership of this design. <a href="#" className='text-blue-600 underline'>Learn More</a></p>
+                    <p className='text-sm'>By publishing, you confirm you have the necessary rights and permission to the ownership of this design. <a href="#" className='text-[#3A98BB]'>Learn More</a></p>
                 </div>
                 <div className='flex gap-4 w-full lg:justify-start justify-center'>
                   <CustomButton text='Save as Draft' className="bg-[#F0F0F0] text-[#222222] lg:hidden" style={{
                     background: "#EDEDED"
                   }} />
-                  <CustomButton text='Publish Project' style={{
+                  <CustomButton text='Publish' style={{
                     color: "#035A7A",
                   }} />
                 </div>

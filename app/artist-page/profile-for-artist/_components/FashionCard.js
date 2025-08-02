@@ -24,14 +24,16 @@ const FashionCard = () => {
   return (
     <div className="w-full p-6">
         <div className="flex justify-end">
-        <CustomButton text="View Public Mode" className="bg-[#F0F0F0] text-[#222222]" />
+        <CustomButton text="View Visitors Mode" className="text-[#222222]" style={{
+          background: "#F0F0F0"
+        }} />
         </div>
       <div className="flex space-x-2 mb-6 border-b">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-6 py-2  mb-2 text-lg font-medium rounded-lg transition duration-300 ${
+            className={`px-6 py-2  mb-2 text-[18px] text-[#767676] font-normal rounded-lg transition duration-300 ${
               activeTab === tab.id ? "bg-[#035A7A] text-white" : " text-gray-700"
             }`}
           >
@@ -45,11 +47,11 @@ const FashionCard = () => {
    {[...Array(6)].map((_, i) => (
      <div
        key={i}
-       className="relative border  rounded-lg shadow w-64 h-60 bg-cover bg-center flex items-end"
+       className="relative border  rounded-lg shadow w-full h-60 bg-cover bg-center flex items-end"
        style={{ backgroundImage: `url('/dev-images/FashionImg.png')` }}
      >
        {/* Three Dots Menu (Horizontal) */}
-       <div className="absolute top-0 left-56 p-1 rounded-md w-10 flex justify-center cursor-pointer">
+       <div className="absolute top-0 left-64 p-1 rounded-md w-10 flex justify-center cursor-pointer">
   <ThreeDotsDropdown />
 </div>
 

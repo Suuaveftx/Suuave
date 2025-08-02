@@ -3,23 +3,24 @@ import React from "react";
 import CustomButton from "./CustomButton";
 import { MdOutlineBookmarkBorder } from "react-icons/md";
 
-
 /**
- * ProposalButtons component to render a reusable "Send Proposal" and "Save Job" button block.
+ * BtnProposals component to render a reusable "Send Proposal" and "Save Job" button block.
  *
  * @param {Object} props - Component props.
  * @param {string} [props.sendText] - Text for the send button (default: "Send Proposal").
  * @param {string} [props.saveText] - Text for the save button (default: "Save Job").
  * @param {string} [props.sendHref] - Href for the send button (default: "/artist-page/send-proposal").
  * @param {React.ReactNode} [props.saveIcon] - Icon for the save button (default: bookmark icon).
+ * @param {boolean} [props.showSaveIcon] - Whether to show the save icon (default: true).
  * @param {Object} [props.saveButtonStyle] - Inline styles for the save button.
  * @param {string} [props.containerClassName] - Additional classes for the outer container.
  */
-const  BtnProposals = ({
+const BtnProposals = ({
   sendText = "Send Proposal",
   saveText = "Save Job",
   sendHref = "/artist-page/send-proposal",
   saveIcon = <MdOutlineBookmarkBorder className="w-5 h-5" color="#3A98BB" />,
+  showSaveIcon = true,
   saveButtonStyle = {},
   containerClassName = "",
 }) => {
@@ -38,7 +39,7 @@ const  BtnProposals = ({
       <div>
         <CustomButton
           className="w-48 text-[#767676] flex items-center justify-center gap-2"
-          icon={saveIcon}
+          icon={showSaveIcon ? saveIcon : null}
           text={saveText}
           style={{
             background: "transparent",

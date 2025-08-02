@@ -5,19 +5,19 @@ const ProposalTables = () => {
   const proposals = [
     { id: 1, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
     { id: 2, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
-    { id: 3, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'inactive' },
+    { id: 3, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Inactive' },
     { id: 4, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
     { id: 5, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
-    { id: 6, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'inactive' },
+    { id: 6, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Inactive' },
     { id: 7, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
     { id: 8, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
-    { id: 9, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'inactive' },
+    { id: 9, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Inactive' },
     { id: 10, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
   ];
 
   const statusColors = {
     Active: 'text-green-800',
-    inactive: 'text-red-500',
+    Inactive: 'text-red-500',
   };
 
   const handleDelete = (id) => {
@@ -34,7 +34,7 @@ const ProposalTables = () => {
    <div className='bg-[#FAFAFA] w-full max-w-[1149px] lg:ml-16 lg:mr-[299px] rounded-2xl mb-[239px] lg:px-8 lg:py-8 px-0'>
     <div className='flex  justify-between font-bold px-8 py-4 border-b-1'>
       <h4>Job Posts</h4> 
-      <h4>Date</h4>
+      <h4 className='ml-8'>Date</h4>
       <h4>Status</h4>
     </div>
     <div>

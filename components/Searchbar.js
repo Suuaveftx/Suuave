@@ -5,7 +5,7 @@ import { SearchIcon } from "./SearchIcon";
 
 const SearchBar = ({ placeholder = "Search...", width , className = "" }) => {
   return (
-    <div className={`w-full ml-4 rounded-full px-4 py-2 ${className}`}>
+    <div className={`w-full rounded-full  ${className}`}>
       <Input
         classNames={{
           base: `${width} h-10`,
