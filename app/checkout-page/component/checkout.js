@@ -13,16 +13,23 @@ import {
   Divider,
   Alert,
   Image,
+  Modal,
+  ModalContent,
+  ModalBody,
 } from "@heroui/react";
 import { CreditCard, Info, Shield } from "lucide-react";
 import ContractHeader from "../../contract-page/components/contract-header";
 import Navbar3 from "../../../components/Navbar3";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import {
+  CheckCircleIcon,
+  ExclamationTriangleIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 export const CheckoutPage = () => {
   const [selectedCountry, setSelectedCountry] = useState("Nigeria");
   const [paymentMethod, setPaymentMethod] = useState("credit");
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const countries = [
     { value: "Nigeria", label: "Nigeria" },
@@ -30,6 +37,15 @@ export const CheckoutPage = () => {
     { value: "UK", label: "United Kingdom" },
     { value: "Canada", label: "Canada" },
   ];
+
+  const handlePayment = () => {
+    setIsSuccessModalOpen(true);
+  };
+
+  const handleBackToHome = () => {
+    setIsSuccessModalOpen(false);
+    // Add navigation logic here
+  };
 
   return (
     <div className=" bg-[#FAFAFA]">
@@ -255,6 +271,7 @@ export const CheckoutPage = () => {
                   className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-semibold rounded-full border-0 shadow-md mt-6"
                   size="lg"
                   radius="full"
+                  onPress={handlePayment}
                 >
                   Make Payment
                 </Button>
@@ -288,6 +305,42 @@ export const CheckoutPage = () => {
             </Card>
           </div>
         </div>
+
+        {/* Success Modal */}
+        <Modal
+          isOpen={isSuccessModalOpen}
+          onClose={() => setIsSuccessModalOpen(false)}
+          placement="center"
+          backdrop="blur"
+          hideCloseButton
+          className="mx-4"
+        >
+          <ModalContent className="max-w-md">
+            <ModalBody className="p-8 text-center">
+              <div className="mb-6">
+                <div className="w-16 h-16 bg-green-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircleIcon size={32} className="text-white" />
+                </div>
+                <h2 className="text-2xl font-semibold mb-3">
+                  Payment Successful
+                </h2>
+                <p className="text-gray-600 text-sm leading-relaxed font-satoshi">
+                  Complete file containing all specifications and related
+                  documents will be sent to your email.
+                </p>
+              </div>
+
+              <Button
+                className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-semibold rounded-full border-0 shadow-md mt-4"
+                size="lg"
+                radius="full"
+                onPress={handleBackToHome}
+              >
+                Back to Home
+              </Button>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       </div>
     </div>
   );
