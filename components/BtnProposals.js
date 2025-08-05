@@ -2,16 +2,8 @@
 import React from "react";
 import CustomButton from "./CustomButton";
 import { MdOutlineBookmarkBorder } from "react-icons/md";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-} from "@heroui/react";
-import Image from "next/image";
+
+import ProposalPopUp from "../app/artist-page/send-proposal/_components/ProposalPopUp";
 
 /**
  * ProposalButtons component to render a reusable "Send Proposal" and "Save Job" button block.
@@ -31,13 +23,10 @@ const BtnProposals = ({
   saveIcon = <MdOutlineBookmarkBorder className="w-5 h-5" color="#3A98BB" />,
   saveButtonStyle = {},
   containerClassName = "",
+  handleSubmitProposal,
+  isOpen,
+  onOpenChange,
 }) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  const handleSubmitProposal = () => {
-    onOpen();
-  };
-
   return (
     <>
       <div
@@ -67,48 +56,9 @@ const BtnProposals = ({
         </div>
       </div>
 
-      {/* Modal */}
-      <Modal
-        size="xs"
-        hideCloseButton
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="w-full flex justify-center">
-                <Image
-                  src="/artise/check-circle.svg"
-                  alt="icon"
-                  width={70}
-                  height={70}
-                />
-              </ModalHeader>
-              <ModalBody className="w-full flex flex-col items-center gap-1">
-                <h1 className="text-[#393939] font-bold text-2xl">
-                  Proposal Sent!
-                </h1>
-                <p className="text-[#767676] font-normal text-sm">
-                  Your proposal has been sent to Tolu Yola.
-                </p>
-              </ModalBody>
-              <ModalFooter className="w-full flex justify-center">
-                <Button
-                  className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A] font-bold text-sm"
-                  variant="light"
-                  onPress={onClose}
-                >
-                  OK
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      <ProposalPopUp isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );
 };
 
 export default BtnProposals;
-

@@ -1,10 +1,25 @@
+"use client";
+
 import React from "react";
 import BtnProposals from "../../../components/BtnProposals";
 import Abouttheclient from "../../../components/Abouttheclient";
 import SendProposal from "./_components/SendProposal";
 import SendProposalsBtnMobile from "./_components/SendProposalsBtnMobile";
-
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+} from "@heroui/react";
 const Page = () => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const handleSubmitProposal = () => {
+    onOpen();
+  };
   return (
     <div className="grid grid-cols-10 gap-2">
       {" "}
@@ -18,7 +33,11 @@ const Page = () => {
         <div className="hidden lg:flex mb-2 lg:mb-4">
           {" "}
           {/* tighter spacing */}
-          <BtnProposals />
+          <BtnProposals
+            handleSubmitProposal={handleSubmitProposal}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+          />
         </div>
 
         <div className="hidden lg:flex mt-2 lg:mt-4">
@@ -27,7 +46,11 @@ const Page = () => {
           <Abouttheclient />
         </div>
         <div className="mb-[77px]">
-          <SendProposalsBtnMobile />
+          <SendProposalsBtnMobile
+            handleSubmitProposal={handleSubmitProposal}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+          />
         </div>
       </div>
     </div>
