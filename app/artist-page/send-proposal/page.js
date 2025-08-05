@@ -6,12 +6,7 @@ import Abouttheclient from "../../../components/Abouttheclient";
 import SendProposal from "./_components/SendProposal";
 import SendProposalsBtnMobile from "./_components/SendProposalsBtnMobile";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
+
   useDisclosure,
 } from "@heroui/react";
 const Page = () => {
