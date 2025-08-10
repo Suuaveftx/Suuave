@@ -165,7 +165,7 @@ const FashionDesignersCard = ({
           </div>
         </div>
       </CardBody>
-      <CardFooter className="grid grid-cols-[1fr_0.5fr] gap-2 items-start w-full">
+      <CardFooter className="flex justify-between items-start w-full mx-0 px-1">
         <div className="space-y-3">
           <Link href={`/fashion-designers/${productID}`}>
             <p className="line-clamp-2 font-semibold text-sm hover:underline">
@@ -187,7 +187,7 @@ const FashionDesignersCard = ({
             </PopoverContent>
           </Popover>
         </div>
-        <p className=" text-right font-semibold text-customDarkBlue">
+        <p className=" text-right font-satoshi md:text-md text-sm text-[#3A98BB]">
           {formatToNaira(price)}
         </p>
       </CardFooter>

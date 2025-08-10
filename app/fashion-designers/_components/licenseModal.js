@@ -20,7 +20,7 @@ export default function LicenseModal() {
   return (
     <>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
+        <ModalContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-[90vw] w-96 z-50">
           {(onClose) => (
             <>
               <ModalBody className="py-5">

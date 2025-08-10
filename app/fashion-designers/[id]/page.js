@@ -10,7 +10,7 @@ import {
   Chip,
   Avatar,
 } from "@heroui/react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { SvgCautionIcon } from "../../../utils/SvgIcons";
 import { HiDotsHorizontal } from "react-icons/hi";
@@ -19,6 +19,8 @@ import { IoBookmark } from "react-icons/io5";
 import { TiLocation } from "react-icons/ti";
 import LicenseModal from "../_components/licenseModal";
 import ProductGallery from "../_components/designer-details/ProductGallery";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const ProductDetails = ({ params }) => {
   // const { id } = params; // Extract 'id' from the params object
@@ -47,7 +49,32 @@ const ProductDetails = ({ params }) => {
     },
   };
 
-  const [isLicensed, setIsLicensed] = useState(true);
+  const [isLicensed, setIsLicensed] = useState(false);
+
+  const router = useRouter();
+  // unwrap params
+  const resolvedParams = React.use(params);
+  const id = resolvedParams.id;
+
+  const handleGetLicense = () => {
+    router.push(`/license-flow?id=${id}`);
+  };
+
+  useEffect(() => {
+    const storedLicenses = localStorage.getItem("licenses");
+    if (storedLicenses) {
+      const licenses = JSON.parse(storedLicenses);
+      if (licenses[id]) {
+        setIsLicensed(true);
+      }
+    }
+  }, [id]);
+
+  //handle download
+  const handleDownload = () => {
+    alert("Download started");
+    // later you can add actual download logic here
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_0.54fr] gap-12 p-6 max-w-[1500px] mx-auto ">
@@ -98,8 +125,8 @@ const ProductDetails = ({ params }) => {
               </div>
 
               <Button
-                onPress={() => setIsLicensed(!isLicensed)}
-                className="rounded-full w-[70%] bg-[#C3A130] mx-auto mt-10 text-white text-lg h-12 px-9 py-1 shadow-md font-semibold flex  "
+                className="rounded-full w-[70%]  text-[#FFF9EE] bg-[#C3A130] text-lg h-12 px-9 py-1 shadow-md  font-semibold mx-auto mt-10"
+                onPress={handleDownload}
               >
                 Download Files
               </Button>
@@ -133,16 +160,16 @@ const ProductDetails = ({ params }) => {
                   background:
                     "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
                 }}
-                onPress={() => setIsLicensed(!isLicensed)}
+                onPress={() => handleGetLicense()}
               >
-                Get License
+                {isLicensed ? "Licensed" : "Get License"}
               </Button>
             </CardBody>
           )}
         </Card>
         {/* Artist Info */}
         <div className="p-4 border rounded-2xl bg-white shadow-sm px-5 pb-8">
-          <p className="text-center font-semibold  border-b pb-3 ">
+          <p className="text-center font-proximanova text-3xl border-b pb-3 ">
             About the Artist
           </p>
           <div className="flex flex-col items-center mt-5">
@@ -154,24 +181,24 @@ const ProductDetails = ({ params }) => {
             <p className="text-sm ">{product.artist.role}</p>
             <div className="flex gap-2 mt-3">
               <TiLocation className="size-5 fill-[#878787]" />
-
               <p className="text-sm ">{product.artist.location}</p>
             </div>
 
             <div className="mt-2 flex items-center space-x-1 text-yellow-500">
-              <span className="text-sm text-gray-600 mr-1">Rating</span>
-              {[...Array(5)].map((_, i) => (
-                <FaStar
-                  key={i}
-                  className={
-                    i < product.artist.rating
-                      ? "text-yellow-400"
-                      : "text-gray-300"
-                  }
-                />
-              ))}
-              <span className="text-sm text-[#3A98BB] pl-1">
-                ({product.artist.reviews} Reviews)
+              <span className="text-sm text-gray-600 mr-1">Ratings : </span>
+
+              <FaStar
+                className={
+                  product.artist.rating > 0
+                    ? "text-yellow-500"
+                    : "text-gray-300"
+                }
+              />
+              <span className="text-[#888888] text-sm font-satoshi">
+                {product.artist.rating.toFixed(1)}
+              </span>
+              <span className="text-sm text-[#3A98BB]">
+                ({product.artist.reviews} Verified Reviews)
               </span>
             </div>
 
@@ -188,7 +215,7 @@ const ProductDetails = ({ params }) => {
           </div>
         </div>
       </div>
-      <LicenseModal />
+      {!isLicensed && <LicenseModal />}
     </div>
   );
 };
