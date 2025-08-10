@@ -184,21 +184,22 @@ const ProductDetails = ({ params }) => {
               <p className="text-sm ">{product.artist.location}</p>
             </div>
 
-            <div className="mt-2 flex items-center space-x-1 text-yellow-500">
-              <span className="text-sm text-gray-600 mr-1">Ratings : </span>
-
-              <FaStar
-                className={
-                  product.artist.rating > 0
-                    ? "text-yellow-500"
-                    : "text-gray-300"
-                }
-              />
-              <span className="text-[#888888] text-sm font-satoshi">
-                {product.artist.rating.toFixed(1)}
-              </span>
+            <div className="flex gap-2 items-center mt-2">
+              <span className="text-sm text-gray-500">Ratings</span>
+              <div className="flex items-center gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <FaStar
+                    key={i}
+                    className={
+                      i < product.artist.rating
+                        ? "text-yellow-500"
+                        : "text-gray-300"
+                    }
+                  />
+                ))}
+              </div>
               <span className="text-sm text-[#3A98BB]">
-                ({product.artist.reviews} Verified Reviews)
+                ({product.artist.reviews} Reviews)
               </span>
             </div>
 
