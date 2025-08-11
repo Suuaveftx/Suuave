@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Input,
   Card,
@@ -180,6 +180,22 @@ const MyProjects = () => {
     setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev));
   };
 
+  const [isMobileView, setIsMobileView] = useState(false);
+
+  useEffect(() => {
+    // Set initial state based on window size when component mounts
+    const handleResize = () => setIsMobileView(window.innerWidth <= 876);
+
+    // Set initial value on mount
+    handleResize();
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
       <div className="min-h-screen ">
@@ -210,60 +226,17 @@ const MyProjects = () => {
             {currentProjects.length === 0 ? (
               <p className="text-gray-500 text-center">No projects found.</p>
             ) : (
-              currentProjects.map((project) => (
-                <Card key={project.id} className="w-full">
-                  <CardBody className="p-4">
-                    <div className="flex items-start justify-between font-satoshi">
-                      {/* Project Info */}
-                      <div className="flex-1">
-                        <h3 className="md:text-xl font-medium text-[#222222] text-lg  mb-2">
-                          {project.title}
-                        </h3>
-                        <div className="flex flex-col items-start justify-start gap-2 text-sm ">
-                          <div className="flex items-center gap-2">
-                            <span>Posted:</span>
-                            <span className="font-proximanova text-md">
-                              {project.date}
-                            </span>
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <span>Status:</span>
-                            <Chip
-                              size="md"
-                              color="success"
-                              variant="transparent"
-                              className="text-[#056D16] p-0 m-0 text-md"
-                            >
-                              {project.status}
-                            </Chip>
-                          </div>
+              currentProjects.map((project) =>
+                isMobileView ? (
+                  <Card key={project.id} className="w-full">
+                    <CardBody className="pb-8">
+                      <div className="flex items-start justify-between font-satoshi">
+                        {/* Project Info */}
+                        <div className="flex-1">
+                          <h3 className="md:text-xl font-medium text-[#222222] text-lg  mb-2">
+                            {project.title}
+                          </h3>
                         </div>
-                      </div>
-
-                      {/* Stats */}
-                      <div className="flex items-start gap-6 text-sm">
-                        <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
-                          <span className="text-[#3A98BB] font-montserrat font-medium text-md">
-                            {project.proposals}
-                          </span>
-                          <span className="text-gray-500">Proposals</span>
-                        </div>
-
-                        <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
-                          <span className="text-[#767676] font-medium text-md">
-                            {project.replies}
-                          </span>
-                          <span className="text-gray-500">Replies</span>
-                        </div>
-
-                        <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
-                          <span className="text-[#767676] font-medium text-md">
-                            {project.hired}
-                          </span>
-                          <span className="text-gray-500">Hired</span>
-                        </div>
-
                         {/* More Options */}
                         <Dropdown>
                           <DropdownTrigger>
@@ -297,10 +270,145 @@ const MyProjects = () => {
                           </DropdownMenu>
                         </Dropdown>
                       </div>
-                    </div>
-                  </CardBody>
-                </Card>
-              ))
+
+                      {/* Stats */}
+
+                      <div className="flex items-start  justify-between gap-2 my-2">
+                        <span className="font-satoshi">Posted:</span>
+                        <span className="font-proximanova text-md">
+                          {project.date}
+                        </span>
+                      </div>
+
+                      <div className="flex items-start justify-between gap-2 my-2">
+                        <span className="font-satoshi">Status:</span>
+                        <Chip
+                          size="md"
+                          color="success"
+                          variant="transparent"
+                          className="text-[#056D16] p-0 m-0 text-md"
+                        >
+                          {project.status}
+                        </Chip>
+                      </div>
+
+                      <div className="flex  items-start justify-between  py-1 my-2">
+                        <span className="font-satoshi">Proposals</span>
+
+                        <span className="text-[#3A98BB] font-montserrat font-medium text-md">
+                          {project.proposals}
+                        </span>
+                      </div>
+
+                      <div className="flex  items-start justify-between    py-1 my-2">
+                        <span className="font-satoshi">Replies</span>
+                        <span className="text-[#767676] font-medium text-md">
+                          {project.replies}
+                        </span>
+                      </div>
+
+                      <div className="flex  items-start justify-between    py-1 my-2">
+                        <span className="font-satoshi">Hired</span>
+                        <span className="text-[#767676] font-medium text-md">
+                          {project.hired}
+                        </span>
+                      </div>
+                    </CardBody>
+                  </Card>
+                ) : (
+                  <Card key={project.id} className="w-full">
+                    <CardBody className="p-4">
+                      <div className="flex items-start justify-between font-satoshi">
+                        {/* Project Info */}
+                        <div className="flex-1">
+                          <h3 className="md:text-xl font-medium text-[#222222] text-lg  mb-2">
+                            {project.title}
+                          </h3>
+                          <div className="flex flex-col items-start justify-start gap-2 text-sm ">
+                            <div className="flex items-center gap-2">
+                              <span>Posted:</span>
+                              <span className="font-proximanova text-md">
+                                {project.date}
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <span>Status:</span>
+                              <Chip
+                                size="md"
+                                color="success"
+                                variant="transparent"
+                                className="text-[#056D16] p-0 m-0 text-md"
+                              >
+                                {project.status}
+                              </Chip>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Stats */}
+                        <div className="flex items-start gap-6 text-sm">
+                          <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
+                            <span className="text-[#3A98BB] font-montserrat font-medium text-md">
+                              {project.proposals}
+                            </span>
+                            <span className="text-gray-500">Proposals</span>
+                          </div>
+
+                          <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
+                            <span className="text-[#767676] font-medium text-md">
+                              {project.replies}
+                            </span>
+                            <span className="text-gray-500">Replies</span>
+                          </div>
+
+                          <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
+                            <span className="text-[#767676] font-medium text-md">
+                              {project.hired}
+                            </span>
+                            <span className="text-gray-500">Hired</span>
+                          </div>
+
+                          {/* More Options */}
+                          <Dropdown>
+                            <DropdownTrigger>
+                              <Button
+                                variant="transparent"
+                                isIconOnly
+                                size="sm"
+                                radius="md"
+                                className="text-gray-400 hover:text-gray-600  py-0 shadow-sm border-1 border-[#EAEAEA] "
+                              >
+                                <EllipsisHorizontalIcon className="w-5 h-5" />
+                              </Button>
+                            </DropdownTrigger>
+                            <DropdownMenu aria-label="Project actions">
+                              <DropdownItem
+                                key="edit"
+                                color="default"
+                                startContent={
+                                  <PencilIcon className="w-4 h-4" />
+                                }
+                              >
+                                Edit
+                              </DropdownItem>
+                              <DropdownItem
+                                key="delete"
+                                className="text-danger"
+                                color="danger"
+                                startContent={<TrashIcon className="w-4 h-4" />}
+                                onPress={() => handleDeleteProject(project.id)}
+                              >
+                                Delete
+                              </DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+                        </div>
+                      </div>
+                    </CardBody>
+                  </Card>
+                )
+              )
             )}
           </div>
 
