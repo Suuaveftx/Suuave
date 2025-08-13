@@ -18,7 +18,7 @@ const SendProposal = () => {
       <div className='lg:hidden'>
       <FaChevronLeft color='#878787' />
       </div>
-    <h4 className='font-bold lg:text-[34px] lg:text-[#222222] text-[22px] text-[#444444] lg:mx-16 mx-4'>Send Proposals</h4>
+    <h4 className='font-bold lg:text-[34px] lg:text-[#222222] text-[22px] text-[#444444] lg:mx-16 mx-4'>Send Proposal</h4>
     </div>
     <div className='bg-[#FAFAFA] lg:flex lg:flex-col hidden text-[#222222] px-8 py-8 lg:ml-16 mx-4 w-[90%] mt-[39.68px] rounded-2xl border-1 border-[#EAEAEA] '>
       <h4 className='font-bold leading-7'>Related Job</h4>
@@ -50,18 +50,20 @@ const SendProposal = () => {
       <div className='lg:flex  font-bold hidden text-2xl leading-6 rounded-2xl'>
         Write Proposal
       </div>
-      <div className=''>
-       <Textarea
-  className="lg:w-full w-[90%] h-auto px-[10px] py-[10px] border-[#D1D1D1]"
-  label="Cover Letter"
-  labelPlacement="outside"
-  placeholder="Write your proposal..."
-  variant="bordered"
-  classNames={{
-    label: "text-[#222222] font-semibold text-base tracking-[0.33px]", // 👈 Change label color here
-  }}
-/>
-      </div>
+    <div className="w-full">
+  <label
+    htmlFor="cover-letter"
+    className="block text-[#222222] font-semibold text-base tracking-[0.33px] mb-2"
+  >
+    Cover Letter
+  </label>
+  <textarea
+    id="cover-letter"
+    placeholder="Write your proposal..."
+    className="lg:w-full w-[90%] min-h-[150px] px-[10px] py-[10px] border border-[#D1D1D1] rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-[#3A98BB] text-sm text-[#222222]"
+  ></textarea>
+</div>
+
      <div className=''>
       <h4 className="text-base font-semibold">
         Attach File <span className="text-sm text-gray-500">(Optional)</span>

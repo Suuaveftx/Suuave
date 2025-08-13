@@ -14,11 +14,14 @@ const Page = () => {
 
       {/* Sidebar */}
       <div className="col-span-10 lg:col-span-3 lg:mt-28 flex flex-col">
-        <div className="hidden lg:flex mb-2 lg:mb-4"> {/* tighter spacing */}
-          <BtnProposals />
+        <div className="hidden lg:flex mb-2 lg:mb-4">
+          <BtnProposals
+          sendText='Send Proposal'
+          saveText='Cancel'
+          showSaveIcon={false} />
         </div>
 
-        <div className="hidden lg:flex mt-2 lg:mt-4"> {/* tighter spacing */}
+        <div className="hidden lg:flex mt-2 lg:mt-4"> 
           <Abouttheclient />
         </div>
         <div className='mb-[77px]'>

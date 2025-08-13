@@ -11,28 +11,31 @@ export default function PaymentTabs() {
       {/* Tabs and Sort Dropdown Grouped */}
       <div className="w-full flex justify-between items-center border-b border-gray-300 pb-2">
         {/* Tabs Section */}
-        <Tabs
-          aria-label="Payment Options"
-          selectedKey={selectedTab}
-          onSelectionChange={setSelectedTab}
-          className="!shadow-none"
-          variant="underlined"
-        >
-          <Tab
-            key="earnings"
-            title="Earning History"
-            className="px-4 py-3 text-gray-500 border-b-2 border-transparent 
-             data-[selected=true]:text-[#3A98BB]"
-          />
-          <Tab
-            key="payouts"
-            title="Payout History"
-            className="px-4 py-3 text-gray-500 border-b-2 border-transparent 
-             data-[selected=true]:text-[#3A98BB]"
-          />
-        </Tabs>
+  <Tabs
+  aria-label="Payment Options"
+  selectedKey={selectedTab}
+  onSelectionChange={setSelectedTab}
+  className="!shadow-none"
+  variant="underlined"
+>
+  <Tab
+    key="earnings"
+    title="Earning History"
+    className="py-3 text-gray-500 border-b-2 border-transparent
+      data-[selected=true]:text-[#3A98BB] data-[selected=true]:border-[#3A98BB]"
+  />
+  <Tab
+    key="payouts"
+    title="Payout History"
+    className="py-3 text-gray-500 border-b-2 border-transparent
+      data-[selected=true]:text-[#3A98BB] data-[selected=true]:border-[#3A98BB]"
+  />
+</Tabs>
+
+
 
         {/* Sort Dropdown Section */}
+        <div className="hidden lg:flex">
         <button className="flex items-center border border-[#DDDDDD] px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">
           <span className="text-gray-500 mr-2">Sort by |</span>
           <select className="bg-transparent outline-none">
@@ -40,6 +43,7 @@ export default function PaymentTabs() {
             <option value="amount">Amount</option>
           </select>
         </button>
+        </div>
       </div>
 
       {/* Display Content Based on Selected Tab */}

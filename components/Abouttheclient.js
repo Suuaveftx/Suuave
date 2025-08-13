@@ -23,16 +23,16 @@ const Abouttheclient = () => {
 <span className='tracking-[0.33px] text-[#767676]'>Lagos, Nigeria</span>
     </div>
      <div className='flex items-center gap-2'>
-        <span className='tracking-[0.33px] text-[#767676]'>Ratings</span>
+        <span className='tracking-[0.33px] text-[#767676]'>Ratings:</span>
 <div className="flex">
-      {Array(5).fill(null).map((_, index) => (
+      {Array(1).fill(null).map((_, index) => (
         <FaStar key={index} color="#F8B73B" />
       ))}
     </div>
-    <span className='text-sm text-[#3A98BB] tracking-[0.33px] leading-[18px]'>(5 Reviews)</span>
+    <span className='text-sm text-[#3A98BB] tracking-[0.33px] leading-[18px]'><span className='text-[#767676]'>5.0</span>(5 Reviews)</span>
     </div>
       <div>
-        <span className='text-[#767676] tracking-[0.33px] leading-[18px]'>Member since 12, June 2024</span>
+        <span className='text-[#767676] tracking-[0.33px] leading-[18px]'>Member since 12 June, 2024</span>
     </div>
     </div>
     <div className='flex flex-col gap-2 '>
@@ -42,7 +42,7 @@ const Abouttheclient = () => {
         </div>
         <div className='flex items-center gap-2 text-[#76767676] '>
             <span className='font-bold text-[#222222]'>14</span>
-             <span>Artist Hired</span>
+             <span>Artists Hired</span>
         </div>
     </div>
     </div>

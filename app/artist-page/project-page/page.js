@@ -1,7 +1,6 @@
 
 import React from "react";
 
-import Image from "next/image";
 import Footer3 from "../../../components/Footer3";
 import SearchBar from "../../../components/Searchbar";
 import ProjectPage from "./_components/Project-Page";
@@ -18,9 +17,10 @@ const Page = () => {
           Complete your profile Setup
         </h3>
       </div>
-
-      <div className="w-full">
+      <div className="flex justify-center w-full lg:mx-0 mx-4">
+      <div className="lg:w-full lg:max-w-[75%] w-[85%]">
         <SearchBar />
+      </div>
       </div>
       <div>
         <ProjectPage />
