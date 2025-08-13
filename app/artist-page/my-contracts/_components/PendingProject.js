@@ -25,12 +25,11 @@ const PendingProjects = () => {
   return (
     <div>
       {/* Desktop Warning */}
-      <div className="lg:flex items-start space-x-3 p-3 rounded-lg hidden">
+      <div className="lg:flex items-start space-x-3 p-3 rounded-lg hidden bg-[#FFF8EB] w-[50%]">
         <AlertTriangle className="text-[#FF8024] w-6 h-6 mt-1" />
         <p className="text-sm text-[#FF8024]">
           These contracts are yet to be accepted. <br />
-          Artists have 2 days to accept the offer, else the contract will be
-          canceled automatically.
+          Artists have 5 days to accept offer, to avoid automatic cancellation.
         </p>
       </div>
 
@@ -59,6 +58,7 @@ const PendingProjects = () => {
             <div className="lg:flex lg:flex-row lg:items-center lg:gap-8">
               <h3 className="lg:text-base tracking-[0.33px] lg:text-[#222222] text-[#3A98BB] font-semibold flex items-center justify-between lg:justify-start lg:mb-0 mb-2">
                 {project.title}
+                <span className="text-sm text-[#222222] font-bolod lg:ml-1 lg:flex hidden">({project.id})</span>
                 {/* Mobile-only three dots beside title */}
                 <div className="ml-2 flex lg:hidden relative">
                   <button
@@ -89,16 +89,17 @@ const PendingProjects = () => {
                 </div>
               </h3>
               <div className="lg:flex lg:flex-row flex-col lg:gap-2">
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-[#222222]">
                 Pending since: {project.pendingSince}
               </p>
-              <p className="text-sm text-gray-500">
-                Expires in: {project.expiresIn}
+              <p className="text-sm text-[#222222]">
+                Expires in: <span className="font-medium">{project.expiresIn}</span>
               </p>
               </div>
             </div>
 
             {/* Accept Button (Desktop Only) */}
+            <div className="flex gap-2">
             <div className="hidden lg:flex items-center gap-6">
               <CustomButton
                 variant="outline"
@@ -123,7 +124,7 @@ const PendingProjects = () => {
 
               />
             </div>
-              <div className="ml-2 lg:flex hidden  relative">
+              <div className="lg:flex hidden  relative">
                   <button
                     onClick={() =>
                       setDropdownOpen(
@@ -149,6 +150,7 @@ const PendingProjects = () => {
                       </button>
                     </div>
                   )}
+                </div>
                 </div>
           </div>
         ))}

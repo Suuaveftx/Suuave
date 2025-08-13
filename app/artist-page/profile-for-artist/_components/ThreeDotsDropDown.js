@@ -24,7 +24,7 @@ const ThreeDotsDropdown = () => {
       {/* Three Dots Button */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="absolute top-3 right-3 bg-black bg-opacity-50 p-2 rounded-md w-10 flex justify-center cursor-pointer"
+        className="absolute top-3 right-3 bg-black bg-opacity-50 px-1 py-1 rounded-md w-10 flex justify-center cursor-pointer"
       >
         <MoreHorizontal size={18} className="text-white" />
       </div>
