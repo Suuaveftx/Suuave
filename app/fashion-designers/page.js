@@ -263,9 +263,7 @@ const Page = () => {
         >
           <Tab
             key="recent"
-            title={
-              <p className="flex items-center space-x-2">Recently Posted</p>
-            }
+            title={<p className="flex items-center space-x-2">Recently</p>}
           >
             <div className="grid grid-cols-2 gap-3 mt-6 lg:gap-6 lg:grid-cols-4  ">
               {cardsData.map((card, index) => (
@@ -287,10 +285,10 @@ const Page = () => {
             key="saved"
             title={
               <div className="flex items-center space-x-2">
-                <span>Saved Posts</span>
-                <Chip size="sm" variant="faded">
+                <span>Saved</span>
+                {/* <Chip size="sm" variant="faded">
                   6
-                </Chip>
+                </Chip> */}
               </div>
             }
           >

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Input, Textarea, Select, Checkbox, SelectItem } from "@heroui/react";
+"use client";
 import { CiImageOn } from "react-icons/ci";
 import CustomButton from "../../../../components/CustomButton";
 import Link from "next/link";

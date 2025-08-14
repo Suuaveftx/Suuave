@@ -56,22 +56,22 @@ export const homePageCardData = [
 export const fashionSection = [
   {
     title: "Register",
-    text: "Join over 5000 other artists and illustrators by signing up with your email address and through Google. Easy and seamless sign-up.",
+    text: "Join over 5000 other artists and sign up seamlessly.",
     image: "/dev-images/register.png",
   },
   {
     title: "Apply For Jobs",
-    text: "Browse job postings from top designers/brands seeking African fashion expertise and apply for projects that match your skills and style.",
+    text: "Browse job boards and apply for exciting projects with fashion designers and brands. Target opportunities that showcase your unique skills and design style.",
     image: "/dev-images/Apply.png",
   },
   {
     title: "Monetize Your Vision",
-    text: "Upload your designs and earn income by licensing them to top fashion designers and brands",
+    text: "Upload your designs and earn income by licensing them to top fashion designers and brands.",
     image: "/dev-images/publish.png",
   },
   {
     title: "Get Paid",
-    text: "Your payment is automatically processed after a satisfactory work done and when your designs are licensed.",
+    text: "Your payment is automatically processed after project completion and licensing.",
     image: "/dev-images/Cash.png",
   },
 ];
@@ -79,17 +79,17 @@ export const fashionSection = [
 export const fashionDsignRightSection = [
   {
     title: "Register",
-    text: "Build your brand profile, and unlock access to a world of exceptional African talents.",
+    text: "Build your brand profile, and unlock access to a world of exceptional African talents.",
     btnText: "Get Started",
   },
   {
     title: "Hire Effortlessly",
-    text: "Post your project needs and find the artists who resonate with your brand, all in one place.",
+    text: "Post your project needs and find the artists who resonate with your brand, all in one place.",
     btnText: "Post Jobs",
   },
   {
     title: "Explore and License",
-    text: "Discover stunning designs and elevate your brand with authentic African creativity.",
+    text: "Discover stunning designs and elevate your brand with authentic African creativity.",
     btnText: "Explore",
   },
 ];

@@ -107,7 +107,7 @@ const Page = () => {
 
   return (
     <div className="max-w-[1500px] mx-auto p-6">
-      <p className="font-bold text-2xl mb-6">Post A Job</p>
+      <p className="font-bold text-2xl mb-6">Post Project</p>
       <Form
         className="w-full gap-7 bg-white border-2 border-gray-200 rounded-md p-7 "
         onReset={() => setAction("reset")}
@@ -179,7 +179,7 @@ const Page = () => {
           labelPlacement="outside"
           name="fashionStyle"
           defaultItems={fashionDesignerSkills}
-          label="Fashion Style"
+          label="Design Style"
           variant="bordered"
           placeholder="Select from the options provided or type when necessary"
         >
@@ -233,9 +233,22 @@ const Page = () => {
             <SelectItem key={item.key}>{item.label}</SelectItem>
           ))}
         </Select>
-        <div className="flex items-center gap-4 w-40">
-          <Button type="reset">Cancle</Button>
-          <Button type="submit">Publish</Button>
+        <div className="flex items-center justify-start gap-4 w-40">
+          <Button type="reset" size="lg" variant="flat">
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            size="lg"
+            variant="outlined"
+            className="  text-customWhiteBgText text-lg  shadow-md  font-semibold "
+            style={{
+              background:
+                "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
+            }}
+          >
+            Publish
+          </Button>
         </div>
       </Form>
     </div>

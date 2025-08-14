@@ -24,26 +24,23 @@ const data = [
     earnings: "$700",
     status: "Completed",
   },
-  {
-    date: "12 May 2024",
-    project: "Modern Fashion Attire Illustration",
-    client: "SHOLA ADIN",
-    earnings: "$700",
-    status: "Completed",
-  },
+  
 ];
 
 export default function CompletedContracts() {
   return (
     <>
       {/* Search & Sort */}
-      <div className="flex flex-wrap items-center gap-2">
-        <SearchBar
-          placeholder="Search by job title"
-          className="w-full lg:max-w-[780px] flex-1"
-        />
-        <SortByDropdown />
-      </div>
+      <div className="flex items-center justify-between">
+  <SearchBar
+    placeholder="Search by job title"
+    className="w-full lg:max-w-[65%] flex-1"
+  />
+  <div className="lg:mt-4">
+    <SortByDropdown  />
+  </div>
+</div>
+
 
 <div className="w-full overflow-x-auto">
   <table className="min-w-[640px] w-full bg-[#FAFAFA] border-[#EAEAEA] shadow-md mt-6 border border-collapse">
