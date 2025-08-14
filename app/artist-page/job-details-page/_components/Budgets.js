@@ -22,7 +22,7 @@ const Budgets = () => {
           <FaRegClock color='#878787' />
         <span className='text-lg text-[#767676]'>Timeframe -</span>
         </div>
-        <span className='font-normal text-base text-[#222222]]'>2 Days</span>
+        <span className='font-normal text-base text-[#222222]'>2 Days</span>
         </div>
      
        
