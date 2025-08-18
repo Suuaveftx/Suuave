@@ -21,8 +21,9 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
-import ContractHeader from "../../contract-page/components/contract-header";
-import Navbar3 from "../../../components/Navbar3";
+import Navbar3 from "../../../../components/Navbar3";
+import ContractHeader from "../../../artist-page/my-contracts/components/contract-header";
+
 
 const MyProjects = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -199,7 +200,7 @@ const MyProjects = () => {
   return (
     <>
       <div className="min-h-screen ">
-        <Navbar3 />
+       
         <div className="max-w-6xl mx-auto bg-gray-50 p-6 ">
           {/* Header */}
           <ContractHeader title="My Projects" />

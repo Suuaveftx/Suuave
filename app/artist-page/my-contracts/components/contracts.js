@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Tabs, Tab } from "@heroui/react";
-import Navbar3 from "../../../components/Navbar3";
+import Navbar3 from "../../../../components/Navbar3";
 import ContractHeader from "./contract-header";
 
 import { useRouter } from "next/navigation";

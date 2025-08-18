@@ -3,7 +3,7 @@
 import React from "react";
 import { Button, Card, CardBody } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
-import Navbar3 from "../../../components/Navbar3";
+import Navbar3 from "../../../../components/Navbar3";
 import ContractHeader from "./contract-header";
 
 export default function RetainArtist() {

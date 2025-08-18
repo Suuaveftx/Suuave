@@ -18,7 +18,7 @@ import {
   ModalBody,
 } from "@heroui/react";
 import { CreditCard, Info, Shield } from "lucide-react";
-import ContractHeader from "../../contract-page/components/contract-header";
+import ContractHeader from "../../artist-page/my-contracts/components/contract-header";
 import Navbar3 from "../../../components/Navbar3";
 import {
   CheckCircleIcon,

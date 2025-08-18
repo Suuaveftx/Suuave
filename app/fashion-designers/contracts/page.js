@@ -1,4 +1,6 @@
-import ContractPage from "./components/contract";
+import ContractPage from "./components/contracts";
+
+
 
 export default function Page() {
   return <ContractPage />;
