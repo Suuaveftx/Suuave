@@ -10,8 +10,8 @@ export default function RetainArtist() {
   const searchParams = useSearchParams();
   const artist = searchParams.get("artist");
   return (
-    <div className="bg-[#EAEAEA] font-satoshi">
-      <Navbar3 />
+    <div className="font-satoshi">
+   
       <ContractHeader title="Retain Artist" />
       <div className="min-h-screen max-w-6xl mx-auto  flex flex-col items-start justify-start ">
         <Card className="w-full max-w-xl md:max-w-2xl p-6 bg-white shadow-md rounded-xl">

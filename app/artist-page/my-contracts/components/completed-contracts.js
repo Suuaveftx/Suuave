@@ -93,7 +93,7 @@ export default function CompletedContracts() {
 
   //handle ongoing contract click
   const handleCompletedClick = (contractId) => {
-    router.push(`/contract-page/completed/${contractId}`);
+    router.push(`/artist-page/my-contracts/completed/${contractId}`);
   };
 
   const columns = [

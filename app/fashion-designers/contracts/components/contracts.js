@@ -121,10 +121,10 @@ export default function ContractPage() {
   const handleMoreOptions = (contract) => {
     console.log("More options for:", contract.title);
     // Add your more options logic here
-  };
+  }
   return (
     <>
-      <ContractHeader title="Contracts" />
+      <ContractHeader title="My Contracts" />
       <div className="max-w-6xl mx-auto bg-white px-2 md:px-8 my-6">
         <div className="py-8 font-satoshi">
           {/* Tab Navigation */}
@@ -183,5 +183,5 @@ export default function ContractPage() {
         </div>
       </div>
     </>
-  );
+  )
 }

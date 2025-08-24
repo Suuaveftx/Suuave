@@ -4,8 +4,9 @@ import React from "react";
 import {
   MagnifyingGlassIcon,
   ExclamationTriangleIcon,
-  AdjustmentsHorizontalIcon,
+
   EllipsisHorizontalIcon,
+  AdjustmentsVerticalIcon,
 } from "@heroicons/react/24/outline";
 import { Input, Card, CardBody, Button, Alert } from "@heroui/react";
 
@@ -56,7 +57,7 @@ const PendingContracts = ({
             type="text"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search by job title"
+            placeholder="Search project"
             startContent={
               <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
             }
@@ -74,7 +75,7 @@ const PendingContracts = ({
             className="md:hidden p-2 border-0 -ml-4"
             aria-label="Filter"
           >
-            <AdjustmentsHorizontalIcon className="h-5 w-5 text-gray-600" />
+            <AdjustmentsVerticalIcon className="h-5 w-5 text-gray-600" />
           </Button>
         </div>
       </div>
@@ -94,7 +95,7 @@ const PendingContracts = ({
               <CardBody className="md:px-6 px-3 py-4">
                 <div className="flex md:justify-between items-start w-full">
                   <div className="flex-1 flex items-start flex-col md:flex-row md:justify-between">
-                    <h3 className="md:text-md text-sm font-proximanova mb-1 md:truncate">
+                    <h3 className="md:text-md text-sm font-proximanova mb-1 line-clamp-1">
                       {contract.title} ({contract.id})
                     </h3>
                     <div className="md:flex items-center justify-center md:gap-1">
@@ -119,8 +120,8 @@ const PendingContracts = ({
                       size="sm"
                       radius="full"
                       onPress={(e) => {
-                        /*  e.stopPropagation(); */
-                        onCancelContract(contract.id);
+                        /*  e.stopPropagation() */
+                        onCancelContract(contract.id)
                       }}
                     >
                       Cancel
@@ -152,7 +153,7 @@ const PendingContracts = ({
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
 export default PendingContracts;

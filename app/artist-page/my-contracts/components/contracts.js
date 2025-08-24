@@ -46,12 +46,12 @@ export default function ContractPage() {
 
   //handle pending contract click
   const handlePendingClick = (contractId) => {
-    router.push(`/contract-page/pending/${contractId}`);
+    router.push(`/artist-page/my-contracts/pending/${contractId}`);
   };
 
   //handle ongoing contract click
   const handleOngoingClick = (contractId) => {
-    router.push(`/contract-page/ongoing/${contractId}`);
+    router.push(`/artist-page/my-contracts/ongoing/${contractId}`);
   };
 
   /*  const handleContractClick = (contractId) => {

@@ -2,15 +2,17 @@
 
 import React from "react";
 import {
-  MapPinIcon,
+
   PaperClipIcon,
-  StarIcon,
+
 } from "@heroicons/react/24/outline";
 import { Card, CardBody, Button, Avatar, Chip } from "@heroui/react";
 
 
 import ContractHeader from "./contract-header";
 import { useRouter } from "next/navigation";
+import { TiLocation } from "react-icons/ti";
+import { FaStar } from "react-icons/fa6";
 
 export default function CompletedDetailsPage({ params }) {
   const contractId = params?.id || "24t64754"; // fallback for demo
@@ -105,7 +107,7 @@ export default function CompletedDetailsPage({ params }) {
                         <span
                           className={`${
                             item.label === "Status" ? "lg:hidden" : ""
-                          } md:text-md text-sm w-32 mb-1 sm:mb-0 font-light`}
+                          } md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
                         >
                           {item.label} -
                         </span>
@@ -124,15 +126,16 @@ export default function CompletedDetailsPage({ params }) {
                     ))}
                   </div>
 
-                  <Chip
-                    variant="flat"
-                    size="lg"
-                    className={`${getStatusColor(
-                      contractData.status
-                    )} font-medium  border-1  rounded-3xl bg-transparent hidden lg:block`}
-                  >
-                    {contractData.status}
-                  </Chip>
+                    {/* Status */}
+                                    <Chip
+                                      variant="flat"
+                                      size="lg"
+                                      className={`${getStatusColor(
+                                        contractData.status
+                                      )} font-medium  border-1 hidden lg:flex rounded-full bg-transparent`}
+                                    >
+                                      {contractData.status}
+                                    </Chip>
                 </div>
               </CardBody>
             </Card>
@@ -165,17 +168,17 @@ export default function CompletedDetailsPage({ params }) {
           <div className="flex space-y-2 gap-2 flex-col-reverse lg:flex-col">
             {/* Action Buttons */}
             <Card
-              className="bg-white border border-gray-200 hidden"
+              className="bg-white border border-gray-200"
               shadow="none"
             >
               <CardBody className="lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col">
                 <Button
                   className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
-                  size="md"
+                  size="lg"
                   radius="full"
                   onPress={() =>
                     router.push(
-                      `/contract-page/retain?artist=${contractData.artist.username}`
+                      `/fashion-designers/contracts/retain?artist=${contractData.artist.username}`
                     )
                   }
                 >
@@ -184,7 +187,7 @@ export default function CompletedDetailsPage({ params }) {
                 <Button
                   variant="bordered"
                   className="w-full bg-radial from-[#EAF9FF] to-[#E8E8E8] text-[#222222] font-medium rounded-full border-0 shadow-sm"
-                  size="md"
+                  size="lg"
                   radius="full"
                 >
                   Learn More
@@ -219,55 +222,31 @@ export default function CompletedDetailsPage({ params }) {
                   </p>
 
                   <div className="flex items-center justify-center gap-1 text-sm  text-[#222222] mb-2">
-                    <MapPinIcon className="h-5 w-5 text-[#878787]" />
-                    <span>{contractData.artist.location}</span>
-                  </div>
+                                                      <TiLocation className="size-5 fill-[#878787]" />
+                                                      <span>{contractData.artist.location}</span>
+                                    </div>
+                                  
+                                                    <div className="flex items-center justify-center gap-2 mb-6  text-[#222222]">
+                                                      <span>Ratings</span>
+                                                       <div className="flex items-center gap-1">
+                                                                      {[...Array(5)].map((_, i) => (
+                                                                        <FaStar
+                                                                          key={i}
+                                                                          className={
+                                                                            i < contractData.artist.rating
+                                                                              ? "text-yellow-500"
+                                                                              : "text-gray-300"
+                                                                          }
+                                                                        />
+                                                                      ))}
+                                                                    </div>
+                                                      <span className="text-sm text-[#3A98BB]">
+                                                        ({contractData.artist.reviews} Reviews)
+                                                      </span>
+                                                    </div>
 
-                  <div className="flex items-center justify-center gap-2 mb-6  text-[#222222]">
-                    <span>Ratings</span>
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <StarIcon
-                          key={i}
-                          className={`h-4 w-4 ${
-                            i < Math.floor(contractData.artist.rating)
-                              ? "text-yellow-400 fill-current"
-                              : "text-[#ACACAC] border-none"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-sm text-[#3A98BB]">
-                      ({contractData.artist.reviews} Reviews)
-                    </span>
-                  </div>
-                  {/* job posted , hired and payment made */}
-                  <div className="w-full flex flex-col items-center gap-8">
-                    <div>
-                      <p className="text-[#222222] font-bold text-xl">
-                        {contractData.artist.jobsPosted}
-                      </p>
-                      <p className="text-[#767676] font-normal text-base">
-                        Jobs Posted
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[#222222] font-bold text-xl">
-                        {contractData.artist.hire}
-                      </p>
-                      <p className="text-[#767676] font-normal text-base">
-                        Hire
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[#222222] font-bold text-xl">
-                        {contractData.artist.paymentMade}
-                      </p>
-                      <p className="text-[#767676] font-normal text-base">
-                        Payment Made
-                      </p>
-                    </div>
-                  </div>
+                
+                  
                 </div>
               </CardBody>
             </Card>
