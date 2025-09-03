@@ -36,6 +36,9 @@ export default function CompletedDetailsPage({ params }) {
       rating: 0.0,
       reviews: 0,
       avatar: "/contract/designer.jpg",
+      jobsPosted: 1,
+      hire: 0,
+      paymentMade: 0,
     },
   };
 
@@ -43,11 +46,11 @@ export default function CompletedDetailsPage({ params }) {
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
       case "pending":
-        return "warning";
+        return "text-[#035A7A]";
       case "ongoing":
-        return "primary";
+        return "text-[#279711]";
       case "completed":
-        return "success";
+        return "text-[#949494]";
       default:
         return "default";
     }
@@ -70,46 +73,66 @@ export default function CompletedDetailsPage({ params }) {
                   <h2 className="md:text-2xl text-lg font-semibold text-gray-900">
                     Contract Details
                   </h2>
+                </div>
+
+                <div className="flex justify-between items-start">
+                  <div className="space-y-4">
+                    {[
+                      { label: "Job Title", value: contractData.jobTitle },
+                      {
+                        label: "Status",
+                        value: contractData.status,
+                      },
+                      {
+                        label: "Contract Number",
+                        value: contractData.contractNumber,
+                      },
+                      {
+                        label: "Contract Type",
+                        value: contractData.contractType,
+                      },
+                      { label: "Role", value: contractData.role },
+                      { label: "Budget", value: contractData.budget },
+                      {
+                        label: "Contract Timeframe",
+                        value: contractData.timeframe,
+                      },
+                    ].map((item, index) => (
+                      <div
+                        key={index}
+                        className="grid grid-cols-[8rem_1fr] gap-4 items-start"
+                      >
+                        <span
+                          className={`${
+                            item.label === "Status" ? "lg:hidden" : ""
+                          } md:text-md text-sm w-32 mb-1 sm:mb-0 font-light`}
+                        >
+                          {item.label} -
+                        </span>
+                        <span
+                          className={`${
+                            item.label === "Status"
+                              ? `${getStatusColor(
+                                  contractData.status
+                                )} lg:hidden`
+                              : ""
+                          } md:text-md text-sm font-proximanova`}
+                        >
+                          {item.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
                   <Chip
-                    color={getStatusColor(contractData.status)}
                     variant="flat"
                     size="lg"
-                    className="font-medium text-[#035A7A]"
+                    className={`${getStatusColor(
+                      contractData.status
+                    )} font-medium  border-1  rounded-3xl bg-transparent hidden lg:block`}
                   >
                     {contractData.status}
                   </Chip>
-                </div>
-
-                <div className="space-y-4">
-                  {[
-                    { label: "Job Title", value: contractData.jobTitle },
-                    {
-                      label: "Contract Number",
-                      value: contractData.contractNumber,
-                    },
-                    {
-                      label: "Contract Type",
-                      value: contractData.contractType,
-                    },
-                    { label: "Role", value: contractData.role },
-                    { label: "Budget", value: contractData.budget },
-                    {
-                      label: "Contract Timeframe",
-                      value: contractData.timeframe,
-                    },
-                  ].map((item, index) => (
-                    <div
-                      key={index}
-                      className="grid grid-cols-[8rem_1fr] gap-4 items-start"
-                    >
-                      <span className="md:text-md text-sm w-32 mb-1 sm:mb-0 font-light ">
-                        {item.label} -
-                      </span>
-                      <span className="md:text-md text-sm font-proximanova">
-                        {item.value}
-                      </span>
-                    </div>
-                  ))}
                 </div>
               </CardBody>
             </Card>
@@ -141,7 +164,10 @@ export default function CompletedDetailsPage({ params }) {
           {/* Right Column - Artist Info & Actions */}
           <div className="flex space-y-2 gap-2 flex-col-reverse lg:flex-col">
             {/* Action Buttons */}
-            <Card className="bg-white border border-gray-200" shadow="none">
+            <Card
+              className="bg-white border border-gray-200 hidden"
+              shadow="none"
+            >
               <CardBody className="lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col">
                 <Button
                   className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
@@ -214,6 +240,33 @@ export default function CompletedDetailsPage({ params }) {
                     <span className="text-sm text-[#3A98BB]">
                       ({contractData.artist.reviews} Reviews)
                     </span>
+                  </div>
+                  {/* job posted , hired and payment made */}
+                  <div className="w-full flex flex-col items-center gap-8">
+                    <div>
+                      <p className="text-[#222222] font-bold text-xl">
+                        {contractData.artist.jobsPosted}
+                      </p>
+                      <p className="text-[#767676] font-normal text-base">
+                        Jobs Posted
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[#222222] font-bold text-xl">
+                        {contractData.artist.hire}
+                      </p>
+                      <p className="text-[#767676] font-normal text-base">
+                        Hire
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[#222222] font-bold text-xl">
+                        {contractData.artist.paymentMade}
+                      </p>
+                      <p className="text-[#767676] font-normal text-base">
+                        Payment Made
+                      </p>
+                    </div>
                   </div>
                 </div>
               </CardBody>

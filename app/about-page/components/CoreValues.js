@@ -3,15 +3,15 @@ import Image from "next/image";
 const CoreValues = () => {
   return (
     <section className="pt-[76px]  pb-[113px] lg:px-[67.18px] bg-[#002938] font-proximanova">
-      <div className=" ">
-        <div className="flex justify-center lg:justify-start   mb-[40.7px]">
-          <h2 className=" text-sm lg:text-xl font-bold text-[#EEEEEE]  bg-[#004967] px-[10px] py-2">
-            OUR CORE VALUES
+      <div className="  ">
+        <div className="flex  lg:items-start justify-center lg:justify-start lg:gap-5  mb-[40.7px]">
+          <h2 className=" text-sm lg:text-2xl font-bold text-[#EEEEEE]  bg-[#004967] px-[10px] py-2">
+            Our Core Values
           </h2>
 
           <Image
             src="/icons/ve.svg"
-            alt=""
+            alt="icon"
             width={109}
             height={25.75}
             className="hidden lg:block"

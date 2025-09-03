@@ -18,10 +18,10 @@ const TeamSection = () => {
       linkedinUrl: "https://www.linkedin.com/in/chinedu-ozulu/",
     },
     {
-      name: "WISDOM LAMODOT",
+      name: "FEMI BANDELE",
       title: "Co-founder & CTO",
       details: "Full Stack Developer",
-      imageSrc: "/team/lamodots.JPG",
+      imageSrc: "/team/femi.svg",
       linkedinUrl: "https://www.linkedin.com/in/lamodot/",
     },
     {
