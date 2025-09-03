@@ -18,10 +18,10 @@ const TeamSection = () => {
       linkedinUrl: "https://www.linkedin.com/in/chinedu-ozulu/",
     },
     {
-      name: "FEMI BANDELE",
+      name: "WISDOM LAMODOT",
       title: "Co-founder & CTO",
       details: "Full Stack Developer",
-      imageSrc: "/team/femi.svg",
+      imageSrc: "/team/lamodots.JPG",
       linkedinUrl: "https://www.linkedin.com/in/lamodot/",
     },
     {
@@ -39,13 +39,7 @@ const TeamSection = () => {
       imageSrc: "/team/five.jpg", //
       linkedinUrl: "https://www.linkedin.com/in/rahman-engineer/",
     },
-    {
-      name: "CHINONSO",
-      title: "Software Engineer",
-      details: "Software Engineer and Electrical & Electronics Engineer",
-      imageSrc: "/team/two.jpg",
-      linkedinUrl: "https://www.linkedin.com/in/chinonso-engineer/",
-    },
+   
   ];
 
   return (
@@ -59,36 +53,13 @@ const TeamSection = () => {
           <br />
           shared mission and vision
         </p>
-        <div className=" grid grid-cols-2 lg:grid-cols-3 gap-[19px] lg:gap-x-12 lg:gap-y-[58.75px] xl:gap-[70px] pt-[103.75px]  ">
+        <div className=" grid grid-cols-2  lg:grid-cols-3 gap-[19px] lg:gap-x-12 lg:gap-y-[58.75px] xl:gap-[70px] pt-[103.75px]  ">
           {teamMembers.map((member, index) => (
             <div
               className=" lg:p-6 text-center lg:text-left w-full lg:flex lg:flex-col lg:justify-between lg:h-full "
               key={index}
             >
-              {/* <div className="w-[200px] h-[200px] rounded-t-[100px] rounded-br-[100px]">
-                <Image
-                  src={member.imageSrc}
-                  alt={member.name}
-                  layout="fill"
-                  objectFit="cover"
-                  className="aspect-square w-full"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-800 mb-1">
-                  {member.name}
-                </h3>
-                <p className="text-sm font-semibold text-[#3A98BB] mb-1">
-                  {member.title}
-                </p>
-                <p className="text-xs text-gray-500 mb-2">{member.details}</p>
-                <a
-                  href={member.linkedinUrl}
-                  className="text-black hover:text-gray-400 mr- hover:scale-110 transition-transform duration-300"
-                >
-                  <FaLinkedin className="w-5 h-5 fill-current ml-15" />
-                </a>
-              </div> */}
+             
               <div className=" mx-auto lg:mx-0 w-[100px] h-[100px] lg:w-[200px] lg:h-[200px]">
                 <Image
                   src={member.imageSrc}
