@@ -55,10 +55,10 @@ const CreateAccount = () => {
   };
 
   return (
-    <div className="rounded-md">
+    <div className="rounded-md border  p-5 bg-[#FAFAFA] shadow-lg">
       <h1 className="font-bold text-center text-2xl">Create New Account</h1>
-      <div className="w-96 justify-center mx-auto">
-        <button className="w-full mt-4 flex items-center justify-center gap-2 p-2 border rounded-lg shadow-sm bg-white hover:bg-gray-100 transition">
+      <div className="w-full justify-center mx-auto">
+        <button className="w-full mt-4 flex items-center justify-center gap-2 p-2 border rounded-xl shadow-sm bg-white hover:bg-gray-100 transition">
           <Image
             src="/dev-images/Google.png"
             alt="Google"
@@ -69,13 +69,20 @@ const CreateAccount = () => {
           Continue with Google
         </button>
       </div>
+      <Image
+        src="/svg/create-or-border.svg"
+        alt="icon"
+        width={300}
+        height={100}
+        className="w-full mt-7"
+      />
       <Form
-        className="w-full items-start space-y-4 mt-4 pl-16"
+        className="w-full items-start space-y-6 mt-7 "
         validationErrors={errors}
         onReset={() => setSubmitted(null)}
         onSubmit={onSubmit}
       >
-        <div className="flex flex-col gap-4 max-w-md">
+        <div className="flex flex-col gap-4 w-full ">
           <div className="flex gap-4">
             <Input
               isRequired
@@ -89,6 +96,7 @@ const CreateAccount = () => {
               labelPlacement="outside"
               name="firstName"
               placeholder="First Name"
+              className="border border-[#D1D1D1] rounded-xl"
             />
 
             <Input
@@ -102,6 +110,7 @@ const CreateAccount = () => {
               labelPlacement="outside"
               name="lastName"
               placeholder="Last Name"
+              className="border border-[#D1D1D1] rounded-xl"
             />
           </div>
 
@@ -117,6 +126,7 @@ const CreateAccount = () => {
             labelPlacement="outside"
             name="username"
             placeholder="ocean"
+            className="border border-[#D1D1D1] rounded-xl"
           />
 
           <Input
@@ -132,10 +142,11 @@ const CreateAccount = () => {
             name="email"
             placeholder="ocean@gmail.com"
             type="email"
+            className="border border-[#D1D1D1] rounded-xl"
           />
 
           <Input
-            className="w-full"
+            className="w-full "
             endContent={
               <button
                 aria-label="toggle password visibility"
@@ -197,12 +208,15 @@ const CreateAccount = () => {
               </button>
             }
             isRequired
-            label="Password"
+            label="Create Password"
             labelPlacement="outside"
             placeholder="Enter your password"
             type={isVisible ? "text" : "password"}
             variant="bordered"
           />
+          <p className="font-normal text-sm text-[#767676]">
+            *Password must contain at least 8 characters.
+          </p>
           <Checkbox
             isRequired
             classNames={{
@@ -225,18 +239,19 @@ const CreateAccount = () => {
             <span className="text-danger text-small">{errors.terms}</span>
           )}
 
-          <div className="flex flex-col w-full">
-            <CustomButton
-              text="Create Account"
-              className="w-96"
+          <div className="flex flex-col items-center w-full">
+            <Link
               href={"/onboarding/email-confirmation"}
-            />
+              className="w-96 text-[#035A7A] cursor-pointer rounded-xl py-2 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+            >
+              Create Account
+            </Link>
 
             <div className="mt-4 text-center pb-8">
               <p>
                 Already have an account?{" "}
-                <Link href={"/auth/login"}>
-                  <span className="text-[#9FD2E5]">Login</span>
+                <Link href={"/auth/login"} className="text-[#9FD2E5]">
+                  Login
                 </Link>
               </p>
             </div>

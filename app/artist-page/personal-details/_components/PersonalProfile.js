@@ -1,20 +1,23 @@
-'use client';
-import Image from 'next/image';
-import { useState } from 'react';
-import PersonalDetailsForm from './PersonalDetailsForm';
-import SkillsForm from './SkillsForm';
-import Awards from './AwardsForm';
-import AwardsForm from './AwardsForm';
+"use client";
+import Image from "next/image";
+import { useState } from "react";
+import PersonalDetailsForm from "./PersonalDetailsForm";
+import SkillsForm from "./SkillsForm";
+import Awards from "./AwardsForm";
+import AwardsForm from "./AwardsForm";
 
 const PersonalProfile = () => {
-  const [activeLink, setActiveLink] = useState('Full Name');
-  const [activeProfessionalLink, setActiveProfessionalLink] = useState('Skills');
-  const [activeAwardsLink, setActiveAwardsLink] = useState('Names');
+  const [activeLink, setActiveLink] = useState("Full Name");
+  const [activeProfessionalLink, setActiveProfessionalLink] =
+    useState("Skills");
+  const [activeAwardsLink, setActiveAwardsLink] = useState("Names");
   const [isPersonalDropdownOpen, setIsPersonalDropdownOpen] = useState(false);
-  const [isProfessionalDropdownOpen, setIsProfessionalDropdownOpen] = useState(false);
+  const [isProfessionalDropdownOpen, setIsProfessionalDropdownOpen] =
+    useState(false);
   const [isAwardsDropdownOpen, setIsAwardsDropdownOpen] = useState(false);
   const [activeFormStep, setActiveFormStep] = useState(1); // Track current form step
-  const [isEditingPersonalDetails, setIsEditingPersonalDetails] = useState(true); // Track editing state
+  const [isEditingPersonalDetails, setIsEditingPersonalDetails] =
+    useState(true); // Track editing state
 
   const togglePersonalDropdown = () => {
     setIsPersonalDropdownOpen(!isPersonalDropdownOpen);
@@ -37,6 +40,7 @@ const PersonalProfile = () => {
 
   return (
     <div className="p-6 bg-[#F9F9F9] rounded-lg max-w-max mx-auto space-y-6">
+      <p className="text-[#222222] font-bold text-2xl">Profile Setting</p>
       <div className="flex space-x-8 items-start">
         <div className="flex flex-col w-64">
           <Image
@@ -64,9 +68,27 @@ const PersonalProfile = () => {
             </h4>
             {isPersonalDropdownOpen && (
               <nav className="flex flex-col space-y-2 mt-2 w-full text-[12px]">
-                {['Full Name', 'Email Address', 'Phone Number', 'Nationality', 'Current City', 'Date of Birth', 'About Yourself'].map((link) => (
-                  <div key={link} onClick={() => setActiveLink(link)} className={`flex items-center cursor-pointer py-2 transition duration-200 ease-in-out pl-6 relative ${activeLink === link ? 'text-[#3A98BB]' : 'text-gray-800'}`}>
-                    <div className={`absolute left-0 h-full w-0.5 ${activeLink === link ? 'bg-[#3A98BB]' : 'bg-gray-300'}`} />
+                {[
+                  "Full Name",
+                  "Email Address",
+                  "Phone Number",
+                  "Nationality",
+                  "Current City",
+                  "Date of Birth",
+                  "About Yourself",
+                ].map((link) => (
+                  <div
+                    key={link}
+                    onClick={() => setActiveLink(link)}
+                    className={`flex items-center cursor-pointer py-2 transition duration-200 ease-in-out pl-6 relative ${
+                      activeLink === link ? "text-[#3A98BB]" : "text-gray-800"
+                    }`}
+                  >
+                    <div
+                      className={`absolute left-0 h-full w-0.5 ${
+                        activeLink === link ? "bg-[#3A98BB]" : "bg-gray-300"
+                      }`}
+                    />
                     <span>{link}</span>
                   </div>
                 ))}
@@ -87,9 +109,28 @@ const PersonalProfile = () => {
             </h4>
             {isProfessionalDropdownOpen && (
               <nav className="flex flex-col space-y-2 mt-2 w-full text-[12px]">
-                {['Skills', 'Website (Optional)', 'Portfolio', 'Availability'].map((link) => (
-                  <div key={link} onClick={() => setActiveProfessionalLink(link)} className={`flex items-center cursor-pointer py-2 transition duration-200 ease-in-out pl-6 relative ${activeProfessionalLink === link ? 'text-[#3A98BB]' : 'text-gray-800'}`}>
-                    <div className={`absolute left-0 h-full w-0.5 ${activeProfessionalLink === link ? 'bg-[#3A98BB]' : 'bg-gray-300'}`} />
+                {[
+                  "Skills",
+                  "Website (Optional)",
+                  "Portfolio",
+                  "Availability",
+                ].map((link) => (
+                  <div
+                    key={link}
+                    onClick={() => setActiveProfessionalLink(link)}
+                    className={`flex items-center cursor-pointer py-2 transition duration-200 ease-in-out pl-6 relative ${
+                      activeProfessionalLink === link
+                        ? "text-[#3A98BB]"
+                        : "text-gray-800"
+                    }`}
+                  >
+                    <div
+                      className={`absolute left-0 h-full w-0.5 ${
+                        activeProfessionalLink === link
+                          ? "bg-[#3A98BB]"
+                          : "bg-gray-300"
+                      }`}
+                    />
                     <span>{link}</span>
                   </div>
                 ))}
@@ -110,9 +151,28 @@ const PersonalProfile = () => {
             </h4>
             {isAwardsDropdownOpen && (
               <nav className="flex flex-col space-y-2 mt-2 w-full text-[12px]">
-                {['Names', 'Date Issued/Awarded', 'Issued/Awarded by', 'Upload Certificate/Award'].map((link) => (
-                  <div key={link} onClick={() => setActiveAwardsLink(link)} className={`flex items-center cursor-pointer py-2 transition duration-200 ease-in-out pl-6 relative ${activeAwardsLink === link ? 'text-[#3A98BB]' : 'text-gray-800'}`}>
-                    <div className={`absolute left-0 h-full w-0.5 ${activeAwardsLink === link ? 'bg-[#3A98BB]' : 'bg-gray-300'}`} />
+                {[
+                  "Names",
+                  "Date Issued/Awarded",
+                  "Issued/Awarded by",
+                  "Upload Certificate/Award",
+                ].map((link) => (
+                  <div
+                    key={link}
+                    onClick={() => setActiveAwardsLink(link)}
+                    className={`flex items-center cursor-pointer py-2 transition duration-200 ease-in-out pl-6 relative ${
+                      activeAwardsLink === link
+                        ? "text-[#3A98BB]"
+                        : "text-gray-800"
+                    }`}
+                  >
+                    <div
+                      className={`absolute left-0 h-full w-0.5 ${
+                        activeAwardsLink === link
+                          ? "bg-[#3A98BB]"
+                          : "bg-gray-300"
+                      }`}
+                    />
                     <span>{link}</span>
                   </div>
                 ))}
@@ -122,25 +182,24 @@ const PersonalProfile = () => {
         </div>
 
         <div className="text-[#444444] p-6 rounded-md w-3/4">
-  {activeFormStep === 1 && (
-    <PersonalDetailsForm
-      setActiveLink={setActiveLink}
-      setActiveProfessionalLink={setActiveProfessionalLink}
-      setActiveFormStep={setActiveFormStep}
-      isEditing={isEditingPersonalDetails}
-      setIsEditing={setIsEditingPersonalDetails}
-      handleContinue={() => setActiveFormStep(2)} // Move to Skills Form
-    />
-  )}
-  {activeFormStep === 2 && (
-    <SkillsForm 
-      setActiveProfessionalLink={setActiveProfessionalLink} // Assuming you want to pass this prop
-      handleContinue={() => setActiveFormStep(3)} // Move to Awards after submission
-    />
-  )}
-  {activeFormStep === 3 && <AwardsForm />}
-</div>
-
+          {activeFormStep === 1 && (
+            <PersonalDetailsForm
+              setActiveLink={setActiveLink}
+              setActiveProfessionalLink={setActiveProfessionalLink}
+              setActiveFormStep={setActiveFormStep}
+              isEditing={isEditingPersonalDetails}
+              setIsEditing={setIsEditingPersonalDetails}
+              handleContinue={() => setActiveFormStep(2)} // Move to Skills Form
+            />
+          )}
+          {activeFormStep === 2 && (
+            <SkillsForm
+              setActiveProfessionalLink={setActiveProfessionalLink} // Assuming you want to pass this prop
+              handleContinue={() => setActiveFormStep(3)} // Move to Awards after submission
+            />
+          )}
+          {activeFormStep === 3 && <AwardsForm />}
+        </div>
       </div>
     </div>
   );

@@ -9,51 +9,69 @@ const Otp = () => {
   const [value, setValue] = React.useState("");
 
   return (
-    <div className="lg:min-h-screen flex items-center lg:justify-center p-6">
-      <div className="flex flex-col md:flex-row items-center w-full max-w-6xl gap-12">
-        {/* Left section with logo and background image, hidden on mobile */}
-        <div className="flex flex-col items-start justify-center p-6 md:w-[574px] md:h-[700px] w-full h-auto md:mb-0 mb-8">
-          <div className="mt-8 md:block hidden">
+    <main className="h-full  w-full flex items-center bg-[#F1F1F1]">
+      <section className=" flex flex-col justify-between w-3/6  bg-[#0F0F0F] ">
+        <div className="p-10">
+          <h1 className="font-bold text-3xl text-[#EAEAEA] tracking-wide">
+            Connect with the African <br /> Fashion World.
+          </h1>
+        </div>
+        <div className="flex">
+          <Image
+            src="/svg/confirm-logo.svg"
+            alt="logo"
+            width={300}
+            height={500}
+            className="object-contain object-left"
+          />
+          <div className="flex flex-col gap-20 items-start ">
             <Image
-              src="/dev-images/bg.png"
-              alt="Background Image"
-              className="rounded-lg w-full h-auto md:w-[574px] md:h-[700px]"
-              width={574}
-              height={700}
+              src="/svg/create-logo-1.svg"
+              alt="logo"
+              width={600}
+              height={600}
+              className="object-contain object-left -ml-28 -mt-20"
             />
+            <p className="font-bold text-xl text-[#F5F5F5]">
+              Collaborate with a pool of <br /> talented African fashion <br />{" "}
+              artists.
+            </p>
           </div>
         </div>
-
+      </section>
+      <section className="flex items-center justify-center w-3/6 h-full p-10 ">
         {/* Right section for OTP confirmation */}
         <div className="flex flex-col mt-[-80px] items-start pl-4 pr-4 pt-[45px] pb-[45px] bg-white shadow-[0px_4px_16px_0px_rgba(0,0,0,0.15)] md:pl-8 md:pr-8 md:pt-11 md:pb-11 rounded-lg">
           {/* Inner content wrapper */}
           <div className="w-full flex flex-col items-start">
-            <h1 className="text-[22px] font-semibold text-[#444444]">
+            <h1 className="text-[22px] text-center font-semibold text-[#444444]">
               Confirm your email address
             </h1>
-            <p className="text-[#727272] w-[304px]">
-              Kindly enter the six (6) digit code sent to your email address.
+            <p className="text-[#727272] text-sm mb-3 font-normal text-center">
+              Kindly enter the six(6) digit code sent to the <br /> email
+              address czulu07@gmail.com
             </p>
 
             {/* OTP input fields */}
-            <div className="flex flex-col items-start gap-2">
+            <div className="flex  flex-col items-center gap-2">
               <InputOtp length={6} value={value} onValueChange={setValue} />
-              <div className="text-small text-default-500">
+              <div className=" text-small text-default-500">
                 Didn’t receive code?{" "}
-                <span className="text-md font-medium">Resend</span>
+                <button className="text-md cursor-pointer font-medium text-[#9FD2E5]">
+                  Resend
+                </button>
               </div>
             </div>
           </div>
-          <div className="mt-4">
-            <CustomButton
-              text="Submit"
-              className="w-72"
-              href="/onboarding/intro-to-profile-setup"
-            />
-          </div>
+          <Link
+            href={"/onboarding/intro-to-profile-setup"}
+            className="w-72 text-[#035A7A] rounded-xl cursor-pointer py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+          >
+            Submit
+          </Link>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

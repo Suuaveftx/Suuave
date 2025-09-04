@@ -87,6 +87,7 @@ const Page = () => {
 
       {/* Desktop view */}
       <div className="hidden sm:block">
+       
           <PersonalProfile />
       </div>
     </>

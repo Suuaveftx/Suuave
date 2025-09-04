@@ -25,25 +25,37 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6">
-      <div className="flex flex-col sm:flex-row justify-center  items-center w-full max-w-6xl">
-        {/* Left section with logo and background image */}
-        <div
-          className="flex flex-col items-center sm:items-start justify-center p-6 sm:p-0 sm:mr-10"
-          style={{ borderRadius: "16px" }}
-        >
-          {/* Background image hidden on mobile */}
-          <div className="mt-8 sm:block hidden">
+    <main className="h-full  w-full flex items-center bg-[#F1F1F1]">
+      <section className=" flex flex-col justify-between w-3/6  bg-[#0F0F0F] ">
+        <div className="p-10">
+          <h1 className="font-bold text-3xl text-[#EAEAEA] tracking-wide">
+            Connect with the African <br /> Fashion World.
+          </h1>
+        </div>
+        <div className="flex">
+          <Image
+            src="/svg/confirm-logo.svg"
+            alt="logo"
+            width={300}
+            height={500}
+            className="object-contain object-left"
+          />
+          <div className="flex flex-col gap-20 items-start ">
             <Image
-              src="/dev-images/bg.png"
-              alt="Background Image"
-              width={500}
-              height={500}
-              className="rounded-lg w-[500px] h-[500px]"
+              src="/svg/create-logo-1.svg"
+              alt="logo"
+              width={600}
+              height={600}
+              className="object-contain object-left -ml-28 -mt-20"
             />
+            <p className="font-bold text-xl text-[#F5F5F5]">
+              Collaborate with a pool of <br /> talented African fashion <br />{" "}
+              artists.
+            </p>
           </div>
         </div>
-
+      </section>
+      <section className="flex items-center justify-center w-3/6 h-full p-10 ">
         {/* Right section for Email Sign In */}
         {/* Back Arrow - Positioned Outside Only on Mobile */}
         {/* Mobile View: Logo & Back Arrow Outside */}
@@ -63,20 +75,9 @@ const Login = () => {
 
         {/* Desktop View: Everything Inside the Container */}
         <div
-          className="relative flex flex-col justify-center items-center bg-white shadow-[0px_4px_16px_0px_rgba(0,0,0,0.15)] pl-[32px] pr-[32px] pt-[45px] pb-[45px] sm:mt-0 mt-[30px] w-80 lg:w-96"
+          className="relative flex flex-col justify-center items-center bg-white shadow-[0px_4px_16px_0px_rgba(0,0,0,0.15)] pl-[32px] pr-[32px] pt-[45px] pb-[45px] sm:mt-0 mt-[30px] w-[70%]"
           style={{ borderRadius: "16px" }}
         >
-          {/* Desktop: Back Arrow at the Far Left */}
-          <div className="hidden sm:flex w-full">
-            <Image
-              src="/dev-images/ArrowLeft.png"
-              alt="Back Arrow"
-              width={24}
-              height={24}
-              className="cursor-pointer"
-            />
-          </div>
-
           {/* Desktop: Logo Centered */}
           <div className="hidden sm:flex items-center w-full justify-center mb-4">
             <Image
@@ -154,7 +155,7 @@ const Login = () => {
             <div className="flex justify-end mb-8">
               <Link
                 href="#"
-                className="text-[12px] text-[#9FD2E5] hover:underline"
+                className="text-base text-[#9FD2E5] hover:underline"
               >
                 Forgot password?
               </Link>
@@ -162,15 +163,16 @@ const Login = () => {
 
             {/* Login Button */}
             <div className="flex justify-center">
-              <CustomButton
-                text="Login"
-                className="w-96"
-                onPress={handleLogin}
-              />
+              <button
+                onClick={handleLogin}
+                className="w-96 text-[#035A7A] rounded-xl cursor-pointer py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+              >
+                Login
+              </button>
             </div>
 
             {/* Don't have an account prompt */}
-            <p className="text-center text-[12px] text-gray-600 mt-4">
+            <p className="text-center text-base text-gray-600 mt-4">
               Don&apos;t have an account?{" "}
               <Link
                 href={"/onboarding"}
@@ -181,8 +183,8 @@ const Login = () => {
             </p>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 
