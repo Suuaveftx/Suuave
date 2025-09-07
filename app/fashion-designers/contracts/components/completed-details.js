@@ -150,7 +150,7 @@ export default function CompletedDetailsPage({ params }) {
                 {contractData.attachedDocuments.map((doc, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer "
+                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg bg-gray-50 transition-colors cursor-pointer "
                   >
                     <div className="flex items-center justify-center gap-2">
                       <PaperClipIcon className="md:h-5 md:w-5 h-4 w-4" />
