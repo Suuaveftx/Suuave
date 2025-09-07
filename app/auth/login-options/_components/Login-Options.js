@@ -16,7 +16,7 @@ const LoginOptions = () => {
 
   return (
     <main className="h-full  w-full flex bg-[#F1F1F1]">
-      <section className=" flex flex-col justify-between w-3/6  bg-gradient-to-b from-[#9FD2E5] from-10% to-[#00709A] ">
+      <section className=" hidden lg:flex flex-col justify-between w-3/6  bg-gradient-to-b from-[#9FD2E5] from-10% to-[#00709A] ">
         <div className="p-10">
           <h1 className="font-bold text-3xl text-[#EAEAEA] tracking-wide">
             Connect with the African <br /> Fashion World.
@@ -45,9 +45,9 @@ const LoginOptions = () => {
           </div>
         </div>
       </section>
-      <section className=" flex items-center justify-center  w-3/6   ">
+      <section className=" flex items-center justify-center h-screen lg:h-auto p-4 lg:p-0  w-full lg:w-3/6   ">
         {/* Right section for Login with border */}
-        <div className=" w-[70%] px-10 flex flex-col justify-center items-center bg-white  border-2 border-gray-300 shadow-md rounded-lg">
+        <div className=" w-full lg:w-[70%] px-4 lg:px-10 flex flex-col justify-center items-center bg-white  border-2 border-gray-300 shadow-md rounded-lg">
           <div className="mt-[45px]">
             <Image
               src={"/dev-images/logo.png"}

@@ -35,7 +35,7 @@ const PersonalProfile = () => {
   };
 
   const handleContinueFromSkills = () => {
-    setActiveFormStep(3); // Move to Awards form
+    setActiveFormStep(3); // Move to Awards form  
   };
 
   return (

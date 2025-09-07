@@ -4,10 +4,14 @@ import React from "react";
 import LogoImg from "./_components/LogoImg";
 import CreateAccount from "./_components/Create-Account";
 import Image from "next/image";
+import BackButton from "../../../components/BackButton";
 const Page = () => {
   return (
-    <main className="h-full  w-full flex bg-[#F1F1F1]">
-      <section className=" flex flex-col justify-between w-3/6  bg-gradient-to-b from-[#9FD2E5] from-10% to-[#00709A] ">
+    <main className="flex flex-col lg:flex-row h-full  w-full bg-[#F1F1F1]">
+      <div  className=" lg:hidden w-full h-20 ">
+         <BackButton />
+      </div>
+      <section className=" hidden lg:flex flex-col justify-between w-3/6  bg-gradient-to-b from-[#9FD2E5] from-10% to-[#00709A] ">
         <div className="p-10">
           <h1 className="font-bold text-3xl text-[#EAEAEA] tracking-wide">
             Connect with the African <br /> Fashion World.
@@ -36,7 +40,7 @@ const Page = () => {
           </div>
         </div>
       </section>
-      <section className="w-3/6 h-full p-10 ">
+      <section className="  w-full lg:w-3/6 h-full p-3 lg:p-10 ">
         <CreateAccount />
       </section>
     </main>

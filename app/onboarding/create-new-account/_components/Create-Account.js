@@ -55,8 +55,11 @@ const CreateAccount = () => {
   };
 
   return (
-    <div className="rounded-md border  p-5 bg-[#FAFAFA] shadow-lg">
-      <h1 className="font-bold text-center text-2xl">Create New Account</h1>
+    <div className="rounded-md border w-full lg:w-auto  p-5 bg-[#FAFAFA] shadow-lg">
+      <div className="w-full flex justify-center">
+        <Image src="/dev-images/logo.png" alt="Logo" width={60} height={60} />
+      </div>
+      <h1 className="font-bold text-center text-2xl mt-3">Create New Account</h1>
       <div className="w-full justify-center mx-auto">
         <button className="w-full mt-4 flex items-center justify-center gap-2 p-2 border rounded-xl shadow-sm bg-white hover:bg-gray-100 transition">
           <Image
@@ -69,15 +72,13 @@ const CreateAccount = () => {
           Continue with Google
         </button>
       </div>
-      <Image
-        src="/svg/create-or-border.svg"
-        alt="icon"
-        width={300}
-        height={100}
-        className="w-full mt-7"
-      />
+
+      <div className="flex items-center gap-2 mt-2">
+        <div className="border-1 border-[#D1D1D1]  w-full" /> <span>or</span>{" "}
+        <div className="border-1 border-[#D1D1D1]  w-full" />
+      </div>
       <Form
-        className="w-full items-start space-y-6 mt-7 "
+        className="w-full items-start space-y-6 mt-7"
         validationErrors={errors}
         onReset={() => setSubmitted(null)}
         onSubmit={onSubmit}
@@ -242,7 +243,7 @@ const CreateAccount = () => {
           <div className="flex flex-col items-center w-full">
             <Link
               href={"/onboarding/email-confirmation"}
-              className="w-96 text-[#035A7A] cursor-pointer rounded-xl py-2 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+              className=" w-full lg:w-96 text-[#035A7A] cursor-pointer rounded-xl py-2 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
             >
               Create Account
             </Link>

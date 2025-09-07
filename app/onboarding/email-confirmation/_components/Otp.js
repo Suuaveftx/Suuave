@@ -9,8 +9,8 @@ const Otp = () => {
   const [value, setValue] = React.useState("");
 
   return (
-    <main className="h-full  w-full flex items-center bg-[#F1F1F1]">
-      <section className=" flex flex-col justify-between w-3/6  bg-[#0F0F0F] ">
+    <main className=" h-full  w-full lg:flex items-center bg-[#F1F1F1]">
+      <section className=" hidden lg:flex flex-col justify-between w-3/6  bg-[#0F0F0F] ">
         <div className="p-10">
           <h1 className="font-bold text-3xl text-[#EAEAEA] tracking-wide">
             Connect with the African <br /> Fashion World.
@@ -39,7 +39,7 @@ const Otp = () => {
           </div>
         </div>
       </section>
-      <section className="flex items-center justify-center w-3/6 h-full p-10 ">
+      <section className=" flex items-center justify-center lg:w-3/6 h-screen lg:h-full p-10 ">
         {/* Right section for OTP confirmation */}
         <div className="flex flex-col mt-[-80px] items-start pl-4 pr-4 pt-[45px] pb-[45px] bg-white shadow-[0px_4px_16px_0px_rgba(0,0,0,0.15)] md:pl-8 md:pr-8 md:pt-11 md:pb-11 rounded-lg">
           {/* Inner content wrapper */}
