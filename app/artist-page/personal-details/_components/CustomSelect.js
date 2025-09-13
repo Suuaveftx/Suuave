@@ -1,7 +1,14 @@
 import { Select, SelectItem } from "@heroui/react";
 import React from "react";
 
-const CustomSelect = ({ formData, setFormData, value, data, className , htmlFor }) => {
+const CustomSelect = ({
+  formData,
+  setFormData,
+  value,
+  data,
+  className,
+  htmlFor,
+}) => {
   return (
     <Select
       aria-label={htmlFor}
@@ -24,7 +31,7 @@ const CustomSelect = ({ formData, setFormData, value, data, className , htmlFor 
       {data.map((animal) => (
         <SelectItem
           key={animal.key}
-          className="text-[#878787] data-[selected=true]:!text-[#878787] data-[hover=true]:!text-[#3A98BB]"
+          className="text-[#878787] data-[selected=true]:!text-[#878787] "
         >
           {animal.label}
         </SelectItem>

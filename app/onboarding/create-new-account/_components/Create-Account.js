@@ -59,7 +59,9 @@ const CreateAccount = () => {
       <div className="w-full flex justify-center">
         <Image src="/dev-images/logo.png" alt="Logo" width={60} height={60} />
       </div>
-      <h1 className="font-bold text-center text-2xl mt-3">Create New Account</h1>
+      <h1 className="font-bold text-center text-2xl mt-3">
+        Create New Account
+      </h1>
       <div className="w-full justify-center mx-auto">
         <button className="w-full mt-4 flex items-center justify-center gap-2 p-2 border rounded-xl shadow-sm bg-white hover:bg-gray-100 transition">
           <Image

@@ -5,12 +5,16 @@ import React, { useState } from "react";
 import { InputOtp } from "@heroui/react";
 import CustomButton from "../../../../components/CustomButton";
 import OtpValue from "./OtpValue";
+import BackButton from "../../../../components/BackButton";
 
 const Otp = () => {
   const [value, setValue] = React.useState("");
 
   return (
     <main className=" h-full  w-full lg:flex items-center bg-[#F1F1F1]">
+      <div className="lg:hidden">
+        <BackButton />
+      </div>
       <section className=" hidden lg:flex flex-col justify-between w-3/6  bg-[#0F0F0F] ">
         <div className="p-10">
           <h1 className="font-bold text-3xl text-[#EAEAEA] tracking-wide">

@@ -16,6 +16,25 @@ const numberCode = [
   { key: "elephant", label: "Elephant" },
 ];
 
+const nationality = [
+  { key: "Nigeria", label: "Nigeria" },
+  { key: "Ghana", label: "Ghana" },
+  { key: "Togo", label: "Togo" },
+];
+const numCode = [
+  { key: "+124", label: "+124" },
+  { key: "+09", label: "+09" },
+  { key: "+99", label: "+99" },
+];
+const currentCity = [
+  { key: "Lagos", label: "Lagos" },
+  { key: "Calabar", label: "Calabar" },
+];
+const language = [
+  { key: "English", label: "English" },
+  { key: "Spanish", label: "Spanish" },
+];
+
 const PersonalDetail = ({ setSelected, formData, setFormData }) => {
   return (
     <div className="w-full h-full bg-[#FAFAFA] border-1-[#DEDEDE] p-3 md:p-6 rounded-2xl">
@@ -68,7 +87,7 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
             formData={formData}
             setFormData={setFormData}
             value={formData.nationality}
-            data={animals}
+            data={nationality}
             className="w-full"
             htmlFor="nationality"
           />
@@ -82,7 +101,7 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
               formData={formData}
               setFormData={setFormData}
               value={formData.phoneCode}
-              data={numberCode}
+              data={numCode}
               className="w-[20%]"
               htmlFor="number"
             />
@@ -105,7 +124,7 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
             formData={formData}
             setFormData={setFormData}
             value={formData.currentCity}
-            data={animals}
+            data={currentCity}
             className="w-full"
             htmlFor="currentCity"
           />
@@ -114,29 +133,14 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
         <div className="w-full flex flex-col gap-2">
           <Lable htmlFor="Language" text="Language" />
 
-          <Select
-            aria-label="Language"
-            className="w-full font-normal text-base "
-            placeholder="English"
-            variant="bordered"
-            selectedKeys={formData.language}
-            onSelectionChange={(keys) =>
-              setFormData({ ...formData, language: keys })
-            }
-            disableAnimation={false}
-            classNames={{
-              value: "text-[#878787]",
-              placeholder: "text-[#878787]",
-              trigger:
-                "font-normal  text-[#878787] text-base border-1 border-[#D1D1D1] outline-0 rounded-[8px] py-2 focus:border-[#3A98BB] focus:ring-1 focus:ring-[#3A98BB]",
-            }}
-          >
-            {numberCode.map((animal) => (
-              <SelectItem key={animal.key} className="text-[#878787]">
-                {animal.label}
-              </SelectItem>
-            ))}
-          </Select>
+          <CustomSelect
+            formData={formData}
+            setFormData={setFormData}
+            value={formData.language}
+            data={language}
+            className="w-full"
+            htmlFor="Language"
+          />
         </div>
         {/*Date of Birth*/}
         <div className="w-full flex flex-col gap-2">
@@ -144,78 +148,35 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
 
           <div className="flex items-center gap-7">
             {/* day */}
-            <Select
-              aria-label="dateofBirth"
-              className="w-full font-normal text-base "
-              placeholder="Day"
-              variant="bordered"
-              selectedKeys={formData.day}
-              onSelectionChange={(keys) =>
-                setFormData({ ...formData, day: keys })
-              }
-              disableAnimation={false}
-              classNames={{
-                value: "text-[#878787]",
-                placeholder: "text-[#878787]",
-                trigger:
-                  "font-normal  text-[#878787] text-base border-1 border-[#D1D1D1] outline-0 rounded-[8px] py-2 focus:border-[#3A98BB] focus:ring-1 focus:ring-[#3A98BB]",
-              }}
-            >
-              {numberCode.map((animal) => (
-                <SelectItem key={animal.key} className="text-[#878787]">
-                  {animal.label}
-                </SelectItem>
-              ))}
-            </Select>
+
+            <CustomSelect
+              formData={formData}
+              setFormData={setFormData}
+              value={formData.day}
+              data={numberCode}
+              className="w-full"
+              htmlFor="dateofBirth"
+            />
             {/* month */}
-            <Select
-              aria-label="dateofBirth"
-              className="w-full  font-normal text-base "
-              placeholder="Month"
-              variant="bordered"
-              selectedKeys={formData.month}
-              onSelectionChange={(keys) =>
-                setFormData({ ...formData, month: keys })
-              }
-              disableAnimation={false}
-              classNames={{
-                value: "text-[#878787]",
-                placeholder: "text-[#878787]",
-                trigger:
-                  "font-normal  text-[#878787] text-base border-1 border-[#D1D1D1] outline-0 rounded-[8px] py-2 focus:border-[#3A98BB] focus:ring-1 focus:ring-[#3A98BB]",
-              }}
-            >
-              {numberCode.map((animal) => (
-                <SelectItem key={animal.key} className="text-[#878787]">
-                  {animal.label}
-                </SelectItem>
-              ))}
-            </Select>
+
+            <CustomSelect
+              formData={formData}
+              setFormData={setFormData}
+              value={formData.month}
+              data={numberCode}
+              className="w-full"
+              htmlFor="dateofBirth"
+            />
             {/* year */}
-            <Select
-              aria-label="dateofBirth"
-              className="w-full  font-normal text-base "
-              placeholder="Year"
-              variant="bordered"
-              selectedKeys={formData.year}
-              onSelectionChange={(keys) =>
-                setFormData({ ...formData, year: keys })
-              }
-              d
-              disableAnimation={false}
-              classNames={{
-                value: "text-[#878787]",
-                placeholder: "text-[#878787]",
-                trigger:
-                  "font-normal  text-[#878787] text-base border-1 border-[#D1D1D1] outline-0 rounded-[8px] py-2 focus:border-[#3A98BB] focus:ring-1 focus:ring-[#3A98BB]",
-              }}
-            >
-              {numberCode.map((animal) => (
-                <SelectItem key={animal.key} className="text-[#878787]">
-                  {animal.label}
-                </SelectItem>
-              ))}
-            </Select>
+
+            <CustomSelect
+              formData={formData}
+              setFormData={setFormData}
+              value={formData.year}
+              data={numberCode}
+              className="w-full"
+              htmlFor="dateofBirth"
+            />
           </div>
         </div>
       </section>
