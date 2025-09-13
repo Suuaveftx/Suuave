@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { InputOtp } from "@heroui/react";
 import CustomButton from "../../../../components/CustomButton";
+import OtpValue from "./OtpValue";
 
 const Otp = () => {
   const [value, setValue] = React.useState("");
@@ -53,8 +54,14 @@ const Otp = () => {
             </p>
 
             {/* OTP input fields */}
-            <div className="flex  flex-col items-center gap-2">
-              <InputOtp length={6} value={value} onValueChange={setValue} />
+            <div className="w-full flex flex-col items-center gap-2">
+              {/* <OtpValue /> */}
+              <InputOtp
+                variant="bordered"
+                length={6}
+                value={value}
+                onValueChange={setValue}
+              />
               <div className=" text-small text-default-500">
                 Didn’t receive code?{" "}
                 <button className="text-md cursor-pointer font-medium text-[#9FD2E5]">

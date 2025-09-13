@@ -13,7 +13,7 @@ import {
 import React from "react";
 import CustomButton from "./CustomButton";
 
-const CustomNavbar = () => {
+const CustomNavbar = ({bgColor}) => {
   const [textStyle, setTextStyle] = React.useState("text-white");
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -22,15 +22,15 @@ const CustomNavbar = () => {
   return (
     <Navbar
       shouldHideOnScroll
-      className={`w-full items-center justify-between lg:px-4 px-0 font-satoshi ${textStyle}`}
+      className={`w-full ${bgColor}  items-center justify-between lg:px-4 px-0 font-satoshi ${textStyle}`}
       classNames={{ wrapper: "max-w-[1700px] mx-auto px-3" }}
-      onScrollPositionChange={(position) => {
-        if (position > 600) {
-          setTextStyle(" text-white bg-black/50   ");
-        } else {
-          setTextStyle("text-white bg-transparent");
-        }
-      }}
+      // onScrollPositionChange={(position) => {
+      //   if (position > 600) {
+      //     setTextStyle(" text-white bg-black/50   ");
+      //   } else {
+      //     setTextStyle("text-white bg-transparent");
+      //   }
+      // }}
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarBrand>

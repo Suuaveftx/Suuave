@@ -99,7 +99,7 @@ const Login = () => {
             {/* Email */}
 
             <div className="relative mt-8">
-              <label className="absolute left-3 -mt-3 text-gray-500 text-sm transition-all duration-200 transform origin-left">
+              <label className=" text-gray-500 text-sm transition-all duration-200 transform origin-left">
                 Email
               </label>
 
@@ -116,7 +116,7 @@ const Login = () => {
 
             {/* Password Input */}
             <div className="relative mt-8">
-              <label className="absolute left-3 -mt-3 text-gray-500 text-sm transition-all duration-200 transform origin-left">
+              <label className=" text-gray-500 text-sm transition-all duration-200 transform origin-left">
                 Password
               </label>
 
