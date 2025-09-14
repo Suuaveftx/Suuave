@@ -4,9 +4,9 @@ import React from "react";
 
 import { useState } from "react";
 import {
-
+  ExclamationTriangleIcon,
+  HandThumbUpIcon,
   PaperClipIcon,
-
 } from "@heroicons/react/24/outline";
 import {
   Card,
@@ -18,10 +18,11 @@ import {
   ModalBody,
   ModalContent,
   ModalFooter,
-
   useDisclosure,
+  Alert,
+  Checkbox,
+  Input,
 } from "@heroui/react";
-
 
 import ContractHeader from "./contract-header";
 import { TiLocation } from "react-icons/ti";
@@ -29,16 +30,17 @@ import { FaStar } from "react-icons/fa6";
 
 export default function OngoingDetailsPage({ params }) {
   const contractId = params?.id || "24t64754"; // fallback for demo
-  console.log(contractId);
+
   // Mock data - replace with actual data fetching based on contractId
   const contractData = {
     jobTitle: "Modern Fashion Attire Illustration",
-    contractNumber: "24t64754",
+    contractNumber: contractId,
     contractType: "Hire",
     role: "Fashion Artist",
     budget: "₦200,000",
     timeframe: "1 Month",
     status: "Ongoing",
+    isSubmitted: true, //to track submission
     attachedDocuments: [
       { name: "DocTGFile", type: "document" },
       { name: "DocE75", type: "legal" },
@@ -92,14 +94,48 @@ export default function OngoingDetailsPage({ params }) {
     console.log("Rate Ocean clicked");
   };
 
+  const [selectedReason, setSelectedReason] = useState("");
+
+  // ===== Reject Flow =====
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [showComplaintModal, setShowComplaintModal] = useState(false);
+  const [reasons, setReasons] = useState([]);
+  const [explanation, setExplanation] = useState("");
+
+  const handleRejectSubmit = () => {
+    console.log("Reasons:", reasons, "Explanation:", explanation);
+    setShowRejectModal(false);
+    setShowComplaintModal(true);
+  };
+
   return (
     <>
-
       <ContractHeader title="Contract Information" />
       <div className="max-w-6xl mx-auto px-2 md:px-0 pb-6 ">
         <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-1">
           {/* Left Column - Contract Details & Documents */}
           <div className="lg:col-span-2 space-y-2">
+            {/* Submission Alert */}
+            {contractData.isSubmitted ? (
+              <div className="border border-[#3A98BB] rounded-md h-[46px] bg-white max-w-lg pr-4">
+                <Alert
+                  hideIcon
+                  color="primary"
+                  variant="flat"
+                  startContent={
+                    <ExclamationTriangleIcon className="h-5 w-5 text-[#3A98BB] flex-shrink-0 ml-5" />
+                  }
+                  className="bg-transparent border-none text-[#3A98BB]  px-0"
+                >
+                  <p className="text-xs -mt-5">
+                    This project has been submitted as completed. Waiting for
+                    your approval.
+                  </p>
+                </Alert>
+              </div>
+            ) : (
+              ""
+            )}
             {/* Contract Details Card */}
             <Card className="bg-white border border-gray-200" shadow="none">
               <CardBody className="p-6 pb-12">
@@ -136,7 +172,11 @@ export default function OngoingDetailsPage({ params }) {
                         key={index}
                         className="grid grid-cols-[8rem_1fr] gap-4 items-start"
                       >
-                        <span className={`${item.label === "Status" ? "lg:hidden":""} md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}>
+                        <span
+                          className={`${
+                            item.label === "Status" ? "lg:hidden" : ""
+                          } md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
+                        >
                           {item.label} -
                         </span>
                         <span
@@ -154,16 +194,16 @@ export default function OngoingDetailsPage({ params }) {
                     ))}
                   </div>
 
-                   {/* Status */}
-                                   <Chip
-                                     variant="flat"
-                                     size="lg"
-                                     className={`${getStatusColor(
-                                       contractData.status
-                                     )} font-medium  border-1 hidden lg:flex rounded-full bg-transparent`}
-                                   >
-                                     {contractData.status}
-                                   </Chip>
+                  {/* Status */}
+                  <Chip
+                    variant="flat"
+                    size="lg"
+                    className={`${getStatusColor(
+                      contractData.status
+                    )} font-medium  border-1 hidden lg:flex rounded-full bg-transparent`}
+                  >
+                    {contractData.status}
+                  </Chip>
                 </div>
               </CardBody>
             </Card>
@@ -205,14 +245,27 @@ export default function OngoingDetailsPage({ params }) {
                 >
                   Approve Work
                 </Button>
-                <Button
-                  variant="bordered"
-                  className="w-full bg-transparent py-5 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl  shadow-sm"
-                  size="lg"
-                  radius="full"
-                >
-                  Message Artist
-                </Button>
+
+                {contractData.isSubmitted ? (
+                  <Button
+                    variant="bordered"
+                    className="w-full bg-transparent py-5 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl  shadow-sm"
+                    size="lg"
+                    radius="full"
+                    onPress={() => setShowRejectModal(true)}
+                  >
+                    Reject
+                  </Button>
+                ) : (
+                  <Button
+                    variant="bordered"
+                    className="w-full bg-transparent py-5 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl  shadow-sm"
+                    size="lg"
+                    radius="full"
+                  >
+                    Message Artist
+                  </Button>
+                )}
               </CardBody>
             </Card>
 
@@ -243,29 +296,28 @@ export default function OngoingDetailsPage({ params }) {
                   </p>
 
                   <div className="flex items-center justify-center gap-1 text-sm  text-[#222222] mb-2">
-                                     <TiLocation className="size-5 fill-[#878787]" />
-                                     <span>{contractData.artist.location}</span>
-                   </div>
-                 
-                                   <div className="flex items-center justify-center gap-2 mb-6  text-[#222222]">
-                                     <span>Ratings</span>
-                                      <div className="flex items-center gap-1">
-                                                     {[...Array(5)].map((_, i) => (
-                                                       <FaStar
-                                                         key={i}
-                                                         className={
-                                                           i < contractData.artist.rating
-                                                             ? "text-yellow-500"
-                                                             : "text-gray-300"
-                                                         }
-                                                       />
-                                                     ))}
-                                                   </div>
-                                     <span className="text-sm text-[#3A98BB]">
-                                       ({contractData.artist.reviews} Reviews)
-                                     </span>
-                                   </div>
-                 
+                    <TiLocation className="size-5 fill-[#878787]" />
+                    <span>{contractData.artist.location}</span>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-2 mb-6  text-[#222222]">
+                    <span>Ratings</span>
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <FaStar
+                          key={i}
+                          className={
+                            i < contractData.artist.rating
+                              ? "text-yellow-500"
+                              : "text-gray-300"
+                          }
+                        />
+                      ))}
+                    </div>
+                    <span className="text-sm text-[#3A98BB]">
+                      ({contractData.artist.reviews} Reviews)
+                    </span>
+                  </div>
                 </div>
               </CardBody>
             </Card>
@@ -406,6 +458,123 @@ export default function OngoingDetailsPage({ params }) {
             >
               Rate Ocean
             </Button>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      {/* ===== Reject Modal ===== */}
+      <Modal
+        isOpen={showRejectModal}
+        onOpenChange={setShowRejectModal}
+        classNames={{
+          base: "bg-white w-[90vw] max-w-sm",
+          backdrop: "bg-black/50",
+        }}
+        size="md"
+        backdrop="blur"
+        hideCloseButton
+        placement="center"
+      >
+        <ModalContent>
+          <ModalBody className="flex flex-col gap-4">
+            <h3 className="text-md font-proximanova">
+              Please state the reason for rejection
+            </h3>
+
+            <div className="flex flex-col gap-2 max-w-[200px]">
+              <div
+                className="flex items-center justify-between cursor-pointer"
+                onClick={() => setSelectedReason("Work Not Completed")}
+              >
+                <span className="text-xs font-satoshi">Work Not Completed</span>
+                <Checkbox
+                  isSelected={selectedReason === "Work Not Completed"}
+                  onChange={() => setSelectedReason("Work Not Completed")}
+                  size="md"
+                />
+              </div>
+
+              <div
+                className="flex items-center justify-between cursor-pointer"
+                onClick={() => setSelectedReason("Not Satisfied")}
+              >
+                <span className="text-xs font-satoshi">Not Satisfied</span>
+                <Checkbox
+                  isSelected={selectedReason === "Not Satisfied"}
+                  onChange={() => setSelectedReason("Not Satisfied")}
+                  size="md"
+                />
+              </div>
+
+              <div
+                className="flex items-center justify-between cursor-pointer"
+                onClick={() => setSelectedReason("Others")}
+              >
+                <span className="text-xs font-satoshi">Others</span>
+                <Checkbox
+                  isSelected={selectedReason === "Others"}
+                  onChange={() => setSelectedReason("Others")}
+                  size="md"
+                />
+              </div>
+            </div>
+            <label className="text-sm font-proximanova">
+              Kindly state a reason
+            </label>
+            <textarea
+              className="w-full border border-gray-300 rounded-md p-2 text-sm resize-none -mt-3 focus:outline-none focus:ring-2 focus:ring-blue-200"
+              rows={3}
+              value={explanation}
+              onChange={(e) => setExplanation(e.target.value)}
+            />
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              className="max-w-lg bg-[#CCE7F2] shadow-md text-[#222222]"
+              radius="full"
+              onPress={handleRejectSubmit}
+            >
+              Submit
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* ===== Complaint Submitted Modal ===== */}
+      <Modal
+        isOpen={showComplaintModal}
+        onOpenChange={setShowComplaintModal}
+        classNames={{
+          base: "bg-white w-[90vw] max-w-sm mx-auto",
+          backdrop: "bg-black/50",
+        }}
+        size="sm"
+        backdrop="blur"
+        hideCloseButton
+        placement="center"
+        isDismissable={false}
+      >
+        <ModalContent>
+          <ModalBody className="text-center py-8">
+            <div className="flex justify-center mb-2">
+              <HandThumbUpIcon className="h-14 w-14 text-[#035A7A]" />
+            </div>
+
+            <h2 className="text-2xl font-medium -mb-2">Complaint Submitted</h2>
+            <p className="font-satoshi text-xs mb-6">
+              Our team will review and resolve the issue within 48hrs
+            </p>
+            <div className="flex justify-center items-center">
+              <Button
+                className="max-w-[100px] px-12 bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A]"
+                radius="full"
+                variant="flat"
+                onPress={() => setShowComplaintModal(false)}
+              >
+                Okay
+              </Button>
+            </div>
           </ModalBody>
         </ModalContent>
       </Modal>

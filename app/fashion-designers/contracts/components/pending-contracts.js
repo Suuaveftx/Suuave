@@ -4,7 +4,6 @@ import React from "react";
 import {
   MagnifyingGlassIcon,
   ExclamationTriangleIcon,
-
   EllipsisHorizontalIcon,
   AdjustmentsVerticalIcon,
 } from "@heroicons/react/24/outline";
@@ -27,6 +26,14 @@ const PendingContracts = ({
   const filteredContracts = contracts.filter((contract) =>
     contract.title.toLowerCase().includes(search.toLowerCase())
   );
+
+  // Pagination state & calculations
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const itemsPerPage = 3;
+  const totalPages = Math.ceil(filteredContracts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredContracts.slice(startIndex, endIndex);
 
   return (
     <div>
@@ -82,7 +89,7 @@ const PendingContracts = ({
 
       {/* Contract Cards */}
       <div className="space-y-4">
-        {filteredContracts.map((contract, index) => (
+        {currentItems.map((contract, index) => (
           <Card
             key={contract.id || index}
             className="bg-white border border-gray-200 hover:shadow-md transition-shadow"
@@ -121,7 +128,7 @@ const PendingContracts = ({
                       radius="full"
                       onPress={(e) => {
                         /*  e.stopPropagation() */
-                        onCancelContract(contract.id)
+                        onCancelContract(contract.id);
                       }}
                     >
                       Cancel
@@ -144,6 +151,45 @@ const PendingContracts = ({
         ))}
       </div>
 
+      {/* Pagination */}
+      {totalPages > 0 && (
+        <div className="flex items-center justify-center gap-2 mt-6">
+          <div className="flex items-center gap-2">
+            {/* Results info */}
+            <span className="text-sm text-gray-600 mr-4">
+              {startIndex + 1} - {Math.min(endIndex, filteredContracts.length)}{" "}
+              of {filteredContracts.length}
+            </span>
+
+            {/* Previous button */}
+            <Button
+              isIconOnly
+              variant="flat"
+              size="sm"
+              radius="none"
+              isDisabled={currentPage === 1}
+              onPress={() => setCurrentPage(currentPage - 1)}
+              className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer"
+            >
+              &lt;
+            </Button>
+
+            {/* Next button */}
+            <Button
+              isIconOnly
+              variant="flat"
+              size="sm"
+              radius="none"
+              isDisabled={currentPage === totalPages}
+              onPress={() => setCurrentPage(currentPage + 1)}
+              className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2"
+            >
+              &gt;
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Empty State */}
       {filteredContracts.length === 0 && (
         <div className="text-center py-12">
@@ -153,7 +199,7 @@ const PendingContracts = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default PendingContracts;

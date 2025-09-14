@@ -3,9 +3,10 @@
 import React, { useState } from "react";
 import {
   MagnifyingGlassIcon,
-  AdjustmentsHorizontalIcon,
+  AdjustmentsVerticalIcon,
   EllipsisHorizontalIcon,
   ChevronDownIcon,
+
 } from "@heroicons/react/24/outline";
 import {
   Input,
@@ -56,6 +57,16 @@ const OngoingContracts = ({
     console.log("Rate Ocean clicked");
   };
 
+// Pagination state & calculations
+  const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 3;
+const totalPages = Math.ceil(filteredContracts.length / itemsPerPage);
+
+const startIndex = (currentPage - 1) * itemsPerPage;
+const endIndex = startIndex + itemsPerPage;
+const currentItems = filteredContracts.slice(startIndex, endIndex);
+
+
   return (
     <div>
       {/* Search and Filter Bar */}
@@ -86,12 +97,12 @@ const OngoingContracts = ({
               className="md:hidden p-2 border-0"
               aria-label="Filter"
             >
-              <AdjustmentsHorizontalIcon className="h-5 w-5 text-gray-600" />
+              <AdjustmentsVerticalIcon className="h-5 w-5 text-gray-600" />
             </Button>
 
             <div className="relative hidden md:flex items-center">
               <div className="absolute left-0 pl-3 flex items-center pointer-events-none">
-                <AdjustmentsHorizontalIcon className="h-4 w-4 text-gray-400" />
+                <AdjustmentsVerticalIcon className="h-4 w-4 text-gray-400" />
               </div>
               <div className="absolute right-0 pr-3 flex items-center pointer-events-none">
                 <ChevronDownIcon className="h-4 w-4 text-gray-400" />
@@ -113,7 +124,7 @@ const OngoingContracts = ({
 
       {/* Contract Cards */}
       <div className="space-y-4">
-        {filteredContracts.map((contract, index) => (
+        {currentItems.map((contract, index) => (
           <Card
             key={contract.id || index}
             className="bg-white border border-gray-200 hover:shadow-md transition-shadow"
@@ -313,6 +324,47 @@ const OngoingContracts = ({
           </ModalBody>
         </ModalContent>
       </Modal>
+
+     
+        {/* Pagination */}
+           {totalPages > 0 && (
+             <div className="flex items-center justify-center gap-2 mt-6">
+               <div className="flex items-center gap-2">
+                 {/* Results info */}
+                 <span className="text-sm text-gray-600 mr-4">
+                   {startIndex + 1} - {Math.min(endIndex, filteredContracts.length)}{" "}
+                   of {filteredContracts.length}
+                 </span>
+     
+                 {/* Previous button */}
+                 <Button
+                   isIconOnly
+                   variant="flat"
+                   size="sm"
+                   radius="none"
+                   isDisabled={currentPage === 1}
+                   onPress={() => setCurrentPage(currentPage - 1)}
+                   className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer"
+                 >
+                   &lt;
+                 </Button>
+     
+                 {/* Next button */}
+                 <Button
+                   isIconOnly
+                   variant="flat"
+                   size="sm"
+                   radius="none"
+                   isDisabled={currentPage === totalPages}
+                   onPress={() => setCurrentPage(currentPage + 1)}
+                   className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2"
+                 >
+                   &gt;
+                 </Button>
+               </div>
+             </div>
+           )}
+      
     </div>
   );
 };

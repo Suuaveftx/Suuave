@@ -15,7 +15,7 @@ import {
 } from "@heroui/react";
 import {
   MagnifyingGlassIcon,
-  AdjustmentsHorizontalIcon,
+  AdjustmentsVerticalIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -230,14 +230,14 @@ export default function CompletedContracts() {
               className="md:hidden p-2 border-0"
               aria-label="Filter"
             >
-              <AdjustmentsHorizontalIcon className="h-5 w-5 text-gray-600" />
+              <AdjustmentsVerticalIcon className="h-5 w-5 text-gray-600" />
             </Button>
 
             {/* Desktop Dropdown with Filter Icon inside */}
             <div className="relative hidden md:flex items-center">
               {/* Left-aligned Filter Icon */}
               <div className="absolute left-0 pl-3 flex items-center pointer-events-none z-10">
-                <AdjustmentsHorizontalIcon className="h-4 w-4 text-gray-400" />
+                <AdjustmentsVerticalIcon className="h-4 w-4 text-gray-400" />
               </div>
 
               {/* Chevron on the right */}
