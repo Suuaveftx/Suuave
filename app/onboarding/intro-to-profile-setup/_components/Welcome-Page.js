@@ -10,28 +10,28 @@ const WelcomePage = () => {
     <div className="flex items-start justify-between h-screen">
       {/* Left section with text and icons */}
       <div className="p-4 sm:p-0 self-start">
-        <div className="flex flex-col max-w-md border border-gray-400 shadow-md rounded-[8px] sm:shadow-none sm:border-none pl-4 pr-4 pt-[24px] pb-[40px]">
-          <h1 className="text-2xl font-bold">
+        <div className="flex flex-col  max-w-md border  shadow-md rounded-[8px] sm:shadow-none sm:border-none pl-4 pr-4 pt-[24px] pb-[40px]">
+          <h1 className="text-2xl font-bold leading-10 ">
             Hi Kate, <br /> To begin, let’s take a moment to complete your
             profile set up.
           </h1>
 
           {/* Complete Profile Setup */}
-          <div className="flex items-center mt-6 gap-2 pt-[20px] pb-[20px]">
+          <div className=" w-max flex items-center   mt-6 gap-2 py-5 border-b-1 border-[#EAEAEA]">
             <Image
               src={"/dev-images/icon1.png"}
               alt="user"
               width={24}
               height={24}
             />
-            <span className="text-gray-700 text-[16px]">
+            <span className="text-gray-700 text-[16px] ">
               Complete Profile Setup
             </span>
           </div>
-          <hr className="border-gray-300" />
+          
 
           {/* Upload Sample Works */}
-          <div className="flex items-center mt-6 gap-4 pt-[20px] pb-[20px]">
+          <div className=" w-max flex items-center mt-6 gap-4 py-5 border-b-1 border-[#EAEAEA]">
             <Image
               src={"/dev-images/icon2.png"}
               alt="upload"
@@ -42,10 +42,9 @@ const WelcomePage = () => {
               Upload Sample Works / Necessary Documents
             </span>
           </div>
-          <hr className="border-gray-300" />
 
           {/* Apply for Jobs */}
-          <div className="flex items-center mt-6 gap-4 pt-[20px] pb-[20px]">
+          <div className=" w-max flex items-center mt-6 gap-4 py-5 border-b-1 border-[#EAEAEA]">
             <Image
               src={"/dev-images/icon3.png"}
               alt="bag"
@@ -56,12 +55,11 @@ const WelcomePage = () => {
               Apply for Jobs and License Your Design
             </span>
           </div>
-          <hr className="border-gray-300" />
 
           {/* Continue Button */}
           <Link
             href={"/artist-page/personal-details"}
-            className=" w-full lg:w-32 text-[#035A7A] rounded-xl cursor-pointer py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+            className=" w-full lg:w-32 text-[#035A7A] rounded-3xl cursor-pointer py-2 mt-20 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
           >
             continue
           </Link>

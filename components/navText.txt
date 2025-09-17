@@ -1,0 +1,81 @@
+"use client";
+import {
+  Link,
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  Image,
+  NavbarMenuToggle,
+  NavbarMenuItem,
+  NavbarMenu,
+} from "@heroui/react";
+import React from "react";
+import CustomButton from "./CustomButton";
+import { useEffect, useState } from "react";
+
+const CustomNavbar = ({ bgColor }) => {
+  const [textStyle, setTextStyle] = React.useState("text-white");
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  const menuItems = [
+    { title: "Blogs", url: "#" },
+    { title: "How it works", url: "#" },
+    { title: "FAQs", url: "" },
+    { title: "About Us", url: "#" },
+  ];
+
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div
+      className={`w-full fixed z-50 transition-colors duration-300  ${
+        scrolled ? "bg-black/50 backdrop-blur-lg " : "bg-transparent"
+      }`}
+    >
+      <nav className="flex items-center justify-between font-normal text-base px-10">
+        <Link href="/">
+          <Image
+            src="/dev-images/navLogo.png"
+            alt="Logo"
+            className="lg:w-40 py-4 w-32"
+          />
+        </Link>
+        <div className=" hidden lg:flex items-center gap-10">
+          {menuItems.map((item, index) => (
+            <Link
+              className="text-[#CECECE] cursor-pointer"
+              key={index}
+              href={item.url}
+            >
+              {item.title}
+            </Link>
+          ))}
+        </div>
+        <div className="flex items-center gap-10">
+          <Link className="text-[#CECECE] cursor-pointer ">Login</Link>
+          <Link
+            href="/onboarding"
+            className=" cursor-pointer hidden lg:block bg-[radial-gradient(circle,#EAF9FF,#CCE7F2)] font-bold text-base text-[#035A7A] rounded-3xl py-2 px-6"
+          >
+            Get started
+          </Link>
+          <button>
+            <Image src="/svg/buger.svg" alt="icon" width={24} height={24} />
+          </button>
+        </div>
+      </nav>
+    </div>
+  );
+};
+
+export default CustomNavbar;

@@ -40,7 +40,7 @@ const Page = () => {
           </div>
         </div>
       </section>
-      <section className="  w-full lg:w-3/6 h-full p-3 lg:p-10 ">
+      <section className="  w-full lg:w-3/6 h-full p-3 lg:p-5 xl:p-10">
         <CreateAccount />
       </section>
     </main>

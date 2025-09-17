@@ -72,7 +72,7 @@ const Login = () => {
         {/* Desktop View: Everything Inside the Container */}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="relative flex flex-col justify-center items-center bg-white shadow-[0px_4px_16px_0px_rgba(0,0,0,0.15)] w-full py-[45px] px-5 sm:mt-0 mt-[30px] md:w-[70%]"
+          className="relative flex flex-col justify-center items-center bg-white shadow-[0px_4px_16px_0px_rgba(0,0,0,0.15)] w-full py-[45px] px-5 sm:mt-0 mt-[30px] md:w-[90%]"
           style={{ borderRadius: "16px" }}
         >
           {/* Desktop: Logo Centered */}
@@ -98,29 +98,29 @@ const Login = () => {
           <div className="w-full">
             {/* Email */}
 
-            <div className="relative mt-8">
-              <label className=" text-gray-500 text-sm transition-all duration-200 transform origin-left">
+            <div className="relative mt-8 space-y-2">
+              <label className=" text-[#222222] text-base font-medium">
                 Email
               </label>
 
-              <div className="flex items-center px-2 rounded-md border border-gray-300 focus-within:border-[#9FD2E5]">
+              <div className="flex items-center p-2 rounded-lg border border-gray-300 focus-within:border-[#9FD2E5]">
                 <HiOutlineMail className=" text-gray-500" size={20} />
                 <input
                   type="text"
                   {...register("email")}
-                  className="w-full h-12 outline-none px-2 py-3 placeholder-transparent"
-                  placeholder=" "
+                  className="w-full  outline-none"
+                  placeholder="cdzzsfd@email.com"
                 />
               </div>
             </div>
 
             {/* Password Input */}
-            <div className="relative mt-8">
-              <label className=" text-gray-500 text-sm transition-all duration-200 transform origin-left">
+            <div className="relative mt-5 space-y-2">
+              <label className=" text-[#222222] text-base font-medium">
                 Password
               </label>
 
-              <div className="flex items-center px-2 rounded-md border border-gray-300 focus-within:border-[#9FD2E5]">
+              <div className="flex items-center p-2 rounded-lg border border-gray-300 focus-within:border-[#9FD2E5]">
                 <Image
                   src={"/dev-images/Lock.png"}
                   alt="lock"
@@ -132,8 +132,8 @@ const Login = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
-                  className="w-full h-12 outline-none px-2 py-3 placeholder-transparent"
-                  placeholder=" "
+                  className="w-full  outline-none  "
+                  placeholder="xxxxxxxxxxxxxx"
                 />
 
                 {showPassword ? (
@@ -153,7 +153,7 @@ const Login = () => {
             </div>
 
             {/* Forgot Password */}
-            <div className="flex justify-end mb-8">
+            <div className="flex justify-end mb-5">
               <Link
                 href="#"
                 className="text-base text-[#9FD2E5] hover:underline"
@@ -166,7 +166,7 @@ const Login = () => {
             <div className="flex justify-center">
               <button
                 type="submit"
-                className=" w-full lg:w-96 text-[#035A7A] rounded-xl cursor-pointer py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+                className=" w-full lg:w-96 text-[#035A7A] rounded-3xl cursor-pointer py-2 mt-2 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
               >
                 Login
               </button>

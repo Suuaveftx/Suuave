@@ -102,7 +102,7 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
               setFormData={setFormData}
               value={formData.phoneCode}
               data={numCode}
-              className="w-[20%]"
+              className="w-[30%]"
               htmlFor="number"
             />
 
@@ -197,7 +197,7 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
       <div className="w-full flex justify-end mt-10">
         <button
           onClick={() => setSelected("ProfessionalInformation")}
-          className="text-[#035A7A] rounded-xl cursor-pointer px-6 py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+          className="text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
         >
           Continue
         </button>

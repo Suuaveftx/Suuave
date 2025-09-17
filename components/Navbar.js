@@ -13,17 +13,22 @@ import {
 import React from "react";
 import CustomButton from "./CustomButton";
 
-const CustomNavbar = ({bgColor}) => {
+const CustomNavbar = ({ bgColor }) => {
   const [textStyle, setTextStyle] = React.useState("text-white");
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const menuItems = ["Blogs", "How it works", "FAQs", "About Us"];
+  const menuItems = [
+    { title: "Blogs", url: "#" },
+    { title: "How it works", url: "#" },
+    { title: "FAQs", url: "" },
+    { title: "About Us", url: "#" },
+  ];
 
   return (
     <Navbar
       shouldHideOnScroll
-      className={`w-full ${bgColor}  items-center justify-between lg:px-4 px-0 font-satoshi ${textStyle}`}
-      classNames={{ wrapper: "max-w-[1700px] mx-auto px-3" }}
+      className={`w-full ${bgColor} items-center justify-between lg:px-4 px-0 font-satoshi ${textStyle}`}
+      classNames={{ wrapper: "max-w-[1700px] mx-auto px-3 " }}
       // onScrollPositionChange={(position) => {
       //   if (position > 600) {
       //     setTextStyle(" text-white bg-black/50   ");
@@ -42,7 +47,7 @@ const CustomNavbar = ({bgColor}) => {
           />
         </Link>
       </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-14 " justify="center">
+      <NavbarContent className="hidden lg:flex gap-14 " justify="center">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
@@ -78,32 +83,26 @@ const CustomNavbar = ({bgColor}) => {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <CustomButton href="/onboarding" className="hidden lg:flex" />
+          <Link
+            href="/onboarding"
+            className=" cursor-pointer hidden lg:block bg-[radial-gradient(circle,#EAF9FF,#CCE7F2)] font-bold text-base text-[#035A7A] rounded-3xl py-2 px-6"
+          >
+            Get started
+          </Link>
         </NavbarItem>
         <Link href="/auth" className="lg:hidden text-white">
           Login
         </Link>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className={`sm:hidden text-white font-bold text-lg size-6`}
+          className={` lg:hidden  text-white font-bold text-lg size-6`}
         />
       </NavbarContent>
       <NavbarMenu className="">
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              className="w-full"
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                  ? "danger"
-                  : "foreground"
-              }
-              href="#"
-              size="lg"
-            >
-              {item}
+          <NavbarMenuItem className="space-y-6" key={`${item}-${index}`}>
+            <Link className="w-full text-[#CECECE]" href={item.url} size="lg">
+              {item.title}
             </Link>
           </NavbarMenuItem>
         ))}

@@ -69,7 +69,7 @@ const AwardsCertification = ({ setSelected, formData, setFormData }) => {
           </button>
           <button
             onClick={() => setSelected("Awards/Certifications")}
-            className="text-[#035A7A] rounded-xl cursor-pointer drop-shadow-xl px-6 py-2  text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+            className="text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2  text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
           >
             Submit
           </button>

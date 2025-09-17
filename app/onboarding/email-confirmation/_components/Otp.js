@@ -76,7 +76,7 @@ const Otp = () => {
           </div>
           <Link
             href={"/onboarding/intro-to-profile-setup"}
-            className="w-72 text-[#035A7A] rounded-xl cursor-pointer py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+            className="w-72 text-[#035A7A] rounded-3xl cursor-pointer py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
           >
             Submit
           </Link>

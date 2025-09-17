@@ -4,7 +4,13 @@ import Image from "next/image";
 import React from "react";
 import { Switch } from "@heroui/react";
 
-const PersonalInformation = ({ setSelected, formData, setFormData }) => {
+const PersonalInformation = ({
+  setSelected,
+  formData,
+  setFormData,
+  uploadedPortfolio,
+  previewPortfolio,
+}) => {
   return (
     <div className="bg-[#FAFAFA] border border-[#DEDEDE] rounded-2xl p-3 md:p-6 w-full h-full">
       <h1 className="text-[#3A98BB] font-bold text-xl">Personal Details</h1>
@@ -51,18 +57,33 @@ const PersonalInformation = ({ setSelected, formData, setFormData }) => {
         {/*upload Portfolio*/}
         <div className="w-full flex flex-col gap-2">
           <Lable htmlFor="uploadedPortfolio" text="Portfolio" />
-          <div className="flex flex-col md:flex-row items-center cursor-pointer justify-center gap-3 w-full h-32 rounded-lg border border-[#D1D1D1]">
-            <Image
-              src="/svg/paper-clip.svg"
-              alt="icon"
-              width={24}
-              height={24}
-            />
-            <p className="text-[#767676] font-normal text-base">
-              Upload sample of your designs
-            </p>
-          </div>
+          {previewPortfolio ? (
+            <Image src={previewPortfolio} alt="icon" width={128} height={128} className="object-cover" />
+          ) : (
+            <label
+              htmlFor="uploadedPortfolio"
+              className="flex flex-col md:flex-row items-center cursor-pointer justify-center gap-3 w-full h-32 rounded-lg border border-[#D1D1D1]"
+            >
+              <Image
+                src="/svg/paper-clip.svg"
+                alt="icon"
+                width={24}
+                height={24}
+              />
+              <p className="text-[#767676] font-normal text-base">
+                Upload sample of your designs
+              </p>
+              <input
+                id="uploadedPortfolio"
+                type="file"
+                accept="image/*"
+                onChange={uploadedPortfolio}
+                className="hidden"
+              />
+            </label>
+          )}
         </div>
+
         {/* Availability */}
         <div>
           <p className="text-[#222222] font-normal text-base">Availability</p>
@@ -81,7 +102,7 @@ const PersonalInformation = ({ setSelected, formData, setFormData }) => {
         <div className="w-full flex justify-end items-center">
           <button
             onClick={() => setSelected("Awards/Certifications")}
-            className="text-[#035A7A] rounded-xl cursor-pointer drop-shadow-xl px-6 py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+            className="text-[#035A7A] rounded-3xl cursor-pointer  px-6 py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
           >
             Continue
           </button>
