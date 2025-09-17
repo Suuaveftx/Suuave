@@ -101,8 +101,8 @@ const PendingContracts = ({
             >
               <CardBody className="md:px-6 px-3 py-4">
                 <div className="flex md:justify-between items-start w-full">
-                  <div className="flex-1 flex items-start flex-col md:flex-row md:justify-between">
-                    <h3 className="md:text-md text-sm font-proximanova mb-1 line-clamp-1">
+                  <div className="flex-1 flex items-start md:items-center flex-col md:flex-row md:justify-between">
+                    <h3 className="md:text-md text-sm font-proximanova mb-1 md:mb-0 line-clamp-1">
                       {contract.title} ({contract.id})
                     </h3>
                     <div className="md:flex items-center justify-center md:gap-1">

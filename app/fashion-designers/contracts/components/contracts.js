@@ -31,7 +31,7 @@ export default function ContractPage() {
       expiresIn: "2days",
     },
     {
-      title: "Logo Design for Tech Startup",
+      title: "Modern Fashion Attire Illustration",
       id: "24t64756",
       pendingSince: "20, June, 2024",
       expiresIn: "1day",

@@ -13,7 +13,7 @@ export default function RetainArtist() {
     <div className="font-satoshi">
    
       <ContractHeader title="Retain Artist" />
-      <div className="min-h-screen max-w-6xl mx-auto  flex flex-col items-start justify-start ">
+      <div className="min-h-screen max-w-6xl mx-auto  flex flex-col items-center justify-start ">
         <Card className="w-full max-w-xl md:max-w-2xl p-6 bg-white shadow-md rounded-xl">
           <CardBody className="space-y-6">
             <div className="space-y-4 text-sm ">
