@@ -17,7 +17,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Link from "next/link";
-import { formatNumberShort, formatToNaira } from "../../../../utils/utils";
+import { formatNumberShort, formatToUSD } from "../../../../utils/utils";
 
 /**
  * UserInfoCard Component
@@ -130,6 +130,7 @@ const FashionDesignersCard = ({
   };
 
   return (
+    <Link href={`/fashion-designers/${productID}`} className="block">
     <Card className="px-0 hover:shadow-xl overflow-hidden" shadow="none">
       <CardBody className="overflow-hidden p-0">
         <Button
@@ -165,33 +166,38 @@ const FashionDesignersCard = ({
           </div>
         </div>
       </CardBody>
-      <CardFooter className="flex justify-between items-start w-full mx-0 px-1">
-        <div className="space-y-3">
-          <Link href={`/fashion-designers/${productID}`}>
-            <p className="line-clamp-2 font-semibold text-sm hover:underline">
-              {title}
-            </p>
-          </Link>
-          <Popover showArrow placement="bottom">
-            <PopoverTrigger>
-              <User
-                avatarProps={{
-                  src: `https://i.pravatar.cc/150?img=${idx}`,
-                  size: "sm",
-                }}
-                name={userName}
-              />
-            </PopoverTrigger>
-            <PopoverContent className="p-1">
-              <UserInfoCard idx={idx} userData={userData} />
-            </PopoverContent>
-          </Popover>
-        </div>
-        <p className=" text-right font-satoshi md:text-md text-sm text-[#3A98BB]">
-          {formatToNaira(price)}
-        </p>
-      </CardFooter>
+     
+     <CardFooter className="flex flex-col items-start w-full mx-0 px-1 space-y-2">
+  <div className="space-y-2">
+    {/* Title */}
+    <p className="line-clamp-2 font-semibold text-sm hover:underline min-h-[40px]">
+  {title}
+</p>
+
+
+    <p className="font-semibold text-md text-[#3A98BB]">
+      {formatToUSD(price)}
+    </p>
+
+    <Popover showArrow placement="bottom">
+      <PopoverTrigger>
+        <User
+          avatarProps={{
+            src: `https://i.pravatar.cc/150?img=${idx}`,
+            size: "sm",
+          }}
+          name={userName}
+        />
+      </PopoverTrigger>
+      <PopoverContent className="p-1">
+        <UserInfoCard idx={idx} userData={userData} />
+      </PopoverContent>
+    </Popover>
+  </div>
+</CardFooter>
+
     </Card>
+    </Link>
   );
 };
 

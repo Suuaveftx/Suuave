@@ -136,26 +136,25 @@ const ProductDetails = ({ params }) => {
               <p className="text-3xl font-semibold text-[#3A98BB]">
                 {product.price}
               </p>
-              <div className="flex gap-2 p-2 border w-fit items-center">
-                <p>Licensing Right</p>
-                <Popover showArrow={true}>
-                  <PopoverTrigger>
-                    <div className="cursor-pointer">
-                      <SvgCautionIcon className="size-5" />
-                    </div>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-60 text-sm">
-                    Grants permission to others to use, modify, or distribute
-                    your work under agreed terms. You retain ownership while
-                    allowing specific usage rights.
-                    <br />
-                    <em>Example:</em> A company pays to use your design in their
-                    app.
-                  </PopoverContent>
-                </Popover>
-              </div>
+              <Popover showArrow={true}>
+                <PopoverTrigger>
+                  <div className="flex gap-2 p-2 border w-fit items-center cursor-pointer">
+                    <p>Licensing Right</p>
+                    <SvgCautionIcon className="size-5" />
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className="w-60 text-sm">
+                  Grants permission to others to use, modify, or distribute your
+                  work under agreed terms. You retain ownership while allowing
+                  specific usage rights.
+                  <br />
+                  <em>Example:</em> A company pays to use your design in their
+                  app.
+                </PopoverContent>
+              </Popover>
+
               <Button
-                className="rounded-full w-[70%] mt-auto text-customWhiteBgText text-lg h-12 px-9 py-1 shadow-md  font-semibold flex items-center justify-center gap-2"
+                className="rounded-full w-[70%]  text-customWhiteBgText text-md h-12 px-9 py-1 shadow-md  font-semibold flex items-center justify-center gap-2 mt-6"
                 style={{
                   background:
                     "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
@@ -164,12 +163,19 @@ const ProductDetails = ({ params }) => {
               >
                 {isLicensed ? "Licensed" : "Get License"}
               </Button>
+
+              <Button
+                variant="bordered"
+                className="rounded-full w-[70%] text-[#035A7A] text-md h-12 px-9 py-1  shadow-md font-semibold flex items-center justify-center gap-2"
+              >
+                Save Design
+              </Button>
             </CardBody>
           )}
         </Card>
         {/* Artist Info */}
         <div className="p-4 border rounded-2xl bg-white shadow-sm px-5 pb-8">
-          <p className="text-center font-proximanova text-3xl border-b pb-3 ">
+          <p className="text-center font-semibold text-lg border-b pb-3 ">
             About the Artist
           </p>
           <div className="flex flex-col items-center mt-5">

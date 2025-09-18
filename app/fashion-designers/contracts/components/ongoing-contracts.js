@@ -113,8 +113,8 @@ const currentItems = filteredContracts.slice(startIndex, endIndex);
                 className="text-sm text-gray-700 border border-gray-300 rounded-full pl-10 pr-10 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none w-full"
               >
                 <option value="date">Sort by Date</option>
-                <option value="title">Sort by Title</option>
-                <option value="status">Sort by Status</option>
+                {/* <option value="title">Sort by Title</option>
+                <option value="status">Sort by Status</option> */}
               </select>
             </div>
           </div>

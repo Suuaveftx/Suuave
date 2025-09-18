@@ -9,6 +9,10 @@ export function formatToNaira(amount) {
   return `₦${amount.toLocaleString("en-NG")}`;
 }
 
+export function formatToUSD(amount) {
+  return `$${amount.toLocaleString("en-US")}`;
+}
+
 export function formatNumberShort(num) {
   if (num < 1000) return num.toString();
 

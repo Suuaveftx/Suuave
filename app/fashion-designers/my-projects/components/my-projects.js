@@ -301,12 +301,12 @@ const MyProjects = () => {
                         </span>
                       </div>
 
-                      <div className="flex  items-start justify-between    py-1 my-2">
+                     {/*  <div className="flex  items-start justify-between    py-1 my-2">
                         <span className="font-satoshi">Replies</span>
                         <span className="text-[#767676] font-medium text-md">
                           {project.replies}
                         </span>
-                      </div>
+                      </div> */}
 
                       <div className="flex  items-start justify-between    py-1 my-2">
                         <span className="font-satoshi">Hired</span>
@@ -356,12 +356,12 @@ const MyProjects = () => {
                             <span className="text-gray-500">Proposals</span>
                           </div>
 
-                          <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
+                         {/*  <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
                             <span className="text-[#767676] font-medium text-md">
                               {project.replies}
                             </span>
                             <span className="text-gray-500">Replies</span>
-                          </div>
+                          </div> */}
 
                           <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
                             <span className="text-[#767676] font-medium text-md">
