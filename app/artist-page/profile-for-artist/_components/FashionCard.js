@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Eye, Plus} from "lucide-react";
 import ThreeDotsDropdown from "./ThreeDotsDropDown";
 import CustomButton from "../../../../components/CustomButton";
+import UploadModal from "./UploadModal";
 
 
 const FashionCard = () => {
@@ -24,24 +25,30 @@ const FashionCard = () => {
     "/dev-images/Awards2.png"
   ];
   return (
-    <div className="w-full p-6">
-        <div className=" hidden lg:flex lg:justify-end mb-8">
+    <>
+     <div className=" hidden lg:flex lg:justify-end mb-16 lg:w-4/5 lg:ml-56 lg:absolute ">
         <CustomButton text="View Visitors Mode" className="text-[#222222]" style={{
-          background: "#F0F0F0"
+          background: "#FAFAFA"
         }} />
         </div>
+    <div className="w-full p-6 bg-[#fafafa] mt-4">
 <div className="flex space-x-2 mb-6 border-b overflow-x-auto scrollbar-hide w-full">
   {tabs.map((tab) => (
     <button
       key={tab.id}
       onClick={() => setActiveTab(tab.id)}
-      className={`flex-shrink-0 px-6 py-2 mb-2 text-[16px] md:text-[18px] text-[#767676] font-normal rounded-lg transition duration-300 
-        ${activeTab === tab.id ? "bg-[#035A7A] text-white" : "text-gray-700"}`}
+      className={`flex-shrink-0 px-6 py-1 text-[16px] md:text-[18px] font-medium leading-tight transition duration-300 
+        ${
+          activeTab === tab.id
+            ? "text-[#f4f4f4] border-b-2 border-[#035A7A]"
+            : "text-[#767676] hover:text-[#035A7A]"
+        }`}
     >
       {tab.label}
     </button>
   ))}
 </div>
+
 
 
 
@@ -51,7 +58,7 @@ const FashionCard = () => {
       <div
         key={i}
         className={`relative border rounded-lg shadow w-[95%] sm:w-full h-60 bg-cover bg-center flex items-end 
-          ${!showAll && i > 1 ? "hidden sm:flex" : ""}`}
+          ${!showAll && i > 3 ? "hidden sm:flex" : ""}`} 
         style={{ backgroundImage: `url('/dev-images/FashionImg.png')` }}
       >
         {/* Eye icon + number - MOBILE ONLY */}
@@ -60,11 +67,10 @@ const FashionCard = () => {
           <span>14</span>
         </div>
 
-        {/* Three Dots Menu - always far right */}
+        {/* Three Dots Menu */}
         <div className="absolute top-0 lg:ml-[250px] ml-[128px] mt-1 flex items-center justify-center rounded-md w-10 cursor-pointer">
-  <ThreeDotsDropdown />
-</div>
-
+          <ThreeDotsDropdown />
+        </div>
 
         {/* Bottom Content */}
         <div className="lg:bg-black lg:bg-opacity-50 bg-white lg:text-white text-[#222222] w-full">
@@ -93,8 +99,8 @@ const FashionCard = () => {
           </div>
         </div>
 
-        {/* Plus Button in middle of 2nd card - MOBILE ONLY */}
-        {!showAll && i === 1 && (
+        {/* Plus Button after 4th card - MOBILE ONLY */}
+        {!showAll && i === 3 && (
           <button
             onClick={() => setShowAll(true)}
             className="absolute sm:hidden w-12 h-12 rounded-full text-[#035A7A] flex items-center justify-center shadow-lg"
@@ -132,7 +138,7 @@ const FashionCard = () => {
 
     {/* Add More button - hidden on mobile */}
     <button
-      className="hidden sm:block mt-4 px-6 py-2 bg-[#F3F3F3] text-[#222222] rounded-lg shadow hover:bg-[#e0e0e0] transition"
+      className="hidden sm:block mt-4 px-6 py-2 bg-transparent border-1 border-[#3A98BB] rounded-full text-[#222222] shadow  transition"
       onClick={() => console.log("Add more clicked")}
     >
       Add More
@@ -142,18 +148,35 @@ const FashionCard = () => {
 
 
 
-     {activeTab === "work" && (
+  {activeTab === "work" && (
+  <div className="flex flex-col">
+    {/* Grid of cards */}
   <div className="grid grid-cols-2 sm:flex sm:space-x-6 sm:overflow-x-auto gap-4 sm:gap-0">
-    {[...Array(4)].map((_, i) => (
+  {[...Array(4)].map((_, i) => (
+    <div key={i} className="flex flex-col w-full sm:w-52">
+      {/* Card */}
       <div
-        key={i}
-        className="relative border rounded-lg shadow aspect-square w-full sm:w-52 bg-cover bg-center flex items-end"
+        className="relative border rounded-lg shadow aspect-square w-full bg-cover bg-center"
         style={{ backgroundImage: `url('/dev-images/Awards3.png')` }}
-      >
-      </div>
-    ))}
+      />
+
+      {/* Text under card */}
+      <p className="mt-2 text-left text-sm font-medium text-gray-700">
+        Modern Style Dress
+      </p>
+    </div>
+  ))}
+</div>
+
+
+
+    {/* Upload modal trigger below */}
+    <div className="mt-6 flex justify-center">
+      <UploadModal />
+    </div>
   </div>
 )}
+
 
 
 
@@ -208,6 +231,7 @@ const FashionCard = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

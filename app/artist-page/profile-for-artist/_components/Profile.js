@@ -31,7 +31,7 @@ const ProfileArtist = () => {
         </div>
 
         {/* Occupation */}
-        <p className="text-[#222222] text-sm">Fashion Artist | 3D Illustrator</p>
+        <p className="text-[#222222] text-sm">Artist</p>
 
         {/* Location */}
         <div className="flex items-center justify-center lg:justify-start space-x-2 text-gray-600 text-sm">
@@ -56,24 +56,27 @@ const ProfileArtist = () => {
 </div>
 
         {/* Edit Profile Button */}
-        <div className=" hidden pb-8 lg:flex justify-center lg:justify-start mt-[39px] border-b">
-          <CustomButton text="Edit Profile" className="w-52 text-sm font-medium" style={{
+        <div className="flex pb-8 w-full lg:flex justify-center lg:justify-start mt-[16px] border-b">
+          <CustomButton text="Retain Artist" className="w-52 text-sm font-medium" style={{
             color: "#035A7A"
           }} />
         </div>
-      </div>
-
-      {/* Stats */}
-      <div className="hidden lg:flex justify-between w-full text-sm text-[#222222]">
+            {/* Stats */}
+      <div className="flex w-full">
+      <div className="flex w-full gap-2 text-base text-[#222222]">
+        <span className="font-bold">14</span>
   <h4>Design Collections</h4>
-  <span>14</span>
+  
 </div>
 
-      <div className="hidden lg:flex justify-between w-full border-b border-gray-300 pb-2 text-sm text-[#222222]">
+      <div className="flex  gap-2 w-full  border-gray-300 pb-2 text-base text-[#222222]">
+        <span className="font-bold">14</span>
         <h4>Completed Projects</h4>
-        <span>14</span>
+      </div>
+</div>
       </div>
 
+  
       
       {/* About Us Section */}
 <div className="lg:bg-[#ffffff] bg-[#fafafa] w-full flex flex-col items-start lg:px-0 px-4 lg:py-0 py-2 text-left lg:mt-0 mt-[10px]">
