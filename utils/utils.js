@@ -33,7 +33,7 @@ export const homePageCardData = [
   {
     title: "Copyright Protection",
     text: "We prioritize fairness for all users and prevent unauthorized use of designs. ",
-    image: "/dev-images/copy.png",
+    image: "/dev-images/copy.png", 
   },
   {
     title: "User Verification",
