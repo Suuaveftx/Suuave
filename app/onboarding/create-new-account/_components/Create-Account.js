@@ -97,15 +97,17 @@ const CreateAccount = () => {
 
         <span className="font-normal text-sm text-[#222222]">
           <Checkbox defaultSelected />
-          By creating account, I agree to Suuave{" "}<br className="lg:hidden" />
-          <b className="text-[#035A7A] ml-10 lg:ml-0  cursor-pointer">Terms and conditions</b>
+          By creating account, I agree to Suuave <br className="lg:hidden" />
+          <b className="text-[#035A7A] ml-10 lg:ml-0  cursor-pointer">
+            Terms and conditions
+          </b>
         </span>
-        <button
-          type="submit"
-          className="text-[#035A7A] rounded-3xl cursor-pointer px-20 py-3 mt-5 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+        <Link
+          href="email-confirmation"
+          className="text-[#035A7A] drop-shadow-md rounded-3xl cursor-pointer px-20 py-3 mt-5 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
         >
           Create Account
-        </button>
+        </Link>
       </form>
       <span className="font-normal mt-5  text-center text-sm text-[#222222]">
         Already have an account?

@@ -30,9 +30,9 @@ const Login = () => {
   };
 
   return (
-    <main className=" h-screen lg:h-full  w-full flex items-center bg-[#F1F1F1]">
-      <section className=" hidden lg:flex flex-col justify-between w-3/6  bg-[#0F0F0F] ">
-        <div className="p-10">
+    <main className=" h-screen lg:h-full  w-full flex  bg-[#F1F1F1]">
+      <section className=" h-full hidden lg:flex flex-col justify-between w-3/6  bg-[#0F0F0F] ">
+        <div className="h-full p-10">
           <h1 className="font-bold text-3xl text-[#EAEAEA] tracking-wide">
             Connect with the African <br /> Fashion World.
           </h1>
@@ -60,7 +60,7 @@ const Login = () => {
           </div>
         </div>
       </section>
-      <section className="flex  mt-10 lg:m-0 items-start lg:items-center justify-center w-full lg:w-3/6 h-full  p-4 lg:p-10 ">
+      <section className="flex  mt-10 lg:m-0 items-start lg:items-center justify-center w-full lg:w-3/6 h-full  p-4 lg:p-5 ">
         {/* Right section for Email Sign In */}
         {/* Back Arrow - Positioned Outside Only on Mobile */}
         {/* Mobile View: Logo & Back Arrow Outside */}
@@ -72,7 +72,7 @@ const Login = () => {
         {/* Desktop View: Everything Inside the Container */}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="relative flex flex-col justify-center items-center bg-white shadow-[0px_4px_16px_0px_rgba(0,0,0,0.15)] w-full py-[45px] px-5 sm:mt-0 mt-[30px] md:w-[90%]"
+          className="relative flex flex-col justify-center items-center bg-white shadow-[0px_4px_16px_0px_rgba(0,0,0,0.15)] w-full py-[45px] px-5 lg:px-10 sm:mt-0 mt-[30px] md:w-[90%]"
           style={{ borderRadius: "16px" }}
         >
           {/* Desktop: Logo Centered */}
@@ -94,17 +94,25 @@ const Login = () => {
           <h1 className="text-xl font-semibold mt-3 text-[#444444] text-center block sm:hidden">
             Welcome to Suuave
           </h1>
+          <button className="flex mt-5 items-center justify-center gap-2 border-[#D1D1D1] border-1 rounded-lg py-2 w-full">
+            <Image src="/svg/google.svg" alt="icon" width={24} height={24} />
+            Continue with Google
+          </button>
+          <div className="flex w-full 0 gap-4 items-center mt-3 ">
+            <hr className="w-full" />
+            <p className="text-[#767676] text-base font-normal">Or</p>{" "}
+            <hr className="w-full" />
+          </div>
 
           <div className="w-full">
             {/* Email */}
 
-            <div className="relative mt-8 space-y-2">
+            <div className="relative mt-2 space-y-2">
               <label className=" text-[#222222] text-base font-medium">
                 Email
               </label>
 
               <div className="flex items-center p-2 rounded-lg border border-gray-300 focus-within:border-[#9FD2E5]">
-                <HiOutlineMail className=" text-gray-500" size={20} />
                 <input
                   type="text"
                   {...register("email")}
@@ -121,14 +129,6 @@ const Login = () => {
               </label>
 
               <div className="flex items-center p-2 rounded-lg border border-gray-300 focus-within:border-[#9FD2E5]">
-                <Image
-                  src={"/dev-images/Lock.png"}
-                  alt="lock"
-                  className="text-gray-500"
-                  width={20}
-                  height={20}
-                />
-
                 <input
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
@@ -156,7 +156,7 @@ const Login = () => {
             <div className="flex justify-end mb-5">
               <Link
                 href="#"
-                className="text-base text-[#9FD2E5] hover:underline"
+                className="text-base text-[#444444] hover:underline"
               >
                 Forgot password?
               </Link>
@@ -166,14 +166,14 @@ const Login = () => {
             <div className="flex justify-center">
               <button
                 type="submit"
-                className=" w-full lg:w-96 text-[#035A7A] rounded-3xl cursor-pointer py-2 mt-2 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+                className=" drop-shadow-md w-full  text-[#035A7A] rounded-3xl cursor-pointer py-3 mt-2 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
               >
                 Login
               </button>
             </div>
 
             {/* Don't have an account prompt */}
-            <p className="text-center text-base text-gray-600 mt-4">
+            <p className="text-start text-base text-gray-600 mt-4">
               Don&apos;t have an account?{" "}
               <Link
                 href={"/onboarding"}
