@@ -42,7 +42,7 @@ const HeroSection = () => {
             <p className="text-white z-20">Over 5000 Fashion Artists</p>
           </div>
           <p className="font-medium lg:text-[48px] text-[33px] text-white lg:pl-14 pl-0 md:p-2 lg:leading-[60px] leading-[40px] z-30 lg:w-[84%] lg:text-start text-center w-full ">
-            Find and Collaborate with the Ideal{" "}
+            Find and Collaborati with the Ideal{" "}
             <span className="italic font-[40]">African</span> Fashion Artists.
           </p>
           <p className="text-customGray lg:pl-14 lg:w-[90%] lg:text-[17px] z-30 w-full lg:text-start text-center text-[16.6px]  pl-3 p-2 px-3 ">
