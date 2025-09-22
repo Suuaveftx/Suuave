@@ -154,7 +154,7 @@ const FashionDesignersCard = ({
                   key={index}
                   className="relative h-80 flex items-center justify-center"
                 >
-                 <link>
+           
                  
       <img
                     src={image}
@@ -162,7 +162,7 @@ const FashionDesignersCard = ({
                     className="w-full h-full object-cover object-top
                     "
                   />
-</link>
+
                 
                 </div>
               ))}

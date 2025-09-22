@@ -22,7 +22,7 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import ContractHeader from "../../../artist-page/my-contracts/components/contract-header";
-
+import Link from "next/link";
 
 const MyProjects = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -199,7 +199,6 @@ const MyProjects = () => {
   return (
     <>
       <div className="min-h-screen max-w-[86.5rem] mx-auto">
-       
         <div className="  ">
           {/* Header */}
           <ContractHeader title="My Projects" />
@@ -254,6 +253,8 @@ const MyProjects = () => {
                           <DropdownMenu aria-label="Project actions">
                             <DropdownItem
                               key="edit"
+                              as={Link}
+                              href="/fashion-designers/post-project"
                               color="default"
                               startContent={<PencilIcon className="w-4 h-4" />}
                             >
@@ -293,20 +294,15 @@ const MyProjects = () => {
                         </Chip>
                       </div>
 
-                      <div className="flex  items-start justify-between  py-1 my-2">
+                      <Link
+                        href="/artist-page/submit-contract-congratulation"
+                        className="flex items-start justify-between py-1 my-2 cursor-pointer hover:bg-gray-50 rounded-md px-2"
+                      >
                         <span className="font-satoshi">Proposals</span>
-
                         <span className="text-[#3A98BB] font-montserrat font-medium text-md">
                           {project.proposals}
                         </span>
-                      </div>
-
-                     {/*  <div className="flex  items-start justify-between    py-1 my-2">
-                        <span className="font-satoshi">Replies</span>
-                        <span className="text-[#767676] font-medium text-md">
-                          {project.replies}
-                        </span>
-                      </div> */}
+                      </Link>
 
                       <div className="flex  items-start justify-between    py-1 my-2">
                         <span className="font-satoshi">Hired</span>
@@ -349,14 +345,17 @@ const MyProjects = () => {
 
                         {/* Stats */}
                         <div className="flex items-start gap-6 text-sm">
-                          <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
+                          <Link
+                            href="/artist-page/submit-contract-congratulation"
+                            className="flex gap-2 items-center border rounded-full border-[#D1D1D1] px-4 py-1 cursor-pointer hover:bg-gray-50"
+                          >
                             <span className="text-[#3A98BB] font-montserrat font-medium text-md">
                               {project.proposals}
                             </span>
                             <span className="text-gray-500">Proposals</span>
-                          </div>
+                          </Link>
 
-                         {/*  <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
+                          {/*  <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
                             <span className="text-[#767676] font-medium text-md">
                               {project.replies}
                             </span>
@@ -371,27 +370,32 @@ const MyProjects = () => {
                           </div>
 
                           {/* More Options */}
-                          <Dropdown >
+                          <Dropdown>
                             <DropdownTrigger>
                               <Button
                                 variant="bordered"
                                 isIconOnly
-                                size="md"                                
-                                className="text-gray-400 mr-10 -py-6" 
+                                size="md"
+                                className="text-gray-400 mr-10 -py-6"
                               >
                                 <EllipsisHorizontalIcon className="w-5 h-5" />
                               </Button>
                             </DropdownTrigger>
-                            <DropdownMenu className="w-[120px] p-1 text-sm" aria-label="Project actions" itemClasses={{
-      base: " py-1.5 text-gray-700 hover:bg-gray-100 rounded-md", 
-    }}>
+                            <DropdownMenu
+                              className="w-[120px] p-1 text-sm"
+                              aria-label="Project actions"
+                              itemClasses={{
+                                base: " py-1.5 text-gray-700 hover:bg-gray-100 rounded-md",
+                              }}
+                            >
                               <DropdownItem
                                 key="edit"
+                                as={Link}
+                                href="/fashion-designers/post-project"
                                 color="default"
                                 startContent={
                                   <PencilIcon className="w-4 h-4" />
                                 }
-                                
                               >
                                 Edit
                               </DropdownItem>

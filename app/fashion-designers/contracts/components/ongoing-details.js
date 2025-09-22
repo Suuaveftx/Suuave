@@ -27,6 +27,7 @@ import {
 import ContractHeader from "./contract-header";
 import { TiLocation } from "react-icons/ti";
 import { FaStar } from "react-icons/fa6";
+import Link from "next/link";
 
 export default function OngoingDetailsPage({ params }) {
   const contractId = params?.id || "24t64754"; // fallback for demo
@@ -315,7 +316,7 @@ export default function OngoingDetailsPage({ params }) {
                       ))}
                     </div>
                     <span className="text-sm text-[#3A98BB]">
-                      ({contractData.artist.reviews} Reviews)
+                      ({contractData.artist.reviews} <Link href="/artist-page/profile-for-artist?tab=reviews">Reviews</Link>)
                     </span>
                   </div>
                 </div>
