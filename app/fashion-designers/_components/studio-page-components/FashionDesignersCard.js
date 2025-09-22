@@ -154,12 +154,16 @@ const FashionDesignersCard = ({
                   key={index}
                   className="relative h-80 flex items-center justify-center"
                 >
-                  <img
+                 <link>
+                 
+      <img
                     src={image}
                     alt={`${title} - Image ${index + 1}`}
                     className="w-full h-full object-cover object-top
                     "
                   />
+</link>
+                
                 </div>
               ))}
             </Slider>

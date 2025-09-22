@@ -21,6 +21,7 @@ import LicenseModal from "../_components/licenseModal";
 import ProductGallery from "../_components/designer-details/ProductGallery";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Link from "next/link";
 
 const ProductDetails = ({ params }) => {
   // const { id } = params; // Extract 'id' from the params object
@@ -57,7 +58,7 @@ const ProductDetails = ({ params }) => {
   const id = resolvedParams.id;
 
   const handleGetLicense = () => {
-    router.push(`/license-flow?id=${id}`);
+    router.push(`/checkout-page?id=${id}`);
   };
 
   useEffect(() => {
@@ -77,7 +78,7 @@ const ProductDetails = ({ params }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_0.54fr] gap-12 p-6 max-w-[1500px] mx-auto ">
+    <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_0.54fr] gap-4 p-6 max-w-[1500px] mx-auto ">
       {/* Left Section: Images */}
 
       <div className="w-full ">
@@ -205,7 +206,12 @@ const ProductDetails = ({ params }) => {
                 ))}
               </div>
               <span className="text-sm text-[#3A98BB]">
-                ({product.artist.reviews} Reviews)
+                ({product.artist.reviews} <Link 
+    href="/artist-page/profile-for-artist" 
+    className="cursor-pointer"
+  >
+    Reviews
+  </Link>)
               </span>
             </div>
 

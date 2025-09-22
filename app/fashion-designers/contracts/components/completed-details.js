@@ -24,7 +24,7 @@ export default function CompletedDetailsPage({ params }) {
     contractType: "Hire",
     role: "Fashion Artist",
     budget: "₦200,000",
-    timeframe: "1 Month",
+    timeframe: "1 Day",
     status: "Completed",
     attachedDocuments: [
       { name: "DocTGFile", type: "document" },
@@ -107,7 +107,7 @@ export default function CompletedDetailsPage({ params }) {
                         <span
                           className={`${
                             item.label === "Status" ? "lg:hidden" : ""
-                          } md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
+                          } ${item.label === "Contract Number" ? "lg:-mt-4": ""}  md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
                         >
                           {item.label} -
                         </span>
@@ -118,7 +118,7 @@ export default function CompletedDetailsPage({ params }) {
                                   contractData.status
                                 )} lg:hidden`
                               : ""
-                          } md:text-md text-sm font-proximanova`}
+                          } ${item.label === "Contract Number" ? "lg:-mt-4": ""}  md:text-md text-sm font-proximanova`}
                         >
                           {item.value}
                         </span>
@@ -129,10 +129,10 @@ export default function CompletedDetailsPage({ params }) {
                     {/* Status */}
                                     <Chip
                                       variant="flat"
-                                      size="lg"
+                                      size="sm"
                                       className={`${getStatusColor(
                                         contractData.status
-                                      )} font-medium  border-1 hidden lg:flex rounded-full bg-transparent`}
+                                      )} font-proximanova  border-1 hidden lg:flex rounded-full bg-transparent`}
                                     >
                                       {contractData.status}
                                     </Chip>
@@ -173,7 +173,7 @@ export default function CompletedDetailsPage({ params }) {
             >
               <CardBody className="lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col">
                 <Button
-                  className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
+                  className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-proximanova rounded-full border-0 shadow-sm"
                   size="lg"
                   radius="full"
                   onPress={() =>
@@ -186,7 +186,7 @@ export default function CompletedDetailsPage({ params }) {
                 </Button>
                 <Button
                   variant="bordered"
-                  className="w-full bg-radial from-[#EAF9FF] to-[#E8E8E8] text-[#222222] font-medium rounded-full border-0 shadow-sm"
+                  className="w-full bg-[#FAFAFA]  text-[#222222] font-proximanova  shadow-sm"
                   size="lg"
                   radius="full"
                 >

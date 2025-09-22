@@ -19,12 +19,16 @@ import {
 } from "@heroui/react";
 import { CreditCard, Info, Shield } from "lucide-react";
 import ContractHeader from "../../artist-page/my-contracts/components/contract-header";
-import Navbar3 from "../../../components/Navbar3";
+
+import { useRouter, useSearchParams } from "next/navigation";
+
 import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import FashionDesignerHeader from "../../fashion-designers/_components/studio-page-components/FashionDesignerHeader";
+import Footer from "../../about-page/components/Footer";
 
 export const CheckoutPage = () => {
   const [selectedCountry, setSelectedCountry] = useState("Nigeria");
@@ -43,14 +47,25 @@ export const CheckoutPage = () => {
   };
 
   const handleBackToHome = () => {
-    setIsSuccessModalOpen(false);
-    // Add navigation logic here
-  };
+  setIsSuccessModalOpen(false);
+  // Save license info
+  const storedLicenses = localStorage.getItem("licenses");
+  const licenses = storedLicenses ? JSON.parse(storedLicenses) : {};
+  licenses[id] = true;
+  localStorage.setItem("licenses", JSON.stringify(licenses));
+
+  // Redirect back to product details page
+  router.push(`/fashion-designers/${id}`);
+};
+
+  const router = useRouter();
+const searchParams = useSearchParams();
+const id = searchParams.get("id");
 
   return (
-    <div className=" bg-[#FAFAFA]">
-      <Navbar3 />
-      <div className="max-w-6xl mx-auto p-3 lg:p-6">
+    <div className="mx-auto bg-[#FAFAFA]">
+     <FashionDesignerHeader />
+      <div className="max-w-6xl  -mt-6 mx-auto p-3 lg:p-6">
         {/* Header */}
         <ContractHeader title="Check-Out" />
 
@@ -65,7 +80,7 @@ export const CheckoutPage = () => {
               className="h-5 w-5 flex-shrink-0 text-black mt-2.5"
             />
           }
-          className="border-none bg-gradient-to-r from-[#A5D5E9] to-[#28A5D8] text-[#222222] font-proximanova px-4 my-2"
+          className="border-none bg-gradient-to-r from-[#A5D5E9] to-[#28A5D8] text-[#222222] font-proximanova px-4 my-2 -py-1"
         >
           <div className="flex items-center justify-start text-sm">
             Get Licensing right to the design and use as you desire. All files
@@ -336,12 +351,14 @@ export const CheckoutPage = () => {
                 radius="full"
                 onPress={handleBackToHome}
               >
-                Back to Home
+                OK
               </Button>
             </ModalBody>
           </ModalContent>
         </Modal>
       </div>
+
+      <Footer />
     </div>
   );
 };

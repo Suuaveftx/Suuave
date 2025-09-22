@@ -193,7 +193,7 @@ const Page = () => {
   ];
 
   return (
-    <div className=" lg:px-14 px-4 pt-7 font-satoshi">
+    <div className=" lg:px-14 px-4 pt-7 font-satoshi mb-48">
       <Alert
         // color="secondary"
         isVisible={isVisible}

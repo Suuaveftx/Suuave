@@ -24,7 +24,7 @@ import { useRouter } from "next/navigation";
 
 export default function CompletedContracts() {
   const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState("date");
+  const [sortBy, setSortBy] = useState("all");
 
   const contracts = [
     {
@@ -122,23 +122,18 @@ export default function CompletedContracts() {
       );
     }
 
-    // Apply sorting
-    const sorted = [...filtered].sort((a, b) => {
-      switch (sortBy) {
-        case "date":
-          return b.dateValue - a.dateValue; // Most recent first
-        case "project":
-          return a.project.localeCompare(b.project);
-        case "artist":
-          return a.artist.localeCompare(b.artist);
-        case "payment":
-          return b.paymentValue - a.paymentValue; // Highest first
-        case "status":
-          return a.status.localeCompare(b.status);
-        default:
-          return 0;
-      }
-    });
+    // Filter by month (if not "all")
+    if (sortBy !== "all") {
+      filtered = filtered.filter((contract) => {
+        const contractMonth = (contract.dateValue.getMonth() + 1)
+          .toString()
+          .padStart(2, "0");
+        return contractMonth === sortBy;
+      });
+    }
+
+    // Sort by most recent date (default)
+    const sorted = [...filtered].sort((a, b) => b.dateValue - a.dateValue);
 
     return sorted;
   }, [search, sortBy, contracts]);
@@ -184,6 +179,22 @@ export default function CompletedContracts() {
         return cellValue;
     }
   }, []);
+
+  const months = [
+    { value: "all", label: "All Months" },
+    { value: "01", label: "January" },
+    { value: "02", label: "February" },
+    { value: "03", label: "March" },
+    { value: "04", label: "April" },
+    { value: "05", label: "May" },
+    { value: "06", label: "June" },
+    { value: "07", label: "July" },
+    { value: "08", label: "August" },
+    { value: "09", label: "September" },
+    { value: "10", label: "October" },
+    { value: "11", label: "November" },
+    { value: "12", label: "December" },
+  ];
 
   // Pagination calculations
   const [currentPage, setCurrentPage] = useState(1);
@@ -251,11 +262,11 @@ export default function CompletedContracts() {
                 onChange={(e) => onSortChange(e.target.value)}
                 className="text-sm text-gray-700 border border-gray-300 rounded-full pl-10 pr-10 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none w-full min-w-[180px]"
               >
-                <option value="date">Sort by Date</option>
-                {/* <option value="project">Sort by Project</option>
-                <option value="artist">Sort by Artist</option>
-                <option value="payment">Sort by Payment</option>
-                <option value="status">Sort by Status</option> */}
+                {months.map((month) => (
+                  <option key={month.value} value={month.value}>
+                    {month.label}
+                  </option>
+                ))}
               </select>
             </div>
           </div>

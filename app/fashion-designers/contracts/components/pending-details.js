@@ -103,7 +103,7 @@ export default function PendingDetailsPage({ params }) {
                         <span
                           className={`${
                             item.label === "Status" ? "lg:hidden" : ""
-                          } md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
+                          } ${ item.label === "Contract Number"? "lg:-mt-4": ""} md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
                         >
                           {item.label} -
                         </span>
@@ -114,7 +114,7 @@ export default function PendingDetailsPage({ params }) {
                                   contractData.status
                                 )} lg:hidden`
                               : ""
-                          } md:text-md text-sm font-proximanova`}
+                          } ${item.label === "Contract Number"? "lg:-mt-4": ""} md:text-md text-sm font-proximanova`}
                         >
                           {item.value}
                         </span>
@@ -125,10 +125,10 @@ export default function PendingDetailsPage({ params }) {
                   {/* Status */}
                   <Chip
                     variant="flat"
-                    size="lg"
+                    size="sm"
                     className={`${getStatusColor(
                       contractData.status
-                    )} font-medium  border-1 hidden lg:flex rounded-full bg-transparent`}
+                    )} font-semibold  border-1 hidden lg:flex rounded-full bg-transparent`}
                   >
                     {contractData.status}
                   </Chip>
@@ -137,7 +137,7 @@ export default function PendingDetailsPage({ params }) {
             </Card>
 
             {/* Attached Documents Card */}
-            <Card className="bg-white border border-gray-200" shadow="none">
+            <Card className="bg-white " shadow="none">
               <CardBody className="p-6">
                 <h2 className="md:text-2xl text-lg font-semibold md:mb-2 -mt-2">
                   Attached Documents
@@ -146,7 +146,7 @@ export default function PendingDetailsPage({ params }) {
                 {contractData.attachedDocuments.map((doc, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg bg-gray-50 transition-colors cursor-pointer "
+                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg transition-colors cursor-pointer "
                   >
                     <div className="flex items-center justify-center gap-2">
                       <PaperClipIcon className="md:h-5 md:w-5 h-4 w-4" />
@@ -166,14 +166,14 @@ export default function PendingDetailsPage({ params }) {
             <Card className="bg-white border border-gray-200 drop-shadow-md">
               <CardBody className="lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col">
                 <Button
-                  className="w-full py-5.5 bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl border-0 shadow-sm"
+                  className="w-full py-5.5 bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-semibold text-sm rounded-3xl border-0 shadow-sm"
                   size="lg"
                 >
                   Message Artist
                 </Button>
                 <Button
-                  variant="bordered"
-                  className="w-full bg-transparent py-5 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl  shadow-sm"
+                  variant="flat"
+                  className="w-full bg-[#EAEAEA] py-5  text-[#035A7A] font-semibold rounded-3xl text-sm  shadow-sm"
                   size="lg"
                 >
                   Cancel Project

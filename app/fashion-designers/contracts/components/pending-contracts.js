@@ -88,18 +88,18 @@ const PendingContracts = ({
       </div>
 
       {/* Contract Cards */}
-      <div className="space-y-4">
+      <div className="space-y-2">
         {currentItems.map((contract, index) => (
           <Card
             key={contract.id || index}
-            className="bg-white border border-gray-200 hover:shadow-md transition-shadow"
+            className="bg-white border border-gray-200 hover:shadow-md transition-shadow max-w-[60rem]"
             shadow="none"
           >
             <div
               className="cursor-pointer"
               onClick={() => onContractClick(contract.id)}
             >
-              <CardBody className="md:px-6 px-3 py-4">
+              <CardBody className="md:px-6 px-3 py-4 ">
                 <div className="flex md:justify-between items-start w-full">
                   <div className="flex-1 flex items-start md:items-center flex-col md:flex-row md:justify-between">
                     <h3 className="md:text-md text-sm font-proximanova mb-1 md:mb-0 line-clamp-1">

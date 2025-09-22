@@ -38,7 +38,7 @@ export default function OngoingDetailsPage({ params }) {
     contractType: "Hire",
     role: "Fashion Artist",
     budget: "₦200,000",
-    timeframe: "1 Month",
+    timeframe: "1 Day",
     status: "Ongoing",
     isSubmitted: true, //to track submission
     attachedDocuments: [
@@ -175,7 +175,7 @@ export default function OngoingDetailsPage({ params }) {
                         <span
                           className={`${
                             item.label === "Status" ? "lg:hidden" : ""
-                          } md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
+                          } ${item.label === "Contract Number" ? "lg:-mt-4": ""}  md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
                         >
                           {item.label} -
                         </span>
@@ -186,7 +186,7 @@ export default function OngoingDetailsPage({ params }) {
                                   contractData.status
                                 )} lg:hidden`
                               : ""
-                          } md:text-md text-sm  font-proximana`}
+                          } ${item.label === "Contract Number"? "lg:-mt-4": ""}  md:text-md text-sm font-proximanova`}
                         >
                           {item.value}
                         </span>
@@ -197,10 +197,10 @@ export default function OngoingDetailsPage({ params }) {
                   {/* Status */}
                   <Chip
                     variant="flat"
-                    size="lg"
+                    size="sm"
                     className={`${getStatusColor(
                       contractData.status
-                    )} font-medium  border-1 hidden lg:flex rounded-full bg-transparent`}
+                    )} font-semibold  border-1 hidden lg:flex rounded-full bg-transparent`}
                   >
                     {contractData.status}
                   </Chip>
@@ -209,7 +209,7 @@ export default function OngoingDetailsPage({ params }) {
             </Card>
 
             {/* Attached Documents Card */}
-            <Card className="bg-white border border-gray-200" shadow="none">
+            <Card className="bg-white" shadow="none">
               <CardBody className="p-6">
                 <h2 className="md:text-2xl text-lg font-semibold md:mb-2 -mt-2">
                   Attached Documents
@@ -218,7 +218,7 @@ export default function OngoingDetailsPage({ params }) {
                 {contractData.attachedDocuments.map((doc, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg bg-gray-50 transition-colors cursor-pointer "
+                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg transition-colors cursor-pointer "
                   >
                     <div className="flex items-center justify-center gap-2">
                       <PaperClipIcon className="md:h-5 md:w-5 h-4 w-4" />

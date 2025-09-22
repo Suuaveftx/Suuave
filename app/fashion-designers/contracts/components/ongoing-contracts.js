@@ -27,8 +27,6 @@ const OngoingContracts = ({
   onApproveWork = () => {},
   onMessageArtist = () => {},
   onMoreOptions = () => {},
-  sortBy = "date",
-  onSortChange = () => {},
 }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -36,9 +34,9 @@ const OngoingContracts = ({
     useState(false);
   const [currentContract, setCurrentContract] = useState(null);
 
-  const filteredContracts = contracts.filter((contract) =>
+  /*  const filteredContracts = contracts.filter((contract) =>
     contract.title.toLowerCase().includes(search.toLowerCase())
-  );
+  ); */
 
   const handleOpenApprovalModal = (contract) => {
     setCurrentContract(contract);
@@ -56,15 +54,44 @@ const OngoingContracts = ({
     console.log("Rate Ocean clicked");
   };
 
-// Pagination state & calculations
+  const months = [
+    { value: "all", label: "All Months" },
+    { value: "01", label: "January" },
+    { value: "02", label: "February" },
+    { value: "03", label: "March" },
+    { value: "04", label: "April" },
+    { value: "05", label: "May" },
+    { value: "06", label: "June" },
+    { value: "07", label: "July" },
+    { value: "08", label: "August" },
+    { value: "09", label: "September" },
+    { value: "10", label: "October" },
+    { value: "11", label: "November" },
+    { value: "12", label: "December" },
+  ];
+
+  const [sortBy, setSortBy] = useState("all");
+  // Filter by search
+  let filteredContracts = contracts.filter((contract) =>
+    contract.title.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // Filter by month if not "all"
+  if (sortBy !== "all") {
+    filteredContracts = filteredContracts.filter((contract) => {
+      const contractMonth = new Date(contract.startDate).getMonth() + 1; // 1-12
+      return String(contractMonth).padStart(2, "0") === sortBy;
+    });
+  }
+
+  // Pagination state & calculations
   const [currentPage, setCurrentPage] = useState(1);
-const itemsPerPage = 3;
-const totalPages = Math.ceil(filteredContracts.length / itemsPerPage);
+  const itemsPerPage = 3;
+  const totalPages = Math.ceil(filteredContracts.length / itemsPerPage);
 
-const startIndex = (currentPage - 1) * itemsPerPage;
-const endIndex = startIndex + itemsPerPage;
-const currentItems = filteredContracts.slice(startIndex, endIndex);
-
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredContracts.slice(startIndex, endIndex);
 
   return (
     <div>
@@ -107,22 +134,27 @@ const currentItems = filteredContracts.slice(startIndex, endIndex);
                 <ChevronDownIcon className="h-4 w-4 text-gray-400" />
               </div>
 
-              <select
-                value={sortBy}
-                onChange={(e) => onSortChange(e.target.value)}
-                className="text-sm text-gray-700 border border-gray-300 rounded-full pl-10 pr-10 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none w-full"
-              >
-                <option value="date">Sort by Date</option>
-                {/* <option value="title">Sort by Title</option>
-                <option value="status">Sort by Status</option> */}
-              </select>
+             <select
+  value={sortBy}
+  onChange={(e) => {
+    setSortBy(e.target.value);
+    setCurrentPage(1); 
+  }}
+  className="text-sm text-gray-700 border border-gray-300 rounded-full pl-10 pr-10 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none w-full"
+>
+  {months.map((month) => (
+    <option key={month.value} value={month.value}>
+      {month.label}
+    </option>
+  ))}
+</select>
             </div>
           </div>
         </div>
       </div>
 
       {/* Contract Cards */}
-      <div className="space-y-4">
+      <div className="space-y-2">
         {currentItems.map((contract, index) => (
           <Card
             key={contract.id || index}
@@ -324,46 +356,44 @@ const currentItems = filteredContracts.slice(startIndex, endIndex);
         </ModalContent>
       </Modal>
 
-     
-        {/* Pagination */}
-           {totalPages > 0 && (
-             <div className="flex items-center justify-center gap-2 mt-6">
-               <div className="flex items-center gap-2">
-                 {/* Results info */}
-                 <span className="text-sm text-gray-600 mr-4">
-                   {startIndex + 1} - {Math.min(endIndex, filteredContracts.length)}{" "}
-                   of {filteredContracts.length}
-                 </span>
-     
-                 {/* Previous button */}
-                 <Button
-                   isIconOnly
-                   variant="flat"
-                   size="sm"
-                   radius="none"
-                   isDisabled={currentPage === 1}
-                   onPress={() => setCurrentPage(currentPage - 1)}
-                   className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer"
-                 >
-                   &lt;
-                 </Button>
-     
-                 {/* Next button */}
-                 <Button
-                   isIconOnly
-                   variant="flat"
-                   size="sm"
-                   radius="none"
-                   isDisabled={currentPage === totalPages}
-                   onPress={() => setCurrentPage(currentPage + 1)}
-                   className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2"
-                 >
-                   &gt;
-                 </Button>
-               </div>
-             </div>
-           )}
-      
+      {/* Pagination */}
+      {totalPages > 0 && (
+        <div className="flex items-center justify-center gap-2 mt-6">
+          <div className="flex items-center gap-2">
+            {/* Results info */}
+            <span className="text-sm text-gray-600 mr-4">
+              {startIndex + 1} - {Math.min(endIndex, filteredContracts.length)}{" "}
+              of {filteredContracts.length}
+            </span>
+
+            {/* Previous button */}
+            <Button
+              isIconOnly
+              variant="flat"
+              size="sm"
+              radius="none"
+              isDisabled={currentPage === 1}
+              onPress={() => setCurrentPage(currentPage - 1)}
+              className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer"
+            >
+              &lt;
+            </Button>
+
+            {/* Next button */}
+            <Button
+              isIconOnly
+              variant="flat"
+              size="sm"
+              radius="none"
+              isDisabled={currentPage === totalPages}
+              onPress={() => setCurrentPage(currentPage + 1)}
+              className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2"
+            >
+              &gt;
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

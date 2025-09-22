@@ -357,15 +357,16 @@ const Page = () => {
             <SelectItem key={item.key}>{item.label}</SelectItem>
           ))}
         </Select>
-        <div className="flex items-center justify-start gap-4 w-40">
-          <Button type="reset" size="lg" variant="flat">
+        <div className="flex items-center justify-start gap-2 w-40">
+          <Button type="reset" size="sm" radius="full" variant="flat" className="text-xs px-10">
             Cancel
           </Button>
           <Button
             type="submit"
-            size="lg"
+            size="sm"
+          radius="full"
             variant="outlined"
-            className="  text-customWhiteBgText text-lg  shadow-md  font-semibold "
+            className="  text-customWhiteBgText text-xs  shadow-md  font-semibold px-10"
             style={{
               background:
                 "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
