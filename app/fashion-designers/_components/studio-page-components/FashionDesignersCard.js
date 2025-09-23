@@ -130,9 +130,10 @@ const FashionDesignersCard = ({
   };
 
   return (
-    <Link href={`/fashion-designers/${productID}`} className="block">
+  
     <Card className="px-0 hover:shadow-xl overflow-hidden" shadow="none">
       <CardBody className="overflow-hidden p-0">
+        <Link href={`/fashion-designers/${productID}`} className="block">
         <Button
           isIconOnly
           className="absolute right-4 top-4 z-20 border-1 bg-[#444444] border-[#444444] backdrop-blur-sm hover:bg-[#444444]/70"
@@ -169,6 +170,7 @@ const FashionDesignersCard = ({
             </Slider>
           </div>
         </div>
+        </Link>
       </CardBody>
      
      <CardFooter className="flex flex-col items-start w-full mx-0 px-1 space-y-2">
@@ -185,6 +187,7 @@ const FashionDesignersCard = ({
 
     <Popover showArrow placement="bottom">
       <PopoverTrigger>
+        <Link href="/artist-page/profile-for-artist">
         <User
           avatarProps={{
             src: `https://i.pravatar.cc/150?img=${idx}`,
@@ -192,6 +195,7 @@ const FashionDesignersCard = ({
           }}
           name={userName}
         />
+        </Link>
       </PopoverTrigger>
       <PopoverContent className="p-1">
         <UserInfoCard idx={idx} userData={userData} />
@@ -201,7 +205,7 @@ const FashionDesignersCard = ({
 </CardFooter>
 
     </Card>
-    </Link>
+
   );
 };
 
