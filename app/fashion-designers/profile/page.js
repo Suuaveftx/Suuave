@@ -37,7 +37,7 @@ const Page = () => {
   const [showFull, setShowFull] = useState(false);
   const [aboutValue, setAboutValue] = useState(fullText);
   const [titleValue, setTitleValue] = useState(
-    "Fashion Artist | 3D Illustrator"
+    "Designer/Brand"
   );
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [previewProfileUrl, setPreviewProfileUrl] = useState(null);

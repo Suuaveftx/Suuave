@@ -4,6 +4,7 @@ import { Alert, Chip, Input, Tab, Tabs } from "@heroui/react";
 import React, { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import FashionDesignersCard from "./_components/studio-page-components/FashionDesignersCard";
+import FloatingButton from "./_components/FloatingButton";
 
 const Page = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -309,6 +310,7 @@ const Page = () => {
           </Tab>
         </Tabs>
       </div>
+       <FloatingButton />
     </div>
   );
 };
