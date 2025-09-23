@@ -29,13 +29,7 @@ const CustomNavbar = ({ bgColor }) => {
       shouldHideOnScroll
       className={`w-full ${bgColor} items-center justify-between lg:px-4 px-0 font-satoshi ${textStyle}`}
       classNames={{ wrapper: "max-w-[1700px] mx-auto px-3 " }}
-      // onScrollPositionChange={(position) => {
-      //   if (position > 600) {
-      //     setTextStyle(" text-white bg-black/50   ");
-      //   } else {
-      //     setTextStyle("text-white bg-transparent");
-      //   }
-      // }}
+     
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarBrand>
@@ -98,7 +92,7 @@ const CustomNavbar = ({ bgColor }) => {
           className={` lg:hidden  text-white font-bold text-lg size-6`}
         />
       </NavbarContent>
-      <NavbarMenu className="">
+      <NavbarMenu className="mt-20">
         {menuItems.map((item, index) => (
           <NavbarMenuItem className="space-y-6" key={`${item}-${index}`}>
             <Link className="w-full text-[#CECECE]" href={item.url} size="lg">
