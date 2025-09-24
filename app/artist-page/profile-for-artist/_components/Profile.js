@@ -51,7 +51,7 @@ const ProfileArtist = () => {
     ))}
   </div>
   <span>
-    4.0 <span className="text-[#3A98BB]">(5 reviews)</span>
+    4.0 <span className="text-[#3A98BB]">(5.0 reviews)</span>
   </span>
 </div>
 

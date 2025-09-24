@@ -13,7 +13,7 @@ const Page = () => {
     </div>
 
       {/* Grid Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-3  md:gap-0 mt-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 md:gap-0 mt-4">
         {/* Payment Section */}
         <div className="md:col-span-1 pl-8">
           <Payment />

@@ -32,6 +32,7 @@ const Page = () => {
             handleSubmitProposal={handleSubmitProposal}
             isOpen={isOpen}
             onOpenChange={onOpenChange}
+            saveText="Cancel"
           />
         </div>
 

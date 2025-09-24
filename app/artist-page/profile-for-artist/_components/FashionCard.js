@@ -13,7 +13,7 @@ const FashionCard = () => {
 
   const tabs = [
     { id: "design", label: "Design Collections" },
-    { id: "awards", label: "Awards/Certificate" },
+    { id: "awards", label: "Awards/Certificates" },
     { id: "work", label: "Work Samples" },
     { id: "reviews", label: "Reviews" },
   ];

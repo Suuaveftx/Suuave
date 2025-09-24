@@ -90,7 +90,7 @@ const PendingProjects = () => {
               </h3>
               <div className="lg:flex lg:flex-row flex-col lg:gap-2">
               <p className="text-sm text-[#222222]">
-                Pending since: {project.pendingSince}
+                Pending since: <span className="font-medium">{project.pendingSince}</span>
               </p>
               <p className="text-sm text-[#222222]">
                 Expires in: <span className="font-medium">{project.expiresIn}</span>
