@@ -1,3 +1,4 @@
+
 "use client";
 import {
   Link,
@@ -106,3 +107,4 @@ const CustomNavbar = ({ bgColor }) => {
 };
 
 export default CustomNavbar;
+
