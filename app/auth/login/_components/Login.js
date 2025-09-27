@@ -6,79 +6,77 @@ import { HiOutlineMail } from "react-icons/hi";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import Image from "next/image";
 import Link from "next/link";
-import CustomButton from "../../../../components/CustomButton";
+import BackButton from "../../../../components/BackButton";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = () => {
-    // temporaly routing user
-    if (email === "artist@gmail.com") {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    if (data.email === "artist@gmail.com") {
       return router.push("/artist-page");
     }
-    if (email === "brand@gmail.com") {
+    if (data.email === "brand@gmail.com") {
       return router.push("/fashion-designers");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6">
-      <div className="flex flex-col sm:flex-row justify-center  items-center w-full max-w-6xl">
-        {/* Left section with logo and background image */}
-        <div
-          className="flex flex-col items-center sm:items-start justify-center p-6 sm:p-0 sm:mr-10"
-          style={{ borderRadius: "16px" }}
-        >
-          {/* Background image hidden on mobile */}
-          <div className="mt-8 sm:block hidden">
+    <main className=" h-screen lg:h-full  w-full flex  bg-[#F1F1F1]">
+      <section className=" h-full hidden lg:flex flex-col justify-between w-3/6  bg-[#0F0F0F] ">
+        <div className="h-full p-10">
+          <h1 className="font-bold text-3xl text-[#EAEAEA] tracking-wide">
+            Connect with the African <br /> Fashion World.
+          </h1>
+        </div>
+        <div className="flex">
+          <Image
+            src="/svg/confirm-logo.svg"
+            alt="logo"
+            width={300}
+            height={500}
+            className="object-contain object-left"
+          />
+          <div className="flex flex-col gap-20 items-start ">
             <Image
-              src="/dev-images/bg.png"
-              alt="Background Image"
-              width={500}
-              height={500}
-              className="rounded-lg w-[500px] h-[500px]"
+              src="/svg/create-logo-1.svg"
+              alt="logo"
+              width={600}
+              height={600}
+              className="object-contain object-left -ml-28 -mt-20"
             />
+            <p className="font-bold text-xl text-[#F5F5F5]">
+              Collaborate with a pool of <br /> talented African fashion <br />{" "}
+              artists.
+            </p>
           </div>
         </div>
-
+      </section>
+      <section className="flex  mt-10 lg:m-0 items-start lg:items-center justify-center w-full lg:w-3/6 h-full  p-4 lg:p-5 ">
         {/* Right section for Email Sign In */}
         {/* Back Arrow - Positioned Outside Only on Mobile */}
         {/* Mobile View: Logo & Back Arrow Outside */}
-        <div className="sm:hidden flex justify-center mt-4">
-          <Image src="/dev-images/logo.png" alt="Logo" width={60} height={60} />
-        </div>
 
         <div className="sm:hidden absolute left-4 top-4">
-          <Image
-            src="/dev-images/ArrowLeft.png"
-            alt="Back Arrow"
-            width={24}
-            height={24}
-            className="cursor-pointer"
-          />
+          <BackButton />
         </div>
 
         {/* Desktop View: Everything Inside the Container */}
-        <div
-          className="relative flex flex-col justify-center items-center bg-white shadow-[0px_4px_16px_0px_rgba(0,0,0,0.15)] pl-[32px] pr-[32px] pt-[45px] pb-[45px] sm:mt-0 mt-[30px] w-80 lg:w-96"
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="relative flex flex-col justify-center items-center bg-white shadow-[0px_4px_16px_0px_rgba(0,0,0,0.15)] w-full py-[45px] px-5 lg:px-10 sm:mt-0 mt-[30px] md:w-[90%]"
           style={{ borderRadius: "16px" }}
         >
-          {/* Desktop: Back Arrow at the Far Left */}
-          <div className="hidden sm:flex w-full">
-            <Image
-              src="/dev-images/ArrowLeft.png"
-              alt="Back Arrow"
-              width={24}
-              height={24}
-              className="cursor-pointer"
-            />
-          </div>
-
           {/* Desktop: Logo Centered */}
-          <div className="hidden sm:flex items-center w-full justify-center mb-4">
+          <div className="">
             <Image
               src="/dev-images/logo.png"
               alt="Logo"
@@ -88,73 +86,77 @@ const Login = () => {
           </div>
 
           {/* Desktop: Welcome Text Centered */}
-          <h1 className="hidden sm:block text-xl font-semibold text-[#444444] text-center">
+          <h1 className="hidden sm:block text-xl  font-semibold text-[#444444] text-center">
             Welcome back
           </h1>
 
           {/* Mobile: Welcome Text */}
-          <h1 className="text-xl font-semibold text-[#444444] text-center block sm:hidden">
+          <h1 className="text-xl font-semibold mt-3 text-[#444444] text-center block sm:hidden">
             Welcome to Suuave
           </h1>
+          <button className="flex mt-5 items-center justify-center gap-2 border-[#D1D1D1] border-1 rounded-lg py-2 w-full">
+            <Image src="/svg/google.svg" alt="icon" width={24} height={24} />
+            Continue with Google
+          </button>
+          <div className="flex w-full 0 gap-4 items-center mt-3 ">
+            <hr className="w-full" />
+            <p className="text-[#767676] text-base font-normal">Or</p>{" "}
+            <hr className="w-full" />
+          </div>
 
           <div className="w-full">
-            {/* Input Fields */}
-            <div className="relative mt-4">
-              <label className="absolute left-3 -mt-3 text-gray-500 text-sm transition-all duration-200 transform origin-left">
+            {/* Email */}
+
+            <div className="relative mt-2 space-y-2">
+              <label className=" text-[#222222] text-base font-medium">
                 Email
               </label>
-              <input
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-12 border border-gray-300 rounded-md pl-[8px] pr-[8px] pt-[10px] pb-[10px] focus:outline-none focus:border-[#9FD2E5] placeholder-transparent"
-                placeholder=" "
-              />
-              <HiOutlineMail
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-                size={20}
-              />
+
+              <div className="flex items-center p-2 rounded-lg border border-gray-300 focus-within:border-[#9FD2E5]">
+                <input
+                  type="text"
+                  {...register("email")}
+                  className="w-full  outline-none"
+                  placeholder="cdzzsfd@email.com"
+                />
+              </div>
             </div>
 
             {/* Password Input */}
-            <div className="relative mt-8">
-              <label className="absolute left-3 -mt-3 text-gray-500 text-sm transition-all duration-200 transform origin-left">
+            <div className="relative mt-5 space-y-2">
+              <label className=" text-[#222222] text-base font-medium">
                 Password
               </label>
-              <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full h-12 border border-gray-300 rounded-md pl-[8px] pr-[8px] pt-[12px] pb-[12px] focus:outline-none focus:border-[#9FD2E5] placeholder-transparent"
-                placeholder=" "
-              />
-              <Image
-                src={"/dev-images/Lock.png"}
-                alt="lock"
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-                width={20}
-                height={20}
-              />
-              {showPassword ? (
-                <IoEyeOffOutline
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
-                  size={20}
-                  onClick={() => setShowPassword(false)}
+
+              <div className="flex items-center p-2 rounded-lg border border-gray-300 focus-within:border-[#9FD2E5]">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  {...register("password")}
+                  className="w-full  outline-none  "
+                  placeholder="xxxxxxxxxxxxxx"
                 />
-              ) : (
-                <IoEyeOutline
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
-                  size={20}
-                  onClick={() => setShowPassword(true)}
-                />
-              )}
+
+                {showPassword ? (
+                  <IoEyeOffOutline
+                    className="text-gray-500 cursor-pointer"
+                    size={20}
+                    onClick={() => setShowPassword(false)}
+                  />
+                ) : (
+                  <IoEyeOutline
+                    className="text-gray-500 cursor-pointer"
+                    size={20}
+                    onClick={() => setShowPassword(true)}
+                  />
+                )}
+              </div>
             </div>
 
             {/* Forgot Password */}
-            <div className="flex justify-end mb-8">
+            <div className="flex justify-end mb-5">
               <Link
                 href="#"
-                className="text-[12px] text-[#9FD2E5] hover:underline"
+                className="text-base text-[#444444] hover:underline"
               >
                 Forgot password?
               </Link>
@@ -162,15 +164,16 @@ const Login = () => {
 
             {/* Login Button */}
             <div className="flex justify-center">
-              <CustomButton
-                text="Login"
-                className="w-96"
-                onPress={handleLogin}
-              />
+              <button
+                type="submit"
+                className=" drop-shadow-md w-full  text-[#035A7A] rounded-3xl cursor-pointer py-3 mt-2 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+              >
+                Login
+              </button>
             </div>
 
             {/* Don't have an account prompt */}
-            <p className="text-center text-[12px] text-gray-600 mt-4">
+            <p className="text-start text-base text-gray-600 mt-4">
               Don&apos;t have an account?{" "}
               <Link
                 href={"/onboarding"}
@@ -180,9 +183,9 @@ const Login = () => {
               </Link>
             </p>
           </div>
-        </div>
-      </div>
-    </div>
+        </form>
+      </section>
+    </main>
   );
 };
 
