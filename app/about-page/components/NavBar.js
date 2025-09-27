@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import CustomButton from "../../../components/CustomButton";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,11 +42,11 @@ const NavBar = () => {
 
       <div className="hidden md:flex gap-8  items-center text-sm justify-items-center ">
         <li className="cursor-pointer hover:text-gray-300 list-none">Login</li>
-        <li className="list-none">
-          <button className="bg-gradient-to-r from-[#C3E2F9] to-[#E9F5FF] text-[#002D4F] font-semibold py-2 px-5 rounded-full list-none">
+          <button style={{
+             background: "radial-gradient(circle at top left, #CCE7F2, #FFFFFF)"
+          }} className=" text-[#035A7A] font-semibold py-2 px-5 rounded-full list-none">
             Get Started
           </button>
-        </li>
       </div>
 
       {/* Mobile Hambuger */}
