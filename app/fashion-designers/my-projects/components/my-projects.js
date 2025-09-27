@@ -204,7 +204,7 @@ const MyProjects = () => {
           <ContractHeader title="My Projects" />
 
           {/* Search Bar */}
-          <div className="mb-2">
+          <div className="mb-[11px]">
             <Input
               placeholder="Search"
               value={searchTerm}
@@ -222,7 +222,7 @@ const MyProjects = () => {
           </div>
 
           {/* Projects List */}
-          <div className="space-y-2">
+          <div className="space-y-2 max-w-[61.25rem]">
             {currentProjects.length === 0 ? (
               <p className="text-gray-500 text-center">No projects found.</p>
             ) : (

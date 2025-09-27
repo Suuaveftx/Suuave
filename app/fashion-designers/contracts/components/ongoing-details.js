@@ -118,22 +118,16 @@ export default function OngoingDetailsPage({ params }) {
           <div className="lg:col-span-2 space-y-2">
             {/* Submission Alert */}
             {contractData.isSubmitted ? (
-              <div className="border border-[#3A98BB] rounded-md h-[46px] bg-white max-w-lg pr-4">
-                <Alert
-                  hideIcon
-                  color="primary"
-                  variant="flat"
-                  startContent={
-                    <ExclamationTriangleIcon className="h-5 w-5 text-[#3A98BB] flex-shrink-0 ml-5" />
-                  }
-                  className="bg-transparent border-none text-[#3A98BB]  px-0"
-                >
-                  <p className="text-xs -mt-5">
-                    This project has been submitted as completed. Waiting for
-                    your approval.
-                  </p>
-                </Alert>
-              </div>
+              <Alert
+                hideIcon
+                color="primary"
+                variant="flat"
+                startContent={
+                  <ExclamationTriangleIcon className="h-5 w-5 text-[#3A98BB] flex-shrink-0 ml-5" />
+                }
+                className="bg-[#FAFAFA] border-none text-[#3A98BB] max-w-[662px] font-medium"
+                description="This project has be submitted as completed. Waiting for your approval."
+              />
             ) : (
               ""
             )}
@@ -176,7 +170,9 @@ export default function OngoingDetailsPage({ params }) {
                         <span
                           className={`${
                             item.label === "Status" ? "lg:hidden" : ""
-                          } ${item.label === "Contract Number" ? "lg:-mt-4": ""}  md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
+                          } ${
+                            item.label === "Contract Number" ? "lg:-mt-4" : ""
+                          }  md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
                         >
                           {item.label} -
                         </span>
@@ -187,7 +183,9 @@ export default function OngoingDetailsPage({ params }) {
                                   contractData.status
                                 )} lg:hidden`
                               : ""
-                          } ${item.label === "Contract Number"? "lg:-mt-4": ""}  md:text-md text-sm font-proximanova`}
+                          } ${
+                            item.label === "Contract Number" ? "lg:-mt-4" : ""
+                          }  md:text-md text-sm font-proximanova`}
                         >
                           {item.value}
                         </span>
@@ -316,7 +314,11 @@ export default function OngoingDetailsPage({ params }) {
                       ))}
                     </div>
                     <span className="text-sm text-[#3A98BB]">
-                      ({contractData.artist.reviews} <Link href="/artist-page/profile-for-artist?tab=reviews">Reviews</Link>)
+                      ({contractData.artist.reviews}{" "}
+                      <Link href="/artist-page/profile-for-artist?tab=reviews">
+                        Reviews
+                      </Link>
+                      )
                     </span>
                   </div>
                 </div>

@@ -1,13 +1,8 @@
 "use client";
 
 import React from "react";
-import {
-
-  PaperClipIcon,
-
-} from "@heroicons/react/24/outline";
+import { PaperClipIcon } from "@heroicons/react/24/outline";
 import { Card, CardBody, Button, Avatar, Chip } from "@heroui/react";
-
 
 import ContractHeader from "./contract-header";
 import { useRouter } from "next/navigation";
@@ -63,7 +58,6 @@ export default function CompletedDetailsPage({ params }) {
 
   return (
     <>
-
       <ContractHeader title="Contract Information" />
       <div className="max-w-6xl mx-auto px-2 md:px-0 pb-6 ">
         <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-1">
@@ -108,7 +102,9 @@ export default function CompletedDetailsPage({ params }) {
                         <span
                           className={`${
                             item.label === "Status" ? "lg:hidden" : ""
-                          } ${item.label === "Contract Number" ? "lg:-mt-4": ""}  md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
+                          } ${
+                            item.label === "Contract Number" ? "lg:-mt-4" : ""
+                          }  md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
                         >
                           {item.label} -
                         </span>
@@ -119,7 +115,9 @@ export default function CompletedDetailsPage({ params }) {
                                   contractData.status
                                 )} lg:hidden`
                               : ""
-                          } ${item.label === "Contract Number" ? "lg:-mt-4": ""}  md:text-md text-sm font-proximanova`}
+                          } ${
+                            item.label === "Contract Number" ? "lg:-mt-4" : ""
+                          }  md:text-md text-sm font-proximanova`}
                         >
                           {item.value}
                         </span>
@@ -127,16 +125,16 @@ export default function CompletedDetailsPage({ params }) {
                     ))}
                   </div>
 
-                    {/* Status */}
-                                    <Chip
-                                      variant="flat"
-                                      size="sm"
-                                      className={`${getStatusColor(
-                                        contractData.status
-                                      )} font-proximanova  border-1 hidden lg:flex rounded-full bg-transparent`}
-                                    >
-                                      {contractData.status}
-                                    </Chip>
+                  {/* Status */}
+                  <Chip
+                    variant="flat"
+                    size="sm"
+                    className={`${getStatusColor(
+                      contractData.status
+                    )} font-proximanova  border-1 hidden lg:flex rounded-full bg-transparent`}
+                  >
+                    {contractData.status}
+                  </Chip>
                 </div>
               </CardBody>
             </Card>
@@ -168,10 +166,7 @@ export default function CompletedDetailsPage({ params }) {
           {/* Right Column - Artist Info & Actions */}
           <div className="flex space-y-2 gap-2 flex-col-reverse lg:flex-col">
             {/* Action Buttons */}
-            <Card
-              className="bg-white border border-gray-200"
-              shadow="none"
-            >
+            <Card className="bg-white border border-gray-200" shadow="none">
               <CardBody className="lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col">
                 <Button
                   className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-proximanova rounded-full border-0 shadow-sm"
@@ -187,7 +182,7 @@ export default function CompletedDetailsPage({ params }) {
                 </Button>
                 <Button
                   variant="bordered"
-                  className="w-full bg-[#FAFAFA]  text-[#222222] font-proximanova  shadow-sm"
+                  className="w-full  border border-[#3A98BB] bg-[#FAFAFA]  text-[#444444] font-proximanova  shadow-sm"
                   size="lg"
                   radius="full"
                 >
@@ -223,31 +218,32 @@ export default function CompletedDetailsPage({ params }) {
                   </p>
 
                   <div className="flex items-center justify-center gap-1 text-sm  text-[#222222] mb-2">
-                                                      <TiLocation className="size-5 fill-[#878787]" />
-                                                      <span>{contractData.artist.location}</span>
-                                    </div>
-                                  
-                                                    <div className="flex items-center justify-center gap-2 mb-6  text-[#222222]">
-                                                      <span>Ratings</span>
-                                                       <div className="flex items-center gap-1">
-                                                                      {[...Array(5)].map((_, i) => (
-                                                                        <FaStar
-                                                                          key={i}
-                                                                          className={
-                                                                            i < contractData.artist.rating
-                                                                              ? "text-yellow-500"
-                                                                              : "text-gray-300"
-                                                                          }
-                                                                        />
-                                                                      ))}
-                                                                    </div>
-                                                      <span className="text-sm text-[#3A98BB]">
-                                                        ({contractData.artist.reviews} <Link href="/artist-page/profile-for-artist?tab=reviews">Reviews</Link>)
-                                                      </span>
-                                                    </div>
+                    <TiLocation className="size-5 fill-[#878787]" />
+                    <span>{contractData.artist.location}</span>
+                  </div>
 
-                
-                  
+                  <div className="flex items-center justify-center gap-2 mb-6  text-[#222222]">
+                    <span>Ratings</span>
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <FaStar
+                          key={i}
+                          className={
+                            i < contractData.artist.rating
+                              ? "text-yellow-500"
+                              : "text-gray-300"
+                          }
+                        />
+                      ))}
+                    </div>
+                    <span className="text-sm text-[#3A98BB]">
+                      ({contractData.artist.reviews}{" "}
+                      <Link href="/artist-page/profile-for-artist?tab=reviews">
+                        Reviews
+                      </Link>
+                      )
+                    </span>
+                  </div>
                 </div>
               </CardBody>
             </Card>
