@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Tabs, Tab } from "@heroui/react";
-import Navbar3 from "../../../components/Navbar3";
+
 import ContractHeader from "./contract-header";
 
 import { useRouter } from "next/navigation";
@@ -31,8 +31,20 @@ export default function ContractPage() {
       expiresIn: "2days",
     },
     {
-      title: "Logo Design for Tech Startup",
+      title: "Modern Fashion Attire Illustration",
       id: "24t64756",
+      pendingSince: "20, June, 2024",
+      expiresIn: "1day",
+    },
+      {
+      title: "Modern Fashion Attire Illustration",
+      id: "24t64757",
+      pendingSince: "20, June, 2024",
+      expiresIn: "1day",
+    },
+      {
+      title: "Modern Fashion Attire Illustration",
+      id: "24t64758",
       pendingSince: "20, June, 2024",
       expiresIn: "1day",
     },
@@ -46,12 +58,12 @@ export default function ContractPage() {
 
   //handle pending contract click
   const handlePendingClick = (contractId) => {
-    router.push(`/contract-page/pending/${contractId}`);
+    router.push(`/fashion-designers/contracts/pending/${contractId}`);
   };
 
   //handle ongoing contract click
   const handleOngoingClick = (contractId) => {
-    router.push(`/contract-page/ongoing/${contractId}`);
+    router.push(`/fashion-designers/contracts/ongoing/${contractId}`);
   };
 
   /*  const handleContractClick = (contractId) => {
@@ -104,6 +116,57 @@ export default function ContractPage() {
         avatar: "/contract/designer.jpg",
       },
     },
+    {
+      id: "24t64756",
+      title: "Modern Fashion Attire Illustration",
+      startDate: "18, June, 2024",
+      endDate: "25, June, 2024",
+      isLate: true,
+      daysLate: "10",
+      artist: {
+        name: "Adeniji",
+        username: "adeniji",
+        role: "Fashion Designer",
+        location: "Lagos, Nigeria",
+        rating: 0.0,
+        reviews: 0,
+        avatar: "/contract/designer.jpg",
+      },
+    },
+    {
+      id: "24t64757",
+      title: "Modern Fashion Attire Illustration",
+      startDate: "18, June, 2024",
+      endDate: "25, June, 2024",
+      isLate: true,
+      daysLate: "10",
+      artist: {
+        name: "Adeniji",
+        username: "adeniji",
+        role: "Fashion Designer",
+        location: "Lagos, Nigeria",
+        rating: 0.0,
+        reviews: 0,
+        avatar: "/contract/designer.jpg",
+      },
+    },
+    {
+      id: "24t64758",
+      title: "Modern Fashion Attire Illustration",
+      startDate: "18, June, 2024",
+      endDate: "25, June, 2024",
+      isLate: true,
+      daysLate: "10",
+      artist: {
+        name: "Adeniji",
+        username: "adeniji",
+        role: "Fashion Designer",
+        location: "Lagos, Nigeria",
+        rating: 0.0,
+        reviews: 0,
+        avatar: "/contract/designer.jpg",
+      },
+    },
     // ... more contracts
   ];
 
@@ -121,11 +184,10 @@ export default function ContractPage() {
   const handleMoreOptions = (contract) => {
     console.log("More options for:", contract.title);
     // Add your more options logic here
-  };
+  }
   return (
-    <div className="bg-[#EAEAEA] min-h-screen">
-      <Navbar3 />
-      <ContractHeader title="Contracts" />
+    <>
+      <ContractHeader title="My Contracts" />
       <div className="max-w-6xl mx-auto bg-white px-2 md:px-8 my-6">
         <div className="py-8 font-satoshi">
           {/* Tab Navigation */}
@@ -183,6 +245,6 @@ export default function ContractPage() {
           {activeTab === "completed" && <CompletedContracts />}
         </div>
       </div>
-    </div>
-  );
+    </>
+  )
 }

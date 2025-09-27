@@ -105,6 +105,131 @@ const Page = () => {
     },
   ];
 
+  const projectTimeframe = [
+    {
+      label:"1 Day",
+      key:"1day"
+    },
+    {
+      label:"2 Days",
+      key:"2days"
+    },
+    {
+      label:"3 Days",
+      key:"3days"
+    },
+  ]
+
+  const budgetType = [
+    {
+      label:"Fixed",
+      key:"fixed"
+    },
+    {
+      label:"Negotiable",
+      key:"negotiable"
+    },
+  ]
+
+   const designStyle = [
+    {
+      label:"Fixed",
+      key:"fixed"
+    },
+    {
+      label:"Negotiable",
+      key:"negotiable"
+    },
+  ]
+
+  const designStyles = [
+  {
+    label: "Haute Couture",
+    key: "haute-couture",
+    description:
+      "Exclusive, custom-fitted fashion design that is handmade from start to finish with high-quality materials.",
+  },
+  {
+    label: "Ready-to-Wear (Prêt-à-Porter)",
+    key: "ready-to-wear",
+    description:
+      "Fashion clothing produced in standard sizes and sold through retail, blending creativity with accessibility.",
+  },
+  {
+    label: "Streetwear",
+    key: "streetwear",
+    description:
+      "Casual and trendy clothing style inspired by skateboarding, hip-hop, and youth culture.",
+  },
+  {
+    label: "Bohemian (Boho)",
+    key: "bohemian",
+    description:
+      "A relaxed, artistic style featuring flowy fabrics, earthy tones, and ethnic or vintage-inspired elements.",
+  },
+  {
+    label: "Minimalist",
+    key: "minimalist",
+    description:
+      "Simple and clean designs with a focus on neutral colors, streamlined silhouettes, and functionality.",
+  },
+  {
+    label: "Avant-Garde",
+    key: "avant-garde",
+    description:
+      "Experimental and innovative style that challenges traditional fashion rules with bold and artistic designs.",
+  },
+  {
+    label: "Classic",
+    key: "classic",
+    description:
+      "Timeless, elegant, and refined designs that emphasize quality and sophistication over trends.",
+  },
+  {
+    label: "Vintage",
+    key: "vintage",
+    description:
+      "Fashion inspired by past decades, often incorporating retro elements into modern outfits.",
+  },
+  {
+    label: "Athleisure",
+    key: "athleisure",
+    description:
+      "A blend of athletic and casual wear designed for both exercise and everyday use.",
+  },
+  {
+    label: "Glamorous",
+    key: "glamorous",
+    description:
+      "Luxurious and eye-catching designs often featuring sequins, bold cuts, and striking details.",
+  },
+  {
+    label: "Preppy",
+    key: "preppy",
+    description:
+      "A neat, polished style influenced by Ivy League fashion, featuring blazers, polos, and structured pieces.",
+  },
+  {
+    label: "Grunge",
+    key: "grunge",
+    description:
+      "A rugged, edgy style inspired by 90s music culture, often featuring ripped jeans, flannel, and layered looks.",
+  },
+  {
+    label: "Eclectic",
+    key: "eclectic",
+    description:
+      "A mix-and-match style that combines different patterns, textures, and influences to create a unique look.",
+  },
+  {
+    label: "Romantic",
+    key: "romantic",
+    description:
+      "Soft, feminine designs featuring lace, ruffles, pastel colors, and delicate fabrics.",
+  },
+];
+
+
   return (
     <div className="max-w-[1500px] mx-auto p-6">
       <p className="font-bold text-2xl mb-6">Post Project</p>
@@ -177,8 +302,8 @@ const Page = () => {
           radius="sm"
           className="font-bold"
           labelPlacement="outside"
-          name="fashionStyle"
-          defaultItems={fashionDesignerSkills}
+          name="designStyles"
+          defaultItems={designStyles}
           label="Design Style"
           variant="bordered"
           placeholder="Select from the options provided or type when necessary"
@@ -211,11 +336,10 @@ const Page = () => {
           classNames={classes}
           className="lg:w-60 w-full"
           label="Budget Type"
-          name="
-          budgetType"
+          name="budgetType"
           placeholder="Select"
         >
-          {fashionDesignerSkills.map((item) => (
+          {budgetType.map((item) => (
             <SelectItem key={item.key}>{item.label}</SelectItem>
           ))}
         </Select>
@@ -225,23 +349,24 @@ const Page = () => {
           labelPlacement="outside"
           classNames={classes}
           className="lg:w-60 w-full"
-          name="projectDuration"
-          label="Project Duration"
+          name="projectTimeframe"
+          label="Project Timeframe"
           placeholder="Select"
         >
-          {fashionDesignerSkills.map((item) => (
+          {projectTimeframe.map((item) => (
             <SelectItem key={item.key}>{item.label}</SelectItem>
           ))}
         </Select>
-        <div className="flex items-center justify-start gap-4 w-40">
-          <Button type="reset" size="lg" variant="flat">
+        <div className="flex items-center justify-start gap-2 w-40">
+          <Button type="reset" size="sm" radius="full" variant="flat" className="text-xs px-10">
             Cancel
           </Button>
           <Button
             type="submit"
-            size="lg"
+            size="sm"
+          radius="full"
             variant="outlined"
-            className="  text-customWhiteBgText text-lg  shadow-md  font-semibold "
+            className="  text-customWhiteBgText text-xs  shadow-md  font-semibold px-10"
             style={{
               background:
                 "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",

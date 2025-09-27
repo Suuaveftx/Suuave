@@ -18,13 +18,17 @@ import {
   ModalBody,
 } from "@heroui/react";
 import { CreditCard, Info, Shield } from "lucide-react";
-import ContractHeader from "../../contract-page/components/contract-header";
-import Navbar3 from "../../../components/Navbar3";
+import ContractHeader from "../../artist-page/my-contracts/components/contract-header";
+
+import { useRouter, useSearchParams } from "next/navigation";
+
 import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import FashionDesignerHeader from "../../fashion-designers/_components/studio-page-components/FashionDesignerHeader";
+import Footer from "../../about-page/components/Footer";
 
 export const CheckoutPage = () => {
   const [selectedCountry, setSelectedCountry] = useState("Nigeria");
@@ -44,35 +48,40 @@ export const CheckoutPage = () => {
 
   const handleBackToHome = () => {
     setIsSuccessModalOpen(false);
-    // Add navigation logic here
+    // Save license info
+    const storedLicenses = localStorage.getItem("licenses");
+    const licenses = storedLicenses ? JSON.parse(storedLicenses) : {};
+    licenses[id] = true;
+    localStorage.setItem("licenses", JSON.stringify(licenses));
+
+    // Redirect back to product details page
+    router.push(`/fashion-designers/${id}`);
   };
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
   return (
-    <div className=" bg-[#FAFAFA]">
-      <Navbar3 />
-      <div className="max-w-6xl mx-auto p-3 lg:p-6">
+    <div className="mx-auto bg-[#FAFAFA]">
+      <FashionDesignerHeader />
+      <div className="max-w-6xl  -mt-6 mx-auto p-3 lg:p-6">
         {/* Header */}
         <ContractHeader title="Check-Out" />
 
         {/* License Notice */}
+
         <Alert
           color="default"
           variant="flat"
           hideIcon
           startContent={
-            <Info
-              size={20}
-              className="h-5 w-5 flex-shrink-0 text-black mt-2.5"
-            />
+            <Info size={20} className="h-5 w-5 flex-shrink-0 text-black" />
           }
-          className="border-none bg-gradient-to-r from-[#A5D5E9] to-[#28A5D8] text-[#222222] font-proximanova px-4 my-2"
-        >
-          <div className="flex items-center justify-start text-sm">
-            Get Licensing right to the design and use as you desire. All files
-            and specification will be transferred to you.
-          </div>
-        </Alert>
-
+          description="Get Licensing right to the design and use as you desire. All files
+            and specification will be transferred to you."
+          className="border-none bg-gradient-to-r from-[#A5D5E9] to-[#28A5D8] text-[#222222] font-proximanova px-4"
+        />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mt-6">
           {/* Left Section - Forms */}
           <div className="lg:col-span-1 space-y-6 font-satoshi">
@@ -225,14 +234,13 @@ export const CheckoutPage = () => {
                 </div>
 
                 <div className="flex items-start justify-between  gap-1 mb-6 font-satoshi">
-                  <div className="flex items-center gap-1 md:max-w-sm ">
+                  <div className="flex items-center gap-4 md:max-w-sm ">
                     <Image
                       src="/checkout/attire.png"
                       alt="Visa"
                       width={60}
                       height={60}
-                      className="object-contain"
-                      radius="full"
+                      className="rounded-[11px] object-center"
                     />
                     <div className="flex-1 w-full mr-2">
                       <h3 className="font-proximanova  text-md">
@@ -336,12 +344,14 @@ export const CheckoutPage = () => {
                 radius="full"
                 onPress={handleBackToHome}
               >
-                Back to Home
+                OK
               </Button>
             </ModalBody>
           </ModalContent>
         </Modal>
       </div>
+
+      <Footer />
     </div>
   );
 };

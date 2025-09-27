@@ -1,9 +1,10 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Eye, Plus} from "lucide-react";
 import ThreeDotsDropdown from "./ThreeDotsDropDown";
 import CustomButton from "../../../../components/CustomButton";
+import { useSearchParams } from "next/navigation";
 
 
 const FashionCard = () => {
@@ -23,6 +24,14 @@ const FashionCard = () => {
     "/dev-images/Awards.png",
     "/dev-images/Awards2.png"
   ];
+
+   const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
+
+    useEffect(() => {
+    if (tabParam) setActiveTab(tabParam);
+  }, [searchParams]);
+
   return (
     <div className="w-full p-6">
         <div className=" hidden lg:flex lg:justify-end mb-8">

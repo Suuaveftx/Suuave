@@ -2,14 +2,16 @@
 
 import React from "react";
 import {
-  MapPinIcon,
+
   PaperClipIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
 import { Card, CardBody, Button, Avatar, Chip } from "@heroui/react";
 
-import Navbar3 from "../../../components/Navbar3";
 import ContractHeader from "./contract-header";
+import { TiLocation } from "react-icons/ti";
+import { FaStar } from "react-icons/fa6";
+import Link from "next/link";
 
 export default function PendingDetailsPage({ params }) {
   const contractId = params?.id || "24t64754"; // fallback for demo
@@ -56,8 +58,8 @@ export default function PendingDetailsPage({ params }) {
   };
 
   return (
-    <div className="bg-[#EAEAEA] min-h-screen">
-      <Navbar3 />
+    <>
+     
       <ContractHeader title="Contract Information" />
       <div className="max-w-6xl mx-auto px-2 md:px-0 pb-6 ">
         <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-1">
@@ -102,7 +104,7 @@ export default function PendingDetailsPage({ params }) {
                         <span
                           className={`${
                             item.label === "Status" ? "lg:hidden" : ""
-                          } md:text-md text-sm w-32 mb-1 sm:mb-0 font-light`}
+                          } ${ item.label === "Contract Number"? "lg:-mt-4": ""} md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
                         >
                           {item.label} -
                         </span>
@@ -113,7 +115,7 @@ export default function PendingDetailsPage({ params }) {
                                   contractData.status
                                 )} lg:hidden`
                               : ""
-                          } md:text-md text-sm font-proximanova`}
+                          } ${item.label === "Contract Number"? "lg:-mt-4": ""} md:text-md text-sm font-proximanova`}
                         >
                           {item.value}
                         </span>
@@ -124,10 +126,10 @@ export default function PendingDetailsPage({ params }) {
                   {/* Status */}
                   <Chip
                     variant="flat"
-                    size="lg"
+                    size="sm"
                     className={`${getStatusColor(
                       contractData.status
-                    )} font-medium  border-1 hidden lg:flex rounded-3xl bg-transparent`}
+                    )} font-semibold  border-1 hidden lg:flex rounded-full bg-transparent`}
                   >
                     {contractData.status}
                   </Chip>
@@ -136,7 +138,7 @@ export default function PendingDetailsPage({ params }) {
             </Card>
 
             {/* Attached Documents Card */}
-            <Card className="bg-white border border-gray-200" shadow="none">
+            <Card className="bg-white " shadow="none">
               <CardBody className="p-6">
                 <h2 className="md:text-2xl text-lg font-semibold md:mb-2 -mt-2">
                   Attached Documents
@@ -145,7 +147,7 @@ export default function PendingDetailsPage({ params }) {
                 {contractData.attachedDocuments.map((doc, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer "
+                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg transition-colors cursor-pointer "
                   >
                     <div className="flex items-center justify-center gap-2">
                       <PaperClipIcon className="md:h-5 md:w-5 h-4 w-4" />
@@ -165,17 +167,17 @@ export default function PendingDetailsPage({ params }) {
             <Card className="bg-white border border-gray-200 drop-shadow-md">
               <CardBody className="lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col">
                 <Button
-                  className="w-full py-5.5 bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl border-0 shadow-sm"
-                  size="md"
+                  className="w-full py-5.5 bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-semibold text-sm rounded-3xl border-0 shadow-sm"
+                  size="lg"
                 >
-                  Accept Offer
+                  Message Artist
                 </Button>
                 <Button
-                  variant="bordered"
-                  className="w-full bg-transparent py-5 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl  shadow-sm"
-                  size="md"
+                  variant="flat"
+                  className="w-full bg-[#EAEAEA] py-5  text-[#035A7A] font-semibold rounded-3xl text-sm  shadow-sm"
+                  size="lg"
                 >
-                  Decline
+                  Cancel Project
                 </Button>
               </CardBody>
             </Card>
@@ -207,61 +209,35 @@ export default function PendingDetailsPage({ params }) {
                   </p>
 
                   <div className="flex items-center justify-center gap-1 text-sm  text-[#222222] mb-2">
-                    <MapPinIcon className="h-5 w-5 text-[#878787]" />
+                    <TiLocation className="size-5 fill-[#878787]" />
                     <span>{contractData.artist.location}</span>
                   </div>
 
                   <div className="flex items-center justify-center gap-2 mb-6  text-[#222222]">
                     <span>Ratings</span>
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <StarIcon
-                          key={i}
-                          className={`h-4 w-4 ${
-                            i < Math.floor(contractData.artist.rating)
-                              ? "text-yellow-400 fill-current"
-                              : "text-[#ACACAC] border-none"
-                          }`}
-                        />
-                      ))}
-                    </div>
+                     <div className="flex items-center gap-1">
+                                    {[...Array(5)].map((_, i) => (
+                                      <FaStar
+                                        key={i}
+                                        className={
+                                          i < contractData.artist.rating
+                                            ? "text-yellow-500"
+                                            : "text-gray-300"
+                                        }
+                                      />
+                                    ))}
+                                  </div>
                     <span className="text-sm text-[#3A98BB]">
-                      ({contractData.artist.reviews} Reviews)
+                      ({contractData.artist.reviews} <Link href="/artist-page/profile-for-artist?tab=reviews">Reviews</Link>)
                     </span>
                   </div>
-                  {/* job posted , hired and payment made */}
-                  <div className="w-full flex flex-col items-center gap-8">
-                    <div>
-                      <p className="text-[#222222] font-bold text-xl">
-                        {contractData.artist.jobsPosted}
-                      </p>
-                      <p className="text-[#767676] font-normal text-base">
-                        Jobs Posted
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[#222222] font-bold text-xl">
-                        {contractData.artist.hire}
-                      </p>
-                      <p className="text-[#767676] font-normal text-base">
-                        Hire
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[#222222] font-bold text-xl">
-                        {contractData.artist.paymentMade}
-                      </p>
-                      <p className="text-[#767676] font-normal text-base">
-                        Payment Made
-                      </p>
-                    </div>
-                  </div>
+                  
                 </div>
               </CardBody>
             </Card>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
