@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export const Global = () => {
   const mapImageSrc = "/icons/fe.svg";
@@ -50,9 +51,9 @@ export const Global = () => {
             <br className="hidden lg:block" />
             expand our global reach and improve this product.
           </p>
-          <button className="bg-[#CCE7F2] text-[#0A192F] font-semibold rounded-full py-3 px-8 hover:bg-[#EAF9FF] transition duration-300 ">
+          <Link href="onboarding" className="bg-[#CCE7F2] text-[#0A192F] font-semibold rounded-full py-3 px-8 hover:bg-[#EAF9FF] transition duration-300 ">
             Build With Us
-          </button>
+          </Link>
         </div>
       </section>
     </div>
