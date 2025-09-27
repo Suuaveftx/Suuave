@@ -140,7 +140,7 @@ export default function CompletedDetailsPage({ params }) {
             </Card>
 
             {/* Attached Documents Card */}
-            <Card className="bg-white border border-gray-200" shadow="none">
+            <Card className="bg-white" shadow="none">
               <CardBody className="p-6">
                 <h2 className="md:text-2xl text-lg font-semibold md:mb-2 -mt-2">
                   Attached Documents
@@ -149,7 +149,7 @@ export default function CompletedDetailsPage({ params }) {
                 {contractData.attachedDocuments.map((doc, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg bg-gray-50 transition-colors cursor-pointer "
+                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg transition-colors cursor-pointer "
                   >
                     <div className="flex items-center justify-center gap-2">
                       <PaperClipIcon className="md:h-5 md:w-5 h-4 w-4" />
