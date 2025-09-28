@@ -6,6 +6,7 @@ import { FaRegUser } from "react-icons/fa6";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { MdOutlinePhone } from "react-icons/md";
 import { LuCreditCard } from "react-icons/lu";
+import Link from 'next/link';
 const Abouttheclient = () => {
   return (
   <div className='bg-[#FAFAFA] lg:w-screen lg:max-w-[80%] lg:px-6 px-4 pt-0 pb-[56px] w-screen max-w-96 lg:mx-0 mx-4 rounded-2xl'>
@@ -29,7 +30,9 @@ const Abouttheclient = () => {
         <FaStar key={index} color="#F8B73B" />
       ))}
     </div>
+    <Link href="/artist-page/review">
     <span className='text-sm text-[#3A98BB] tracking-[0.33px] leading-[18px]'><span className='text-[#767676]'>5.0</span>(5 Reviews)</span>
+    </Link>
     </div>
       <div>
         <span className='text-[#767676] tracking-[0.33px] leading-[18px]'>Member since 12 June, 2024</span>

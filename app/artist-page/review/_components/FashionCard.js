@@ -4,12 +4,13 @@ import Image from "next/image";
 import { Eye, Plus} from "lucide-react";
 import ThreeDotsDropdown from "./ThreeDotsDropDown";
 import CustomButton from "../../../../components/CustomButton";
-import UploadModal from "./UploadModal";
-import AwardUploadModal from "./AwardsUploadModal";
+import AwardUploadModal from "../../profile-for-artist/_components/AwardsUploadModal";
+import UploadModal from "../../profile-for-artist/_components/UploadModal";
+
 
 
 const FashionCard = () => {
-  const [activeTab, setActiveTab] = useState("design");
+  const [activeTab, setActiveTab] = useState("reviews");
   const [showAll, setShowAll] = useState(false);
 
 

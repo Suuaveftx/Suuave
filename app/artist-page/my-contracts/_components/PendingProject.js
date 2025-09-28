@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AlertTriangle, MoreVertical } from "lucide-react";
 import CustomButton from "../../../../components/CustomButton";
 import SearchBar from "../../../../components/Searchbar";
+import Link from "next/link";
 
 
 const PendingProjects = () => {
@@ -44,7 +45,7 @@ const PendingProjects = () => {
 
       {/* Search Bar (Desktop Only) */}
       <div className="lg:flex hidden mt-4 items-center w-2/4 mr-8">
-        <SearchBar placeholder="Search by job title" />
+        <SearchBar placeholder="Search projects" />
       </div>
 
       {/* Pending Projects */}
@@ -55,6 +56,7 @@ const PendingProjects = () => {
             className="bg-[#fafafa] px-4 py-4 rounded-lg shadow-md lg:mt-[36px] mt-[26px] mb-4 flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4"
           >
             {/* Project Info + Mobile Dots */}
+            <Link href={""}>
             <div className="lg:flex lg:flex-row lg:items-center lg:gap-8">
               <h3 className="lg:text-base tracking-[0.33px] lg:text-[#222222] text-[#3A98BB] font-semibold flex items-center justify-between lg:justify-start lg:mb-0 mb-2">
                 {project.title}
@@ -97,7 +99,7 @@ const PendingProjects = () => {
               </p>
               </div>
             </div>
-
+             </Link>
             {/* Accept Button (Desktop Only) */}
             <div className="flex gap-2">
             <div className="hidden lg:flex items-center gap-6">

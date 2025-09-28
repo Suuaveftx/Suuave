@@ -4,7 +4,7 @@ import {
   Navbar,
   NavbarContent,
   NavbarItem,
-  Image,
+  
   NavbarMenuToggle,
   NavbarMenuItem,
   NavbarMenu,
@@ -12,6 +12,8 @@ import {
 import React, { useState } from "react";
 import CustomButton from "./CustomButton";
 import { ChevronDown } from "lucide-react";
+import Image from "next/image";
+
 
 const Navbars = () => {
   const [textStyle, setTextStyle] = React.useState("text-black");
@@ -50,6 +52,8 @@ const Navbars = () => {
             src="/dev-images/logocombo.png"
             alt="Logo"
             className="lg:w-32 w-24 h-auto object-contain"
+            width={140}
+            height={40}
           />
         </Link>
       </div>
@@ -106,13 +110,16 @@ const Navbars = () => {
             onClick={() => setIsOpen(!isOpen)}
             className="flex items-center space-x-2 focus:outline-none"
           >
-            <Image
-              src="/dev-images/Avatar.png"
-              alt="Avatar"
-              width={48}
-              height={48}
-              className="cursor-pointer rounded-full"
-            />
+            <div className="w-[42px] h-[42px] rounded-full overflow-hidden relative">
+  <Image
+    src="/dev-images/Avatar.png"
+    alt="Avatar"
+    className="object-cover"
+    width={42}
+    height={42}
+  />
+</div>
+
             <ChevronDown
               className={`w-5 h-5 text-gray-600 transition-transform ${
                 isOpen ? "rotate-180" : ""
@@ -139,7 +146,7 @@ const Navbars = () => {
                 href="/artist-page/settings"
                 className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
               >
-                Support
+                Help & Support
               </Link>
               <Link
                 href="/artist-page/settings"

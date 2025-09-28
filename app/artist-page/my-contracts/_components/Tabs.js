@@ -19,25 +19,26 @@ export default function UnderlinedTabs() {
   const [activeTab, setActiveTab] = useState("pending"); // Default tab
 
   return (
-    <div className="bg-[#FAFAFA] lg:border-1 lg:border-[#EAEAEA] w-full lg:mx-[38px] lg:max-w-[90%] lg:px-[35px] py-[45px] lg:mt-8 mb-[178px]">
+    <div className="lg:bg-[#FAFAFA] bg-transparent lg:border-1 lg:border-[#EAEAEA] w-full lg:mx-[38px] lg:max-w-[90%] lg:px-[35px] py-[45px] lg:mt-8 mb-[178px]">
       
-      {/* Mobile Scrollable Tabs */}
-      <div className="w-full overflow-x-auto scrollbar-thin">
-         {/* Search Bar */}
-      <div className="lg:hidden flex lg:mx-0 mx-auto mt-4 mb-[25.5px]  items-center w-[80%] mr-8 gap-1">
-        <SearchBar placeholder="Search by job title"/>
-        <HiOutlineAdjustments style={{width: "25px", height: "25px"}} />
+      {/* Mobile Search Bar (fixed, not scrollable) */}
+      <div className="lg:hidden flex ml-[20px] mt-4 mb-[25.5px] items-center w-[80%] mr-8 gap-1">
+        <SearchBar placeholder="Search projects" />
+        <HiOutlineAdjustments style={{ width: "25px", height: "25px" }} />
       </div>
-        <div className="flex w-full gap-[45px] border-b">
+
+      {/* Mobile Scrollable Tabs */}
+      <div className="w-full overflow-x-auto lg:overflow-x-visible">
+        <div className="flex w-full gap-[45px] border-b ml-[20px]">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={cn(
-                "lg:px-0 lg:py-0 px-4 py-2  text-base lg:text-lg font-medium text-gray-600 transition-colors duration-200 whitespace-nowrap",
+                "lg:px-0 lg:py-0 px-4 py-2 text-base lg:text-lg transition-colors duration-200 whitespace-nowrap",
                 activeTab === tab.id
-                  ? "border-b border-[#3A98BB] text-blue-600"
-                  : ""
+                  ? "border-b border-[#3A98BB] text-[#222222] font-bold"
+                  : "text-[#222222] font-normal"
               )}
             >
               {tab.label}

@@ -2,56 +2,44 @@
 
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-
-import { Textarea } from "@heroui/react";
-import CustomButton from "../../../../components/CustomButton";
+import { FiChevronLeft } from "react-icons/fi";
 import SearchBar from "../../../../components/Searchbar";
+import CustomButton from "../../../../components/CustomButton";
 
 const Messages = () => {
   const [selectedTab, setSelectedTab] = useState("all");
   const [newMessage, setNewMessage] = useState("");
-  const [chats, setChats] = useState([]);  // Initially empty to avoid SSR mismatch
-  const [loading, setLoading] = useState(true); // Prevent hydration issues
+  const [chats, setChats] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // ✅ Mobile state for selected chat
+  const [activeChat, setActiveChat] = useState(null);
 
   useEffect(() => {
     setChats([
       {
         id: 1,
         name: "Tolu",
-        message: "Modern Fashion Attire Illustration",
+        message: "Sure the collection is very.....",
         unread: false,
         img: "/dev-images/Avatar.png",
       },
       {
         id: 2,
-        name: "Tolu",
-        message: "Modern Fashion Attire Illustration",
+        name: "Ciana",
+        message: "We'd love your artistic interpret......",
         unread: true,
-        img: "/dev-images/red.png",
+        img: "/dev-images/Artiste2.png",
       },
       {
         id: 3,
         name: "Tolu",
-        message: "Modern Fashion Attire Illustration",
-        unread: false,
-        img: "/dev-images/Avatar.png",
-      },
-      {
-        id: 4,
-        name: "Tolu",
-        message: "Modern Fashion Attire Illustration",
-        unread: true,
-        img: "/dev-images/red.png",
-      },
-      {
-        id: 5,
-        name: "Tolu",
-        message: "Modern Fashion Attire Illustration",
+        message: "That sounds super exciting! 5-7",
         unread: false,
         img: "/dev-images/Avatar.png",
       },
     ]);
-    setLoading(false); // Mark as loaded after setting state
+    setLoading(false);
   }, []);
 
   const filteredChats =
@@ -65,101 +53,114 @@ const Messages = () => {
   };
 
   if (loading) {
-    return <p className="text-center py-4">Loading messages...</p>;  // Avoid hydration mismatch
+    return <p className="text-center py-4">Loading messages...</p>;
   }
 
   return (
     <>
-      <h1 className="font-bold text-2xl border-b ml-8">Messages</h1>
-      <div className="flex h-screen gap-4">
+      {/* ✅ Desktop & Large Screens */}
+      <div className="hidden lg:flex h-screen gap-6 p-6">
         {/* Sidebar */}
-        <div className="w-1/4 h-[500px] ml-8 mt-8 bg-white p-4 border-r shadow-lg rounded-lg">
-          {/* Search Bar */}
-          <SearchBar placeholder="Search chats" className="w-" width="w-54" />
+        <div className="w-1/4 h-full bg-white p-4 border-r shadow-lg rounded-lg flex flex-col">
+          <h1 className="font-bold text-2xl mb-4">Messages</h1>
+          <SearchBar placeholder="Search chats" width="w-54" className="mb-4" />
+
           {/* Tabs */}
-          <div className="flex space-x-4 mb-4">
+          <div className="flex gap-6 mb-4">
             <button
-              className={`flex-1 py-2 rounded-lg relative ${
-                selectedTab === "all" ? "text-[#3A98BB] font-semibold" : "text-gray-600"
+              className={`text-left py-2 relative ${
+                selectedTab === "all"
+                  ? "text-[#3A98BB] font-semibold"
+                  : "text-gray-600"
               }`}
               onClick={() => setSelectedTab("all")}
             >
               All
               {selectedTab === "all" && (
-                <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#3A98BB]"></div>
+                <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#3A98BB]" />
               )}
             </button>
             <button
-              className={`flex-1 py-2 rounded-lg relative ${
-                selectedTab === "unread" ? "text-green-500 font-semibold" : "text-gray-600"
+              className={`text-left py-2 relative ${
+                selectedTab === "unread"
+                  ? "text-[#3A98BB] font-semibold"
+                  : "text-gray-600"
               }`}
               onClick={() => setSelectedTab("unread")}
             >
               Unread
               {selectedTab === "unread" && (
-                <div className="absolute bottom-0 left-0 w-full h-[3px] bg-green-500"></div>
+                <div className="absolute bottom-0 left-0 w-[40%] h-[3px] bg-[#3A98BB]" />
               )}
             </button>
           </div>
 
           {/* Chat List */}
-          {filteredChats.map((chat) => (
-            <div
-              key={chat.id}
-              className={`flex items-center p-2 rounded-lg cursor-pointer whitespace-nowrap border-b ${
-                chat.unread ? "bg-gray-100" : ""
-              } hover:bg-gray-200`}
-            >
-              <Image
-                src={chat.img}
-                alt={chat.name}
-                className="w-12 h-12 rounded-full mr-3"
-                width={45}
-                height={45}
-              />
-              <div>
-                <h4 className="text-gray-800 font-semibold">{chat.name}</h4>
-                <p className="text-gray-500 text-xs">{chat.message}</p>
+          <div className="flex-1 overflow-y-auto">
+            {filteredChats.map((chat) => (
+              <div
+                key={chat.id}
+                className={`flex items-center p-2 rounded-lg cursor-pointer border-b ${
+                  chat.unread ? "bg-gray-100" : ""
+                } hover:bg-gray-200`}
+              >
+                <Image
+                  src={chat.img}
+                  alt={chat.name}
+                  className="w-12 h-12 rounded-full mr-3"
+                  width={45}
+                  height={45}
+                />
+                <div>
+                  <h4 className="text-gray-800 font-semibold">{chat.name}</h4>
+                  <p className="text-gray-500 text-xs">{chat.message}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Chat Section */}
-        <div className="flex flex-col w-9/12 h-[494px] bg-gray-100 mt-8 mr-8 rounded-md border-1 border-[#D3D3D3]">
+        <div className="flex flex-col flex-1 h-full bg-gray-100 rounded-md border border-[#D3D3D3]">
           {/* Chat Header */}
-          <div className="bg-white p-4 ml-8 mr-8 mt-4 border-b shadow-md rounded-md text-center font-bold ">
-            <h2 className="text-lg border-b">Tolu Isioma</h2>
-            <div className="mt-2">
-              <span className="text-[#878787]">
-                Modern Fashion Attire Illustration{" "}
-                <span className="text-[#3A98BB]">(24t64754)</span>
-              </span>
-            </div>
-          </div>
+          <div className="bg-white p-4 border-b shadow-md rounded-t-md font-bold text-center">
+  <h2 className="text-lg inline-block border-b border-gray-300">
+    Tolu Isioma
+  </h2>
+  <div className="mt-2">
+    <span className="text-[#878787] text-sm">
+      Modern Fashion Attire Illustration{" "}
+      <span className="text-[#3A98BB]">(24t64754)</span>
+    </span>
+  </div>
+</div>
 
-          {/* Messages */}
-          <div className="flex-1 p-4 space-y-2">
-            <div className="bg-[#CCE7F2] p-2 rounded-md text-[#222222] self-start w-96 ml-auto whitespace-nowrap text-xs">
+
+          {/* Chat Messages (scrolls inside here) */}
+          <div className="flex-1 p-4 space-y-2 overflow-y-auto">
+            <div className="bg-[#CCE7F2] p-2 rounded-md text-[#222222] self-start w-96 ml-auto text-xs">
               <div className="flex gap-2 justify-end font-bold">
                 <h4>Tolu</h4>
                 <span className="text-[#767676]"> 2 days ago</span>
               </div>
-              Can you adjust the length of the whatever whatever to fit with the collar
+              Can you adjust the length of the whatever whatever to fit with the
+              collar
             </div>
+
             <div className="bg-[#EAEAEAEE] p-2 w-3/5 rounded-lg text-[#222222] text-xs self-end mr-auto">
               <div className="flex gap-2 justify-start font-bold">
                 <h4>Ciana</h4>
                 <span className="text-[#767676]"> 2 days ago</span>
               </div>
-              Can you adjust the length of the whatever whatever to fit with the collar
+              Can you adjust the length of the whatever whatever to fit with the
+              collar
             </div>
           </div>
 
-          {/* Message Input */}
-          <div className="bg-white h-32 ml-4 mr-4 pl-4 pr-4 pt-2 pb-2 border-t rounded-md flex flex-col justify-between">
+          {/* Input Area */}
+          <div className="bg-white h-32 p-2 border-t rounded-b-md flex flex-col justify-between">
             <textarea
-              className="w-full h-64 !bg-white !text-black outline-none"
+              className="w-full h-16 !bg-white !text-black outline-none resize-none"
               placeholder="Type a message..."
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
@@ -180,6 +181,128 @@ const Messages = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* ✅ Mobile View */}
+      <div className="block lg:hidden h-screen flex-col bg-white">
+        {!activeChat ? (
+          <>
+            {/* Header */}
+            <div className="flex items-center gap-2 p-4 border-b">
+              <h1 className="font-bold text-lg">Messages</h1>
+            </div>
+
+            {/* Search */}
+            <div className="p-4 border-b mb-4">
+              <SearchBar placeholder="Search chats..." className="w-full" />
+            </div>
+
+            {/* Tabs */}
+            <div className="flex justify-around border-b">
+              <button
+                onClick={() => setSelectedTab("all")}
+                className={`flex-1 py-2 font-medium ${
+                  selectedTab === "all"
+                    ? "text-[#3A98BB] border-b-2 border-[#3A98BB]"
+                    : "text-gray-500"
+                }`}
+              >
+                All
+              </button>
+              <button
+                onClick={() => setSelectedTab("unread")}
+                className={`flex-1 py-2 font-medium ${
+                  selectedTab === "unread"
+                    ? "text-[#3A98BB] border-b-2 border-[#3A98BB]"
+                    : "text-gray-500"
+                }`}
+              >
+                Unread
+              </button>
+            </div>
+
+            {/* Chat List */}
+            <div className="flex-1 overflow-y-auto">
+              {filteredChats.map((chat) => (
+                <div
+                  key={chat.id}
+                  onClick={() => setActiveChat(chat)} // ✅ open chat on mobile
+                  className={`flex items-center gap-3 p-4 border-b cursor-pointer ${
+                    chat.unread ? "bg-gray-100" : ""
+                  }`}
+                >
+                  <Image
+                    src={chat.img}
+                    alt={chat.name}
+                    className="rounded-full"
+                    width={45}
+                    height={45}
+                  />
+                  <div>
+                    <h4 className="font-semibold text-sm">{chat.name}</h4>
+                    <p className="text-xs text-gray-500 truncate w-40">
+                      {chat.message}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Chat Section */}
+            <div className="flex items-center gap-2 p-4 border-b">
+              <FiChevronLeft
+                className="text-xl cursor-pointer"
+                onClick={() => setActiveChat(null)} // ✅ close chat
+              />
+              <h1 className="font-bold text-lg">{activeChat.name}</h1>
+            </div>
+
+            {/* Chat Messages */}
+            <div className="flex-1 p-4 space-y-2 overflow-y-auto">
+              <div className="bg-[#CCE7F2] p-2 rounded-md text-[#222222] text-xs">
+                <div className="flex gap-2 justify-end font-bold">
+                  <h4>{activeChat.name}</h4>
+                  <span className="text-[#767676]"> 2 days ago</span>
+                </div>
+                Can you adjust the length of the whatever whatever to fit with the
+                collar
+              </div>
+            </div>
+
+            {/* Input Area */}
+           {/* Mobile view */}
+<div className="md:hidden flex items-center justify-between rounded-full border border-gray-300 bg-white px-4 py-2 m-2 mt-[590px] shadow-sm">
+  {/* Left icons + textarea */}
+  <div className="flex items-center gap-2 flex-1">
+    <Image
+      src="/dev-images/smile.png"
+      alt="smile"
+      width={20}
+      height={20}
+      className="cursor-pointer"
+    />
+
+    <textarea
+      placeholder="Message"
+      className="flex-1 outline-none text-gray-700 placeholder-gray-400 bg-transparent resize-none h-6"
+      value={newMessage}
+      onChange={(e) => setNewMessage(e.target.value)}
+    />
+  </div>
+
+  {/* Right icons */}
+  <div className="flex items-center gap-3 pl-3 border-l border-gray-200">
+    <Image src="/dev-images/Attach3.png" alt="attachment" width={20} height={20} className="cursor-pointer" />
+    <Image src="/dev-images/Picture.png" alt="picture" width={20} height={20} className="cursor-pointer" />
+    <Image src="/dev-images/Mic.png" alt="microphone" width={20} height={20} className="cursor-pointer" />
+  </div>
+</div>
+
+
+          </>
+        )}
       </div>
     </>
   );

@@ -12,6 +12,7 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import Image from "next/image";
+import Link from "next/link";
 
 const ProposalPopUp = ({ onOpenChange, isOpen }) => {
   return (
@@ -43,13 +44,15 @@ const ProposalPopUp = ({ onOpenChange, isOpen }) => {
                 </p>
               </ModalBody>
               <ModalFooter className="w-full flex justify-center">
-                <Button
-                  className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A] font-bold text-sm"
-                  variant="light"
-                  onPress={onClose}
-                >
-                  OK
-                </Button>
+               <Link href="/artist-page/project-page">
+  <Button
+    className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A] font-bold text-sm"
+    variant="light"
+    onPress={onClose}
+  >
+    OK
+  </Button>
+</Link>
               </ModalFooter>
             </>
           )}
