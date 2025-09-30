@@ -17,7 +17,7 @@ const Abouttheclient = () => {
         
     <div className='flex flex-col gap-2 mb-6'>
     <div>
-        <h5>Fashion Brand</h5>
+        <h5 className='font-medium text-sm'>Fashion Brand</h5>
     </div>
     <div className='flex items-center gap-2'>
 <MdLocationPin color='#878787' />
@@ -51,7 +51,7 @@ const Abouttheclient = () => {
     </div>
     <div>
        <div className='text-lg mb-[22px]'>
-        <h5 className='leading-[160%] tracking-[0.33px]'>Client Verifications</h5>
+        <h5 className='leading-[160%] tracking-[0.33px] text-[18px] text-[#222222] font-bold'>Client Verifications</h5>
     </div>
     <div className='flex flex-col gap-4'>
     <div className='flex items-center gap-2'>
