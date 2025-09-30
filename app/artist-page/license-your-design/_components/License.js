@@ -39,7 +39,7 @@ const License = () => {
           </p>
         </div>
 
-        <div className="bg-[#FAFAFA] border-1 border-[#DDDDDD] lg:w-4/5 w-full max-w-[90%] text-[#222222] lg:mx-16 mx-4 px-6 pt-[24px] pb-[32px] mt-7 mb-[99px] flex flex-col gap-6">
+        <div className="bg-[#FAFAFA] lg:w-4/5 w-full max-w-[90%] text-[#222222] lg:mx-16 mx-4 px-6 pt-[24px] pb-[32px] mt-7 mb-[99px] flex flex-col gap-6">
           {/* Design Title & Description */}
           <div className="flex flex-col gap-4 w-full">
            <div className="flex flex-col gap-1">
@@ -52,7 +52,7 @@ const License = () => {
     type="text"
     placeholder="What is the title of your design?"
     required
-    className="text-base text-[#BABABA]  font-normal border-2 border-[#d1d1d1] rounded-lg px-3 py-2"
+    className="text-base text-[#BABABA]  font-normal border-1 border-[#d1d1d1] rounded-lg px-3 py-2"
   />
   {/* Example error message */}
   {errors?.name && (
@@ -85,7 +85,7 @@ const License = () => {
             <h3 className="text-lg font-semibold">Design Style</h3>
             <Input
               placeholder="Enter category"
-              className="border-2 border-[#d1d1d1] rounded-lg"
+              className="border-1 border-[#d1d1d1] rounded-lg"
             />
           </div>
 
@@ -169,7 +169,7 @@ const License = () => {
             <h3 className="text-lg font-semibold">Asking Price</h3>
             <input
               placeholder="0.0 $"
-              className="border-2 border-[#d1d1d1] px-4 py-3 rounded-lg w-96"
+              className="border-1 border-[#d1d1d1] px-4 py-3 rounded-lg w-96"
             />
           </div>
 
