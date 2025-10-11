@@ -21,8 +21,8 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
-import ContractHeader from "../../contract-page/components/contract-header";
-import Navbar3 from "../../../components/Navbar3";
+import ContractHeader from "../../../artist-page/my-contracts/components/contract-header";
+import Link from "next/link";
 
 const MyProjects = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -198,14 +198,13 @@ const MyProjects = () => {
 
   return (
     <>
-      <div className="min-h-screen ">
-        <Navbar3 />
-        <div className="max-w-6xl mx-auto bg-gray-50 p-6 ">
+      <div className="min-h-screen max-w-[86.5rem] mx-auto">
+        <div className="  ">
           {/* Header */}
           <ContractHeader title="My Projects" />
 
           {/* Search Bar */}
-          <div className="mb-6">
+          <div className="mb-[11px]">
             <Input
               placeholder="Search"
               value={searchTerm}
@@ -216,13 +215,14 @@ const MyProjects = () => {
               startContent={
                 <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
               }
-              className="max-w-md"
+              className="max-w-md bg-transparent"
               variant="bordered"
+              radius="full"
             />
           </div>
 
           {/* Projects List */}
-          <div className="space-y-3">
+          <div className="space-y-2 max-w-[61.25rem]">
             {currentProjects.length === 0 ? (
               <p className="text-gray-500 text-center">No projects found.</p>
             ) : (
@@ -253,6 +253,8 @@ const MyProjects = () => {
                           <DropdownMenu aria-label="Project actions">
                             <DropdownItem
                               key="edit"
+                              as={Link}
+                              href="/fashion-designers/post-project"
                               color="default"
                               startContent={<PencilIcon className="w-4 h-4" />}
                             >
@@ -292,20 +294,15 @@ const MyProjects = () => {
                         </Chip>
                       </div>
 
-                      <div className="flex  items-start justify-between  py-1 my-2">
+                      <Link
+                        href="/artist-page/submit-contract-congratulation"
+                        className="flex items-start justify-between py-1 my-2 cursor-pointer hover:bg-gray-50 rounded-md px-2"
+                      >
                         <span className="font-satoshi">Proposals</span>
-
                         <span className="text-[#3A98BB] font-montserrat font-medium text-md">
                           {project.proposals}
                         </span>
-                      </div>
-
-                      <div className="flex  items-start justify-between    py-1 my-2">
-                        <span className="font-satoshi">Replies</span>
-                        <span className="text-[#767676] font-medium text-md">
-                          {project.replies}
-                        </span>
-                      </div>
+                      </Link>
 
                       <div className="flex  items-start justify-between    py-1 my-2">
                         <span className="font-satoshi">Hired</span>
@@ -316,12 +313,12 @@ const MyProjects = () => {
                     </CardBody>
                   </Card>
                 ) : (
-                  <Card key={project.id} className="w-full">
+                  <Card key={project.id} className="max-w-6xl">
                     <CardBody className="p-4">
                       <div className="flex items-start justify-between font-satoshi">
                         {/* Project Info */}
                         <div className="flex-1">
-                          <h3 className="md:text-xl font-medium text-[#222222] text-lg  mb-2">
+                          <h3 className="md:text-md font-semibold text-[#222222] text-lg  mb-2">
                             {project.title}
                           </h3>
                           <div className="flex flex-col items-start justify-start gap-2 text-sm ">
@@ -348,19 +345,22 @@ const MyProjects = () => {
 
                         {/* Stats */}
                         <div className="flex items-start gap-6 text-sm">
-                          <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
+                          <Link
+                            href="/artist-page/submit-contract-congratulation"
+                            className="flex gap-2 items-center border rounded-full border-[#D1D1D1] px-4 py-1 cursor-pointer hover:bg-gray-50"
+                          >
                             <span className="text-[#3A98BB] font-montserrat font-medium text-md">
                               {project.proposals}
                             </span>
                             <span className="text-gray-500">Proposals</span>
-                          </div>
+                          </Link>
 
-                          <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
+                          {/*  <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
                             <span className="text-[#767676] font-medium text-md">
                               {project.replies}
                             </span>
                             <span className="text-gray-500">Replies</span>
-                          </div>
+                          </div> */}
 
                           <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
                             <span className="text-[#767676] font-medium text-md">
@@ -373,18 +373,25 @@ const MyProjects = () => {
                           <Dropdown>
                             <DropdownTrigger>
                               <Button
-                                variant="transparent"
+                                variant="bordered"
                                 isIconOnly
-                                size="sm"
-                                radius="md"
-                                className="text-gray-400 hover:text-gray-600  py-0 shadow-sm border-1 border-[#EAEAEA] "
+                                size="md"
+                                className="text-gray-400 mr-10 -py-6"
                               >
                                 <EllipsisHorizontalIcon className="w-5 h-5" />
                               </Button>
                             </DropdownTrigger>
-                            <DropdownMenu aria-label="Project actions">
+                            <DropdownMenu
+                              className="w-[120px] p-1 text-sm"
+                              aria-label="Project actions"
+                              itemClasses={{
+                                base: " py-1.5 text-gray-700 hover:bg-gray-100 rounded-md",
+                              }}
+                            >
                               <DropdownItem
                                 key="edit"
+                                as={Link}
+                                href="/fashion-designers/post-project"
                                 color="default"
                                 startContent={
                                   <PencilIcon className="w-4 h-4" />
@@ -413,7 +420,7 @@ const MyProjects = () => {
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-center gap-2 mt-6">
+          <div className="flex items-center justify-center gap-2 mt-6 mb-20">
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-600 mr-4">
                 {totalProjects === 0

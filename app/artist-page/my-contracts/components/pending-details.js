@@ -8,11 +8,10 @@ import {
 } from "@heroicons/react/24/outline";
 import { Card, CardBody, Button, Avatar, Chip } from "@heroui/react";
 
-import Navbar3 from "../../../components/Navbar3";
+import Navbar3 from "../../../../components/Navbar3";
 import ContractHeader from "./contract-header";
-import { useRouter } from "next/navigation";
 
-export default function CompletedDetailsPage({ params }) {
+export default function PendingDetailsPage({ params }) {
   const contractId = params?.id || "24t64754"; // fallback for demo
   console.log(contractId);
   // Mock data - replace with actual data fetching based on contractId
@@ -23,7 +22,7 @@ export default function CompletedDetailsPage({ params }) {
     role: "Fashion Artist",
     budget: "₦200,000",
     timeframe: "1 Month",
-    status: "Completed",
+    status: "Pending",
     attachedDocuments: [
       { name: "DocTGFile", type: "document" },
       { name: "DocE75", type: "legal" },
@@ -50,13 +49,11 @@ export default function CompletedDetailsPage({ params }) {
       case "ongoing":
         return "text-[#279711]";
       case "completed":
-        return "text-[#949494]";
+        return "success";
       default:
         return "default";
     }
   };
-
-  const router = useRouter();
 
   return (
     <div className="bg-[#EAEAEA] min-h-screen">
@@ -124,12 +121,13 @@ export default function CompletedDetailsPage({ params }) {
                     ))}
                   </div>
 
+                  {/* Status */}
                   <Chip
                     variant="flat"
                     size="lg"
                     className={`${getStatusColor(
                       contractData.status
-                    )} font-medium  border-1  rounded-3xl bg-transparent hidden lg:block`}
+                    )} font-medium  border-1 hidden lg:flex rounded-3xl bg-transparent`}
                   >
                     {contractData.status}
                   </Chip>
@@ -164,30 +162,20 @@ export default function CompletedDetailsPage({ params }) {
           {/* Right Column - Artist Info & Actions */}
           <div className="flex space-y-2 gap-2 flex-col-reverse lg:flex-col">
             {/* Action Buttons */}
-            <Card
-              className="bg-white border border-gray-200 hidden"
-              shadow="none"
-            >
+            <Card className="bg-white border border-gray-200 drop-shadow-md">
               <CardBody className="lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col">
                 <Button
-                  className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
+                  className="w-full py-5.5 bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl border-0 shadow-sm"
                   size="md"
-                  radius="full"
-                  onPress={() =>
-                    router.push(
-                      `/contract-page/retain?artist=${contractData.artist.username}`
-                    )
-                  }
                 >
-                  Retain Artist
+                  Accept Offer
                 </Button>
                 <Button
                   variant="bordered"
-                  className="w-full bg-radial from-[#EAF9FF] to-[#E8E8E8] text-[#222222] font-medium rounded-full border-0 shadow-sm"
+                  className="w-full bg-transparent py-5 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl  shadow-sm"
                   size="md"
-                  radius="full"
                 >
-                  Learn More
+                  Decline
                 </Button>
               </CardBody>
             </Card>

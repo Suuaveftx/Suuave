@@ -10,7 +10,7 @@ export default function Layout({ children }) {
         {/* Navbar */}
         <Navbars />
         {/* Main Content */}
-        <main className="font-proximanova px-[36.51px] pt-[95.68px]">
+        <main className="font-proximanova lg:px-[36.51px]  lg:pt-[95.68px]">
           {children}
         </main>
       </div>

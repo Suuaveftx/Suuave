@@ -1,3 +1,11 @@
+import ContractPage from "./components/contracts";
+
+
+
+export default function Page() {
+  return <ContractPage />;
+}
+
 import React from "react";
 import UnderlinedTabs from "./_components/Tabs";
 import SearchBar from "../../../components/Searchbar";

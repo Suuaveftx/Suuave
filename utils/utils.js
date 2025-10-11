@@ -9,6 +9,10 @@ export function formatToNaira(amount) {
   return `₦${amount.toLocaleString("en-NG")}`;
 }
 
+export function formatToUSD(amount) {
+  return `$${amount.toLocaleString("en-US")}`;
+}
+
 export function formatNumberShort(num) {
   if (num < 1000) return num.toString();
 
@@ -23,17 +27,17 @@ export function formatNumberShort(num) {
 export const homePageCardData = [
   {
     title: "Secure Transaction",
-    text: "We use the best, most secure pay-out gateway. Every due payment is processed without delay.",
+    text: "We hold payments in escrow via our trusted payment gateway, releasing them only when all parties confirm satisfaction.",
     image: "/dev-images/Secure.png", // Replace with actual image URL or path
   },
   {
     title: "Copyright Protection",
     text: "We prioritize fairness for all users and prevent unauthorized use of designs. ",
-    image: "/dev-images/copy.png",
+    image: "/dev-images/copy.png", 
   },
   {
     title: "User Verification",
-    text: "We create a safe environment for users, fostering trust and encouraging genuine collaboration",
+    text: "We create a safe environment for users, fostering trust and encouraging genuine collaboration.",
     image: "/dev-images/user.png",
   },
   {
