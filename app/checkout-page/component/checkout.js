@@ -19,13 +19,9 @@ import {
 } from "@heroui/react";
 import { CreditCard, Info, Shield } from "lucide-react";
 import ContractHeader from "../../artist-page/my-contracts/components/contract-header";
-<<<<<<< HEAD
-import Navbar3 from "../../../components/Navbar3";
-=======
 
 import { useRouter, useSearchParams } from "next/navigation";
 
->>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
 import {
   CheckCircleIcon,
   ExclamationTriangleIcon,

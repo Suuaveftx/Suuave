@@ -130,96 +130,74 @@ const FashionDesignersCard = ({
   };
 
   return (
-<<<<<<< HEAD
-    <Link href={`/fashion-designers/${productID}`} className="block">
-=======
-  
->>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
     <Card className="px-0 hover:shadow-xl overflow-hidden" shadow="none">
       <CardBody className="overflow-hidden p-0">
         <Link href={`/fashion-designers/${productID}`} className="block">
-        <Button
-          isIconOnly
-          className="absolute right-4 top-4 z-20 border-1 bg-[#444444] border-[#444444] backdrop-blur-sm hover:bg-[#444444]/70"
-          size="sm"
-          onPress={() => setIsBookmarked(!isBookmarked)}
-        >
-          <Bookmark
-            size={20}
-            className={`${
-              isBookmarked ? "fill-cyan-400 text-cyan-400" : "text-white"
-            } transition-colors duration-200`}
-          />
-        </Button>
-        <div className="overflow-hidden">
-          <div className="slider-container">
-            <Slider {...sliderSettings}>
-              {images?.map((image, index) => (
-                <div
-                  key={index}
-                  className="relative h-80 flex items-center justify-center"
-                >
-           
-                 
-      <img
-                    src={image}
-                    alt={`${title} - Image ${index + 1}`}
-                    className="w-full h-full object-cover object-top
+          <Button
+            isIconOnly
+            className="absolute right-4 top-4 z-20 border-1 bg-[#444444] border-[#444444] backdrop-blur-sm hover:bg-[#444444]/70"
+            size="sm"
+            onPress={() => setIsBookmarked(!isBookmarked)}
+          >
+            <Bookmark
+              size={20}
+              className={`${
+                isBookmarked ? "fill-cyan-400 text-cyan-400" : "text-white"
+              } transition-colors duration-200`}
+            />
+          </Button>
+          <div className="overflow-hidden">
+            <div className="slider-container">
+              <Slider {...sliderSettings}>
+                {images?.map((image, index) => (
+                  <div
+                    key={index}
+                    className="relative h-80 flex items-center justify-center"
+                  >
+                    <img
+                      src={image}
+                      alt={`${title} - Image ${index + 1}`}
+                      className="w-full h-full object-cover object-top
                     "
-                  />
-
-                
-                </div>
-              ))}
-            </Slider>
+                    />
+                  </div>
+                ))}
+              </Slider>
+            </div>
           </div>
-        </div>
         </Link>
       </CardBody>
-     
-     <CardFooter className="flex flex-col items-start w-full mx-0 px-1 space-y-2">
-  <div className="space-y-2">
-    {/* Title */}
-    <p className="line-clamp-2 font-semibold text-sm hover:underline min-h-[40px]">
-  {title}
-</p>
 
+      <CardFooter className="flex flex-col items-start w-full mx-0 px-1 space-y-2">
+        <div className="space-y-2">
+          {/* Title */}
+          <p className="line-clamp-2 font-semibold text-sm hover:underline min-h-[40px]">
+            {title}
+          </p>
 
-    <p className="font-semibold text-md text-[#3A98BB]">
-      {formatToUSD(price)}
-    </p>
+          <p className="font-semibold text-md text-[#3A98BB]">
+            {formatToUSD(price)}
+          </p>
 
-    <Popover showArrow placement="bottom">
-      <PopoverTrigger>
-<<<<<<< HEAD
-=======
-        <Link href="/artist-page/profile-for-artist">
->>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
-        <User
-          avatarProps={{
-            src: `https://i.pravatar.cc/150?img=${idx}`,
-            size: "sm",
-          }}
-          name={userName}
-        />
-<<<<<<< HEAD
-=======
-        </Link>
->>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
-      </PopoverTrigger>
-      <PopoverContent className="p-1">
-        <UserInfoCard idx={idx} userData={userData} />
-      </PopoverContent>
-    </Popover>
-  </div>
-</CardFooter>
-
+          <Popover showArrow placement="bottom">
+            <PopoverTrigger>
+              <Link href="/artist-page/profile-for-artist">
+                <User
+                  avatarProps={{
+                    src: `https://i.pravatar.cc/150?img=${idx}`,
+                    size: "sm",
+                  }}
+                  name={userName}
+                />
+              </Link>
+            </PopoverTrigger>
+            <PopoverContent className="p-1">
+              <UserInfoCard idx={idx} userData={userData} />
+            </PopoverContent>
+          </Popover>
+        </div>
+      </CardFooter>
     </Card>
-<<<<<<< HEAD
-    </Link>
-=======
-
->>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
   );
 };
 
