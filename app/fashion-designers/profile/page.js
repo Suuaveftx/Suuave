@@ -37,7 +37,7 @@ const Page = () => {
   const [showFull, setShowFull] = useState(false);
   const [aboutValue, setAboutValue] = useState(fullText);
   const [titleValue, setTitleValue] = useState(
-    "Fashion Artist | 3D Illustrator"
+    "Designer/Brand"
   );
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [previewProfileUrl, setPreviewProfileUrl] = useState(null);
@@ -199,30 +199,7 @@ const Page = () => {
           )}
         </span>
       </section>
-      <section className="p-4 mt-1 md:py-10 font-satoshi md:bg-[#F9F9F9] md:mt-0 md:rounded-b-lg">
-        <div className="flex items-start justify-between ">
-          <h1 className="font-bold text-base md:text-xl">Certification</h1>{" "}
-          <EditAward handleAwardChange={handleAwardChange} />
-        </div>
-        {/* Image Preview */}
-        {previewAwardUrl ? (
-          <Image
-            src={previewAwardUrl}
-            alt="Preview"
-            width={130}
-            height={130}
-            className="mt-6"
-          />
-        ) : (
-          <Image
-            src="\profile\image-1.svg"
-            alt="image"
-            width={130}
-            height={130}
-            className="mt-6"
-          />
-        )}
-      </section>
+      
       {/* Reviews */}
       <section className="p-4 mt-5 font-satoshi ">
         <h1 className="font-bold text-base  md:text-xl">Reviews</h1>

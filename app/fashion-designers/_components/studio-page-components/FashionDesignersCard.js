@@ -130,9 +130,14 @@ const FashionDesignersCard = ({
   };
 
   return (
+<<<<<<< HEAD
     <Link href={`/fashion-designers/${productID}`} className="block">
+=======
+  
+>>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
     <Card className="px-0 hover:shadow-xl overflow-hidden" shadow="none">
       <CardBody className="overflow-hidden p-0">
+        <Link href={`/fashion-designers/${productID}`} className="block">
         <Button
           isIconOnly
           className="absolute right-4 top-4 z-20 border-1 bg-[#444444] border-[#444444] backdrop-blur-sm hover:bg-[#444444]/70"
@@ -154,17 +159,22 @@ const FashionDesignersCard = ({
                   key={index}
                   className="relative h-80 flex items-center justify-center"
                 >
-                  <img
+           
+                 
+      <img
                     src={image}
                     alt={`${title} - Image ${index + 1}`}
                     className="w-full h-full object-cover object-top
                     "
                   />
+
+                
                 </div>
               ))}
             </Slider>
           </div>
         </div>
+        </Link>
       </CardBody>
      
      <CardFooter className="flex flex-col items-start w-full mx-0 px-1 space-y-2">
@@ -181,6 +191,10 @@ const FashionDesignersCard = ({
 
     <Popover showArrow placement="bottom">
       <PopoverTrigger>
+<<<<<<< HEAD
+=======
+        <Link href="/artist-page/profile-for-artist">
+>>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
         <User
           avatarProps={{
             src: `https://i.pravatar.cc/150?img=${idx}`,
@@ -188,6 +202,10 @@ const FashionDesignersCard = ({
           }}
           name={userName}
         />
+<<<<<<< HEAD
+=======
+        </Link>
+>>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
       </PopoverTrigger>
       <PopoverContent className="p-1">
         <UserInfoCard idx={idx} userData={userData} />
@@ -197,7 +215,11 @@ const FashionDesignersCard = ({
 </CardFooter>
 
     </Card>
+<<<<<<< HEAD
     </Link>
+=======
+
+>>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
   );
 };
 

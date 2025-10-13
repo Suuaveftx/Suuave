@@ -1,16 +1,13 @@
 "use client";
 
 import React from "react";
-import {
-
-  PaperClipIcon,
-  StarIcon,
-} from "@heroicons/react/24/outline";
+import { PaperClipIcon, StarIcon } from "@heroicons/react/24/outline";
 import { Card, CardBody, Button, Avatar, Chip } from "@heroui/react";
 
 import ContractHeader from "./contract-header";
 import { TiLocation } from "react-icons/ti";
 import { FaStar } from "react-icons/fa6";
+import Link from "next/link";
 
 export default function PendingDetailsPage({ params }) {
   const contractId = params?.id || "24t64754"; // fallback for demo
@@ -58,7 +55,6 @@ export default function PendingDetailsPage({ params }) {
 
   return (
     <>
-     
       <ContractHeader title="Contract Information" />
       <div className="max-w-6xl mx-auto px-2 md:px-0 pb-6 ">
         <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-1">
@@ -103,6 +99,8 @@ export default function PendingDetailsPage({ params }) {
                         <span
                           className={`${
                             item.label === "Status" ? "lg:hidden" : ""
+                          } ${
+                            item.label === "Contract Number" ? "lg:-mt-4" : ""
                           } md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
                         >
                           {item.label} -
@@ -114,6 +112,8 @@ export default function PendingDetailsPage({ params }) {
                                   contractData.status
                                 )} lg:hidden`
                               : ""
+                          } ${
+                            item.label === "Contract Number" ? "lg:-mt-4" : ""
                           } md:text-md text-sm font-proximanova`}
                         >
                           {item.value}
@@ -125,10 +125,10 @@ export default function PendingDetailsPage({ params }) {
                   {/* Status */}
                   <Chip
                     variant="flat"
-                    size="lg"
+                    size="sm"
                     className={`${getStatusColor(
                       contractData.status
-                    )} font-medium  border-1 hidden lg:flex rounded-full bg-transparent`}
+                    )} font-semibold  border-1 hidden lg:flex rounded-full bg-transparent`}
                   >
                     {contractData.status}
                   </Chip>
@@ -137,7 +137,7 @@ export default function PendingDetailsPage({ params }) {
             </Card>
 
             {/* Attached Documents Card */}
-            <Card className="bg-white border border-gray-200" shadow="none">
+            <Card className="bg-white " shadow="none">
               <CardBody className="p-6">
                 <h2 className="md:text-2xl text-lg font-semibold md:mb-2 -mt-2">
                   Attached Documents
@@ -146,7 +146,7 @@ export default function PendingDetailsPage({ params }) {
                 {contractData.attachedDocuments.map((doc, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg bg-gray-50 transition-colors cursor-pointer "
+                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg transition-colors cursor-pointer "
                   >
                     <div className="flex items-center justify-center gap-2">
                       <PaperClipIcon className="md:h-5 md:w-5 h-4 w-4" />
@@ -166,14 +166,14 @@ export default function PendingDetailsPage({ params }) {
             <Card className="bg-white border border-gray-200 drop-shadow-md">
               <CardBody className="lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col">
                 <Button
-                  className="w-full py-5.5 bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl border-0 shadow-sm"
+                  className="w-full py-5.5 bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-semibold text-sm rounded-3xl border-0 shadow-sm"
                   size="lg"
                 >
                   Message Artist
                 </Button>
                 <Button
-                  variant="bordered"
-                  className="w-full bg-transparent py-5 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl  shadow-sm"
+                  variant="flat"
+                  className="w-full bg-[#EAEAEA] py-5  text-[#035A7A] font-semibold rounded-3xl text-sm  shadow-sm"
                   size="lg"
                 >
                   Cancel Project
@@ -214,23 +214,26 @@ export default function PendingDetailsPage({ params }) {
 
                   <div className="flex items-center justify-center gap-2 mb-6  text-[#222222]">
                     <span>Ratings</span>
-                     <div className="flex items-center gap-1">
-                                    {[...Array(5)].map((_, i) => (
-                                      <FaStar
-                                        key={i}
-                                        className={
-                                          i < contractData.artist.rating
-                                            ? "text-yellow-500"
-                                            : "text-gray-300"
-                                        }
-                                      />
-                                    ))}
-                                  </div>
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <FaStar
+                          key={i}
+                          className={
+                            i < contractData.artist.rating
+                              ? "text-yellow-500"
+                              : "text-gray-300"
+                          }
+                        />
+                      ))}
+                    </div>
                     <span className="text-sm text-[#3A98BB]">
-                      ({contractData.artist.reviews} Reviews)
+                      ({contractData.artist.reviews}{" "}
+                      <Link href="/artist-page/profile-for-artist?tab=reviews">
+                        Reviews
+                      </Link>
+                      )
                     </span>
                   </div>
-                  
                 </div>
               </CardBody>
             </Card>

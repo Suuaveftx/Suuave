@@ -27,7 +27,7 @@ export function formatNumberShort(num) {
 export const homePageCardData = [
   {
     title: "Secure Transaction",
-    text: "We use the best, most secure pay-out gateway. Every due payment is processed without delay.",
+    text: "We hold payments in escrow via our trusted payment gateway, releasing them only when all parties confirm satisfaction.",
     image: "/dev-images/Secure.png", // Replace with actual image URL or path
   },
   {
@@ -37,7 +37,7 @@ export const homePageCardData = [
   },
   {
     title: "User Verification",
-    text: "We create a safe environment for users, fostering trust and encouraging genuine collaboration",
+    text: "We create a safe environment for users, fostering trust and encouraging genuine collaboration.",
     image: "/dev-images/user.png",
   },
   {

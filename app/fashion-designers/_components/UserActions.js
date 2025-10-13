@@ -49,15 +49,17 @@ export function UserActions() {
 
       <div className="flex items-center gap-6">
         <Notification />
-        <Button
-          isIconOnly
-          variant="bordered"
-          radius="full"
-          className="text-[#1A1A1A] hidden lg:flex"
-          size="md"
-        >
-          <IoMail className="w-4 h-4" />
-        </Button>
+        <Link href="/artist-page/messages">
+          <Button
+            isIconOnly
+            variant="bordered"
+            radius="full"
+            className="text-[#1A1A1A] hidden lg:flex"
+            size="md"
+          >
+            <IoMail className="w-4 h-4" />
+          </Button>
+        </Link>
 
         <Dropdown>
           <DropdownTrigger>
@@ -75,6 +77,8 @@ export function UserActions() {
             <DropdownItem
               startContent={<LuCircleUser className="size-4" />}
               key="profile"
+               as={Link}
+    href="/fashion-designers/profile"
             >
               Profile
             </DropdownItem>
@@ -82,31 +86,38 @@ export function UserActions() {
               startContent={<Bell className="size-4" />}
               key="notifications"
               className="lg:hidden flex"
+              as={Link}
+              href="fashion-designers/_components/Notification"
             >
               Notifications
             </DropdownItem>
             <DropdownItem
+              as={Link}
+              href="/artist-page/messages"
               startContent={<Mail className="size-4" />}
               key="messages"
               className="lg:hidden flex"
             >
               Messages
             </DropdownItem>
-            <DropdownItem
-              startContent={<HiOutlinePhone className="size-4" />}
-              key="support"
-            >
-              Help & Support
-            </DropdownItem>
+           
             <DropdownItem
               startContent={<ClipboardList className="size-4" />}
               key="transaction-history"
             >
               Transaction History
             </DropdownItem>
+             <DropdownItem
+              startContent={<HiOutlinePhone className="size-4" />}
+              key="support"
+            >
+              Help & Support
+            </DropdownItem>
             <DropdownItem
               startContent={<TbSettings className="size-4" />}
               key="settings"
+              as={Link}
+    href="/artist-page/settings"
             >
               Settings
             </DropdownItem>

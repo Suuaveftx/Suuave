@@ -27,7 +27,7 @@ const ProductGallery = ({ images, title }) => {
   return (
     <div className="flex gap-4 bg-white rounded-2xl overflow-hidden p-5 h-[640px]">
       {/* Thumbnail Navigation */}
-      <div className="flex flex-col gap-3 overflow-y-auto overflow-x-hidden">
+      <div className="flex flex-col -ml-2 gap-3 overflow-y-auto overflow-x-hidden">
         {images.map((image, index) => (
           <button
             key={index}
