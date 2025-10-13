@@ -9,24 +9,23 @@ import ContractHeader from "./contract-header";
 export default function RetainArtist() {
   const searchParams = useSearchParams();
   const artist = searchParams.get("artist");
-  
+
   return (
     <div className="font-satoshi">
-   
       <ContractHeader title="Retain Artist" />
       <div className="min-h-screen max-w-6xl mx-auto  flex flex-col items-center justify-start ">
         <Card className="w-full max-w-xl md:max-w-2xl p-6 bg-white shadow-md rounded-xl">
           <CardBody className="space-y-6">
             <h2 className="text-xl font-semibold">Retain Artist</h2>
             <div className="space-y-4 text-sm ">
-              
               <div className="border-b border-gray-300 pb-4">
-                
                 <h4 className="text-md font-semibold mb-2">
                   Continue the creative journey with artist for future project
                 </h4>
                 <p>
-                  We understand the value of successful collaborations. Explore opportunities to continue working with them on future projects.
+                  We understand the value of successful collaborations. Explore
+                  opportunities to continue working with them on future
+                  projects.
                 </p>
               </div>
 

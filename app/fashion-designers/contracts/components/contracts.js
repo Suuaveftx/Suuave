@@ -36,13 +36,13 @@ export default function ContractPage() {
       pendingSince: "20, June, 2024",
       expiresIn: "1day",
     },
-      {
+    {
       title: "Modern Fashion Attire Illustration",
       id: "24t64757",
       pendingSince: "20, June, 2024",
       expiresIn: "1day",
     },
-      {
+    {
       title: "Modern Fashion Attire Illustration",
       id: "24t64758",
       pendingSince: "20, June, 2024",
@@ -184,7 +184,7 @@ export default function ContractPage() {
   const handleMoreOptions = (contract) => {
     console.log("More options for:", contract.title);
     // Add your more options logic here
-  }
+  };
   return (
     <>
       <ContractHeader title="My Contracts" />
@@ -246,5 +246,5 @@ export default function ContractPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

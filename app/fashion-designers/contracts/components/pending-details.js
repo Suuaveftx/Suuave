@@ -1,11 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-
-  PaperClipIcon,
-  StarIcon,
-} from "@heroicons/react/24/outline";
+import { PaperClipIcon, StarIcon } from "@heroicons/react/24/outline";
 import { Card, CardBody, Button, Avatar, Chip } from "@heroui/react";
 
 import ContractHeader from "./contract-header";
@@ -59,7 +55,6 @@ export default function PendingDetailsPage({ params }) {
 
   return (
     <>
-     
       <ContractHeader title="Contract Information" />
       <div className="max-w-6xl mx-auto px-2 md:px-0 pb-6 ">
         <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-1">
@@ -104,7 +99,9 @@ export default function PendingDetailsPage({ params }) {
                         <span
                           className={`${
                             item.label === "Status" ? "lg:hidden" : ""
-                          } ${ item.label === "Contract Number"? "lg:-mt-4": ""} md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
+                          } ${
+                            item.label === "Contract Number" ? "lg:-mt-4" : ""
+                          } md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
                         >
                           {item.label} -
                         </span>
@@ -115,7 +112,9 @@ export default function PendingDetailsPage({ params }) {
                                   contractData.status
                                 )} lg:hidden`
                               : ""
-                          } ${item.label === "Contract Number"? "lg:-mt-4": ""} md:text-md text-sm font-proximanova`}
+                          } ${
+                            item.label === "Contract Number" ? "lg:-mt-4" : ""
+                          } md:text-md text-sm font-proximanova`}
                         >
                           {item.value}
                         </span>
@@ -215,23 +214,26 @@ export default function PendingDetailsPage({ params }) {
 
                   <div className="flex items-center justify-center gap-2 mb-6  text-[#222222]">
                     <span>Ratings</span>
-                     <div className="flex items-center gap-1">
-                                    {[...Array(5)].map((_, i) => (
-                                      <FaStar
-                                        key={i}
-                                        className={
-                                          i < contractData.artist.rating
-                                            ? "text-yellow-500"
-                                            : "text-gray-300"
-                                        }
-                                      />
-                                    ))}
-                                  </div>
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <FaStar
+                          key={i}
+                          className={
+                            i < contractData.artist.rating
+                              ? "text-yellow-500"
+                              : "text-gray-300"
+                          }
+                        />
+                      ))}
+                    </div>
                     <span className="text-sm text-[#3A98BB]">
-                      ({contractData.artist.reviews} <Link href="/artist-page/profile-for-artist?tab=reviews">Reviews</Link>)
+                      ({contractData.artist.reviews}{" "}
+                      <Link href="/artist-page/profile-for-artist?tab=reviews">
+                        Reviews
+                      </Link>
+                      )
                     </span>
                   </div>
-                  
                 </div>
               </CardBody>
             </Card>

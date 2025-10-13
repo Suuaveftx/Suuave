@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Avatar,
   Button,
@@ -10,14 +10,14 @@ import {
   PopoverContent,
   PopoverTrigger,
   User,
-} from "@heroui/react";
-import React, { useState } from "react";
-import { Bookmark } from "lucide-react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Link from "next/link";
-import { formatNumberShort, formatToUSD } from "../../../../utils/utils";
+} from '@heroui/react';
+import React, { useState } from 'react';
+import { Bookmark } from 'lucide-react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import Link from 'next/link';
+import { formatNumberShort, formatToUSD } from '../../../../utils/utils';
 
 /**
  * UserInfoCard Component
@@ -35,56 +35,54 @@ const UserInfoCard = ({ idx, userData }) => {
   const [isFollowed, setIsFollowed] = React.useState(false);
 
   return (
-    <Card className="max-w-[300px] border-none  bg-transparent" shadow="none">
-      <CardHeader className="justify-between">
-        <div className="flex gap-3">
+    <Card className='max-w-[300px] border-none  bg-transparent' shadow='none'>
+      <CardHeader className='justify-between'>
+        <div className='flex gap-3'>
           <Avatar
             isBordered
-            radius="full"
-            size="md"
+            radius='full'
+            size='md'
             src={`https://i.pravatar.cc/150?img=${idx}`}
           />
-          <div className="flex flex-col items-start justify-center">
-            <h4 className="text-small font-semibold leading-none text-default-600">
-              {userData?.userName || "N/A"}
+          <div className='flex flex-col items-start justify-center'>
+            <h4 className='text-small font-semibold leading-none text-default-600'>
+              {userData?.userName || 'N/A'}
             </h4>
-            <h5 className="text-small tracking-tight text-default-500">
-              {userData?.handle || "N/A"}
+            <h5 className='text-small tracking-tight text-default-500'>
+              {userData?.handle || 'N/A'}
             </h5>
           </div>
         </div>
         <Button
           className={
-            isFollowed
-              ? "bg-transparent text-foreground border-default-200"
-              : null
+            isFollowed ? 'bg-transparent text-foreground border-default-200' : null
           }
-          color="primary"
-          radius="full"
-          size="sm"
-          variant={isFollowed ? "bordered" : "solid"}
+          color='primary'
+          radius='full'
+          size='sm'
+          variant={isFollowed ? 'bordered' : 'solid'}
           onPress={() => setIsFollowed(!isFollowed)}
         >
-          {isFollowed ? "Unfollow" : "Follow"}
+          {isFollowed ? 'Unfollow' : 'Follow'}
         </Button>
       </CardHeader>
-      <CardBody className="px-3 py-0">
-        <p className="text-small pl-px text-default-500">
-          {userData?.description || "N/A"}
+      <CardBody className='px-3 py-0'>
+        <p className='text-small pl-px text-default-500'>
+          {userData?.description || 'N/A'}
         </p>
       </CardBody>
-      <CardFooter className="gap-3">
-        <div className="flex gap-1">
-          <p className="font-semibold text-default-600 text-small">
+      <CardFooter className='gap-3'>
+        <div className='flex gap-1'>
+          <p className='font-semibold text-default-600 text-small'>
             {formatNumberShort(userData?.following || 0)}
           </p>
-          <p className=" text-default-500 text-small">Following</p>
+          <p className=' text-default-500 text-small'>Following</p>
         </div>
-        <div className="flex gap-1">
-          <p className="font-semibold text-default-600 text-small">
+        <div className='flex gap-1'>
+          <p className='font-semibold text-default-600 text-small'>
             {formatNumberShort(userData?.followers || 0)}
           </p>
-          <p className="text-default-500 text-small">Followers</p>
+          <p className='text-default-500 text-small'>Followers</p>
         </div>
       </CardFooter>
     </Card>
@@ -105,11 +103,11 @@ const UserInfoCard = ({ idx, userData }) => {
  */
 
 const FashionDesignersCard = ({
-  userName = "N/A",
+  userName = 'N/A',
   images = [],
-  title = "N/A",
-  price = "N/A",
-  productID = "N/A",
+  title = 'N/A',
+  price = 'N/A',
+  productID = 'N/A',
   userData,
   idx,
 }) => {
@@ -124,88 +122,78 @@ const FashionDesignersCard = ({
     autoplay: false,
     arrows: false,
     customPaging: () => (
-      <div className="w-2 h-2 bg-white/50 rounded-full hover:bg-white transition-colors duration-200"></div>
+      <div className='w-2 h-2 bg-white/50 rounded-full hover:bg-white transition-colors duration-200'></div>
     ),
-    dotsClass: "slick-dots custom-dots",
+    dotsClass: 'slick-dots custom-dots',
   };
 
   return (
-  
-    <Card className="px-0 hover:shadow-xl overflow-hidden" shadow="none">
-      <CardBody className="overflow-hidden p-0">
-        <Link href={`/fashion-designers/${productID}`} className="block">
-        <Button
-          isIconOnly
-          className="absolute right-4 top-4 z-20 border-1 bg-[#444444] border-[#444444] backdrop-blur-sm hover:bg-[#444444]/70"
-          size="sm"
-          onPress={() => setIsBookmarked(!isBookmarked)}
-        >
-          <Bookmark
-            size={20}
-            className={`${
-              isBookmarked ? "fill-cyan-400 text-cyan-400" : "text-white"
-            } transition-colors duration-200`}
-          />
-        </Button>
-        <div className="overflow-hidden">
-          <div className="slider-container">
-            <Slider {...sliderSettings}>
-              {images?.map((image, index) => (
-                <div
-                  key={index}
-                  className="relative h-80 flex items-center justify-center"
-                >
-           
-                 
-      <img
-                    src={image}
-                    alt={`${title} - Image ${index + 1}`}
-                    className="w-full h-full object-cover object-top
-                    "
-                  />
-
-                
-                </div>
-              ))}
-            </Slider>
+    <Card className='px-0 hover:shadow-xl overflow-hidden' shadow='none'>
+      <CardBody className='overflow-hidden p-0'>
+        <Link href={`/fashion-designers/${productID}`} className='block'>
+          <Button
+            isIconOnly
+            className='absolute right-4 top-4 z-20 border-1 bg-[#444444] border-[#444444] backdrop-blur-sm hover:bg-[#444444]/70'
+            size='sm'
+            onPress={() => setIsBookmarked(!isBookmarked)}
+          >
+            <Bookmark
+              size={20}
+              className={`${
+                isBookmarked ? 'fill-cyan-400 text-cyan-400' : 'text-white'
+              } transition-colors duration-200`}
+            />
+          </Button>
+          <div className='overflow-hidden'>
+            <div className='slider-container'>
+              <Slider {...sliderSettings}>
+                {images?.map((image, index) => (
+                  <div
+                    key={index}
+                    className='relative h-80 flex items-center justify-center'
+                  >
+                    <img
+                      src={image}
+                      alt={`${title} - Image ${index + 1}`}
+                      className='w-full h-full object-cover object-top
+                    '
+                    />
+                  </div>
+                ))}
+              </Slider>
+            </div>
           </div>
-        </div>
         </Link>
       </CardBody>
-     
-     <CardFooter className="flex flex-col items-start w-full mx-0 px-1 space-y-2">
-  <div className="space-y-2">
-    {/* Title */}
-    <p className="line-clamp-2 font-semibold text-sm hover:underline min-h-[40px]">
-  {title}
-</p>
 
+      <CardFooter className='flex flex-col items-start w-full mx-0 px-1 space-y-2'>
+        <div className='space-y-2'>
+          {/* Title */}
+          <p className='line-clamp-2 font-semibold text-sm hover:underline min-h-[40px]'>
+            {title}
+          </p>
 
-    <p className="font-semibold text-md text-[#3A98BB]">
-      {formatToUSD(price)}
-    </p>
+          <p className='font-semibold text-md text-[#3A98BB]'>{formatToUSD(price)}</p>
 
-    <Popover showArrow placement="bottom">
-      <PopoverTrigger>
-        <Link href="/artist-page/profile-for-artist">
-        <User
-          avatarProps={{
-            src: `https://i.pravatar.cc/150?img=${idx}`,
-            size: "sm",
-          }}
-          name={userName}
-        />
-        </Link>
-      </PopoverTrigger>
-      <PopoverContent className="p-1">
-        <UserInfoCard idx={idx} userData={userData} />
-      </PopoverContent>
-    </Popover>
-  </div>
-</CardFooter>
-
+          <Popover showArrow placement='bottom'>
+            <PopoverTrigger>
+              <Link href='/artist-page/profile-for-artist'>
+                <User
+                  avatarProps={{
+                    src: `https://i.pravatar.cc/150?img=${idx}`,
+                    size: 'sm',
+                  }}
+                  name={userName}
+                />
+              </Link>
+            </PopoverTrigger>
+            <PopoverContent className='p-1'>
+              <UserInfoCard idx={idx} userData={userData} />
+            </PopoverContent>
+          </Popover>
+        </div>
+      </CardFooter>
     </Card>
-
   );
 };
 

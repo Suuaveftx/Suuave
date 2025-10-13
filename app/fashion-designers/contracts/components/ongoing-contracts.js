@@ -134,20 +134,20 @@ const OngoingContracts = ({
                 <ChevronDownIcon className="h-4 w-4 text-gray-400" />
               </div>
 
-             <select
-  value={sortBy}
-  onChange={(e) => {
-    setSortBy(e.target.value);
-    setCurrentPage(1); 
-  }}
-  className="text-sm text-gray-700 border border-gray-300 rounded-full pl-10 pr-10 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none w-full"
->
-  {months.map((month) => (
-    <option key={month.value} value={month.value}>
-      {month.label}
-    </option>
-  ))}
-</select>
+              <select
+                value={sortBy}
+                onChange={(e) => {
+                  setSortBy(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="text-sm text-gray-700 border border-gray-300 rounded-full pl-10 pr-10 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none w-full"
+              >
+                {months.map((month) => (
+                  <option key={month.value} value={month.value}>
+                    {month.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
