@@ -14,7 +14,11 @@ export default function ContractHeader({ title }) {
   };
 
   return (
+<<<<<<< HEAD
+    <div className="max-w-6xl mx-auto md:my-8 my-4">
+=======
     <div className="max-w-[86.5rem] mx-auto md:my-8 my-4">
+>>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
       <h1 className="text-2xl md:text-4xl font-semibold flex items-center gap-2">
         {/* Show the arrow only on mobile view (sm and below) */}
         <Button

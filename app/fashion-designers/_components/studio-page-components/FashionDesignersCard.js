@@ -130,7 +130,11 @@ const FashionDesignersCard = ({
   };
 
   return (
+<<<<<<< HEAD
+    <Link href={`/fashion-designers/${productID}`} className="block">
+=======
   
+>>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
     <Card className="px-0 hover:shadow-xl overflow-hidden" shadow="none">
       <CardBody className="overflow-hidden p-0">
         <Link href={`/fashion-designers/${productID}`} className="block">
@@ -187,7 +191,10 @@ const FashionDesignersCard = ({
 
     <Popover showArrow placement="bottom">
       <PopoverTrigger>
+<<<<<<< HEAD
+=======
         <Link href="/artist-page/profile-for-artist">
+>>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
         <User
           avatarProps={{
             src: `https://i.pravatar.cc/150?img=${idx}`,
@@ -195,7 +202,10 @@ const FashionDesignersCard = ({
           }}
           name={userName}
         />
+<<<<<<< HEAD
+=======
         </Link>
+>>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
       </PopoverTrigger>
       <PopoverContent className="p-1">
         <UserInfoCard idx={idx} userData={userData} />
@@ -205,7 +215,11 @@ const FashionDesignersCard = ({
 </CardFooter>
 
     </Card>
+<<<<<<< HEAD
+    </Link>
+=======
 
+>>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
   );
 };
 

@@ -21,8 +21,14 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
+<<<<<<< HEAD
+import Navbar3 from "../../../../components/Navbar3";
+import ContractHeader from "../../../artist-page/my-contracts/components/contract-header";
+
+=======
 import ContractHeader from "../../../artist-page/my-contracts/components/contract-header";
 import Link from "next/link";
+>>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
 
 const MyProjects = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -198,8 +204,14 @@ const MyProjects = () => {
 
   return (
     <>
+<<<<<<< HEAD
+      <div className="min-h-screen ">
+       
+        <div className="max-w-6xl mx-auto bg-gray-50 p-6 ">
+=======
       <div className="min-h-screen max-w-[86.5rem] mx-auto">
         <div className="  ">
+>>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
           {/* Header */}
           <ContractHeader title="My Projects" />
 
@@ -302,7 +314,18 @@ const MyProjects = () => {
                         <span className="text-[#3A98BB] font-montserrat font-medium text-md">
                           {project.proposals}
                         </span>
+<<<<<<< HEAD
+                      </div>
+
+                     {/*  <div className="flex  items-start justify-between    py-1 my-2">
+                        <span className="font-satoshi">Replies</span>
+                        <span className="text-[#767676] font-medium text-md">
+                          {project.replies}
+                        </span>
+                      </div> */}
+=======
                       </Link>
+>>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
 
                       <div className="flex  items-start justify-between    py-1 my-2">
                         <span className="font-satoshi">Hired</span>
@@ -355,7 +378,11 @@ const MyProjects = () => {
                             <span className="text-gray-500">Proposals</span>
                           </Link>
 
+<<<<<<< HEAD
+                         {/*  <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
+=======
                           {/*  <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
+>>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
                             <span className="text-[#767676] font-medium text-md">
                               {project.replies}
                             </span>
