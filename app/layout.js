@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import './globals.css';
-import Layout from './(main)/layout';
 
 // Metadata
 export const metadata = {
