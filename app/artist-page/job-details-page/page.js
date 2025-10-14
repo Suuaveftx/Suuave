@@ -13,7 +13,7 @@ const Page = () => {
       <div className="lg:col-span-7 col-span-10">
         <JobDetailsPage />
         <div className='lg:hidden w-screen max-w-[100%] mb-8'>
-          <BtnProposals />
+          <BtnProposals  />
         </div>
         <DesignStyle />
         <SkillRequirement />

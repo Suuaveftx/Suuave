@@ -19,7 +19,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import Link from 'next/link';
 import { formatNumberShort, formatToUSD } from '../../../../utils/utils';
 
-/**
+/*
  * UserInfoCard Component
  *
  * @param {Object} props
