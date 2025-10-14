@@ -196,20 +196,6 @@
   display: none;
 }
 
-.scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
-/* Hide scrollbar but allow scrolling */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-.scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
 .custom-dots {
   bottom: 20px !important;
   display: flex !important;
