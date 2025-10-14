@@ -1,7 +1,6 @@
-"use client";
+" use client";
 
 import React from "react";
-
 import {
   Modal,
   ModalContent,
@@ -9,20 +8,30 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useDisclosure,
 } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 
-const ProposalPopUp = ({ onOpenChange, isOpen }) => {
+const ProposalPopUpMobile = ({ isOpen, onOpen, onOpenChange }) => {
   return (
     <>
+      {/* Trigger Button */}
+      <Button
+        className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold rounded-full px-6 py-2"
+        onPress={onOpen}
+      >
+        Send Proposal
+      </Button>
+
       {/* Modal */}
       <Modal
         size="xs"
         hideCloseButton
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        classNames={{
+          wrapper: "flex items-center justify-center", // 🔥 vertically center
+        }}
       >
         <ModalContent>
           {(onClose) => (
@@ -44,15 +53,15 @@ const ProposalPopUp = ({ onOpenChange, isOpen }) => {
                 </p>
               </ModalBody>
               <ModalFooter className="w-full flex justify-center">
-               <Link href="/artist-page/project-page">
-  <Button
-    className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A] font-bold text-sm"
-    variant="light"
-    onPress={onClose}
-  >
-    OK
-  </Button>
-</Link>
+                <Link href="/artist-page/project-page">
+                  <Button
+                    className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold text-sm"
+                    variant="light"
+                    onPress={onClose}
+                  >
+                    OK
+                  </Button>
+                </Link>
               </ModalFooter>
             </>
           )}
@@ -62,4 +71,4 @@ const ProposalPopUp = ({ onOpenChange, isOpen }) => {
   );
 };
 
-export default ProposalPopUp;
+export default ProposalPopUpMobile;

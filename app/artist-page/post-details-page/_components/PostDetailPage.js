@@ -7,7 +7,7 @@ const PostDetailsPage = () => {
     <>
       <section className="lg:mb-[29.34px] lg:mt-[45px]">
         <h1 className="ml-16 font-bold text-2xl border-b lg:flex hidden">
-          Post Details
+          Job Details
         </h1>
       </section>
       <section>

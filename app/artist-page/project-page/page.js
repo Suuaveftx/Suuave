@@ -17,9 +17,9 @@ const Page = () => {
           Complete your profile Setup
         </h3>
       </div>
-      <div className="flex justify-center w-full lg:mx-0 mx-4">
-      <div className="lg:w-full lg:max-w-[75%] w-[85%]">
-        <SearchBar />
+      <div className="flex justify-center w-full lg:mx-0 mx-4 mt-6">
+      <div className="lg:w-full lg:max-w-[75%] w-[90%]">
+        <SearchBar placeholder="search jobs" />
       </div>
       </div>
       <div>

@@ -6,6 +6,7 @@ import { FaRegUser } from "react-icons/fa6";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { MdOutlinePhone } from "react-icons/md";
 import { LuCreditCard } from "react-icons/lu";
+import Link from 'next/link';
 const Abouttheclient = () => {
   return (
   <div className='bg-[#FAFAFA] lg:w-screen lg:max-w-[80%] lg:px-6 px-4 pt-0 pb-[56px] w-screen max-w-96 lg:mx-0 mx-4 rounded-2xl'>
@@ -16,7 +17,7 @@ const Abouttheclient = () => {
         
     <div className='flex flex-col gap-2 mb-6'>
     <div>
-        <h5>Fashion Brand</h5>
+        <h5 className='font-medium text-sm'>Fashion Brand</h5>
     </div>
     <div className='flex items-center gap-2'>
 <MdLocationPin color='#878787' />
@@ -29,7 +30,9 @@ const Abouttheclient = () => {
         <FaStar key={index} color="#F8B73B" />
       ))}
     </div>
+    <Link href="/artist-page/review">
     <span className='text-sm text-[#3A98BB] tracking-[0.33px] leading-[18px]'><span className='text-[#767676]'>5.0</span>(5 Reviews)</span>
+    </Link>
     </div>
       <div>
         <span className='text-[#767676] tracking-[0.33px] leading-[18px]'>Member since 12 June, 2024</span>
@@ -48,7 +51,7 @@ const Abouttheclient = () => {
     </div>
     <div>
        <div className='text-lg mb-[22px]'>
-        <h5 className='leading-[160%] tracking-[0.33px]'>Client Verifications</h5>
+        <h5 className='leading-[160%] tracking-[0.33px] text-[18px] text-[#222222] font-bold'>Client Verifications</h5>
     </div>
     <div className='flex flex-col gap-4'>
     <div className='flex items-center gap-2'>

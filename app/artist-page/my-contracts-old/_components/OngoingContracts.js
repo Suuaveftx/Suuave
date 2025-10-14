@@ -46,7 +46,7 @@ const [dropdownOpen, setDropdownOpen] = useState(null);
           >
             {/* Project Info + Mobile Dots */}
             <div className="lg:flex lg:flex-col  justify-center lg:mx-0 mx-4">
-              <h3 className="lg:text-2xl text-base tracking-[0.33px] lg:text-[#3A98BB] text-[#3A98BB] font-semibold flex items-center lg:mb-6 mb-2 underline lg:gap-0 gap-8">
+              <h3 className="lg:text-2xl text-base tracking-[0.33px] lg:text-[#3A98BB] text-[#3A98BB] font-bold flex items-center lg:mb-6 mb-2 underline lg:gap-0 gap-8">
                 {project.title}
                  <span className="text-2xl text-[#3A98BB] font-bolod ml-1 lg:flex hidden">({project.id})</span>
                 {/* Mobile-only three dots beside title */}
@@ -84,7 +84,7 @@ const [dropdownOpen, setDropdownOpen] = useState(null);
             </div>
 
             {/* Accept Button (Desktop Only) */}
-            <div className="flex items-center gap-[10px]">
+            <div className="flex items-center gap-[30px]">
             <div className="hidden lg:flex mt-[-60px] gap-6">
               <CustomButton
                 variant="outline"
@@ -109,28 +109,31 @@ const [dropdownOpen, setDropdownOpen] = useState(null);
 
               />
             </div>
-              <div className="ml-2 lg:flex hidden  relative lg:mt-[-60px]">
-                  <button
-                    onClick={() =>
-                      setDropdownOpen(
-                        dropdownOpen === project.id ? null : project.id
-                      )
-                    }
-                  >
-                    <MoreVertical className="w-5 h-5 text-gray-600 cursor-pointer" />
-                  </button>
-                  {dropdownOpen === project.id && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-                    
-                      <button
-                        onClick={() => setDropdownOpen(null)}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                      >
-                        Report
-                      </button>
-                    </div>
-                  )}
-                </div>
+             <div className="ml-2 lg:flex hidden items-center relative lg:mt-[-60px] space-x-1">
+  {/* Text first */}
+  <span className="text-sm font-bold text-[#222222]">More</span>
+
+  {/* MoreVertical button */}
+  <button
+    onClick={() =>
+      setDropdownOpen(dropdownOpen === project.id ? null : project.id)
+    }
+  >
+    <MoreHorizontal className="w-5 h-5 text-[#878787] cursor-pointer" />
+  </button>
+
+  {dropdownOpen === project.id && (
+    <div className="absolute left-4 top-full mt-2 w-[96px] bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+      <button
+        onClick={() => setDropdownOpen(null)}
+        className="block px-4 py-2 text-base font-normal text-[#222222] hover:bg-gray-100 w-full text-left"
+      >
+        Report
+      </button>
+    </div>
+  )}
+</div>
+
                 </div>
           </div>
         ))}

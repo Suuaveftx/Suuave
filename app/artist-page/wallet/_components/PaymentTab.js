@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Tabs, Tab } from "@heroui/react";
 import PaymentTable from "./PaymentTable"; // Import the PaymentTable component
+import PayoutHistory from "./PayoutHistory";
 
 export default function PaymentTabs() {
   const [selectedTab, setSelectedTab] = useState("earnings");
@@ -35,7 +36,7 @@ export default function PaymentTabs() {
 
 
         {/* Sort Dropdown Section */}
-        <div className="hidden lg:flex">
+        <div className="hidden lg:flex mr-12">
         <button className="flex items-center border border-[#DDDDDD] px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">
           <span className="text-gray-500 mr-2">Sort by |</span>
           <select className="bg-transparent outline-none">
@@ -49,11 +50,8 @@ export default function PaymentTabs() {
       {/* Display Content Based on Selected Tab */}
       <div className="mt-4">
         {selectedTab === "earnings" && <PaymentTable />}
-        {selectedTab === "payouts" && (
-          <div>
-            <h2 className="text-lg font-semibold text-gray-800">Payout History</h2>
-            <p className="text-gray-600">Your payout details will be displayed here.</p>
-          </div>
+        {selectedTab === "payouts" &&  (
+          <PayoutHistory />
         )}
       </div>
     </div>
