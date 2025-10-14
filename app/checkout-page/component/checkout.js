@@ -16,36 +16,16 @@ import {
   Modal,
   ModalContent,
   ModalBody,
-<<<<<<< HEAD
-} from "@heroui/react";
-import { CreditCard, Info, Shield } from "lucide-react";
-import ContractHeader from "../../artist-page/my-contracts/components/contract-header";
-<<<<<<< HEAD
-import Navbar3 from "../../../components/Navbar3";
-=======
-=======
 } from '@heroui/react';
 import { CreditCard, Info, Shield } from 'lucide-react';
 import ContractHeader from '../../artist-page/my-contracts/components/contract-header';
->>>>>>> a116b325bc2891fc1583dcce713be26f952983ab
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-<<<<<<< HEAD
->>>>>>> 26a9c72f12d3ae31c71d50cb10ada3681097efea
-import {
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-} from "@heroicons/react/24/outline";
-import Link from "next/link";
-import FashionDesignerHeader from "../../fashion-designers/_components/studio-page-components/FashionDesignerHeader";
-import Footer from "../../about-page/components/Footer";
-=======
 import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import FashionDesignerHeader from '../../fashion-designers/_components/studio-page-components/FashionDesignerHeader';
 import Footer from '../../about-page/components/Footer';
->>>>>>> a116b325bc2891fc1583dcce713be26f952983ab
 
 export const CheckoutPage = () => {
   const [selectedCountry, setSelectedCountry] = useState('Nigeria');

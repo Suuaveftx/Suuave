@@ -4,55 +4,51 @@
 
 /* globals.css */
 :root {
-<<<<<<< HEAD
-  --background: #fafafa;
-=======
   --background: #f1f1f1;
->>>>>>> development
   --foreground: #171717;
-  --font-montserrat: "Montserrat", sans-serif;
-  --font-geist-sans: "Geist Sans", sans-serif;
-  --font-geist-mono: "Geist Mono", monospace;
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-geist-sans: 'Geist Sans', sans-serif;
+  --font-geist-mono: 'Geist Mono', monospace;
 }
 
 /* Satoshi Font */
 @font-face {
-  font-family: "Satoshi";
-  src: url("../public/fonts/Satoshi-Regular.woff2") format("woff2");
+  font-family: 'Satoshi';
+  src: url('../public/fonts/Satoshi-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Satoshi";
-  src: url("../public/fonts/Satoshi-Bold.woff2") format("woff2");
+  font-family: 'Satoshi';
+  src: url('../public/fonts/Satoshi-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
 }
 
 /* Proxima Nova Font */
 @font-face {
-  font-family: "Proxima Nova";
-  src: url("../public/fonts/ProximaNova-Regular.otf") format("opentype");
+  font-family: 'Proxima Nova';
+  src: url('../public/fonts/ProximaNova-Regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Proxima Nova";
-  src: url("../public/fonts/Proxima-Nova-Bold.otf") format("opentype");
+  font-family: 'Proxima Nova';
+  src: url('../public/fonts/Proxima-Nova-Bold.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
 }
 @font-face {
-  font-family: "Proxima Nova";
-  src: url("../public/fonts/Proxima\ Nova\ Semibold.otf") format("opentype");
+  font-family: 'Proxima Nova';
+  src: url('../public/fonts/Proxima\ Nova\ Semibold.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
 }
 @font-face {
-  font-family: "Proxima Nova";
-  src: url("../public/fonts/Proxima-Nova-Thin.otf") format("opentype");
+  font-family: 'Proxima Nova';
+  src: url('../public/fonts/Proxima-Nova-Thin.otf') format('opentype');
   font-weight: 300;
   font-style: normal;
 }
@@ -77,11 +73,7 @@
 
 @layer base {
   :root {
-<<<<<<< HEAD
-    --background: 0 0% 100%;
-=======
-   --background: hsl(0 0% 95%); /* #f1f1f1 */
->>>>>>> development
+    --background: hsl(0 0% 95%); /* #f1f1f1 */
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
@@ -199,8 +191,7 @@
 .slider-container .slick-slide > div {
   height: 100%;
 }
-<<<<<<< HEAD
-=======
+
 /* Hide scrollbar but allow scrolling */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
@@ -210,8 +201,6 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
->>>>>>> development
-
 .custom-dots {
   bottom: 20px !important;
   display: flex !important;
