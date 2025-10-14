@@ -1,33 +1,34 @@
-"use client";
-import React from "react";
-import CustomButton from "../../../../components/CustomButton";
-import ProposalPopUp from "./ProposalPopUp";
+'use client';
+import React from 'react';
+import CustomButton from '../../../../components/CustomButton';
+import ProposalPopUp from './ProposalPopUp';
 
-const SendProposalsBtnMobile = ({
-  handleSubmitProposal,
-  isOpen,
-  onOpenChange,
-}) => {
+const SendProposalsBtnMobile = ({ handleSubmitProposal, isOpen, onOpenChange }) => {
   return (
     <>
-      <div className="lg:hidden flex justify-center gap-6 mt-4 mx-4">
+      <div className='lg:hidden flex justify-center gap-6 mt-4 mx-4'>
+        {/* Cancel Button */}
         <CustomButton
-          text="cancel"
+          text='Cancel'
           style={{
-            background: "#EEEEEE",
-            color: "#767676",
+            background: '#EEEEEE',
+            color: '#767676',
           }}
-         
+          onClick={() => console.log('Cancel clicked')}
         />
+
+        {/* Send Proposal Button */}
         <CustomButton
-          text="Send Proposal"
+          text='Send Proposal'
           style={{
-            background: "radial-gradient(circle at top left, #FFFFFF, #CCE7F2)",
-            color: "#035A7A",
+            background: 'radial-gradient(circle at top left, #FFFFFF, #CCE7F2)',
+            color: '#035A7A',
           }}
-           onPress={handleSubmitProposal}
+          onClick={handleSubmitProposal} // ✅ fixed event handler
         />
       </div>
+
+      {/* Popup */}
       <ProposalPopUp isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );
