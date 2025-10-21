@@ -42,11 +42,11 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="w-full h-screen">
+    <div className='w-full h-screen'>
       {/* ----- Desktop View ----- */}
-      <div className="hidden sm:flex h-full">
+      <div className='hidden sm:flex h-full'>
         {/* Sidebar on Desktop */}
-        <div className="w-64 flex-shrink-0">
+        <div className='w-64 flex-shrink-0'>
           <Sidebar_MenuCard
             menuItems={settingsMenu}
             activeItem={activeItem}
@@ -55,13 +55,13 @@ const SettingsPage = () => {
         </div>
 
         {/* Content on Desktop (fills remaining space) */}
-        <div className="flex p-6  bg-white lg:w-full lg:max-w-[950px] w-full max-w-[3640px] overflow-hidden">
+        <div className='flex p-6  bg-white lg:w-full lg:max-w-[950px] w-full max-w-[3640px] overflow-hidden'>
           {renderActiveComponent()}
         </div>
       </div>
 
       {/* ----- Mobile View ----- */}
-      <div className="block sm:hidden w-full h-full">
+      <div className='block sm:hidden w-full h-full'>
         {showSidebar ? (
           <Sidebar_MenuCard
             menuItems={settingsMenu}
@@ -75,16 +75,14 @@ const SettingsPage = () => {
             }}
           />
         ) : (
-          <div className="w-full p-4">
+          <div className='w-full p-4'>
             {/* Back Button */}
             <button
-              className="flex items-center text-[#222222] font-semibold mb-4"
+              className='flex items-center text-[#222222] font-semibold mb-4'
               onClick={() => setShowSidebar(true)}
             >
-              <ChevronLeft className="w-5 h-5 mr-1" />
-              <span className='text-[20px]'>
-              Security Settings
-              </span>
+              <ChevronLeft className='w-5 h-5 mr-1' />
+              <span className='text-[20px]'>Security Settings</span>
             </button>
 
             {/* Security Settings full width */}

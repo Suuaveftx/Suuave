@@ -1,9 +1,9 @@
-"use client";
-import React from "react";
-import CustomButton from "./CustomButton";
-import { MdOutlineBookmarkBorder } from "react-icons/md";
+'use client';
+import React from 'react';
+import CustomButton from './CustomButton';
+import { MdOutlineBookmarkBorder } from 'react-icons/md';
 
-import ProposalPopUp from "../app/artist-page/send-proposal/_components/ProposalPopUp";
+import ProposalPopUp from '../app/artist-page/send-proposal/_components/ProposalPopUp';
 
 /**
  * BtnProposals component to render a reusable "Send Proposal" and "Save Job" button block.
@@ -18,13 +18,13 @@ import ProposalPopUp from "../app/artist-page/send-proposal/_components/Proposal
  * @param {string} [props.containerClassName] - Additional classes for the outer container.
  */
 const BtnProposals = ({
-  sendText = "Send Proposal",
-  saveText = "Save Job",
-  sendHref = "/artist-page/send-proposal",
-  saveIcon = <MdOutlineBookmarkBorder className="w-5 h-5" color="#3A98BB" />,
+  sendText = 'Send Proposal',
+  saveText = 'Save Job',
+  sendHref = '/artist-page/send-proposal',
+  saveIcon = <MdOutlineBookmarkBorder className='w-5 h-5' color='#3A98BB' />,
   showSaveIcon = true,
   saveButtonStyle = {},
-  containerClassName = "",
+  containerClassName = '',
   handleSubmitProposal,
   isOpen,
   onOpenChange,
@@ -37,7 +37,7 @@ const BtnProposals = ({
         <div>
           <CustomButton
             text={sendText}
-            className="w-48 text-[#035A7A]"
+            className='w-48 text-[#035A7A]'
             href={sendHref}
             onPress={handleSubmitProposal}
             showIcon={false}
@@ -46,18 +46,16 @@ const BtnProposals = ({
 
         <div>
           <CustomButton
-            className="w-48 text-[#767676] flex items-center justify-center gap-2"
+            className='w-48 text-[#767676] flex items-center justify-center gap-2'
             icon={saveIcon}
             text={saveText}
             showIcon={false}
             style={{
-              background: "transparent",
-              color: "#767676",
-              border: "1px solid #3A98BB",
+              background: 'transparent',
+              color: '#767676',
+              border: '1px solid #3A98BB',
               ...saveButtonStyle,
-              
             }}
-            
           />
         </div>
       </div>

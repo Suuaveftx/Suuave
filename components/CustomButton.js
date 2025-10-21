@@ -1,6 +1,6 @@
-import { Button } from "@heroui/react";
-import Link from "next/link";
-import React from "react";
+import { Button } from '@heroui/react';
+import Link from 'next/link';
+import React from 'react';
 
 /**
  * CustomButton component for rendering a button with optional link and icon.
@@ -14,9 +14,9 @@ import React from "react";
  */
 
 const CustomButton = ({
-  text = "Get Started",
+  text = 'Get Started',
   href,
-  className = "",
+  className = '',
   onPress,
   icon,
   showIcon = true,
@@ -24,8 +24,8 @@ const CustomButton = ({
 }) => {
   // Default radial background
   const defaultStyle = {
-    background: "radial-gradient(circle at top left, #FFFFFF, #CCE7F2)",
-    color: "#767676",
+    background: 'radial-gradient(circle at top left, #FFFFFF, #CCE7F2)',
+    color: '#767676',
     ...style,
   };
 
@@ -36,14 +36,14 @@ const CustomButton = ({
       style={defaultStyle}
     >
       {href ? (
-        <Link href={href} className="flex items-center gap-2">
+        <Link href={href} className='flex items-center gap-2'>
           {text}
-          {showIcon && icon && <span className="flex items-center">{icon}</span>}
+          {showIcon && icon && <span className='flex items-center'>{icon}</span>}
         </Link>
       ) : (
-        <span className="flex items-center gap-2">
+        <span className='flex items-center gap-2'>
           {text}
-          {showIcon && icon && <span className="flex items-center">{icon}</span>}
+          {showIcon && icon && <span className='flex items-center'>{icon}</span>}
         </span>
       )}
     </Button>
