@@ -13,7 +13,7 @@ const WelcomePage = () => {
         <div className="flex flex-col  max-w-md border  shadow-md rounded-[8px] sm:shadow-none sm:border-none pl-4 pr-4 pt-[24px] pb-[40px]">
           <h1 className="text-2xl font-bold leading-10 ">
             Hi Kate, <br /> To begin, let’s take a moment to complete your
-            profile set up.
+            profile setup.
           </h1>
 
           {/* Complete Profile Setup */}
@@ -61,7 +61,7 @@ const WelcomePage = () => {
             href={"/artist-page/personal-details"}
             className=" w-full lg:w-32 text-[#035A7A] rounded-3xl cursor-pointer py-2 mt-20 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
           >
-            continue
+            Continue
           </Link>
         </div>
       </div>

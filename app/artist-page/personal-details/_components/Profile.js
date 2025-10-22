@@ -3,8 +3,14 @@ import Image from "next/image";
 import React from "react";
 import { useState } from "react";
 
-const Profile = ({ setSelected, formData, selected, className , handleImageChange , preview }) => {
-  
+const Profile = ({
+  setSelected,
+  formData,
+  selected,
+  className,
+  handleImageChange,
+  preview,
+}) => {
 
   return (
     <div
@@ -42,21 +48,37 @@ const Profile = ({ setSelected, formData, selected, className , handleImageChang
           className={` text-start  text-[#222222] font-normal text-lg`}
           onClick={() => setSelected("PersonalDetail")}
         >
-          Personal Detail
+          Personal Details
         </button>
         {selected === "PersonalDetail" && (
           <ul className="font-normal text-sm space-y-3 p-3">
             <List activeState={formData.fullName} text="Full Name" />
+            <List activeState={formData.username} text="Username" />
 
             <List activeState={formData.email} text=" Email Address" />
 
-            <List activeState={formData.nationality.size} text="Nationality" />
+            <List
+              activeState={formData.nationality?.size > 0}
+              text="Nationality"
+            />
 
-            <List activeState={formData.currentCity.size} text="Current City" />
+             <List
+              activeState={formData.phoneNumber}
+              text="Phone Number"
+            />
 
-            <List activeState={formData.language.size} text="Language" />
+            <List activeState={formData.currentCity} text="Current City" />
 
-            <List activeState={formData.day.size} text=" Date of Birth" />
+            <List activeState={formData.language?.size > 0} text="Language" />
+
+            <List
+              activeState={
+                formData.day?.size > 0 ||
+                formData.month?.size > 0 ||
+                formData.year?.size > 0
+              }
+              text=" Date of Birth"
+            />
 
             <List activeState={formData.about} text="About Yourself" />
           </ul>
@@ -72,12 +94,12 @@ const Profile = ({ setSelected, formData, selected, className , handleImageChang
         </button>
         {selected === "ProfessionalInformation" && (
           <ul className="font-normal text-sm space-y-3 p-3">
-            <List activeState={formData.skill} text="Skill" />
-            <List
+            <List activeState={formData.skill} text="Skills" />
+            {/* <List
               activeState={formData.companyName}
               text="Website (Optional)"
-            />
-            <List activeState={formData.portfolioLink} text="Portfolio" />
+            /> */}
+            <List activeState={formData.portfolioLink } text="Portfolio" />
             <List activeState={formData.availability} text="Availability" />
           </ul>
         )}

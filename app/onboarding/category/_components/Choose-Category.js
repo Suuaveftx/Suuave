@@ -13,7 +13,7 @@ const ChooseCategory = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-[#F9FAFB] px-4 md:px-10 py-6">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-[#F1F1F1] px-4 md:px-10 py-6">
       <div className="w-full flex justify-start">
         <Image
           src="/dev-images/logo.png"

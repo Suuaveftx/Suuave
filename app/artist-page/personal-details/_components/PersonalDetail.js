@@ -4,11 +4,30 @@ import React from "react";
 import { Select, SelectItem } from "@heroui/react";
 import CustomSelect from "./CustomSelect";
 
-const animals = [
-  { key: "cat", label: "Cat" },
-  { key: "dog", label: "Dog" },
-  { key: "elephant", label: "Elephant" },
+const dayOptions = Array.from({ length: 31 }, (_, i) => ({
+  key: String(i + 1),
+ label: String(i + 1),
+}));
+
+const monthOptions = [
+  { key: "1", label: "January" },
+  { key: "2", label: "February" },
+  { key: "3", label: "March" },
+  { key: "4", label: "April" },
+  { key: "5", label: "May" },
+  { key: "6", label: "June" },
+  { key: "7", label: "July" },
+  { key: "8", label: "August" },
+  { key: "9", label: "September" },
+  { key: "10", label: "October" },
+  { key: "11", label: "November" },
+  { key: "12", label: "December" },
 ];
+
+const yearOptions = Array.from({ length: 80 }, (_, i) => {
+  const year = new Date().getFullYear() - i;
+  return { key: String(year), label: String(year) };
+});
 
 const numberCode = [
   { key: "cat", label: "Cat" },
@@ -26,10 +45,7 @@ const numCode = [
   { key: "+09", label: "+09" },
   { key: "+99", label: "+99" },
 ];
-const currentCity = [
-  { key: "Lagos", label: "Lagos" },
-  { key: "Calabar", label: "Calabar" },
-];
+
 const language = [
   { key: "English", label: "English" },
   { key: "Spanish", label: "Spanish" },
@@ -94,7 +110,7 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
         </div>
         {/*Phone Number */}
         <div className="w-full flex flex-col gap-2">
-          <Lable htmlFor="number" text="Phone Number" />
+          <Lable htmlFor="phoneCode" text="Phone Number" />
 
           <div className="flex items-center gap-3">
             <CustomSelect
@@ -119,14 +135,13 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
         {/*Current City*/}
         <div className="w-full flex flex-col gap-2">
           <Lable htmlFor="currentCity" text="Current City" />
-
-          <CustomSelect
-            formData={formData}
-            setFormData={setFormData}
+          <Input
+            id="currentCity"
+            placeholder="New york city"
             value={formData.currentCity}
-            data={currentCity}
-            className="w-full"
-            htmlFor="currentCity"
+            onChange={(e) =>
+              setFormData({ ...formData, currentCity: e.target.value })
+            }
           />
         </div>
         {/*Language */}
@@ -139,7 +154,7 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
             value={formData.language}
             data={language}
             className="w-full"
-            htmlFor="Language"
+            htmlFor="language"
           />
         </div>
         {/*Date of Birth*/}
@@ -153,9 +168,9 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
               formData={formData}
               setFormData={setFormData}
               value={formData.day}
-              data={numberCode}
+              data={dayOptions}
               className="w-full"
-              htmlFor="dateofBirth"
+              htmlFor="day"
             />
             {/* month */}
 
@@ -163,9 +178,9 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
               formData={formData}
               setFormData={setFormData}
               value={formData.month}
-              data={numberCode}
+              data={monthOptions}
               className="w-full"
-              htmlFor="dateofBirth"
+              htmlFor="month"
             />
             {/* year */}
 
@@ -173,9 +188,9 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
               formData={formData}
               setFormData={setFormData}
               value={formData.year}
-              data={numberCode}
+              data={yearOptions}
               className="w-full"
-              htmlFor="dateofBirth"
+              htmlFor="year"
             />
           </div>
         </div>
@@ -188,7 +203,7 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
           id="about"
           cols="30"
           rows="10"
-          placeholder="Write about your design style"
+          placeholder="Tell us about yourself, your relevant skills and professional experience."
           className="w-full  border border-[#D1D1D1] text-[#878787] font-normal text-base py-2 px-2 rounded-lg outline-[#3A98BB] bg-transparent h-32 resize-none"
           value={formData.about}
           onChange={(e) => setFormData({ ...formData, about: e.target.value })}

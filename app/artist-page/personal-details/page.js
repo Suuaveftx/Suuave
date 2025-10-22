@@ -36,7 +36,7 @@ export default function Page() {
     nationality: new Set([]), 
     phoneCode: new Set([]),
     phoneNumber: "",
-    currentCity: new Set([]),
+    currentCity: "",
     language: new Set([]),
     day: new Set([]),
     month: new Set([]),
