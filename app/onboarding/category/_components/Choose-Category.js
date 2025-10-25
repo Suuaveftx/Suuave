@@ -10,6 +10,7 @@ const ChooseCategory = () => {
 
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
+    localStorage.setItem("activeCategory", category);
   };
 
   return (
