@@ -10,8 +10,8 @@ export const Global = () => {
       <section className=" px-4 pb-[92px] lg:pb-[136.72px] lg:pr-[77.48px] lg:pl-[78.52px] pt-[166.47px] bg-white">
         <div className=" ">
           <h2 className="text-2xl text-center lg:text-left font-bold text-[#222222] mb-4 ">
-            We are currently spreading across Africa, with
-            <br className="hidden lg:block" /> vision to cover global stage.
+           We are currently spreading across Africa,
+            <br className="hidden lg:block" />  with a vision to cover the global stage.
           </h2>
 
           <div className=" hidden lg:block overflow-hidden mt-[46px] h-[294px] lg:h-[439px]">
