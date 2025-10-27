@@ -43,7 +43,6 @@ export default function Page() {
     uploadCertificateAward: "",
   });
 
-  console.log(formData);
 
   return (
     <>
