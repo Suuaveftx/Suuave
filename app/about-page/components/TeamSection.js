@@ -4,25 +4,25 @@ import { FaLinkedin } from "react-icons/fa";
 const TeamSection = () => {
   const teamMembers = [
     {
-      name: "IBRAHIM O. HAMZAT",
+      name: "IBRAHIM HAMZAT O.",
       title: "Founder & CEO",
-      details: "A Business-Data Analyst, Copywriter & Researcher",
+      details: "Business/Data Analyst, Copywriter & Researcher",
       imageSrc: "/team/two.jpg",
-      linkedinUrl: "https://www.linkedin.com/in/ibrahim-hamzat/",
+      linkedinUrl: "https://www.linkedin.com/in/ibrahim-hamzat-222186b8",
     },
     {
       name: "CHINEDU J. OZULU",
       title: "Co-founder & COO",
       details: "Product Designer and Web Developer",
       imageSrc: "/team/chinedu.png",
-      linkedinUrl: "https://www.linkedin.com/in/chinedu-ozulu/",
+      linkedinUrl: "https://www.linkedin.com/in/chinedu-ozulu-2898a4170",
     },
     {
       name: "WISDOM LAMODOT",
       title: "Co-founder & CTO",
       details: "Full Stack Developer",
       imageSrc: "/team/lamodots.JPG",
-      linkedinUrl: "https://www.linkedin.com/in/lamodot/",
+      linkedinUrl: "https://www.linkedin.com/in/lamodot",
     },
     {
       name: "IDIAT SHIOLE",
@@ -30,16 +30,22 @@ const TeamSection = () => {
       details:
         "3D Visual Designer/ XR Advocate/UK Global Talent. Founder, Hadeeart Ateller",
       imageSrc: "/team/four.jpg",
-      linkedinUrl: "https://www.linkedin.com/in/idiat-shiole/",
+      linkedinUrl: "https://www.linkedin.com/in/hadeeart",
     },
     {
-      name: "RAHAMAN",
+      name: "ABDULRAHMAN AMINU",
       title: "Software Engineer",
       details: "Software Engineer and Electrical & Electronics Engineer",
-      imageSrc: "/team/five.jpg", //
-      linkedinUrl: "https://www.linkedin.com/in/rahman-engineer/",
+      // imageSrc: "",
+      linkedinUrl: "https://www.linkedin.com/in/abdulrahman-aminu-b648041ba",
     },
-   
+    {
+      name: "ENANG ETI-ABASI",
+      title: "Software Engineer",
+      details: "Software Engineer and Electrical & Electronics Engineer",
+      // imageSrc: "",
+      linkedinUrl: "https://www.linkedin.com/in/divine-asuquo/",
+    },
   ];
 
   return (
@@ -59,10 +65,9 @@ const TeamSection = () => {
               className=" lg:p-6 text-center lg:text-left w-full lg:flex lg:flex-col lg:justify-between lg:h-full "
               key={index}
             >
-             
               <div className=" mx-auto lg:mx-0 w-[100px] h-[100px] lg:w-[200px] lg:h-[200px]">
                 <Image
-                  src={member.imageSrc}
+                  src={member.imageSrc || ""}
                   width={200}
                   height={200}
                   alt={member.title}

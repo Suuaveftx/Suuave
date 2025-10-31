@@ -51,7 +51,7 @@ export const Global = () => {
             <br className="hidden lg:block" />
             expand our global reach and improve this product.
           </p>
-          <Link href="onboarding" className="bg-[#CCE7F2] text-[#0A192F] font-semibold rounded-full py-3 px-8 hover:bg-[#EAF9FF] transition duration-300 ">
+          <Link href="" className="bg-[#CCE7F2] text-[#0A192F] font-semibold rounded-full py-3 px-8 hover:bg-[#EAF9FF] transition duration-300 ">
             Build With Us
           </Link>
         </div>
