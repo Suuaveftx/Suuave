@@ -99,11 +99,12 @@ const ChooseCategory = () => {
         </label>
       </div>
       <div className="mt-16">
-        <CustomButton
-          className="ml-14 w-80 text-lg h-[52px]"
-          text="Continue"
+        <Link
           href="/onboarding/create-new-account"
-        />
+          className="text-[#035A7A] rounded-3xl cursor-pointer px-20 py-3 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+        >
+          Continue
+        </Link>
       </div>
     </div>
   );

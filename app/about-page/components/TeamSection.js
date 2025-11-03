@@ -32,25 +32,24 @@ const TeamSection = () => {
       imageSrc: "/team/four.jpg",
       linkedinUrl: "https://www.linkedin.com/in/hadeeart",
     },
-    {
-      name: "ABDULRAHMAN AMINU",
-      title: "Software Engineer",
-      details: "Software Engineer and Electrical & Electronics Engineer",
-      // imageSrc: "",
-      linkedinUrl: "https://www.linkedin.com/in/abdulrahman-aminu-b648041ba",
-    },
-    {
-      name: "ENANG ETI-ABASI",
-      title: "Software Engineer",
-      details: "Software Engineer and Electrical & Electronics Engineer",
-      // imageSrc: "",
-      linkedinUrl: "https://www.linkedin.com/in/divine-asuquo/",
-    },
+    // {
+    //   name: "ABDULRAHMAN AMINU",
+    //   title: "Software Engineer",
+    //   details: "Software Engineer and Electrical & Electronics Engineer",
+    //   // imageSrc: "",
+    //   linkedinUrl: "https://www.linkedin.com/in/abdulrahman-aminu-b648041ba",
+    // },
+    // {
+    //   name: "ENANG ETI-ABASI",
+    //   title: "Software Engineer",
+    //   details: "Software Engineer and Electrical & Electronics Engineer",
+    //   // imageSrc: "",
+    //   linkedinUrl: "https://www.linkedin.com/in/divine-asuquo/",
+    // },
   ];
 
   return (
     <section className="px-4 pt-[115.5px] lg:px-[160px] xl:px-[216px] bg-white font-proximanova">
-      <div className=" ">
         <h2 className="text-2xl text-center lg:text-4xl xl:text-5xl font-bold text-[#222222] mb-2">
           MEET OUR TEAM
         </h2>
@@ -94,7 +93,6 @@ const TeamSection = () => {
             </div>
           ))}
         </div>
-      </div>
     </section>
   );
 };

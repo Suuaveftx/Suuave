@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Link,
   Navbar,
@@ -9,9 +9,9 @@ import {
   NavbarMenuToggle,
   NavbarMenuItem,
   NavbarMenu,
-} from "@heroui/react";
-import React from "react";
-import CustomButton from "./CustomButton";
+} from '@heroui/react';
+import React from 'react';
+import CustomButton from './CustomButton';
 
 const CustomNavbar = ({ bgColor }) => {
   const [textStyle, setTextStyle] = React.useState("text-white");
@@ -33,46 +33,43 @@ const CustomNavbar = ({ bgColor }) => {
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarBrand>
-        <Link href="/">
+        <Link href='/'>
           <Image
-            src="/dev-images/navLogo.png"
-            alt="Logo"
-            className="lg:w-40 py-4 w-32" // Reduced space between the logo and form
+            src='/dev-images/navLogo.png'
+            alt='Logo'
+            className='lg:w-40 py-4 w-32' // Reduced space between the logo and form
           />
         </Link>
       </NavbarBrand>
       <NavbarContent className="hidden lg:flex gap-14 " justify="center">
         <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden"
+          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+          className='sm:hidden'
         />
         <NavbarItem>
-          <Link href="#" className={` text-white transition duration-300`}>
+          <Link href='#' className={` text-white transition duration-300`}>
             Blogs
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="#" className={` text-white transition duration-300`}>
+          <Link href='#howitworks' className={` text-white transition duration-300`}>
             How it works
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="#" className={` text-white transition duration-300`}>
+          <Link href='#' className={` text-white transition duration-300`}>
             FAQs
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link
-            href="/about-page"
-            className={` text-white transition duration-300`}
-          >
+          <Link href='/about-page' className={` text-white transition duration-300`}>
             About us
           </Link>
         </NavbarItem>
       </NavbarContent>
-      <NavbarContent justify="end" className="space">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="/auth" className={` text-white transition duration-300`}>
+      <NavbarContent justify='end' className='space'>
+        <NavbarItem className='hidden lg:flex'>
+          <Link href='/auth' className={` text-white transition duration-300`}>
             Login
           </Link>
         </NavbarItem>
@@ -84,7 +81,7 @@ const CustomNavbar = ({ bgColor }) => {
             Get started
           </Link>
         </NavbarItem>
-        <Link href="/auth" className="lg:hidden text-white">
+        <Link href='/auth' className='lg:hidden text-white'>
           Login
         </Link>
         <NavbarMenuToggle

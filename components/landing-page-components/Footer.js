@@ -15,7 +15,7 @@ const Footer = () => {
             height={76}
           />
           <p className="text-sm font-thin w-[77%]">
-            At Suuave, we connect African fashion illustrators with designers
+            At Suuave, we connect African fashion artists with designers
             and brands to inspire collaboration and create groundbreaking
             fashion.
           </p>
