@@ -7,6 +7,7 @@ import CustomButton from '../../../../components/CustomButton';
 import { useSearchParams } from 'next/navigation';
 import AwardUploadModal from './AwardsUploadModal';
 import UploadModal from './UploadModal';
+import Link from 'next/link';
 
 const FashionCard = () => {
   const [activeTab, setActiveTab] = useState('design');
@@ -14,7 +15,7 @@ const FashionCard = () => {
 
   const tabs = [
     { id: 'design', label: 'Design Collections' },
-    { id: 'awards', label: 'Awards/Certificate' },
+    { id: 'awards', label: 'Awards/Certificates' },
     { id: 'work', label: 'Work Samples' },
     { id: 'reviews', label: 'Reviews' },
   ];
@@ -34,7 +35,7 @@ const FashionCard = () => {
 
   return (
     <>
-      <div className=' hidden lg:flex lg:justify-end mb-16 lg:w-4/5 lg:ml-56 lg:absolute '>
+      <div className=' hidden lg:flex lg:justify-end lg:w-4/5 lg:ml-56 lg:absolute lg:mt-16] '>
         <CustomButton
           text='View Visitors Mode'
           className='text-[#222222]'
@@ -43,7 +44,7 @@ const FashionCard = () => {
           }}
         />
       </div>
-      <div className='w-full p-6 bg-[#fafafa] mt-4'>
+      <div className='w-full h-4/5 p-6 bg-[#FDFDFD] mt-16'>
         <div className='flex space-x-2 mb-6 border-b overflow-x-auto scrollbar-hide w-full'>
           {tabs.map((tab) => (
             <button
@@ -62,6 +63,7 @@ const FashionCard = () => {
         </div>
 
         {activeTab === 'design' && (
+          <Link href={'/fashion-designers/designer-details'}>
           <div className='relative grid grid-cols-2 gap-2 sm:grid-cols-2 sm:gap-4 md:grid-cols-3'>
             {[...Array(6)].map((_, i) => (
               <div
@@ -85,7 +87,7 @@ const FashionCard = () => {
                 <div className='lg:bg-black lg:bg-opacity-50 bg-white lg:text-white text-[#222222] w-full'>
                   {/* Mobile layout */}
                   <div className='sm:hidden p-2'>
-                    <p className='font-semibold lg:text-base text-sm'>
+                    <p className='font-normal lg:text-base text-sm'>
                       Casual Top Design
                     </p>
                     <div className='flex justify-between items-center'>
@@ -126,8 +128,10 @@ const FashionCard = () => {
                   </button>
                 )}
               </div>
+              
             ))}
           </div>
+          </Link>
         )}
 
         {activeTab === 'awards' && (

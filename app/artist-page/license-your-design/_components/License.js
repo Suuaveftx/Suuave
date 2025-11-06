@@ -28,10 +28,7 @@ const License = () => {
         <div className='lg:w-4/5 w-full max-w-[90%] px-6 py-2 lg:mx-16 mx-4 mt-8 rounded-lg bg-gradient-to-b from-[#CCE7F2] via-[#A1DCF3] to-[#49C0F0] text-[#393939]'>
           <h1 className='text-[34px] text-[#393939] font-bold'>License Your Design</h1>
           <p className='text-base'>
-            Ensure you are the original creator or rightful owner of the design you wish
-            to upload. Uploading someone else’s work without permission may infringe their
-            copyright. By uploading, you confirm you have the necessary rights and
-            permissions.{' '}
+            By uploading this design, you attest that you are the creator or legitimate owner and possess all necessary rights and permissions. Uploading work without authorization may constitute copyright infringement.{' '}
             <Link className='text-[#3A98BB]' href={'/'}>
               Learn more{' '}
             </Link>
