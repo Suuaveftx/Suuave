@@ -1,14 +1,16 @@
-import React from 'react'
-import ProfileArtist from './_components/Profile'
-import FashionCards from './_components/FashionCard'
+import React, { Suspense } from "react";
+import ProfileArtist from "./_components/Profile";
+import FashionCards from "./_components/FashionCard";
 
 const Page = () => {
   return (
     <div className="flex flex-col lg:flex-row gap-4 p-4">
-      <ProfileArtist />
-      <FashionCards />
+      <Suspense fallback={<p>Loading...</p>}>
+        <ProfileArtist />
+        <FashionCards />
+      </Suspense>
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

@@ -13,14 +13,24 @@ const PersonalInformation = ({
 }) => {
   return (
     <div className="bg-[#FAFAFA] border border-[#DEDEDE] rounded-2xl p-3 md:p-6 w-full h-full">
+<<<<<<< HEAD
       <h1 className="text-[#3A98BB] font-bold text-xl">Professional Information</h1>
       <p className="text-[#767676] font-normal text-base mt-2">
         Add any relevant information
+=======
+      <h1 className="text-[#3A98BB] font-bold text-xl">Personal Details</h1>
+      <p className="text-[#767676] font-normal text-base mt-2">
+        Add any related information.
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
       </p>
       <section className="space-y-10 mt-5">
         {/*Illustrator */}
         <div className="w-full flex flex-col gap-2">
+<<<<<<< HEAD
           <Lable htmlFor="skill" text="Skills" />
+=======
+          <Lable htmlFor="skill" text="Skill" />
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
           <Input
             id="skill"
             placeholder="Eg Illustrator"
@@ -31,7 +41,11 @@ const PersonalInformation = ({
           />
         </div>
         {/*Enter Company Name */}
+<<<<<<< HEAD
         {/* <div className="w-full flex flex-col gap-2">
+=======
+        <div className="w-full flex flex-col gap-2">
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
           <Lable htmlFor="companyName" text="Company/brand Name(Optional)" />
           <Input
             id="companyName"
@@ -41,10 +55,17 @@ const PersonalInformation = ({
               setFormData({ ...formData, companyName: e.target.value })
             }
           />
+<<<<<<< HEAD
         </div> */}
         {/*Portfolio link*/}
         <div className="w-full flex flex-col gap-2">
           <Lable htmlFor="portfolioLink" text="Link to Your Portfolio/Personal Website" />
+=======
+        </div>
+        {/*Portfolio link*/}
+        <div className="w-full flex flex-col gap-2">
+          <Lable htmlFor="portfolioLink" text="Link to Your Portfolio" />
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
           <Input
             id="portfolioLink"
             placeholder="Enter portfolio link"

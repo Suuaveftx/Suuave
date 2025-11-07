@@ -1,9 +1,10 @@
-"use client";
-import React from "react";
-import CustomButton from "./CustomButton";
-import { MdOutlineBookmarkBorder } from "react-icons/md";
+'use client';
+import React from 'react';
+import CustomButton from './CustomButton';
+import { MdOutlineBookmarkBorder } from 'react-icons/md';
 
-import ProposalPopUp from "../app/artist-page/send-proposal/_components/ProposalPopUp";
+import ProposalPopUp from '../app/artist-page/send-proposal/_components/ProposalPopUp';
+
 
 /**
  * BtnProposals component to render a reusable "Send Proposal" and "Save Job" button block.
@@ -18,10 +19,10 @@ import ProposalPopUp from "../app/artist-page/send-proposal/_components/Proposal
  * @param {string} [props.containerClassName] - Additional classes for the outer container.
  */
 const BtnProposals = ({
-  sendText = "Send Proposal",
-  saveText = "Save Job",
-  sendHref = "/artist-page/send-proposal",
-  saveIcon = <MdOutlineBookmarkBorder className="w-5 h-5" color="#3A98BB" />,
+  sendText = 'Send Proposal',
+  saveText = 'Save Job',
+  sendHref = '/artist-page/send-proposal',
+  saveIcon = <MdOutlineBookmarkBorder className='w-5 h-5' color='#3A98BB' />,
   showSaveIcon = true,
   saveButtonStyle = {},
   containerClassName = "",

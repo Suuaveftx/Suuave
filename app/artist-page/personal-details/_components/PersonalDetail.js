@@ -4,6 +4,7 @@ import React from "react";
 import { Select, SelectItem } from "@heroui/react";
 import CustomSelect from "./CustomSelect";
 
+<<<<<<< HEAD
 const dayOptions = Array.from({ length: 31 }, (_, i) => ({
   key: String(i + 1),
  label: String(i + 1),
@@ -29,6 +30,14 @@ const yearOptions = Array.from({ length: 80 }, (_, i) => {
   return { key: String(year), label: String(year) };
 });
 
+=======
+const animals = [
+  { key: "cat", label: "Cat" },
+  { key: "dog", label: "Dog" },
+  { key: "elephant", label: "Elephant" },
+];
+
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
 const numberCode = [
   { key: "cat", label: "Cat" },
   { key: "dog", label: "Dog" },
@@ -45,7 +54,14 @@ const numCode = [
   { key: "+09", label: "+09" },
   { key: "+99", label: "+99" },
 ];
+<<<<<<< HEAD
 
+=======
+const currentCity = [
+  { key: "Lagos", label: "Lagos" },
+  { key: "Calabar", label: "Calabar" },
+];
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
 const language = [
   { key: "English", label: "English" },
   { key: "Spanish", label: "Spanish" },
@@ -110,7 +126,11 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
         </div>
         {/*Phone Number */}
         <div className="w-full flex flex-col gap-2">
+<<<<<<< HEAD
           <Lable htmlFor="phoneCode" text="Phone Number" />
+=======
+          <Lable htmlFor="number" text="Phone Number" />
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
 
           <div className="flex items-center gap-3">
             <CustomSelect
@@ -135,6 +155,7 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
         {/*Current City*/}
         <div className="w-full flex flex-col gap-2">
           <Lable htmlFor="currentCity" text="Current City" />
+<<<<<<< HEAD
           <Input
             id="currentCity"
             placeholder="New york city"
@@ -142,6 +163,16 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
             onChange={(e) =>
               setFormData({ ...formData, currentCity: e.target.value })
             }
+=======
+
+          <CustomSelect
+            formData={formData}
+            setFormData={setFormData}
+            value={formData.currentCity}
+            data={currentCity}
+            className="w-full"
+            htmlFor="currentCity"
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
           />
         </div>
         {/*Language */}
@@ -154,7 +185,11 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
             value={formData.language}
             data={language}
             className="w-full"
+<<<<<<< HEAD
             htmlFor="language"
+=======
+            htmlFor="Language"
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
           />
         </div>
         {/*Date of Birth*/}
@@ -168,9 +203,15 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
               formData={formData}
               setFormData={setFormData}
               value={formData.day}
+<<<<<<< HEAD
               data={dayOptions}
               className="w-full"
               htmlFor="day"
+=======
+              data={numberCode}
+              className="w-full"
+              htmlFor="dateofBirth"
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
             />
             {/* month */}
 
@@ -178,9 +219,15 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
               formData={formData}
               setFormData={setFormData}
               value={formData.month}
+<<<<<<< HEAD
               data={monthOptions}
               className="w-full"
               htmlFor="month"
+=======
+              data={numberCode}
+              className="w-full"
+              htmlFor="dateofBirth"
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
             />
             {/* year */}
 
@@ -188,9 +235,15 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
               formData={formData}
               setFormData={setFormData}
               value={formData.year}
+<<<<<<< HEAD
               data={yearOptions}
               className="w-full"
               htmlFor="year"
+=======
+              data={numberCode}
+              className="w-full"
+              htmlFor="dateofBirth"
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
             />
           </div>
         </div>
@@ -203,7 +256,11 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
           id="about"
           cols="30"
           rows="10"
+<<<<<<< HEAD
           placeholder="Tell us about yourself, your relevant skills and professional experience."
+=======
+          placeholder="Write about your design style"
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
           className="w-full  border border-[#D1D1D1] text-[#878787] font-normal text-base py-2 px-2 rounded-lg outline-[#3A98BB] bg-transparent h-32 resize-none"
           value={formData.about}
           onChange={(e) => setFormData({ ...formData, about: e.target.value })}

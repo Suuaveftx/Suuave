@@ -9,6 +9,7 @@ const CustomSelect = ({
   className,
   htmlFor,
 }) => {
+<<<<<<< HEAD
   const validKeys = new Set(data.map((d) => String(d.key)));
 
   // normalize the incoming value into a Set (safe if value is undefined)
@@ -24,14 +25,21 @@ const CustomSelect = ({
     setFormData({ ...formData, [htmlFor]: filtered });
   };
 
+=======
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
   return (
     <Select
       aria-label={htmlFor}
       className={`${className} font-normal text-base`}
       placeholder="Select"
       variant="bordered"
+<<<<<<< HEAD
       selectedKeys={selectedKeys}
       onSelectionChange={handleSelectionChange}
+=======
+      selectedKeys={formData.value}
+      onSelectionChange={(keys) => setFormData({ ...formData, value: keys })}
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
       disableAnimation={false}
       classNames={{
         trigger:
@@ -43,12 +51,21 @@ const CustomSelect = ({
         innerWrapper: "!text-[#878787]",
       }}
     >
+<<<<<<< HEAD
       {data.map((item) => (
         <SelectItem
           key={item.key}
           className="text-[#878787] data-[selected=true]:!text-[#878787]"
         >
           {item.label}
+=======
+      {data.map((animal) => (
+        <SelectItem
+          key={animal.key}
+          className="text-[#878787] data-[selected=true]:!text-[#878787] "
+        >
+          {animal.label}
+>>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
         </SelectItem>
       ))}
     </Select>

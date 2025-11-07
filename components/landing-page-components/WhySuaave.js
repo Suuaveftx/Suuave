@@ -21,7 +21,7 @@ const WhySuaave = () => {
       </div>
 
       {/* Description */}
-      <p className="text-center text-md lg:text-[40px] text-gray-700 mb-10 font-[500] text-[27px]  lg:px-0 px-5">
+      <p className="text-center text-md lg:text-[40px] text-gray-700 mb-10 font-[500] text-[27px]   lg:px-0 px-5">
         Enjoy unlimited advantages of easy and{" "}
         <br className="hidden lg:block" /> smooth collaboration process.
       </p>
