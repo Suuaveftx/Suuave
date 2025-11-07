@@ -3,7 +3,6 @@ import Image from "next/image";
 import React from "react";
 import { useState } from "react";
 
-<<<<<<< HEAD
 const Profile = ({
   setSelected,
   formData,
@@ -12,10 +11,6 @@ const Profile = ({
   handleImageChange,
   preview,
 }) => {
-=======
-const Profile = ({ setSelected, formData, selected, className , handleImageChange , preview }) => {
-  
->>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
 
   return (
     <div
@@ -53,16 +48,11 @@ const Profile = ({ setSelected, formData, selected, className , handleImageChang
           className={` text-start  text-[#222222] font-normal text-lg`}
           onClick={() => setSelected("PersonalDetail")}
         >
-<<<<<<< HEAD
           Personal Details
-=======
-          Personal Detail
->>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
         </button>
         {selected === "PersonalDetail" && (
           <ul className="font-normal text-sm space-y-3 p-3">
             <List activeState={formData.fullName} text="Full Name" />
-<<<<<<< HEAD
             <List activeState={formData.username} text="Username" />
 
             <List activeState={formData.email} text=" Email Address" />
@@ -89,18 +79,6 @@ const Profile = ({ setSelected, formData, selected, className , handleImageChang
               }
               text=" Date of Birth"
             />
-=======
-
-            <List activeState={formData.email} text=" Email Address" />
-
-            <List activeState={formData.nationality.size} text="Nationality" />
-
-            <List activeState={formData.currentCity.size} text="Current City" />
-
-            <List activeState={formData.language.size} text="Language" />
-
-            <List activeState={formData.day.size} text=" Date of Birth" />
->>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
 
             <List activeState={formData.about} text="About Yourself" />
           </ul>
@@ -116,21 +94,12 @@ const Profile = ({ setSelected, formData, selected, className , handleImageChang
         </button>
         {selected === "ProfessionalInformation" && (
           <ul className="font-normal text-sm space-y-3 p-3">
-<<<<<<< HEAD
             <List activeState={formData.skill} text="Skills" />
             {/* <List
               activeState={formData.companyName}
               text="Website (Optional)"
             /> */}
             <List activeState={formData.portfolioLink } text="Portfolio" />
-=======
-            <List activeState={formData.skill} text="Skill" />
-            <List
-              activeState={formData.companyName}
-              text="Website (Optional)"
-            />
-            <List activeState={formData.portfolioLink} text="Portfolio" />
->>>>>>> 73fc17016e5c581b034684263e3355a04a7b7d80
             <List activeState={formData.availability} text="Availability" />
           </ul>
         )}
