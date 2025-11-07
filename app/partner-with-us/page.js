@@ -14,8 +14,11 @@ const page = () => {
           <p className='text-center '>We are open to partnership.</p>
           <span className=' text-center'>
             {' '}
-            You can send us an email <br className='md:hidden' />{' '}
-            <span className='font-bold'>info@suuave.com</span>
+            You can also send an email to
+            <br className='md:hidden' />{' '}
+            <a className='font-bold' href='mailto:info@suuave.com'>
+              info@suuave.com
+            </a>
           </span>
         </div>
 
