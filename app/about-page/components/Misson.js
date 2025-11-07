@@ -9,7 +9,7 @@ const Misson = () => {
             Our Vision
           </h3>
           <p className="text-[#767676] text-base text-center">
-            to be the foremost go-to platform for discovering and connecting
+            To be the foremost go-to platform for discovering and connecting
             with <br className="hidden lg:block" /> talented African creatives,
             and unlocking new levels of innovation in the
             <br className="hidden lg:block" /> African fashion industry.

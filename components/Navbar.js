@@ -11,17 +11,16 @@ import {
   NavbarMenu,
 } from '@heroui/react';
 import React from 'react';
-import CustomButton from './CustomButton';
 
-const CustomNavbar = ({ bgColor }) => {
+const CustomNavbar = ({ bgColor, navbarMenuclass = 0 }) => {
   const [textStyle, setTextStyle] = React.useState('text-white');
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const menuItems = [
-    { title: 'Blogs', url: '#' },
-    { title: 'How it works', url: '#howitworks' },
-    { title: 'FAQs', url: '#' },
-    { title: 'About Us', url: 'about-page' },
+    { title: 'Join waitlist', url: '/join-waitlist' },
+    { title: 'How it works', url: '#' },
+    { title: 'FAQs', url: '' },
+    { title: 'About Us', url: '/about-page' },
   ];
 
   return (
@@ -46,12 +45,15 @@ const CustomNavbar = ({ bgColor }) => {
           className='sm:hidden'
         />
         <NavbarItem>
-          <Link href='#' className={` text-white transition duration-300`}>
-            Blogs
+          <Link href='/join-waitlist' className={` text-white transition duration-300`}>
+            Join Waitlist
           </Link>
+          {/* <Link href='#' className={` text-white transition duration-300`}>
+            Blogs
+          </Link> */}
         </NavbarItem>
         <NavbarItem>
-          <Link href='#howitworks' className={` text-white transition duration-300`}>
+          <Link href='/#howitworks' className={` text-white transition duration-300`}>
             How it works
           </Link>
         </NavbarItem>
@@ -88,7 +90,7 @@ const CustomNavbar = ({ bgColor }) => {
           className={` lg:hidden  text-white font-bold text-lg size-6`}
         />
       </NavbarContent>
-      <NavbarMenu className='mt-20'>
+      <NavbarMenu className={`${navbarMenuclass}`}>
         {menuItems.map((item, index) => (
           <NavbarMenuItem className='space-y-6' key={`${item}-${index}`}>
             <Link className='w-full text-[#CECECE]' href={item.url} size='lg'>
