@@ -183,7 +183,7 @@ export default function WaitlistForm() {
                   htmlFor='category'
                   className='block text-sm font-medium text-gray-700 mb-2'
                 >
-                  I am a...
+                  I am a (an)...
                 </label>
                 <select
                   id='category'
