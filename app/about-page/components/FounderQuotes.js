@@ -36,11 +36,11 @@ const FounderQuotes = () => {
             <div className="bg-[#CCE7F2]    text-center xl:text-xl rounded-bl-[50px] rounded-tr-[50px]  lg:rounded-bl-[100px] lg:rounded-tr-[100px] pl-[18px] pr-[20px] py-[31px] lg:pt-[52.2px] lg:pb-[72.2px] lg:pl-[102.08px] lg:pr-[99.92px] ">
               <p className=" leading-8  italic text-[#222222]">
                 African fashion industry needs to be illuminated and sold
-                globall, as it has yet to tap into its full potential. I
-                envision a platfor that connects talented African creatives and
+                globally, as it has yet to tap into its full potential. I
+                envision a platform that connects talented African creatives and
                 unlocks new levels of innovation in the industry, similar to how
-                digital streaming platforms have globalized the beauty of
-                Nollywood, Afrobeat, Amapiano etc
+                digital streaming platforms have globalised the beauty of
+                Nollywood, Afrobeats, Amapiano, etc.
               </p>
             </div>
             <Image
