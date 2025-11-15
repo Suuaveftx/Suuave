@@ -30,7 +30,8 @@
     "**/*.tsx",
     "app/api/auth/[...all]/route.js",
     "lib/auth-client.js",
-    "lib/auth.js"
+    "lib/auth.js",
+    "lib/generated/prisma/enums.js"
   ],
   "exclude": ["node_modules"]
 }
