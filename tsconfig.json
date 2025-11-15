@@ -31,7 +31,7 @@
     "app/api/auth/[...all]/route.js",
     "lib/auth-client.js",
     "lib/auth.js",
-    "lib/generated/prisma/enums.js"
+    "lib/generated/prisma/enums.ts"
   ],
   "exclude": ["node_modules"]
 }
