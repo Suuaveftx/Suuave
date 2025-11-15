@@ -18,9 +18,11 @@ const ProposalActive = () => {
       <div className='lg:hidden'>
       <FaChevronLeft color='#878787' />
       </div>
-    <h4 className='font-bold lg:text-[34px] lg:text-[#222222] text-[34px] text-[#444444] lg:mx-16 mx-4'>Proposal Details</h4>
+      <div className='border-b-2 w-[90%] lg:ml-12 lg:mb-10'>
+    <h4 className='font-bold lg:text-[34px] lg:text-[#222222] text-[34px] text-[#444444]'>Proposal Details</h4>
     </div>
-    <div className='bg-[#FAFAFA] lg:flex lg:flex-col hidden text-[#222222] px-8 py-8 lg:ml-16 mx-4 w-[90%] mt-[39.68px] rounded-2xl border-1 border-[#EAEAEA] '>
+    </div>
+    <div className='bg-[#FAFAFA] lg:flex lg:flex-col hidden text-[#222222] px-8 py-8 lg:ml-16 mx-4 w-[90%]  rounded-2xl border-1 border-[#EAEAEA] '>
       <h4 className='font-bold leading-7'>Related Job</h4>
       <div className='flex justify-between mt-6'>
         <div className='text-sm text-[#767676] leading-[18px] tracking-[0.33px]'>
