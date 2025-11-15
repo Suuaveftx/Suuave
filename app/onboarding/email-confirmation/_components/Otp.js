@@ -38,7 +38,7 @@ const Otp = () => {
               className="object-contain object-left -ml-28 -mt-20"
             />
             <p className="font-bold text-xl text-[#F5F5F5]">
-              Collaborate with a pool of <br /> talented African fashion <br />{" "}
+              Collaborate with a pool of  talented African fashion 
               artists.
             </p>
           </div>
