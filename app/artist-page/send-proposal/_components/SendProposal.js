@@ -1,130 +1,144 @@
 'use client';
 import React, { useState } from 'react';
 import { Paperclip } from 'lucide-react';
-import { Textarea } from '@heroui/react';
 import { FaChevronLeft } from 'react-icons/fa';
 import { IoMdInformationCircleOutline } from 'react-icons/io';
-import SendProposalsBtnMobile from './SendProposalsBtnMobile';
-import ProposalPopUpMobile from './ProposalPopUpMobile';
 import { useDisclosure } from '@heroui/react';
+import ProposalPopUpMobile from './ProposalPopUpMobile';
+import { useRouter } from 'next/navigation';
+
 const SendProposal = () => {
+  const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isExpanded, setIsExpanded] = useState(false);
-  const fullText =
-    'Yorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis. Ut commodo efficitur neque.';
-  const previewText = fullText.substring(0, 120); // Adjust character limit as needed
   const [selected, setSelected] = useState('5 Days');
   const [open, setOpen] = useState(false);
 
+  // ✅ Handle sending proposal
+  const handleSendProposal = () => {
+    // Save to local storage
+    localStorage.setItem('proposalActive', 'true');
+    console.log('Proposal sent ✅');
+
+    // Redirect to active proposal page
+    router.push('/artist-page/proposal-active');
+  };
+
+  const fullText =
+    'Yorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis. Ut commodo efficitur neque.';
+  const previewText = fullText.substring(0, 120);
   const options = ['1 Day', '3 Days', '5 Days', '7 Days', '10 Days'];
+
   return (
     <>
-      <div className='flex items-center lg:mt-0 mt-4 px-4 py-[10px] mx-4'>
-        <div className='lg:hidden'>
-          <FaChevronLeft color='#878787' />
+      {/* Back icon and header section */}
+      <div className="flex items-center lg:mt-0 mt-4 px-4 py-[10px] mx-4 gap-4">
+        <div className="lg:hidden mt-[-4px]">
+          <FaChevronLeft color="#878787" />
         </div>
-        <h4 className='font-bold lg:text-[34px] lg:text-[#222222] text-[22px] text-[#444444] lg:mx-16 mx-4'>
-          Send Proposal
-        </h4>
+        <div className="w-full border-b-2 lg:text-[34px] text-[20px] font-bold lg:ml-9 lg:mb-[18.68px]">
+          <h4>Send Proposals</h4>
+        </div>
       </div>
-      <div className='bg-[#FAFAFA] lg:flex lg:flex-col text-[#222222] px-8 py-8 lg:ml-16 mx-4 w-[90%] mt-[39.68px] rounded-2xl border-1 border-[#EAEAEA] '>
-        <h4 className='font-bold leading-7'>Related Job</h4>
-        <div className='flex justify-between mt-6'>
-          <div className='text-sm text-[#767676] leading-[18px] tracking-[0.33px]'>
+
+      {/* Related Job Section */}
+      <div className="bg-[#FAFAFA] text-[#222222] px-8 py-8 lg:mx-16 mx-4 w-[90%] rounded-2xl border border-[#EAEAEA]">
+        <h4 className="font-bold leading-7">Related Job</h4>
+        <div className="flex justify-between mt-6">
+          <div className="text-sm text-[#767676] leading-[18px] tracking-[0.33px]">
             <span>Posted: 23-06-2024</span>
           </div>
-          <div className='flex gap-2 text-sm leading-[18px] tracking-[0.33px]'>
-            <span className='text-[#767676]'>Job Status:</span>
-            <span className='text-[#056D16]'>Active</span>
+          <div className="flex gap-2 text-sm leading-[18px] tracking-[0.33px]">
+            <span className="text-[#767676]">Job Status:</span>
+            <span className="text-[#056D16]">Active</span>
           </div>
         </div>
-        <div className='font-bold text-[#222222] mt-4'>
+        <div className="font-bold text-[#222222] mt-4">
           Modern Fashion Attire Illustration
         </div>
-        <div className='mt-4 text-[#767676]'>
+        <div className="mt-4 text-[#767676]">
           {isExpanded ? fullText : `${previewText}... `}
           {!isExpanded && (
             <span
               onClick={() => setIsExpanded(true)}
-              className='text-[#3A98BB] cursor-pointer'
+              className="text-[#3A98BB] cursor-pointer"
             >
               View Post
             </span>
           )}
         </div>
       </div>
-      <div className='bg-[#FAFAFA] flex flex-col gap-2 border-1 border-[#EAEAEA] px-8 py-8 pb-[42px] lg:mx-16 mx-auto mt-4 rounded-2xl lg:w-[90%] w-[90%] lg:mb-[240.32px] '>
-        <div className='lg:flex font-bold text-2xl leading-6 rounded-2xl'>
-          Write Proposal
-        </div>
+
+      {/* Proposal Form Section */}
+      <div className="bg-[#FAFAFA] flex flex-col gap-2 border border-[#EAEAEA] px-8 py-8 pb-[42px] lg:mx-16 mx-auto mt-4 rounded-2xl lg:w-[90%] w-[90%] lg:mb-[240.32px]">
+        <div className="font-bold text-2xl leading-6">Write Proposal</div>
 
         {/* Cover Letter */}
-        <div className='w-full'>
+        <div className="w-full">
           <label
-            htmlFor='cover-letter'
-            className='block text-[#222222] font-semibold text-base tracking-[0.33px] mb-2'
+            htmlFor="cover-letter"
+            className="block text-[#222222] font-semibold text-base tracking-[0.33px] mb-2"
           >
             Cover Letter
           </label>
           <textarea
-            id='cover-letter'
-            placeholder='Write your proposal...'
-            className='lg:w-full w-[90%] min-h-[150px] px-[10px] py-[10px] border border-[#D1D1D1] rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-[#3A98BB] text-sm text-[#222222]'
+            id="cover-letter"
+            placeholder="Write your proposal..."
+            className="w-full min-h-[150px] px-[10px] py-[10px] border border-[#D1D1D1] rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-[#3A98BB] text-sm text-[#222222]"
           ></textarea>
         </div>
 
         {/* Attach File */}
-        <div className=''>
-          <h4 className='text-base font-semibold'>
-            Attach File <span className='text-sm text-gray-500'>(Optional)</span>
+        <div className="mt-6">
+          <h4 className="text-base font-semibold">
+            Attach File <span className="text-sm text-gray-500">(Optional)</span>
           </h4>
-          <span className='text-sm leading-[18px] tracking-[0.33px] mt-1 block'>
-            You can upload a sample of your work or projects. This helps to showcase your
-            skill level to the client.
+          <span className="text-sm leading-[18px] tracking-[0.33px] mt-1 block">
+            You can upload a sample of your work or projects. This helps to showcase
+            your skill level to the client.
           </span>
-          <div className='mt-4 flex items-center gap-2 w-full'>
+          <div className="mt-4 flex items-center gap-2 w-full">
             <label
-              htmlFor='file-upload'
-              className='w-full flex items-center justify-center gap-2 border border-gray-300 rounded-lg cursor-pointer text-sm text-gray-700 hover:bg-gray-100 transition px-8 py-8'
+              htmlFor="file-upload"
+              className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-lg cursor-pointer text-sm text-gray-700 hover:bg-gray-100 transition px-8 py-8"
             >
-              <Paperclip className='text-[#035A7A] w-5 h-5' />
+              <Paperclip className="text-[#035A7A] w-5 h-5" />
               Upload necessary file
             </label>
-            <input id='file-upload' type='file' className='w-full hidden' />
+            <input id="file-upload" type="file" className="hidden" />
           </div>
         </div>
 
         {/* Price Input */}
-        <div className='mt-6 space-y-2'>
-          <label className='text-base text-[#222222] font-semibold block'>
+        <div className="mt-6 space-y-2">
+          <label className="text-base text-[#222222] font-semibold block">
             How much are you charging for this work?
           </label>
-          <div className='flex items-center gap-2 text-sm text-[#767676]'>
-            <IoMdInformationCircleOutline color='#878787' />
+          <div className="flex items-center gap-2 text-sm text-[#767676]">
+            <IoMdInformationCircleOutline color="#878787" />
             <span>
               10% commission charge applies{' '}
-              <a href='#' className='text-[#3A98BB]'>
+              <a href="#" className="text-[#3A98BB]">
                 Learn More
               </a>
             </span>
           </div>
           <input
-            type='text'
-            value='N200,00'
-            style={{ color: '#3A98BB' }}
+            type="text"
+            value="N200,00"
             readOnly
-            className='w-full border border-gray-300 rounded-md px-[10px] py-[10px] text-base text-gray-700 bg-gray-50'
+            className="w-full border border-gray-300 rounded-md px-[10px] py-[10px] text-base text-[#3A98BB] bg-gray-50"
           />
         </div>
 
         {/* Dropdown */}
-        <div className='mt-6 relative inline-block w-full'>
-          <label className='text-base font-semibold block mb-2'>
+        <div className="mt-6 relative inline-block w-full">
+          <label className="text-base font-semibold block mb-2">
             How long will it take you to complete this work?
           </label>
           <button
-            type='button'
-            className='w-[50%] border border-gray-300 rounded-md px-4 py-2 bg-white text-sm flex justify-between items-center'
+            type="button"
+            className="w-[50%] border border-gray-300 rounded-md px-4 py-2 bg-white text-sm flex justify-between items-center"
             onClick={() => setOpen((prev) => !prev)}
           >
             <span>{selected}</span>
@@ -132,21 +146,21 @@ const SendProposal = () => {
               className={`w-4 h-4 ml-2 transform transition-transform ${
                 open ? 'rotate-180' : 'rotate-0'
               }`}
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='2'
-              viewBox='0 0 24 24'
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
             >
-              <path strokeLinecap='round' strokeLinejoin='round' d='M19 9l-7 7-7-7' />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
 
           {open && (
-            <ul className='absolute left-0 w-full bg-white border border-gray-200 shadow-md rounded-md mt-1 z-10'>
-              {options.map((option) => (
+            <ul className="absolute left-0 w-[50%] bg-white border border-gray-200 shadow-md rounded-md mt-1 z-10">
+              {['1 Day', '3 Days', '5 Days', '7 Days', '10 Days'].map((option) => (
                 <li
                   key={option}
-                  className='px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm'
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
                   onClick={() => {
                     setSelected(option);
                     setOpen(false);
@@ -160,15 +174,17 @@ const SendProposal = () => {
         </div>
 
         {/* Mobile Buttons */}
-        <div className='lg:hidden flex justify-center gap-4 mt-6'>
-          <button className='px-6 py-2 bg-gray-200 text-[#767676] font-medium rounded-full w-32'>
+        <div className="lg:hidden flex justify-center gap-4 mt-6">
+          <button className="px-6 py-2 bg-gray-200 text-[#767676] font-medium rounded-full w-32">
             Cancel
           </button>
-          <ProposalPopUpMobile
-            isOpen={isOpen}
-            onOpen={onOpen}
-            onOpenChange={onOpenChange}
-          />
+
+          <button
+            onClick={handleSendProposal}
+            className="px-6 py-2 bg-[#3A98BB] text-white font-medium rounded-full w-32"
+          >
+            Send Proposal
+          </button>
         </div>
       </div>
     </>

@@ -13,31 +13,33 @@ const ProfileArtist = () => {
 
   return (
     <div
-      className='w-full lg:max-w-xs lg:mx-auto  lg:bg-white rounded-lg lg:space-y-2 max-h-[630px] overflow-hidden 
+      className='w-full h-full lg:max-w-xs lg:mx-auto  lg:bg-white rounded-lg lg:space-y-2 max-h-[820px] overflow-hidden 
       flex flex-col items-center  lg:items-start lg:text-left'
     >
-      <div className='bg-[#fafafa] w-full lg:bg-[#ffffff] lg:px-0 lg:py-0 px-4 py-4'>
+      <div className='bg-[#fafafa] w-full  lg:bg-[#ffffff] lg:px-6 lg:py-6 px-4 py-4'>
         <div className='space-y-3  pb-3 w-full flex flex-col items-center lg:items-start'>
           {/* Profile Initials */}
-          <div className='relative w-20 h-20'>
+          <div className='relative w-28 h-28'>
             {/* Circle */}
-            <div className='w-16 h-16 lg:bg-[#EAEAEA] bg-[#035A7A] lg:text-[#035A7A] text-[#ffffff] text-xl font-bold flex items-center justify-center rounded-full ml-4'>
+            <div className='w-[100px] h-[100px] lg:bg-[#EAEAEA] bg-[#035A7A] lg:text-[#035A7A] text-[#ffffff] text-xl font-bold flex items-center justify-center rounded-full ml-4 lg:mb-7'>
               OC
             </div>
 
             {/* Edit Icon */}
-            <button className='absolute -top-1 -right-1  rounded-full p-1'>
-              <Pencil className='w-4 h-4 text-[#035A7A]' />
+            <button className='absolute -top-1 -right-1 mt-4  rounded-full p-1'>
+              <Pencil className='w-[18px] h-[18px] text-[#035A7A]' />
             </button>
           </div>
 
           {/* Name */}
-          <h4 className='text-md font-semibold text-lg text-[#222222]'>OCEAN CLARA</h4>
+          <div className='lg:mt-7'>
+          <h4 className='lg:text-2xl font-semibold text-lg text-[#222222] lg:leading-6'>OCEAN CLARA</h4>
+          </div>
 
           {/* Availability Status */}
           <div
             className='bg-[#EEEEEE] flex items-center text-sm text-[#056D16] rounded-[32px] gap-2 px-2 py-1 
-          w-full max-w-[35%] justify-center lg:justify-start'
+          w-full max-w-[35%] justify-center lg:justify-start lg:mt-4'
           >
             <span>Available</span>
             <span className='w-2 h-2 bg-green-600 rounded-full'></span>
@@ -78,18 +80,18 @@ const ProfileArtist = () => {
       </div>
 
       {/* Stats */}
-      <div className='hidden lg:flex justify-between w-full text-sm text-[#222222]'>
+      <div className='hidden lg:flex justify-between w-full text-sm text-[#222222] lg:px-6'>
         <h4>Design Collections</h4>
         <span>14</span>
       </div>
 
-      <div className='hidden lg:flex justify-between w-full border-b border-gray-300 pb-2 text-sm text-[#222222]'>
+      <div className='hidden lg:flex justify-between w-full border-b border-gray-300 pb-2 text-sm text-[#222222] lg:px-6'>
         <h4>Completed Projects</h4>
         <span>14</span>
       </div>
 
       {/* About Us Section */}
-      <div className='lg:bg-[#ffffff] bg-[#fafafa] w-full flex flex-col items-start lg:px-0 px-4 lg:py-0 py-2 text-left lg:mt-0 mt-[10px]'>
+      <div className='lg:bg-[#ffffff] bg-[#fafafa] w-full flex flex-col items-start lg:px-6 px-4 lg:py-0 py-2 text-left lg:mt-0 mt-[10px]'>
         {/* Heading with Edit Icon */}
         <div className='flex items-center w-full mt-[22px]'>
           <h4 className='lg:text-[#444444] text-base text-[#222222] lg:font-normal font-bold'>
@@ -107,13 +109,7 @@ const ProfileArtist = () => {
           {text}
         </p>
 
-        {/* Toggle Button */}
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className='text-[#3A98BB] text-sm font-semibold mt-1 focus:outline-none'
-        >
-          {isExpanded ? 'Read less' : 'Read more'}
-        </button>
+        
       </div>
     </div>
   );

@@ -1,15 +1,13 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import PersonalDetail from "./_components/PersonalDetail";
-import PersonalInformation from "./_components/PersonalInformation";
-import AwardsCertification from "./_components/AwardsCertification";
+
+import BrandDetails from "./_components/BrandDetails";
 import Profile from "./_components/Profile";
 
 export default function Page() {
   const [selected, setSelected] = useState("PersonalDetail");
   const [preview, setPreview] = useState("/dev-images/profile.png");
-  const [previewPortfolio, setPreviewPortfolio] = useState(null);
 
   // image preview handler
 
@@ -20,20 +18,13 @@ export default function Page() {
     }
   };
 
-   const uploadedPortfolio = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPreviewPortfolio(URL.createObjectURL(file));
-    }
-  };
-
   // Personal details state
 
   const [formData, setFormData] = useState({
     fullName: "",
     username: "",
     email: "",
-    nationality: new Set([]), 
+    nationality: new Set([]),
     phoneCode: new Set([]),
     phoneNumber: "",
     currentCity: "",
@@ -51,6 +42,8 @@ export default function Page() {
     awardedIssuedBy: "",
     uploadCertificateAward: "",
   });
+
+
   return (
     <>
       <div className="md:hidden mt-5 px-5">
@@ -60,18 +53,6 @@ export default function Page() {
         Profile Setting
       </h1>
       <div className="flex flex-col md:flex-row mt-10 px-5 md:px-10">
-        {/* profile view and button switch */}
-
-        <Profile
-          setSelected={setSelected}
-          formData={formData}
-          setFormData={setFormData}
-          selected={selected}
-          className="hidden md:flex"
-          preview={preview}
-          handleImageChange={handleImageChange}
-        />
-
         {/* Conditionally show content */}
         {selected === "PersonalDetail" && (
           <>
@@ -80,36 +61,16 @@ export default function Page() {
               formData={formData}
               setFormData={setFormData}
               selected={selected}
-              className="flex md:hidden"
+              className="flex "
               preview={preview}
               handleImageChange={handleImageChange}
             />
-            <PersonalDetail
+            <BrandDetails
               setSelected={setSelected}
               formData={formData}
               setFormData={setFormData}
             />
           </>
-        )}
-
-        {selected === "ProfessionalInformation" && (
-          <PersonalInformation
-            setSelected={setSelected}
-            formData={formData}
-            setFormData={setFormData}
-            uploadedPortfolio={uploadedPortfolio}
-            previewPortfolio={previewPortfolio}
-            
-
-          />
-        )}
-
-        {selected === "Awards/Certifications" && (
-          <AwardsCertification
-            setSelected={setSelected}
-            formData={formData}
-            setFormData={setFormData}
-          />
         )}
       </div>
     </>

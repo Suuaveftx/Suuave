@@ -6,9 +6,12 @@ const JobDetailsPage = () => {
   return (
     <>
       <section className="lg:mb-[29.34px] lg:mt-[45px]">
-        <h1 className="ml-16 font-bold text-2xl border-b lg:flex hidden">
-          Job Details
-        </h1>
+        <div className="border-b-2 text-left lg:ml-16 w-[80%]">
+  <h1 className="font-bold text-2xl lg:flex hidden">
+    Job Details
+  </h1>
+</div>
+
       </section>
       <section>
         <div className="bg-[#FAFAFA] lg:px-8 lg:py-8 lg:pb-[42px] lg:mx-16 rounded-2xl lg:w-screen lg:max-w-[85%] lg:h-auto  w-screen max-w-[90%] px-4 pt-8 pb-6  mx-4 mt-[19px]">

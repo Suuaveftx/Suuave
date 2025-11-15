@@ -4,7 +4,7 @@ import React from "react";
 const AwardsCertification = ({ setSelected, formData, setFormData }) => {
   return (
     <div className="bg-[#FAFAFA] border border-[#DEDEDE] rounded-2xl p-3 md:p-6 w-full h-full">
-      <h1 className="text-[#3A98BB] font-bold text-xl">Awards/Certification</h1>
+      <h1 className="text-[#3A98BB] font-bold text-xl">Awards/Certifications</h1>
       <p className="text-[#767676] font-normal text-base mt-2">
         Add any related awards or certifications.
       </p>

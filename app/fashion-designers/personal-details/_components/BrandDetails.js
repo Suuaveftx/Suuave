@@ -6,7 +6,7 @@ import CustomSelect from "./CustomSelect";
 
 const dayOptions = Array.from({ length: 31 }, (_, i) => ({
   key: String(i + 1),
- label: String(i + 1),
+  label: String(i + 1),
 }));
 
 const monthOptions = [
@@ -45,12 +45,13 @@ const numCode = [
   { key: "+09", label: "+09" },
   { key: "+99", label: "+99" },
 ];
+
 const language = [
   { key: "English", label: "English" },
   { key: "Spanish", label: "Spanish" },
 ];
 
-const PersonalDetail = ({ setSelected, formData, setFormData }) => {
+const BrandDetails = ({ setSelected, formData, setFormData }) => {
   return (
     <div className="w-full h-full bg-[#FAFAFA] border-1-[#DEDEDE] p-3 md:p-6 rounded-2xl">
       <h1 className="text-[#3A98BB] font-bold text-xl">Personal Details</h1>
@@ -213,14 +214,14 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
           onClick={() => setSelected("ProfessionalInformation")}
           className="text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
         >
-          Continue
+          Submit
         </button>
       </div>
     </div>
   );
 };
 
-export default PersonalDetail;
+export default BrandDetails;
 
 const Input = ({ placeholder, id, value, onChange }) => {
   return (

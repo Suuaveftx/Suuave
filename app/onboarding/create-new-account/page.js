@@ -8,8 +8,8 @@ import BackButton from "../../../components/BackButton";
 const Page = () => {
   return (
     <main className="flex flex-col lg:flex-row h-full  w-full bg-[#F1F1F1]">
-      <div  className=" lg:hidden w-full h-20 ">
-         <BackButton />
+      <div className=" lg:hidden w-full h-20 ">
+        <BackButton />
       </div>
       <section className=" hidden lg:flex flex-col justify-between w-3/6  bg-gradient-to-b from-[#9FD2E5] from-10% to-[#00709A] ">
         <div className="p-10">
@@ -34,7 +34,7 @@ const Page = () => {
               className="object-contain object-left -ml-28 -mt-20"
             />
             <p className="font-bold text-xl text-[#F5F5F5]">
-              Collaborate with a pool of <br /> talented African fashion <br />{" "}
+              Collaborate with a pool of <br /> talented African fashion
               artists.
             </p>
           </div>
