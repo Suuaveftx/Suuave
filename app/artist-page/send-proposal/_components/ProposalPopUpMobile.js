@@ -53,7 +53,7 @@ const ProposalPopUpMobile = ({ isOpen, onOpen, onOpenChange }) => {
                 </p>
               </ModalBody>
               <ModalFooter className="w-full flex justify-center">
-                <Link href="/artist-page/project-page">
+                <Link href="/artist-page/proposal-active">
                   <Button
                     className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold text-sm"
                     variant="light"

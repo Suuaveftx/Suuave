@@ -24,21 +24,15 @@ const ThreeDotsDropdown = () => {
       {/* Three Dots Button */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="absolute top-3 right-3 bg-black bg-opacity-50 px-1 py-1 rounded-md w-10 flex justify-center cursor-pointer"
+        className="absolute top-3 right-3 bg-black bg-opacity-50 px-1 py-1 rounded-md  flex justify-center cursor-pointer w-16"
       >
-        <MoreHorizontal size={18} className="text-white" />
+        <span className="text-white text-base">Edit</span>
       </div>
 
       {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute right-0 mt-2 w-32 bg-white border rounded-md shadow-lg z-10">
           <ul className="text-sm text-gray-800">
-            <li
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              onClick={() => setIsOpen(false)}
-            >
-              Edit
-            </li>
             <li
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={() => setIsOpen(false)}

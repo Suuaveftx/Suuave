@@ -38,7 +38,7 @@ const Page = () => {
 />
 
         </div>
- <div className="hidden lg:flex mt-2 lg:mt-4">
+ <div className="hidden">
           {" "}
           {/* tighter spacing */}
           <Abouttheclient />

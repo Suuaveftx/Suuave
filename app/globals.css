@@ -140,6 +140,9 @@
   }
 
   /* Custom scrollbar for WebKit browsers (Chrome, Safari) */
+  body {
+    background-color: #f1f1f1;
+  }
   .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
     height: 25px;
