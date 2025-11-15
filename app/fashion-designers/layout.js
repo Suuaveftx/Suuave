@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import Footer from "../../components/landing-page-components/Footer";
-import FashionDesignerHeader from "./_components/studio-page-components/FashionDesignerHeader";
+import Footer from '../../components/landing-page-components/Footer';
+import FashionDesignerHeader from './_components/studio-page-components/FashionDesignerHeader';
 
 export default function Layout({ children }) {
   return (
-    <div className="mx-auto  bg-[#DBDBDB]/30">
+    <div className='mx-auto  bg-[#DBDBDB]/30'>
       <FashionDesignerHeader />
-      <main className="font-satoshi">{children}</main>
+      <main className='font-satoshi'>{children}</main>
       <Footer />
     </div>
   );
