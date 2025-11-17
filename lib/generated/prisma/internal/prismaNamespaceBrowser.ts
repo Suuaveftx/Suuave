@@ -16,8 +16,8 @@
 
 import * as runtime from '@prisma/client/runtime/index-browser';
 
-export type * from '../models.js';
-export type * from './prismaNamespace.ts';
+export type * from '../models';
+export type * from './prismaNamespace';
 
 export const Decimal = runtime.Decimal;
 
@@ -79,8 +79,9 @@ export const UserScalarFieldEnum = {
   name: 'name',
   email: 'email',
   emailVerified: 'emailVerified',
-  role: 'role',
   image: 'image',
+  role: 'role',
+  user_name: 'user_name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
 } as const;
