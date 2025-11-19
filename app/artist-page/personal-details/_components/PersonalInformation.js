@@ -13,16 +13,16 @@ const PersonalInformation = ({
 }) => {
   return (
     <div className="bg-[#FAFAFA] border border-[#DEDEDE] rounded-2xl p-3 md:p-6 w-full h-full">
-      <h1 className="text-[#3A98BB] font-bold text-xl">Personal Details</h1>
+      <h1 className="text-[#3A98BB] font-bold text-xl">Professional Information</h1>
       <p className="text-[#767676] font-normal text-base mt-2">
-        Add any related information.
+        Add any relevant information
       </p>
       <section className="space-y-10 mt-5">
         {/*Illustrator */}
         <div className="w-full flex flex-col gap-2">
-          <Lable htmlFor="skill" text="Skill" />
+          <Lable htmlFor="skills" text="Skills" />
           <Input
-            id="skill"
+            id="skills"
             placeholder="Eg Illustrator"
             value={formData.skill}
             onChange={(e) =>
@@ -31,7 +31,7 @@ const PersonalInformation = ({
           />
         </div>
         {/*Enter Company Name */}
-        <div className="w-full flex flex-col gap-2">
+        {/* <div className="w-full flex flex-col gap-2">
           <Lable htmlFor="companyName" text="Company/brand Name(Optional)" />
           <Input
             id="companyName"
@@ -41,10 +41,10 @@ const PersonalInformation = ({
               setFormData({ ...formData, companyName: e.target.value })
             }
           />
-        </div>
+        </div> */}
         {/*Portfolio link*/}
         <div className="w-full flex flex-col gap-2">
-          <Lable htmlFor="portfolioLink" text="Link to Your Portfolio" />
+          <Lable htmlFor="portfolioLink" text="Link to Your Portfolio/Personal Website" />
           <Input
             id="portfolioLink"
             placeholder="Enter portfolio link"
