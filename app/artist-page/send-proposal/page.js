@@ -30,6 +30,7 @@ const Page = () => {
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             saveText='Cancel'
+            showSaveIcon={false}
           />
         </div>
 
