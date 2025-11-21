@@ -4,7 +4,7 @@ import CustomNavbar from '../../../components/Navbar';
 
 const HeroSection = () => {
   return (
-    <header className='relative bg-[#012D3E] bg-cover bg-center  overflow-hidden pt-[52px] md:pt-0 '>
+    <header className='relative bg-[#012D3E] bg-cover bg-center  overflow-hidden  md:pt-0 '>
       {/* <NavBar /> */}
             <CustomNavbar bgColor="bg-inherit" />
       

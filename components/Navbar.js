@@ -92,7 +92,7 @@ const CustomNavbar = ({ bgColor }) => {
           className={` lg:hidden  text-white font-bold text-lg size-6`}
         />
       </NavbarContent>
-      <NavbarMenu className="mt-20">
+      <NavbarMenu className="lg:mt-20">
         {menuItems.map((item, index) => (
           <NavbarMenuItem className="space-y-6" key={`${item}-${index}`}>
             <Link className="w-full text-[#CECECE]" href={item.url} size="lg">
