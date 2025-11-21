@@ -1,69 +1,23 @@
 'use client';
+import React, { useState } from 'react';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import PaginationTab from '../../../../components/Pagination';
 
 const ProposalTables = () => {
   const proposals = [
-    {
-      id: 1,
-      title: 'Fashion Native Bridal illustration',
-      date: 'June 12, 2024',
-      status: 'Active',
-    },
-    {
-      id: 2,
-      title: 'Fashion Native Bridal illustration',
-      date: 'September 12, 2024',
-      status: 'Active',
-    },
-    {
-      id: 3,
-      title: 'Fashion Native Bridal illustration',
-      date: 'October 12, 2024',
-      status: 'Inactive',
-    },
-    {
-      id: 4,
-      title: 'Fashion Native Bridal illustration',
-      date: 'August 12, 2024',
-      status: 'Active',
-    },
-    {
-      id: 5,
-      title: 'Fashion Native Bridal illustration',
-      date: 'November 12, 2024',
-      status: 'Active',
-    },
-    {
-      id: 6,
-      title: 'Fashion Native Bridal illustration',
-      date: 'May 12, 2024',
-      status: 'Inactive',
-    },
-    {
-      id: 7,
-      title: 'Fashion Native Bridal illustration',
-      date: 'January 12, 2024',
-      status: 'Active',
-    },
-    {
-      id: 8,
-      title: 'Fashion Native Bridal illustration',
-      date: 'March 12, 2024',
-      status: 'Active',
-    },
-    {
-      id: 9,
-      title: 'Fashion Native Bridal illustration',
-      date: 'August 12, 2024',
-      status: 'Inactive',
-    },
-    {
-      id: 10,
-      title: 'Fashion Native Bridal illustration',
-      date: 'November 12, 2024',
-      status: 'Active',
-    },
+    { id: 1, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
+    { id: 2, title: 'Fashion Native Bridal illustration', date: 'September 12, 2024', status: 'Active' },
+    { id: 3, title: 'Fashion Native Bridal illustration', date: 'October 12, 2024', status: 'Inactive' },
+    { id: 4, title: 'Fashion Native Bridal illustration', date: 'August 12, 2024', status: 'Active' },
+    { id: 5, title: 'Fashion Native Bridal illustration', date: 'November 12, 2024', status: 'Active' },
+    { id: 6, title: 'Fashion Native Bridal illustration', date: 'May 12, 2024', status: 'Inactive' },
+    { id: 7, title: 'Fashion Native Bridal illustration', date: 'January 12, 2024', status: 'Active' },
+    { id: 8, title: 'Fashion Native Bridal illustration', date: 'March 12, 2024', status: 'Active' },
+    { id: 9, title: 'Fashion Native Bridal illustration', date: 'August 12, 2024', status: 'Inactive' },
+    { id: 10, title: 'Fashion Native Bridal illustration', date: 'November 12, 2024', status: 'Active' },
+    { id: 11, title: 'Fashion Native Bridal illustration', date: 'December 12, 2024', status: 'Active' },
+    { id: 12, title: 'Fashion Native Bridal illustration', date: 'January 1, 2025', status: 'Inactive' },
   ];
 
   const statusColors = {
@@ -73,28 +27,45 @@ const ProposalTables = () => {
 
   const handleDelete = (id) => {
     console.log(`Deleting proposal ${id}`);
-    // Add your delete logic here
+  };
+
+  // Pagination setup
+  const [currentPage, setCurrentPage] = useState(1);
+  const proposalsPerPage = 10; // 👈 show 10 per page
+  const totalPages = Math.ceil(proposals.length / proposalsPerPage);
+
+  const indexOfLastProposal = currentPage * proposalsPerPage;
+  const indexOfFirstProposal = indexOfLastProposal - proposalsPerPage;
+  const currentProposals = proposals.slice(indexOfFirstProposal, indexOfLastProposal);
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
   return (
     <div>
-      <h1 className='text-xl font-bold lg:mx-16 ml-4 mt-8 mb-[30px] border-b border-[#eaeaea] pb-1'>
-        My Proposals
-      </h1>
+      {/* Title */}
+      <div className="w-[90%] border-b-2 text-left mb-[21px] lg:ml-16">
+        <h1 className="text-xl font-bold mt-8 pb-1">My Proposals</h1>
+      </div>
 
-      <section className='w-full max-w-[1149px]'>
-        <div className='bg-[#FAFAFA] w-full max-w-6xl lg:ml-16 lg:px-8 lg:pt-4 lg:pb-8 rounded-2xl mb-[685px]'>
+      {/* Table */}
+      <section className="w-full">
+        <div className="bg-[#FAFAFA] w-full max-w-6xl lg:ml-16 lg:px-8 lg:pt-4 lg:pb-8 rounded-2xl mb-10">
           {/* Header Row */}
-          <div className='grid grid-cols-3 font-bold px-8 py-4 border-b'>
-            <h4 className='text-left'>Job Posts</h4>
-            <h4 className='text-center'>Date</h4>
-            <h4 className='text-right'>Status</h4>
+          <div className="grid grid-cols-3 font-bold px-8 py-4 border-b">
+            <h4 className="text-left">Job Posts</h4>
+            <h4 className="text-center">Date</h4>
+            <h4 className="text-right">Status</h4>
           </div>
 
           {/* Data Rows */}
           <div>
-            {proposals.map((proposal) => {
-              // dynamic link based on status
+            {currentProposals.map((proposal) => {
               const linkHref =
                 proposal.status === 'Active'
                   ? `/artist-page/proposal-active`
@@ -104,7 +75,7 @@ const ProposalTables = () => {
                 <Link
                   key={proposal.id}
                   href={linkHref}
-                  className='grid grid-cols-3 items-center text-base text-gray-900 px-8 py-4 border-b hover:bg-gray-100 transition cursor-pointer'
+                  className="grid grid-cols-3 items-center text-base text-gray-900 px-8 py-4 border-b hover:bg-gray-100 transition cursor-pointer"
                 >
                   {/* Job Post */}
                   <div
@@ -118,27 +89,60 @@ const ProposalTables = () => {
                   </div>
 
                   {/* Date */}
-                  <div className='text-gray-600 text-center'>{proposal.date}</div>
+                  <div className="text-gray-600 text-center">{proposal.date}</div>
 
                   {/* Status + Delete */}
-                  <div className='flex items-center justify-end gap-2'>
+                  <div className="flex items-center justify-end gap-2">
                     <span className={statusColors[proposal.status]}>
                       {proposal.status}
                     </span>
                     <button
                       onClick={(e) => {
-                        e.preventDefault(); // prevent navigating when deleting
+                        e.preventDefault();
                         handleDelete(proposal.id);
                       }}
-                      className='text-gray-500 hover:text-red-500 transition-colors'
-                      aria-label='Delete proposal'
+                      className="text-gray-500 hover:text-red-500 transition-colors"
                     >
-                      <TrashIcon className='h-4 w-4' />
+                      <TrashIcon className="h-4 w-4" />
                     </button>
                   </div>
                 </Link>
               );
             })}
+          </div>
+
+          {/* Pagination Controls */}
+          {/* <div className="flex justify-center items-center mt-6 gap-4">
+            <button
+              onClick={handlePrev}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded-lg border border-gray-300 ${
+                currentPage === 1
+                  ? 'text-gray-400 cursor-not-allowed bg-gray-100'
+                  : 'text-[#3A98BB] hover:bg-[#E0F4FB]'
+              }`}
+            >
+              Previous
+            </button>
+
+            <span className="text-gray-700">
+              Page {currentPage} of {totalPages}
+            </span>
+
+            <button
+              onClick={handleNext}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded-lg border border-gray-300 ${
+                currentPage === totalPages
+                  ? 'text-gray-400 cursor-not-allowed bg-gray-100'
+                  : 'text-[#3A98BB] hover:bg-[#E0F4FB]'
+              }`}
+            >
+              Next
+            </button>
+          </div> */}
+          <div className='w-full flex justify-center items-center mt-6'>
+          <PaginationTab />
           </div>
         </div>
       </section>

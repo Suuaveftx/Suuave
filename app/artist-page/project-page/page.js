@@ -10,9 +10,9 @@ const Page = () => {
     <>
       <div className='hidden lg:flex bg-[#EFF8FB] text-[#3A98BB] p-4 rounded-md mt-4  ml-4 mr-4 mb-8'>
         <BsExclamationTriangle className='text-2xl' />
-        <h3 className='ml-2'>Complete your profile Setup</h3>
+        <h3 className='ml-2 font-bold text-base pt-1'>Complete your profile setup</h3>
       </div>
-      <div className='flex justify-center w-full lg:mx-0 mx-4 mt-6'>
+      <div className='flex justify-center w-full lg:mx-0  mt-6'>
         <div className='lg:w-full lg:max-w-[75%] w-[90%]'>
           <SearchBar placeholder='search jobs' />
         </div>

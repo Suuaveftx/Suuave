@@ -1,11 +1,20 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaUser, FaUpload, FaShoppingBag } from "react-icons/fa";
 import CustomButton from "../../../../components/CustomButton";
 
 const WelcomePage = () => {
+  const [category, setCategory] = useState("");
+
+  useEffect(() => {
+    const savedCategory = localStorage.getItem("activeCategory");
+    if (savedCategory) {
+      setCategory(savedCategory);
+    }
+  }, []);
+
   return (
     <div className="flex items-start justify-between h-screen">
       {/* Left section with text and icons */}
@@ -13,7 +22,7 @@ const WelcomePage = () => {
         <div className="flex flex-col  max-w-md border  shadow-md rounded-[8px] sm:shadow-none sm:border-none pl-4 pr-4 pt-[24px] pb-[40px]">
           <h1 className="text-2xl font-bold leading-10 ">
             Hi Kate, <br /> To begin, let’s take a moment to complete your
-            profile set up.
+            profile setup.
           </h1>
 
           {/* Complete Profile Setup */}
@@ -28,7 +37,6 @@ const WelcomePage = () => {
               Complete Profile Setup
             </span>
           </div>
-          
 
           {/* Upload Sample Works */}
           <div className=" w-max flex items-center mt-6 gap-4 py-5 border-b-1 border-[#EAEAEA]">
@@ -38,9 +46,17 @@ const WelcomePage = () => {
               width={24}
               height={24}
             />
-            <span className="text-gray-700 text-[16px]">
-              Upload Sample Works / Necessary Documents
-            </span>
+            {category === "Fashion Artist" && (
+              <span className="text-gray-700 text-[16px]">
+                Upload Sample Works / Necessary Documents
+              </span>
+            )}
+
+            {category === "Fashion Designer" && (
+              <span className="text-gray-700 text-[16px]">
+                Upload necessary documents
+              </span>
+            )}
           </div>
 
           {/* Apply for Jobs */}
@@ -51,18 +67,39 @@ const WelcomePage = () => {
               width={24}
               height={24}
             />
-            <span className="text-gray-700 text-[16px]">
-              Apply for Jobs and License Your Design
-            </span>
+
+            {category === "Fashion Artist" && (
+              <span className="text-gray-700 text-[16px]">
+                Apply for Jobs and License Your Design
+              </span>
+            )}
+
+            {category === "Fashion Designer" && (
+              <span className="text-gray-700 text-[16px]">
+                Post jobs and get license to use readily-available designs.
+              </span>
+            )}
           </div>
 
           {/* Continue Button */}
-          <Link
-            href={"/artist-page/personal-details"}
-            className=" w-full lg:w-32 text-[#035A7A] rounded-3xl cursor-pointer py-2 mt-20 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
-          >
-            continue
-          </Link>
+
+          {category === "Fashion Artist" && (
+            <Link
+              href={"/artist-page/personal-details"}
+              className=" w-full lg:w-32 text-[#035A7A] rounded-3xl cursor-pointer py-2 mt-20 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+            >
+              Continue
+            </Link>
+          )}
+
+          {category === "Fashion Designer" && (
+            <Link
+              href={"/fashion-designers/personal-details"}
+              className=" w-full lg:w-32 text-[#035A7A] rounded-3xl cursor-pointer py-2 mt-20 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+            >
+              Continue
+            </Link>
+          )}
         </div>
       </div>
 

@@ -18,9 +18,11 @@ const ProposalActive = () => {
       <div className='lg:hidden'>
       <FaChevronLeft color='#878787' />
       </div>
-    <h4 className='font-bold lg:text-[34px] lg:text-[#222222] text-[34px] text-[#444444] lg:mx-16 mx-4'>Proposal Details</h4>
+      <div className='border-b-2 w-[90%] lg:ml-12'>
+    <h4 className='font-bold lg:text-[34px] lg:text-[#222222] text-[34px] text-[#444444]'>Proposal Details</h4>
     </div>
-    <div className='bg-[#FAFAFA] lg:flex lg:flex-col hidden text-[#222222] px-8 py-8 lg:ml-16 mx-4 w-[90%] mt-[39.68px] rounded-2xl border-1 border-[#EAEAEA] '>
+    </div>
+    <div className='bg-[#FAFAFA] lg:flex lg:flex-col hidden text-[#222222] px-8 py-8 lg:ml-16 lg:w-[90%] w-full  rounded-2xl border-1 border-[#EAEAEA]'>
       <h4 className='font-bold leading-7'>Related Job</h4>
       <div className='flex justify-between mt-6'>
         <div className='text-sm text-[#767676] leading-[18px] tracking-[0.33px]'>
@@ -46,7 +48,7 @@ const ProposalActive = () => {
       )}
     </div>
     </div>
-    <div className='bg-[#FAFAFA] flex flex-col  gap-2 border-1 border-[#EAEAEA] px-8 py-8 pb-[42px] lg:mx-16  mx-auto mt-4 rounded-2xl lg:w-[90%] w-[80%] lg:mb-[240.32px] '>
+    <div className='bg-[#FAFAFA] flex flex-col  gap-2 border-1 border-[#EAEAEA] px-8 py-8 pb-[42px] lg:mx-16  mx-auto mt-4 rounded-2xl lg:mb-[240.32px] lg:w-full lg:max-w-[90%] w-screen max-w-md '>
       <div className='lg:flex  font-bold hidden text-2xl leading-6 rounded-2xl'>
         Write Proposal
       </div>

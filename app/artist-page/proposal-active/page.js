@@ -24,7 +24,7 @@ const Page = () => {
         <ProposalActive />
       </div>
       {/* Sidebar */}
-      <div className="col-span-10 lg:col-span-3 lg:mt-28 flex flex-col">
+      <div className="col-span-10 lg:col-span-3 lg:mt-20 flex flex-col">
         <div className="hidden lg:flex mb-2 lg:mb-4">
           {" "}
           {/* tighter spacing */}
@@ -38,7 +38,7 @@ const Page = () => {
 />
 
         </div>
- <div className="hidden lg:flex mt-2 lg:mt-4">
+ <div>
           {" "}
           {/* tighter spacing */}
           <Abouttheclient />

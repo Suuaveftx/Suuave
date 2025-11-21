@@ -1,4 +1,5 @@
-'use client';
+
+"use client";
 import {
   Link,
   Navbar,
@@ -11,7 +12,6 @@ import {
   NavbarMenu,
 } from '@heroui/react';
 import React from 'react';
-import CustomButton from './CustomButton';
 
 const CustomNavbar = ({ bgColor }) => {
   const [textStyle, setTextStyle] = React.useState("text-white");
@@ -47,12 +47,15 @@ const CustomNavbar = ({ bgColor }) => {
           className='sm:hidden'
         />
         <NavbarItem>
-          <Link href='#' className={` text-white transition duration-300`}>
-            Blogs
+          <Link href='/join-waitlist' className={` text-white transition duration-300`}>
+            Join Waitlist
           </Link>
+          {/* <Link href='#' className={` text-white transition duration-300`}>
+            Blogs
+          </Link> */}
         </NavbarItem>
         <NavbarItem>
-          <Link href='#howitworks' className={` text-white transition duration-300`}>
+          <Link href='/#howitworks' className={` text-white transition duration-300`}>
             How it works
           </Link>
         </NavbarItem>
