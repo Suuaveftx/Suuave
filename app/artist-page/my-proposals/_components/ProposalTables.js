@@ -54,7 +54,7 @@ const ProposalTables = () => {
       </div>
 
       {/* Table */}
-      <section className="w-full max-w-[1149px]">
+      <section className="w-full">
         <div className="bg-[#FAFAFA] w-full max-w-6xl lg:ml-16 lg:px-8 lg:pt-4 lg:pb-8 rounded-2xl mb-10">
           {/* Header Row */}
           <div className="grid grid-cols-3 font-bold px-8 py-4 border-b">
@@ -141,7 +141,7 @@ const ProposalTables = () => {
               Next
             </button>
           </div> */}
-          <div className='flex justify-center items-center mt-6 '>
+          <div className='w-full flex justify-center items-center mt-6'>
           <PaginationTab />
           </div>
         </div>

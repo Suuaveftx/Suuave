@@ -190,7 +190,7 @@ const License = () => {
               }}
             />
             <CustomButton
-              text='Publish Project'
+              text='Publish'
               style={{
                 color: '#035A7A',
               }}
