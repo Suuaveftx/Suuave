@@ -13,22 +13,23 @@ import {
 } from '@heroui/react';
 import React from 'react';
 
-const CustomNavbar = ({ bgColor, navbarMenuclass = 0 }) => {
-  const [textStyle, setTextStyle] = React.useState('text-white');
+const CustomNavbar = ({ bgColor }) => {
+  const [textStyle, setTextStyle] = React.useState("text-white");
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const menuItems = [
-    { title: 'Join waitlist', url: '/join-waitlist' },
-    { title: 'How it works', url: '#' },
-    { title: 'FAQs', url: '' },
-    { title: 'About Us', url: '/about-page' },
+    { title: "Blogs", url: "#" },
+    { title: "How it works", url: "#" },
+    { title: "FAQs", url: "" },
+    { title: "About Us", url: "#" },
   ];
 
   return (
     <Navbar
       shouldHideOnScroll
       className={`w-full ${bgColor} items-center justify-between lg:px-4 px-0 font-satoshi ${textStyle}`}
-      classNames={{ wrapper: 'max-w-[1700px] mx-auto px-3 ' }}
+      classNames={{ wrapper: "max-w-[1700px] mx-auto px-3 " }}
+     
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarBrand>
@@ -40,7 +41,7 @@ const CustomNavbar = ({ bgColor, navbarMenuclass = 0 }) => {
           />
         </Link>
       </NavbarBrand>
-      <NavbarContent className='hidden lg:flex gap-14 ' justify='center'>
+      <NavbarContent className="hidden lg:flex gap-14 " justify="center">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           className='sm:hidden'
@@ -77,8 +78,8 @@ const CustomNavbar = ({ bgColor, navbarMenuclass = 0 }) => {
         </NavbarItem>
         <NavbarItem>
           <Link
-            href='/onboarding'
-            className=' cursor-pointer hidden lg:block bg-[radial-gradient(circle,#EAF9FF,#CCE7F2)] font-bold text-base text-[#035A7A] rounded-3xl py-2 px-6'
+            href="/onboarding"
+            className=" cursor-pointer hidden lg:block bg-[radial-gradient(circle,#EAF9FF,#CCE7F2)] font-bold text-base text-[#035A7A] rounded-3xl py-2 px-6"
           >
             Get started
           </Link>
@@ -87,14 +88,14 @@ const CustomNavbar = ({ bgColor, navbarMenuclass = 0 }) => {
           Login
         </Link>
         <NavbarMenuToggle
-          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className={` lg:hidden  text-white font-bold text-lg size-6`}
         />
       </NavbarContent>
-      <NavbarMenu className={`${navbarMenuclass}`}>
+      <NavbarMenu className="lg:mt-20">
         {menuItems.map((item, index) => (
-          <NavbarMenuItem className='space-y-6' key={`${item}-${index}`}>
-            <Link className='w-full text-[#CECECE]' href={item.url} size='lg'>
+          <NavbarMenuItem className="space-y-6" key={`${item}-${index}`}>
+            <Link className="w-full text-[#CECECE]" href={item.url} size="lg">
               {item.title}
             </Link>
           </NavbarMenuItem>
