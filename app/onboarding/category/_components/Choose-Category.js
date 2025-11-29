@@ -18,10 +18,10 @@ const ChooseCategory = () => {
 
   const submitCategory = () => {
     if (!activeCategory) {
+      return alert('Please select a category to proceed.');
     }
-    console.log(activeCategory)
-
     router.push('/onboarding/create-new-account');
+    localStorage.removeItem('activeCategory');
   };
 
   return (

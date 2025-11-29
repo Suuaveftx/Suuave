@@ -8,8 +8,7 @@ import BackButton from "../../../components/BackButton";
 const Page = () => {
   return (
     <main className="flex flex-col lg:flex-row h-full  w-full bg-[#F1F1F1]">
-      <div className=" lg:hidden w-full h-20 ">
-        <BackButton />
+     
       <div className=" lg:hidden w-full h-20 ">
         <BackButton />
       </div>
