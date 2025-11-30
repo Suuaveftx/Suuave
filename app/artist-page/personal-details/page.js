@@ -10,6 +10,7 @@ export default function Page() {
   const [selected, setSelected] = useState("PersonalDetail");
   const [preview, setPreview] = useState("/dev-images/profile.png");
   const [previewPortfolio, setPreviewPortfolio] = useState(null);
+  const [previewAwardCertificate, setPreviewAwardCertificate] = useState(null);
 
   // image preview handler
 
@@ -24,6 +25,13 @@ export default function Page() {
     const file = e.target.files?.[0];
     if (file) {
       setPreviewPortfolio(URL.createObjectURL(file));
+    }
+  };
+
+     const uploadedAwardCertificate = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPreviewAwardCertificate(URL.createObjectURL(file));
     }
   };
 
@@ -50,6 +58,7 @@ export default function Page() {
     nameofAwardCertificate: "",
     awardedIssuedBy: "",
     uploadCertificateAward: "",
+
   });
   return (
     <>
@@ -109,6 +118,8 @@ export default function Page() {
             setSelected={setSelected}
             formData={formData}
             setFormData={setFormData}
+            uploadedAwardCertificate={uploadedAwardCertificate}
+            previewAwardCertificate={previewAwardCertificate}
           />
         )}
       </div>
