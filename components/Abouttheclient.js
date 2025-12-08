@@ -9,7 +9,7 @@ import Image from 'next/image';
 
 const Abouttheclient = () => {
   return (
-    <div className="bg-[#FAFAFA] lg:w-screen lg:max-w-[80%] lg:px-6 px-4 pt-0 pb-[56px] w-screen max-w-96 lg:mx-0 mx-4 rounded-2xl flex flex-col items-center text-center">
+    <div className="bg-[#FAFAFA] lg:w-screen lg:max-w-[80%] lg:px-6 px-4 pt-0 pb-[56px] w-screen max-w-md mx-4 lg:mx-0 rounded-2xl flex flex-col items-center text-center">
       {/* Header */}
       <div className="lg:mb-8 mb-6 px-0 py-4">
         <h4 className="border-b font-bold lg:text-[22px] text-[18px] whitespace-nowrap">
@@ -19,6 +19,7 @@ const Abouttheclient = () => {
 
       {/* Client Image */}
       <div>
+        <Link href="/artist-page/profile-for-artist">
         <Image
           src="/dev-images/Clients.png"
           alt="Client Image"
@@ -26,6 +27,7 @@ const Abouttheclient = () => {
           height={120}
           className="mb-4 rounded-full"
         />
+        </Link>
       </div>
 
       {/* Client Info */}
@@ -45,6 +47,7 @@ const Abouttheclient = () => {
 
           <div className="flex items-center gap-2 justify-center">
             <span className="tracking-[0.33px] text-[#767676]">Ratings:</span>
+            <Link href="/artist-page/review" className='flex gap-2'>
             <div className="flex">
               {Array(5)
                 .fill(null)
@@ -52,7 +55,7 @@ const Abouttheclient = () => {
                   <FaStar key={index} color="#F8B73B" />
                 ))}
             </div>
-            <Link href="/artist-page/review">
+            
               <span className="text-sm text-[#3A98BB] tracking-[0.33px] leading-[18px]">
                 (5 Reviews)
               </span>

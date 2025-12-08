@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export default function PaginationTab() {
   return (
-    <div className="flex items-center w-full max-w-md  px-4 py-2  gap-4">
+    <div className="flex justify-center items-center w-full max-w-md  px-4 py-2  gap-4">
       {/* Text */}
       <p className="text-sm text-gray-600">1–5 of 12</p>
 

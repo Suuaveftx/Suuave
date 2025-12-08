@@ -10,12 +10,12 @@ import {
 } from '@heroui/react';
 import React, { useState } from 'react';
 import CustomButton from './CustomButton';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, User, CreditCard, HelpCircle, Settings, LogOut } from 'lucide-react';
 import Image from 'next/image';
 
 const Navbars = () => {
-  const [textStyle, setTextStyle] = React.useState('text-black');
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [textStyle, setTextStyle] = useState('text-black');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
@@ -76,21 +76,19 @@ const Navbars = () => {
             href={'/artist-page/license-your-design'}
           />
         </NavbarItem>
+
         <div className='flex gap-2'>
           <NavbarItem className='hidden lg:flex'>
             <Image src='/dev-images/Bell.png' alt='Bell' width={24} height={24} />
           </NavbarItem>
           <NavbarItem className='hidden lg:flex'>
             <Link href='/artist-page/messages'>
-              <Image
-                src='/dev-images/Messages.png'
-                alt='Messages'
-                width={24}
-                height={24}
-              />
+              <Image src='/dev-images/Messages.png' alt='Messages' width={24} height={24} />
             </Link>
           </NavbarItem>
         </div>
+
+        {/* PROFILE DROPDOWN */}
         <div className='relative'>
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -114,39 +112,65 @@ const Navbars = () => {
           </button>
 
           {/* Dropdown Menu */}
-          {isOpen && (
-            <div className='absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2'>
-              <Link
-                href='/artist-page/profile-for-artist'
-                className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
-              >
-                My Profile
-              </Link>
-              <Link
-                href='/artist-page/wallet'
-                className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
-              >
-                Wallet
-              </Link>
-              <Link
-                href='/artist-page/settings'
-                className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
-              >
-                Help & Support
-              </Link>
-              <Link
-                href='/artist-page/settings'
-                className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
-              >
-                Settings
-              </Link>
-              <Link href='/#' className='block px-4 py-2 text-gray-700 hover:bg-gray-100'>
-                Logout
-              </Link>
-            </div>
-          )}
+        {/* Dropdown Menu */}
+{isOpen && (
+  <div className='absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2'>
+    <Link
+      href='/artist-page/profile-for-artist'
+      className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100'
+    >
+      <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
+        <User className='w-3 h-3 text-[#222222]' />
+      </div>
+      My Profile
+    </Link>
+
+    <Link
+      href='/artist-page/wallet'
+      className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100'
+    >
+      <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
+        <CreditCard className='w-3 h-3 text-[#222222]' />
+      </div>
+      Wallet
+    </Link>
+
+    <Link
+      href='/artist-page/help'
+      className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100'
+    >
+      <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
+        <HelpCircle className='w-3 h-3 text-[#222222]' />
+      </div>
+      Help And Support
+    </Link>
+
+    <Link
+      href='/artist-page/settings'
+      className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100'
+    >
+      <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
+        <Settings className='w-3 h-3 text-[#222222]' />
+      </div>
+      Settings
+    </Link>
+
+    <Link
+      href='/#'
+      className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100'
+    >
+      <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
+        <LogOut className='w-3 h-3 text-[#222222]' />
+      </div>
+      Logout
+    </Link>
+  </div>
+)}
+
         </div>
+
         <Link className='lg:hidden text-black'>Login</Link>
+
         <NavbarMenuToggle
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           className='sm:hidden text-black font-bold text-lg size-6'
@@ -157,11 +181,7 @@ const Navbars = () => {
       <NavbarMenu>
         {mobileMenuItems.map((item, index) => (
           <NavbarMenuItem key={index}>
-            <Link
-              className='w-full text-black transition duration-300'
-              href={item.href}
-              size='lg'
-            >
+            <Link className='w-full text-black transition duration-300' href={item.href} size='lg'>
               {item.label}
             </Link>
           </NavbarMenuItem>

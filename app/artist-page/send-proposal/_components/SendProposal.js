@@ -37,7 +37,7 @@ const SendProposal = () => {
           <FaChevronLeft color="#878787" />
         </div>
         <div className="w-full border-b-2 lg:text-[34px] text-[20px] font-bold lg:ml-9 lg:mb-[18.68px]">
-          <h4>Send Proposals</h4>
+          <h4>Send Proposal</h4>
         </div>
       </div>
 
