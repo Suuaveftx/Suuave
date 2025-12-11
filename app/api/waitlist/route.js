@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { sql } from '../../../lib/neon';
+import { sql } from '../../../src/lib/neon';
 
 // GET - Fetch all waitlist entries
 export async function GET() {
