@@ -203,8 +203,12 @@ const License = () => {
               }}
             />
             <CustomButton
+<<<<<<< HEAD
               text='Publish Project'
               className='w-full lg:w-auto'
+=======
+              text='Publish'
+>>>>>>> origin/development
               style={{
                 color: '#035A7A',
               }}

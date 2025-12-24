@@ -48,7 +48,11 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
         <div className="lg:hidden mt-[-4px]" onClick={() => router.back()}>
           <FaChevronLeft color="#878787" />
         </div>
+<<<<<<< HEAD
         <div className="w-full lg:text-[34px] text-[20px] font-bold lg:ml-9 lg:mb-[18.68px]">
+=======
+        <div className="w-full border-b-2 lg:text-[34px] text-[20px] font-bold lg:ml-9 lg:mb-[18.68px]">
+>>>>>>> origin/development
           <h4>Send Proposal</h4>
         </div>
       </div>

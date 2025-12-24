@@ -14,16 +14,27 @@ export const Global = () => {
             <br className='hidden lg:block' /> with a vision to cover the global stage.
           </h2>
 
-          <div className=' hidden lg:block overflow-hidden mt-[46px] h-[294px] lg:h-[439px]'>
-            <Image
-              src={mapImageSrc}
-              alt='World Map with Office Location in Lagos, Nigeria'
-              layout='responsive'
-              width={800}
-              height={400}
-              className='h-[294px] lg:h-[439px]'
-              // objectFit="cover"
-            />
+          <div
+            style={{
+              backgroundImage: `url(/svg/location-map.svg)`,
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+            className=' bg-[#EAEAEA80] hidden lg:flex items-center overflow-hidden mt-[46px] h-[294px] lg:h-[439px]'
+          >
+            <div className='bg-[#FAFAFA] shadow-md rounded-[8px] p-5 gap-2 w-[230px] ml-[60px] mt-[40px]'>
+              <div className=' flex '>
+                <Image
+                  width={24}
+                  height={24}
+                  alt='map-icon'
+                  src='/svg/location-icon.svg'
+                />
+                <p className='text-[#222222] font-600 text-lg'>Office Location</p>
+              </div>
+              <p className='text-[#767676] font-400 text-base'>Lagos, Nigeria.</p>
+            </div>
           </div>
 
           <div className=' lg:hidden overflow-hidden mt-[46px] h-[294px] lg:h-[439px]'>

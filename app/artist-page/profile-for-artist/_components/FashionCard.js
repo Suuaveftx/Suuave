@@ -143,6 +143,7 @@ const FashionCard = ({ isVisitor = false }) => {
           ))}
         </div>
 
+<<<<<<< HEAD
         {activeTab === "design" && (
           <div>
             {/* GRID */}
@@ -213,6 +214,84 @@ const FashionCard = ({ isVisitor = false }) => {
             </div>
           </div>
         )}
+=======
+      {activeTab === "design" && (
+  <div>
+    {/* GRID */}
+    <div className="relative grid grid-cols-2 gap-2 sm:grid-cols-2 sm:gap-4 md:grid-cols-3">
+      {[...Array(6)].map((_, i) => (
+        <div
+          key={i}
+          className={`relative border rounded-lg shadow w-[95%] sm:w-full h-60 bg-cover bg-center flex items-end 
+            ${!showAll && i > 3 ? "hidden sm:flex" : ""}`}
+          style={{ backgroundImage: `url('/dev-images/FashionImg.png')` }}
+        >
+          {/* Eye icon + number - MOBILE ONLY */}
+          <div className="absolute top-2 left-2 sm:hidden flex items-center gap-1 px-2 py-1 mt-2 bg-black bg-opacity-50 rounded-md text-white text-xs font-medium">
+            <Eye size={16} />
+            <span>14</span>
+          </div>
+
+          {/* Three Dots Menu */}
+          <div className="absolute top-0 lg:ml-[250px] ml-[128px] mt-1 flex items-center justify-center rounded-md w-10 cursor-pointer">
+            <ThreeDotsDropdown />
+          </div>
+
+          {/* Bottom Content */}
+          <div className="lg:bg-black lg:bg-opacity-50 bg-white lg:text-white text-[#222222] w-full">
+            {/* Mobile layout */}
+            <div className="sm:hidden p-2">
+              <p className="font-semibold lg:text-base text-sm">Casual Top Design</p>
+              <div className="flex justify-between items-center">
+                <p className="font-bold">$235</p>
+                <p className="text-sm">Licensed 14</p>
+              </div>
+            </div>
+
+            {/* Desktop/tablet layout */}
+            <div className="hidden sm:block">
+              <div className="flex justify-between items-center p-2">
+                <p className="font-semibold">Casual Top Design</p>
+                <p className="font-bold">$235</p>
+              </div>
+              <div className="flex gap-4 items-center pl-2">
+                <div className="flex items-center gap-2">
+                  <Eye size={16} />
+                  <span>14</span>
+                </div>
+                <p className="text-sm">Licensed 14</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Plus Button after 4th card - MOBILE ONLY */}
+          {!showAll && i === 3 && (
+            <button
+              onClick={() => setShowAll(true)}
+              className="absolute sm:hidden w-12 h-12 rounded-full text-[#035A7A] flex items-center justify-center shadow-lg"
+              style={{
+                background: "radial-gradient(circle, #CCE7F2, #F4FCFF)",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              <Plus size={24} />
+            </button>
+          )}
+        </div>
+      ))}
+    </div>
+
+    {/* VIEW MORE BUTTON */}
+    <div className="w-full flex justify-center mt-6">
+      <button className="px-6 py-2 bg-transparent border border-[#CCE7F2] text-[#222222] rounded-lg">
+        View More
+      </button>
+    </div>
+  </div>
+)}
+>>>>>>> origin/development
 
         {activeTab === 'awards' && (
           <div className='flex flex-col items-center w-full'>

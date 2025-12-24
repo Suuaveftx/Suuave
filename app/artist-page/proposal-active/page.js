@@ -53,7 +53,11 @@ const Page = () => {
           />
 
         </div>
+<<<<<<< HEAD
         <div>
+=======
+ <div>
+>>>>>>> origin/development
           {" "}
           {/* tighter spacing */}
           <Abouttheclient />
