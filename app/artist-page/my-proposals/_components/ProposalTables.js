@@ -144,11 +144,7 @@ const ProposalTables = () => {
             </button>
           </div> */}
           <div className='w-full flex justify-center items-center mt-6'>
-<<<<<<< HEAD
             <PaginationTab />
-=======
-          <PaginationTab />
->>>>>>> origin/development
           </div>
         </div>
       </section>
