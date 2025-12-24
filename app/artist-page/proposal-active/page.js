@@ -8,12 +8,27 @@ import {
 
   useDisclosure,
 } from "@heroui/react";
+import { useRouter } from "next/navigation";
 import ProposalActive from "./_components/ProposalActive";
 const Page = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+  const router = useRouter();
+
   const handleSubmitProposal = () => {
-    onOpen();
+    // Mock data from ProposalActive.js
+    const coverLetter = "I am excited to apply for the Fashion Illustrator position at [Company/Brand Name]. With a strong background in fashion design and a keen eye for detail, I specialize in creating illustrations that bring concepts to life—from high fashion editorial looks to commercial-ready garment designs.\nMy illustration style blends creativity with clarity, ensuring each sketch communicates not just the outfit, but the story behind it. I am skilled in both traditional hand-drawn techniques and digital illustration tools like Adobe Illustrator, Photoshop, and Procreate.";
+    const price = "N200,00";
+    const duration = "5 Days";
+
+    const params = new URLSearchParams({
+      coverLetter,
+      price,
+      duration,
+      edit: 'true'
+    });
+
+    router.push(`/artist-page/send-proposal?${params.toString()}`);
   };
   return (
     <div className="grid grid-cols-10 gap-2">
@@ -29,21 +44,21 @@ const Page = () => {
           {" "}
           {/* tighter spacing */}
           <BtnProposals
-  sendText="Edit Proposal"
-  saveText="Withdraw Proposal"
-  showSaveIcon={false}
-  handleSubmitProposal={handleSubmitProposal}
-  isOpen={isOpen}
-  onOpenChange={onOpenChange}
-/>
+            sendText="Edit Proposal"
+            saveText="Withdraw Proposal"
+            showSaveIcon={false}
+            handleSubmitProposal={handleSubmitProposal}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+          />
 
         </div>
- <div>
+        <div>
           {" "}
           {/* tighter spacing */}
           <Abouttheclient />
         </div>
-        
+
       </div>
     </div>
   );

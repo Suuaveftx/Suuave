@@ -9,7 +9,7 @@ const PostDetailsPage = () => {
         <h1 className='ml-16 font-bold text-2xl border-b lg:flex hidden'>Job Details</h1>
       </section>
       <section>
-        <div className='bg-[#FAFAFA] lg:px-8 lg:py-8 lg:pb-[42px] lg:mx-16 rounded-2xl lg:w-screen lg:max-w-[85%] lg:h-auto  w-screen max-w-[90%] px-4 pt-8 pb-6  mx-4 mt-[19px]'>
+        <div className='bg-[#FAFAFA] lg:px-8 lg:py-8 lg:pb-[42px] lg:mx-16 rounded-2xl lg:w-screen lg:max-w-[85%] lg:h-auto w-full max-w-[100%] px-4 pt-8 pb-6 mt-[19px]'>
           <div className='text-sm text-[#767676] tracking-[0.33px] flex justify-between lg:mb-8 mb-4'>
             <div className='lg:flex hidden'>
               <span>Posted 2 days ago</span>
@@ -25,7 +25,7 @@ const PostDetailsPage = () => {
               </div>
             </div>
           </div>
-          <div className='lg:font-bold lg:text-[22px] lg:w-screen lg:max-w-[100%] w-screen max-w-[100%]'>
+          <div className='lg:font-bold lg:text-[22px] lg:w-screen lg:max-w-[100%] w-full max-w-[100%]'>
             <div className='flex items-center gap-6'>
               <h4 className='font-bold text-[20px] leading-6 whitespace-nowrap'>
                 Modern Fashion Attire Illustration

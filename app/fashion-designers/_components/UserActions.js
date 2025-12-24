@@ -21,7 +21,16 @@ import CustomButton from "../../../components/CustomButton";
 import Link from "next/link";
 import Notification from "./Notification";
 
+import { useRouter } from "next/navigation";
+
 export function UserActions() {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.removeItem("activeCategory");
+    router.push("/");
+  };
+
   return (
     <div className="flex items-center gap-6 font-satoshi">
       {/* <Button className="bg-[#A0D3E8] text-[#007B7F] font-bold hover:bg-[#007B7F] hover:text-white transition-colors shadow-[0px_2px_4px_rgba(0,0,0,0.1)] rounded-lg">
@@ -66,7 +75,6 @@ export function UserActions() {
             <div className="flex items-center gap-2">
               <Avatar
                 src="https://i.pravatar.cc/150?img=8"
-                className="cursor-pointer"
                 isBordered
                 color="success"
               />
@@ -77,8 +85,8 @@ export function UserActions() {
             <DropdownItem
               startContent={<LuCircleUser className="size-4" />}
               key="profile"
-               as={Link}
-    href="/fashion-designers/profile"
+              as={Link}
+              href="/fashion-designers/profile"
             >
               Profile
             </DropdownItem>
@@ -100,14 +108,14 @@ export function UserActions() {
             >
               Messages
             </DropdownItem>
-           
+
             <DropdownItem
               startContent={<ClipboardList className="size-4" />}
               key="transaction-history"
             >
               Transaction History
             </DropdownItem>
-             <DropdownItem
+            <DropdownItem
               startContent={<HiOutlinePhone className="size-4" />}
               key="support"
             >
@@ -117,7 +125,7 @@ export function UserActions() {
               startContent={<TbSettings className="size-4" />}
               key="settings"
               as={Link}
-    href="/artist-page/settings"
+              href="/artist-page/settings"
             >
               Settings
             </DropdownItem>
@@ -126,6 +134,7 @@ export function UserActions() {
               key="logout"
               className="text-danger"
               color="danger"
+              onClick={handleLogout}
             >
               Logout
             </DropdownItem>

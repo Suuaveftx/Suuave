@@ -3,21 +3,33 @@ import React, { useState } from 'react';
 import { Paperclip } from 'lucide-react';
 import { FaChevronLeft } from 'react-icons/fa';
 import { IoMdInformationCircleOutline } from 'react-icons/io';
-import { useDisclosure } from '@heroui/react';
 import ProposalPopUpMobile from './ProposalPopUpMobile';
-import { useRouter } from 'next/navigation';
+import ProposalPopUp from './ProposalPopUp';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-const SendProposal = () => {
+const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobId }) => {
   const router = useRouter();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isExpanded, setIsExpanded] = useState(false);
-  const [selected, setSelected] = useState('5 Days');
+  const searchParams = useSearchParams();
+
+  // Get initial values from URL or defaults
+  const initialCoverLetter = searchParams.get('coverLetter') || '';
+  const initialPrice = searchParams.get('price') || 'N200,000';
+  const initialDuration = searchParams.get('duration') || '5 Days';
+
+  const [selected, setSelected] = useState(initialDuration);
   const [open, setOpen] = useState(false);
 
   // ✅ Handle sending proposal
   const handleSendProposal = () => {
     // Save to local storage
-    localStorage.setItem('proposalActive', 'true');
+    if (jobId) {
+      const activeProposals = JSON.parse(localStorage.getItem('activeProposals') || '{}');
+      activeProposals[jobId] = true;
+      localStorage.setItem('activeProposals', JSON.stringify(activeProposals));
+    } else {
+      localStorage.setItem('proposalActive', 'true');
+    }
     console.log('Proposal sent ✅');
 
     // Redirect to active proposal page
@@ -33,35 +45,35 @@ const SendProposal = () => {
     <>
       {/* Back icon and header section */}
       <div className="flex items-center lg:mt-0 mt-4 px-4 py-[10px] mx-4 gap-4">
-        <div className="lg:hidden mt-[-4px]">
+        <div className="lg:hidden mt-[-4px]" onClick={() => router.back()}>
           <FaChevronLeft color="#878787" />
         </div>
-        <div className="w-full border-b-2 lg:text-[34px] text-[20px] font-bold lg:ml-9 lg:mb-[18.68px]">
+        <div className="w-full lg:text-[34px] text-[20px] font-bold lg:ml-9 lg:mb-[18.68px]">
           <h4>Send Proposal</h4>
         </div>
       </div>
 
       {/* Related Job Section */}
-      <div className="bg-[#FAFAFA] text-[#222222] px-8 py-8 lg:mx-16 mx-4 w-[90%] rounded-2xl border border-[#EAEAEA]">
-        <h4 className="font-bold leading-7">Related Job</h4>
-        <div className="flex justify-between mt-6">
-          <div className="text-sm text-[#767676] leading-[18px] tracking-[0.33px]">
-            <span>Posted: 23-06-2024</span>
+      <div className="bg-[#FAFAFA] text-[#222222] px-6 py-6 lg:mx-16 mx-4 w-[90%] rounded-2xl border border-[#EAEAEA]">
+        <h4 className="font-bold leading-7 text-lg">Related Job</h4>
+        <div className="flex justify-between mt-4">
+          <div className="text-xs text-[#767676] leading-[18px] tracking-[0.33px]">
+            <span>Posted : 23-06-2024</span>
           </div>
-          <div className="flex gap-2 text-sm leading-[18px] tracking-[0.33px]">
-            <span className="text-[#767676]">Job Status:</span>
+          <div className="flex gap-2 text-xs leading-[18px] tracking-[0.33px]">
+            <span className="text-[#767676]">Job Status :</span>
             <span className="text-[#056D16]">Active</span>
           </div>
         </div>
-        <div className="font-bold text-[#222222] mt-4">
+        <div className="font-bold text-[#222222] mt-3 text-base">
           Modern Fashion Attire Illustration
         </div>
-        <div className="mt-4 text-[#767676]">
+        <div className="mt-3 text-[#767676] text-sm leading-6">
           {isExpanded ? fullText : `${previewText}... `}
           {!isExpanded && (
             <span
               onClick={() => setIsExpanded(true)}
-              className="text-[#3A98BB] cursor-pointer"
+              className="text-[#3A98BB] cursor-pointer ml-1"
             >
               View Post
             </span>
@@ -70,82 +82,82 @@ const SendProposal = () => {
       </div>
 
       {/* Proposal Form Section */}
-      <div className="bg-[#FAFAFA] flex flex-col gap-2 border border-[#EAEAEA] px-8 py-8 pb-[42px] lg:mx-16 mx-auto mt-4 rounded-2xl lg:w-[90%] w-[90%] lg:mb-[240.32px]">
-        <div className="font-bold text-2xl leading-6">Write Proposal</div>
+      <div className="bg-[#FAFAFA] flex flex-col gap-6 border border-[#EAEAEA] px-6 py-6 pb-[42px] lg:mx-16 mx-auto mt-4 rounded-2xl lg:w-[90%] w-[90%]">
+        <div className="font-bold text-xl leading-6">Write Proposal</div>
 
         {/* Cover Letter */}
         <div className="w-full">
           <label
             htmlFor="cover-letter"
-            className="block text-[#222222] font-semibold text-base tracking-[0.33px] mb-2"
+            className="block text-[#222222] font-semibold text-sm tracking-[0.33px] mb-2"
           >
             Cover Letter
           </label>
           <textarea
             id="cover-letter"
-            placeholder="Write your proposal..."
-            className="w-full min-h-[150px] px-[10px] py-[10px] border border-[#D1D1D1] rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-[#3A98BB] text-sm text-[#222222]"
+            placeholder="Write your proposal"
+            defaultValue={initialCoverLetter}
+            className="w-full min-h-[150px] px-[10px] py-[10px] border border-[#D1D1D1] rounded-lg resize-y focus:outline-none focus:ring-1 focus:ring-[#3A98BB] text-sm text-[#222222] bg-white"
           ></textarea>
         </div>
 
         {/* Attach File */}
-        <div className="mt-6">
-          <h4 className="text-base font-semibold">
-            Attach File <span className="text-sm text-gray-500">(Optional)</span>
+        <div>
+          <h4 className="text-sm font-semibold text-[#222222]">
+            Attach File <span className="text-xs text-[#767676]">(Optional)</span>
           </h4>
-          <span className="text-sm leading-[18px] tracking-[0.33px] mt-1 block">
-            You can upload a sample of your work or projects. This helps to showcase
-            your skill level to the client.
+          <span className="text-xs text-[#767676] leading-[18px] tracking-[0.33px] mt-1 block">
+            You can upload sample of your work or projects to help showcase your skill level to the client.
           </span>
-          <div className="mt-4 flex items-center gap-2 w-full">
+          <div className="mt-3 w-full">
             <label
               htmlFor="file-upload"
-              className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-lg cursor-pointer text-sm text-gray-700 hover:bg-gray-100 transition px-8 py-8"
+              className="w-full flex items-center justify-center gap-2 border border-[#EAEAEA] bg-white rounded-lg cursor-pointer text-sm text-[#767676] hover:bg-gray-50 transition py-3"
             >
-              <Paperclip className="text-[#035A7A] w-5 h-5" />
-              Upload necessary file
+              <Paperclip className="text-[#3A98BB] w-4 h-4" />
+              Upload file
             </label>
             <input id="file-upload" type="file" className="hidden" />
           </div>
         </div>
 
         {/* Price Input */}
-        <div className="mt-6 space-y-2">
-          <label className="text-base text-[#222222] font-semibold block">
-            How much are you charging for this work?
+        <div className="space-y-2">
+          <label className="text-sm text-[#222222] font-semibold block">
+            How Much Are You Charging For This Work?
           </label>
-          <div className="flex items-center gap-2 text-sm text-[#767676]">
-            <IoMdInformationCircleOutline color="#878787" />
+          <div className="flex items-center gap-1 text-xs text-[#767676]">
+            <IoMdInformationCircleOutline className="w-4 h-4" />
             <span>
               10% commission charge applies{' '}
               <a href="#" className="text-[#3A98BB]">
-                Learn More
+                Learn more
               </a>
             </span>
           </div>
-          <input
-            type="text"
-            value="N200,00"
-            readOnly
-            className="w-full border border-gray-300 rounded-md px-[10px] py-[10px] text-base text-[#3A98BB] bg-gray-50"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              defaultValue={initialPrice}
+              className="w-full border border-[#EAEAEA] rounded-lg px-[10px] py-3 text-sm font-semibold text-[#3A98BB] bg-[#FAFAFA]"
+            />
+          </div>
         </div>
 
-        {/* Dropdown */}
-        <div className="mt-6 relative inline-block w-full">
-          <label className="text-base font-semibold block mb-2">
-            How long will it take you to complete this work?
+        {/* Duration Dropdown */}
+        <div className="relative w-full">
+          <label className="text-sm font-semibold block mb-2 text-[#222222]">
+            How Long Will It Take You To Complete This Work?
           </label>
           <button
             type="button"
-            className="w-[50%] border border-gray-300 rounded-md px-4 py-2 bg-white text-sm flex justify-between items-center"
+            className="w-full border border-[#EAEAEA] rounded-lg px-4 py-3 bg-white text-sm text-[#767676] flex justify-between items-center"
             onClick={() => setOpen((prev) => !prev)}
           >
             <span>{selected}</span>
             <svg
-              className={`w-4 h-4 ml-2 transform transition-transform ${
-                open ? 'rotate-180' : 'rotate-0'
-              }`}
+              className={`w-4 h-4 ml-2 transform transition-transform ${open ? 'rotate-180' : 'rotate-0'
+                }`}
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -156,11 +168,11 @@ const SendProposal = () => {
           </button>
 
           {open && (
-            <ul className="absolute left-0 w-[50%] bg-white border border-gray-200 shadow-md rounded-md mt-1 z-10">
-              {['1 Day', '3 Days', '5 Days', '7 Days', '10 Days'].map((option) => (
+            <ul className="absolute left-0 w-full bg-white border border-gray-200 shadow-lg rounded-lg mt-1 z-10">
+              {options.map((option) => (
                 <li
                   key={option}
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                  className="px-4 py-3 hover:bg-gray-50 cursor-pointer text-sm text-[#767676]"
                   onClick={() => {
                     setSelected(option);
                     setOpen(false);
@@ -174,19 +186,28 @@ const SendProposal = () => {
         </div>
 
         {/* Mobile Buttons */}
-        <div className="lg:hidden flex justify-center gap-4 mt-6">
-          <button className="px-6 py-2 bg-gray-200 text-[#767676] font-medium rounded-full w-32">
+        <div className="lg:hidden flex justify-between gap-4 mt-4">
+          <button
+            className="flex-1 py-3 bg-[#F0F0F0] text-[#222222] font-medium rounded-full text-sm"
+            onClick={() => router.back()}
+          >
             Cancel
           </button>
 
           <button
-            onClick={handleSendProposal}
-            className="px-6 py-2 bg-[#3A98BB] text-white font-medium rounded-full w-32"
+            onClick={handleSubmitProposal}
+            className="flex-1 py-3 bg-[#CCE7F2] text-[#0A4A66] font-bold rounded-full text-sm shadow-sm"
           >
             Send Proposal
           </button>
         </div>
       </div>
+
+      {/* About the Client Section */}
+
+
+      {/* Mobile Popup */}
+      <ProposalPopUpMobile isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );
 };

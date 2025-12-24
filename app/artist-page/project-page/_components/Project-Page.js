@@ -9,18 +9,24 @@ const ProjectPage = () => {
   const [loading, setLoading] = useState(true);
   const [showLicence, setShowLicence] = useState(false);
 
+  const [activeProposals, setActiveProposals] = useState({});
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1500);
+
+    // Load active proposals
+    const storedProposals = JSON.parse(localStorage.getItem('activeProposals') || '{}');
+    setActiveProposals(storedProposals);
+
     return () => clearTimeout(timer);
   }, []);
 
   const tabClasses = (tab) =>
-    `px-1 py-2 cursor-pointer ${
-      activeTab === tab
-        ? 'text-[#3A98BB] font-bold border-b-[3px] border-[#3A98BB]'
-        : 'text-gray-500'
+    `px-1 py-2 cursor-pointer ${activeTab === tab
+      ? 'text-[#3A98BB] font-bold border-b-[3px] border-[#3A98BB]'
+      : 'text-gray-500'
     }`;
 
   const jobData = [
@@ -50,23 +56,27 @@ const ProjectPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {loading
           ? [...Array(6)].map((_, index) => (
-              <div
-                key={index}
-                className="animate-pulse px-4 py-6 bg-white border border-[#EAEAEA] rounded-2xl shadow-sm mt-6"
-              >
-                <div className="h-4 w-20 bg-gray-200 rounded mb-2"></div>
-                <div className="h-5 w-3/4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-3 w-1/2 bg-gray-200 rounded mb-2"></div>
-                <div className="h-3 w-full bg-gray-200 rounded mb-2"></div>
-                <div className="flex px-6 py-4 mt-4">
-                  <div className="h-6 w-16 bg-gray-200 rounded-full"></div>
-                  <div className="h-6 w-16 bg-gray-200 rounded-full"></div>
-                  <div className="h-6 w-16 bg-gray-200 rounded-full"></div>
-                </div>
-                <div className="h-4 w-24 bg-gray-200 rounded mt-4"></div>
+            <div
+              key={index}
+              className="animate-pulse px-4 py-6 bg-white border border-[#EAEAEA] rounded-2xl shadow-sm mt-6"
+            >
+              <div className="h-4 w-20 bg-gray-200 rounded mb-2"></div>
+              <div className="h-5 w-3/4 bg-gray-200 rounded mb-2"></div>
+              <div className="h-3 w-1/2 bg-gray-200 rounded mb-2"></div>
+              <div className="h-3 w-full bg-gray-200 rounded mb-2"></div>
+              <div className="flex px-6 py-4 mt-4">
+                <div className="h-6 w-16 bg-gray-200 rounded-full"></div>
+                <div className="h-6 w-16 bg-gray-200 rounded-full"></div>
+                <div className="h-6 w-16 bg-gray-200 rounded-full"></div>
               </div>
-            ))
-          : [...Array(6)].map((_, index) => (
+              <div className="h-4 w-24 bg-gray-200 rounded mt-4"></div>
+            </div>
+          ))
+          : [...Array(6)].map((_, index) => {
+            const jobId = `job-${index}`;
+            const isApplied = activeProposals[jobId];
+
+            return (
               <div key={index} className={`relative ${index > 1 ? 'hidden md:block' : ''}`}>
                 {/* Only show the circle/button on the 2nd card and only on mobile */}
                 {index === 1 && (
@@ -90,19 +100,19 @@ const ProjectPage = () => {
                       </div>
                     ) : (
                       <div className='mt-[-80px] mr-[40px]'>
-                      <div
-                        className="absolute w-[52px] h-[52px] flex items-center justify-center bg-[#E0F4FB] rounded-full shadow-sm cursor-pointer mt-[30px] transition-all duration-300 ease-in-out"
-                        onClick={() => setShowLicence(true)}
-                      >
-                        <FiPlus className="text-[#3A98BB]" />
-                      </div>
+                        <div
+                          className="absolute w-[52px] h-[52px] flex items-center justify-center bg-[#E0F4FB] rounded-full shadow-sm cursor-pointer mt-[30px] transition-all duration-300 ease-in-out"
+                          onClick={() => setShowLicence(true)}
+                        >
+                          <FiPlus className="text-[#3A98BB]" />
+                        </div>
                       </div>
                     )}
                   </div>
                 )}
 
                 {/* Job Card */}
-                <Link href={`/artist-page/job-details-page`} className="block">
+                <Link href={`/artist-page/job-details-page?id=${jobId}`} className="block">
                   <div className="relative px-4 py-6 bg-white border border-[#EAEAEA] rounded-2xl shadow-sm cursor-pointer mt-6">
                     {/* Top-right Icons */}
                     <div className="absolute top-4 right-4 flex gap-4">
@@ -113,7 +123,9 @@ const ProjectPage = () => {
                     {/* Job Info */}
                     <p className="text-[#878787] text-xs leading-4">
                       Job Status:{' '}
-                      <span className="text-green-600">{jobData[0].status}</span>
+                      <span className={isApplied ? "text-[#035A7A] font-medium" : "text-green-600"}>
+                        {isApplied ? 'Applied' : jobData[0].status}
+                      </span>
                     </p>
                     <h2 className="text-lg text-[#222222] font-bold mt-2">
                       {jobData[0].title}
@@ -140,7 +152,8 @@ const ProjectPage = () => {
                   </div>
                 </Link>
               </div>
-            ))}
+            )
+          })}
       </div>
     </div>
   );

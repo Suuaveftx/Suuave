@@ -1,15 +1,45 @@
 'use client';
 import React from 'react';
+import Image from 'next/image';
 import { FaStar } from 'react-icons/fa';
 import CustomButton from '../../../../components/CustomButton';
 import { IoLocationSharp } from 'react-icons/io5';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Pencil } from 'lucide-react';
+import {
+  EditAboutMe,
+  EditProfile,
+  EditTitle,
+} from "../../../fashion-designers/_components/profile/edit";
 
-const ProfileArtist = () => {
+const ProfileArtist = ({ isVisitor = false }) => {
+  const fullText = `Sorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex.`;
+
   const [isExpanded, setIsExpanded] = useState(false);
+  const [aboutValue, setAboutValue] = useState(fullText);
+  const [titleValue, setTitleValue] = useState("Fashion Artist | 3D Illustrator");
+  const [selectedProfile, setSelectedProfile] = useState(null);
+  const [previewProfileUrl, setPreviewProfileUrl] = useState(null);
+  const [userRole, setUserRole] = useState(null);
 
-  const text = `Sorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex.`;
+  useEffect(() => {
+    // Access localStorage in useEffect to avoid hydration issues
+    const role = isVisitor ? 'Fashion Designer' : localStorage.getItem('activeCategory');
+    setUserRole(role);
+  }, [isVisitor]);
+
+  // File handler
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Revoke previous URL to prevent memory leaks
+      setPreviewProfileUrl((prevUrl) => {
+        if (prevUrl) URL.revokeObjectURL(prevUrl);
+        return URL.createObjectURL(file);
+      });
+      setSelectedProfile(file);
+    }
+  };
 
   return (
     <div
@@ -21,19 +51,36 @@ const ProfileArtist = () => {
           {/* Profile Initials */}
           <div className='relative w-28 h-28'>
             {/* Circle */}
-            <div className='w-[100px] h-[100px] lg:bg-[#EAEAEA] bg-[#035A7A] lg:text-[#035A7A] text-[#ffffff] text-xl font-bold flex items-center justify-center rounded-full ml-4 lg:mb-7'>
-              OC
+            <div className='w-[100px] h-[100px] flex items-center justify-center rounded-full ml-4 lg:mb-7 overflow-hidden relative'>
+              {previewProfileUrl ? (
+                <Image
+                  src={previewProfileUrl}
+                  alt="Preview"
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <Image
+                  src='/dev-images/Clients.png'
+                  alt='Profile Picture'
+                  fill
+                  className='object-cover'
+                />
+              )}
             </div>
 
             {/* Edit Icon */}
-            <button className='absolute -top-1 -right-1 mt-4  rounded-full p-1'>
-              <Pencil className='w-[18px] h-[18px] text-[#035A7A]' />
-            </button>
+            {userRole === 'Fashion Artist' && (
+              <EditProfile
+                handleFileChange={handleFileChange}
+                className="bottom-2 right-0 translate-x-1/4 translate-y-1/4 shadow-md bg-white p-1.5"
+              />
+            )}
           </div>
 
           {/* Name */}
           <div className='lg:mt-7'>
-          <h4 className='lg:text-2xl font-semibold text-lg text-[#222222] lg:leading-6'>OCEAN CLARA</h4>
+            <h4 className='lg:text-2xl font-semibold text-lg text-[#222222] lg:leading-6'>OCEAN CLARA</h4>
           </div>
 
           {/* Availability Status */}
@@ -46,31 +93,19 @@ const ProfileArtist = () => {
           </div>
 
           {/* Occupation */}
-         <div className="flex items-center gap-2 w-full">
-  <p className="text-[#222222] text-sm">
-    Fashion Artist | 3D Illustrator
-  </p>
+          <div className="flex items-center gap-2 w-full justify-center lg:justify-start">
+            <p className="text-[#222222] text-sm">
+              {titleValue}
+            </p>
 
-  {/* Edit Button */}
- <button className="bg-[radial-gradient(circle_at_top_left,_#ffffff,_#CCE7F2)] flex font-bold items-center gap-1 text-[#3A98BB] text-base px-4 py-2 rounded-full space-x-2">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="#3A98BB"
-    className="w-4 h-4"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M16.862 3.487l2.651 2.651M4.5 19.5l3.741-.83a2.25 2.25 0 00.99-.563l9.48-9.48a2.25 2.25 0 000-3.182l-1.737-1.737a2.25 2.25 0 00-3.182 0l-9.48 9.48a2.25 2.25 0 00-.563.99L4.5 19.5z"
-    />
-  </svg>
-  Edit
-</button>
+            {/* Edit Button */}
+            {userRole === 'Fashion Artist' && (
+              <div className="flex items-center">
+                <EditTitle setTitleValue={setTitleValue} titleValue={titleValue} />
+              </div>
+            )}
 
-</div>
+          </div>
 
 
           {/* Location */}
@@ -92,37 +127,54 @@ const ProfileArtist = () => {
           </span>
         </div>
 
-        {/* Edit Profile Button */}
-        <div className=' hidden pb-8 lg:flex justify-center lg:justify-start mt-[39px] border-b'>
-          <CustomButton
-            text='Edit Profile'
-            className='w-52 text-sm font-medium'
-            style={{
-              color: '#035A7A',
-            }}
-          />
-        </div>
+        {/* Retain Artist Button - Mobile */}
+        {userRole !== 'Fashion Artist' && (
+          <div className='flex lg:hidden justify-center w-full mt-6 mb-6'>
+            <button className='w-1/2 py-3 bg-gradient-to-r from-[#D0EBF7] to-[#D0EBF7] text-[#035A7A] font-bold rounded-full shadow-sm text-base'>
+              Retain Artist
+            </button>
+          </div>
+        )}
+
+        {/* Retain Artist Button - Desktop */}
+        {userRole !== 'Fashion Artist' && (
+          <div className=' hidden pb-8 lg:flex justify-center lg:justify-start mt-[39px] border-b'>
+            <CustomButton
+              text='Retain Artist'
+              className='w-52 text-sm font-medium'
+              style={{
+                color: '#035A7A',
+              }}
+            />
+          </div>
+        )}
       </div>
 
       {/* Stats */}
-      <div className='hidden lg:flex justify-between w-full text-sm text-[#222222] lg:px-6'>
-        <h4>Design Collections</h4>
-        <span>14</span>
-      </div>
+      <div className='w-full lg:px-6 px-4 mt-4 lg:mt-0 border-b lg:border-none pb-4 lg:pb-0'>
+        <div className='flex flex-row lg:flex-col justify-center gap-6 lg:gap-0 lg:space-y-2'>
+          <div className='flex items-center gap-2 lg:justify-between text-sm text-[#222222] lg:w-full'>
+            <span className='font-bold lg:font-normal lg:order-last'>14</span>
+            <h4 className='text-[#767676] text-[16px]'>Design Collections</h4>
+          </div>
 
-      <div className='hidden lg:flex justify-between w-full border-b border-gray-300 pb-2 text-sm text-[#222222] lg:px-6'>
-        <h4>Completed Projects</h4>
-        <span>14</span>
+          <div className='flex items-center gap-2 lg:justify-between text-sm text-[#222222] lg:w-full'>
+            <span className='font-bold lg:font-normal lg:order-last'>14</span>
+            <h4 className='text-[#767676] text-[16px]'>Completed Projects</h4>
+          </div>
+        </div>
       </div>
 
       {/* About Us Section */}
       <div className='lg:bg-[#ffffff] bg-[#fafafa] w-full flex flex-col items-start lg:px-6 px-4 lg:py-0 py-2 text-left lg:mt-0 mt-[10px]'>
         {/* Heading with Edit Icon */}
-        <div className='flex items-center w-full mt-[22px]'>
+        <div className='flex items-center w-full mt-[22px] justify-between'>
           <h4 className='lg:text-[#444444] text-base text-[#222222] lg:font-normal font-bold'>
             About Me
           </h4>
-          <Pencil className='w-4 h-4 text-[#035A7A] cursor-pointer ml-auto' />
+          {userRole === 'Fashion Artist' && (
+            <EditAboutMe setAboutValue={setAboutValue} aboutValue={aboutValue} />
+          )}
         </div>
 
         {/* Text */}
@@ -131,10 +183,10 @@ const ProfileArtist = () => {
       ${isExpanded ? '' : 'line-clamp-3'} 
       lg:line-clamp-none`}
         >
-          {text}
+          {aboutValue}
         </p>
 
-        
+
       </div>
     </div>
   );

@@ -6,8 +6,19 @@ import SearchBar from '../../../components/Searchbar'
 const Page = () => {
   return (
     <div>
-      <div className='text-2xl font-bold ml-8 mt-8 text-[#767676]'>
-      <h1>My Contracts</h1>
+      {/* Desktop Header */}
+      <div className='lg:block hidden text-2xl font-bold ml-10 mt-8 text-[#767676] border-b pb-2'>
+        <h1>My Contracts</h1>
+      </div>
+
+      {/* Mobile Header */}
+      <div className='lg:hidden flex items-center px-5 py-4 bg-white'>
+        <button className='mr-4'>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18L9 12L15 6" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+        <h1 className='text-lg font-bold text-[#222222]'>My Contracts</h1>
       </div>
       <UnderlinedTabs />
     </div>

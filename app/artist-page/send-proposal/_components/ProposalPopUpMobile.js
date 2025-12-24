@@ -1,4 +1,4 @@
-" use client";
+"use client";
 
 import React from "react";
 import {
@@ -15,13 +15,7 @@ import Link from "next/link";
 const ProposalPopUpMobile = ({ isOpen, onOpen, onOpenChange }) => {
   return (
     <>
-      {/* Trigger Button */}
-      <Button
-        className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold rounded-full px-6 py-2"
-        onPress={onOpen}
-      >
-        Send Proposal
-      </Button>
+
 
       {/* Modal */}
       <Modal
@@ -29,9 +23,13 @@ const ProposalPopUpMobile = ({ isOpen, onOpen, onOpenChange }) => {
         hideCloseButton
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        className="lg:hidden"
         classNames={{
-          wrapper: "flex items-center justify-center", // 🔥 vertically center
+          wrapper: "flex items-center justify-center z-[99999] lg:hidden", // 🔥 vertically center
+          backdrop: "z-[99998] bg-black/50 backdrop-opacity-40 lg:hidden",
+          base: "z-[99999]",
         }}
+        backdrop="opaque"
       >
         <ModalContent>
           {(onClose) => (
@@ -53,7 +51,7 @@ const ProposalPopUpMobile = ({ isOpen, onOpen, onOpenChange }) => {
                 </p>
               </ModalBody>
               <ModalFooter className="w-full flex justify-center">
-                <Link href="/artist-page/proposal-active">
+                <Link href="/artist-page/project-page">
                   <Button
                     className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold text-sm"
                     variant="light"

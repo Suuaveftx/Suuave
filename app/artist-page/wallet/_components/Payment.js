@@ -6,7 +6,7 @@ import PaymentCard3 from './PaymentCard3'
 
 const Payment = () => {
   return (
-    <div className="w-80 bg-[#FAFAFA] border-1 border-[#E2E2E2] p-2 rounded-md shadow-lg flex flex-col flex-wrap">
+    <div className="w-full md:max-w-[350px] md:mx-0 md:bg-white md:border md:border-[#E5E5E5] md:p-4 md:rounded-2xl md:shadow-sm flex flex-col h-fit">
       <PaymentCard />
       <PaymentCard2 />
       <PaymentCard3 />

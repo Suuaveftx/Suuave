@@ -20,6 +20,7 @@ const PublishDesignPopUp = ({ onOpenChange, isOpen }) => {
         hideCloseButton
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        placement="center"
       >
         <ModalContent>
           {(onClose) => (

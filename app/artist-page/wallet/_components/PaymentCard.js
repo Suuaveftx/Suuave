@@ -4,37 +4,18 @@ import CustomButton from "../../../../components/CustomButton";
 
 export default function PaymentCard() {
   return (
-    <div className="w-full flex justify-center items-center">
-      <div
-      className="
-        mx-auto text-center shadow-lg rounded-lg overflow-hidden 
-        bg-[#EFF8FB] 
-        sm:w-64 sm:p-6
-        max-sm:w-48 max-sm:p-3
-      "
-    >
+    <div className="w-full bg-[#EFF8FB] p-6 rounded-xl shadow-sm border border-[#E1F0F7] mb-6">
       <div className="text-center">
-        <h1
-          className="
-            font-bold text-[#3A98BB] 
-            sm:text-3xl max-sm:text-xl
-          "
-        >
+        <h1 className="font-bold text-[#3A98BB] text-3xl">
           $1000
         </h1>
-        <span
-          className="
-            text-gray-600 block mt-2 
-            sm:text-base max-sm:text-xs
-          "
-        >
+        <span className="text-[#555555] block mt-2 text-sm font-medium">
           Wallet Balance
         </span>
-        <div className="mt-3">
-          <CustomButton text="Payout" className="w-full max-sm:py-1" />
+        <div className="mt-4">
+          <CustomButton text="Payout" className="w-full py-2 bg-[#A3D8EA] text-[#0F4C64] font-semibold rounded-full hover:bg-[#8ecbdb] transition-colors shadow-none" />
         </div>
       </div>
-    </div>
     </div>
   );
 }

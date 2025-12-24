@@ -6,7 +6,7 @@ import { ChevronLeft } from 'lucide-react';
 const Page = () => {
   return (
     <>
-      <div className='w-64 pl-8 mt-4 flex items-center sm:pl-8 gap-4'>
+      <div className='w-full md:max-w-none md:mx-0 md:w-64 px-4 md:pl-8 mt-4 flex items-center gap-4'>
         {/* Show chevron only on mobile */}
         <ChevronLeft className='w-5 h-5 mr-2 sm:hidden' color='#878787' />
         <h1 className='lg:text-2xl text-[20px] font-bold border-b-[0.5px] leading-[100%]'>
@@ -15,14 +15,14 @@ const Page = () => {
       </div>
 
       {/* Grid Layout */}
-      <div className='grid grid-cols-1 md:grid-cols-3 md:gap-0 mt-4'>
+      <div className='grid grid-cols-1 md:grid-cols-[auto_1fr] md:gap-0 mt-4'>
         {/* Payment Section */}
-        <div className='md:col-span-1 pl-8'>
+        <div className='px-4 md:pl-4 md:pr-2'>
           <Payment />
         </div>
 
         {/* PaymentAll Section (Takes up more space) */}
-        <div className='md:col-span-2'>
+        <div className='px-4 md:px-0 md:pr-8'>
           <PaymentAll />
         </div>
       </div>

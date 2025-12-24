@@ -2,28 +2,44 @@
 import React, { useState } from "react";
 import PaginationTab from "../../../../components/Pagination";
 
-const PaymentTable = () => {
+const PaymentTable = ({ filterType, filterValue }) => {
+  // Normalized mock data with ISO dates for easier filtering
   const payments = [
-    { id: 1, contract: "Modern Fashion Attire Illustration(85375758858)", amount: "$321", date: "21/04/2023" },
-    { id: 2, contract: "Native Bridal Design(95847384930)", amount: "$400", date: "05/05/2023" },
-    { id: 3, contract: "Cultural Art Piece Illustration(9393939393)", amount: "$250", date: "12/06/2023" },
-    { id: 4, contract: "Modern Fashion Attire Illustration(85375758858)", amount: "$321", date: "21/04/2023" },
-    { id: 5, contract: "Streetwear Fashion Concept(849302394)", amount: "$500", date: "10/07/2023" },
-    { id: 6, contract: "Luxury Brand Art Project(384758383)", amount: "$750", date: "15/08/2023" },
-    { id: 7, contract: "African Heritage Illustration(485939302)", amount: "$290", date: "20/09/2023" },
-    { id: 8, contract: "Modern Portrait Sketch(5959494949)", amount: "$410", date: "25/10/2023" },
-    { id: 9, contract: "Wedding Invitation Artwork(9394949494)", amount: "$600", date: "30/11/2023" },
-    { id: 10, contract: "Cultural Attire Illustration(3920392039)", amount: "$275", date: "05/12/2023" },
-    { id: 11, contract: "Classic Bridal Illustration(55555555)", amount: "$315", date: "12/01/2024" },
-    { id: 12, contract: "Abstract Design Piece(77777777)", amount: "$430", date: "20/02/2024" },
+    { id: 1, dateTime: "2024-11-01T12:32:34", displayDate: "01-11-2024 / 12:32.34", transaction: "Project", description: "Project ID 231 (Wedding gown design)", amount: "N150,000" },
+    { id: 2, dateTime: "2024-11-01T12:32:34", displayDate: "01-11-2024 / 12:32.34", transaction: "Buy more time", description: "Project ID 231 (Wedding gown design)", amount: "N150,000" },
+    { id: 3, dateTime: "2024-11-01T12:32:34", displayDate: "01-11-2024 / 12:32.34", transaction: "Licensing", description: "Project ID 231 (Wedding gown design)", amount: "N150,000" },
+    { id: 4, dateTime: "2024-11-01T12:32:34", displayDate: "01-11-2024 / 12:32.34", transaction: "Licensing", description: "Project ID 231 (Wedding gown design)", amount: "N150,000" },
+    { id: 5, dateTime: "2024-11-01T12:32:34", displayDate: "01-11-2024 / 12:32.34", transaction: "Project", description: "Project ID 231 (Wedding gown design)", amount: "N150,000" },
+    { id: 6, dateTime: "2024-11-01T12:32:34", displayDate: "01-11-2024 / 12:32.34", transaction: "Project", description: "Project ID 231 (Wedding gown design)", amount: "N150,000" },
+    { id: 7, dateTime: "2024-11-01T12:32:34", displayDate: "01-11-2024 / 12:32.34", transaction: "Licensing", description: "Project ID 231 (Wedding gown design)", amount: "N150,000" },
+    { id: 8, dateTime: "2024-11-01T12:32:34", displayDate: "01-11-2024 / 12:32.34", transaction: "Project", description: "Project ID 231 (Wedding gown design)", amount: "N150,000" },
   ];
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  const totalPages = Math.ceil(payments.length / itemsPerPage);
+  // Filter logic
+  const filteredPayments = payments.filter((payment) => {
+    if (!filterValue) return true;
+
+    if (filterType === 'date') {
+      return payment.dateTime.startsWith(filterValue);
+    }
+
+    if (filterType === 'range') {
+      const days = parseInt(filterValue, 10);
+      const paymentDate = new Date(payment.dateTime);
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - days);
+      return paymentDate >= cutoffDate;
+    }
+
+    return true;
+  });
+
+  const totalPages = Math.ceil(filteredPayments.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = payments.slice(startIndex, startIndex + itemsPerPage);
+  const currentItems = filteredPayments.slice(startIndex, startIndex + itemsPerPage);
 
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
@@ -34,62 +50,45 @@ const PaymentTable = () => {
   };
 
   return (
-    <div className="overflow-x-auto mt-4 border bg-[#FAFAFA] border-[#DDDDDD] rounded-2xl p-4">
+    <div className="overflow-x-auto w-full bg-[#FAFAFA] rounded-2xl md:p-4">
       <table className="w-full border-collapse">
         {/* Table Header */}
         <thead>
-          <tr className="border-b">
-            <th className="px-4 py-2 text-left font-semibold">Contract</th>
-            <th className="px-4 py-2 text-left font-semibold">Amount</th>
-            <th className="px-4 py-2 text-left font-semibold">Date</th>
+          <tr className="border-b border-gray-200">
+            <th className="px-4 py-4 text-left font-bold text-[#222222]">Date/Time</th>
+            <th className="px-4 py-4 text-left font-bold text-[#222222]">Transaction</th>
+            <th className="hidden md:table-cell px-4 py-4 text-left font-bold text-[#222222]">Description</th>
+            <th className="px-4 py-4 text-left font-bold text-[#222222]">Amount</th>
           </tr>
         </thead>
 
         {/* Table Body */}
         <tbody>
-          {currentItems.map((item) => (
-            <tr key={item.id} className="border-b text-[#767676]">
-              <td className="px-4 py-2">{item.contract}</td>
-              <td className="px-4 py-2">{item.amount}</td>
-              <td className="px-4 py-2">{item.date}</td>
+          {currentItems.length > 0 ? (
+            currentItems.map((item) => (
+              <tr key={item.id} className="border-b border-gray-100 text-[#555555] hover:bg-gray-50">
+                <td className="px-4 py-4 text-sm whitespace-nowrap">{item.displayDate}</td>
+                <td className="px-4 py-4 text-sm">{item.transaction}</td>
+                <td className="hidden md:table-cell px-4 py-4 text-sm">{item.description}</td>
+                <td className="px-4 py-4 text-sm">{item.amount}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4" className="px-4 py-8 text-center text-gray-500">
+                No transactions found for this date.
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
 
-      {/* Pagination Buttons */}
-      {/* <div className="flex justify-center items-center mt-4 gap-4">
-        <button
-          onClick={handlePrev}
-          disabled={currentPage === 1}
-          className={`px-4 py-2 rounded-md ${
-            currentPage === 1
-              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-              : "bg-[#CCE7F2] text-white hover:bg-[#024b67]"
-          }`}
-        >
-          Previous
-        </button>
-
-        <span className="text-sm text-gray-700">
-          Page {currentPage} of {totalPages}
-        </span>
-
-        <button
-          onClick={handleNext}
-          disabled={currentPage === totalPages}
-          className={`px-4 py-2 rounded-md ${
-            currentPage === totalPages
-              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-              : "bg-[#CCE7F2] text-white hover:bg-[#024b67]"
-          }`}
-        >
-          Next
-        </button>
-      </div> */}
-      <div className="w-full flex justify-center items-center mt-4">
-  <PaginationTab />
-</div>
+      {/* Pagination Buttons - Only show if there are pages */}
+      {totalPages > 1 && (
+        <div className="w-full flex justify-center items-center mt-4">
+          <PaginationTab />
+        </div>
+      )}
 
     </div>
   );

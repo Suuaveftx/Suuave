@@ -1,9 +1,6 @@
 'use client';
 import React from 'react';
 import CustomButton from './CustomButton';
-import { MdOutlineBookmarkBorder } from 'react-icons/md';
-
-import ProposalPopUp from '../app/artist-page/send-proposal/_components/ProposalPopUp';
 
 
 /**
@@ -22,11 +19,14 @@ const BtnProposals = ({
   sendText = 'Send Proposal',
   saveText = 'Save Job',
   sendHref = '/artist-page/send-proposal',
-  saveIcon = <MdOutlineBookmarkBorder className='w-5 h-5' color='#3A98BB' />,
+  saveIcon = null,
   showSaveIcon = true,
   saveButtonStyle = {},
   containerClassName = "",
   handleSubmitProposal,
+  handleViewProposal,
+  handleWithdrawProposal,
+  proposalSubmitted = false,
   isOpen,
   onOpenChange,
 }) => {
@@ -39,28 +39,26 @@ const BtnProposals = ({
           <CustomButton
             text={sendText}
             className="w-48 text-[#035A7A]"
-            href={sendHref}
-            onPress={handleSubmitProposal}
+            onPress={proposalSubmitted ? handleViewProposal : handleSubmitProposal}
           />
         </div>
 
         <div>
           <CustomButton
-  className="w-48 text-[#767676] flex items-center justify-center gap-2"
-  icon={showSaveIcon ? saveIcon : null}
-  text={saveText}
-  style={{
-    background: "transparent",
-    color: "#767676",
-    border: "1px solid #3A98BB",
-    ...saveButtonStyle,
-  }}
-/>
+            className="w-48 text-[#767676] flex items-center justify-center gap-2"
+            icon={null}
+            text={saveText}
+            onPress={proposalSubmitted ? handleWithdrawProposal : undefined}
+            style={{
+              background: "transparent",
+              color: "#767676",
+              border: "1px solid #3A98BB",
+              ...saveButtonStyle,
+            }}
+          />
 
         </div>
       </div>
-
-      <ProposalPopUp isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );
 };
