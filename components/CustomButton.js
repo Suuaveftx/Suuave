@@ -29,23 +29,34 @@ const CustomButton = ({
     ...style,
   };
 
+  const content = (
+    <span className='flex items-center gap-2'>
+      {text}
+      {showIcon && icon && <span className='flex items-center'>{icon}</span>}
+    </span>
+  );
+
+  if (href) {
+    return (
+      <Link href={href} passHref legacyBehavior>
+        <Button
+          as="a"
+          className={`flex items-center justify-center gap-2 font-proximanova font-medium px-6 py-3 rounded-full shadow-md ${className}`}
+          style={defaultStyle}
+        >
+          {content}
+        </Button>
+      </Link>
+    );
+  }
+
   return (
     <Button
       className={`flex items-center justify-center gap-2 font-proximanova font-medium px-6 py-3 rounded-full shadow-md ${className}`}
       onClick={onPress}
       style={defaultStyle}
     >
-      {href ? (
-        <Link href={href} className='flex items-center gap-2'>
-          {text}
-          {showIcon && icon && <span className='flex items-center'>{icon}</span>}
-        </Link>
-      ) : (
-        <span className='flex items-center gap-2'>
-          {text}
-          {showIcon && icon && <span className='flex items-center'>{icon}</span>}
-        </span>
-      )}
+      {content}
     </Button>
   );
 };

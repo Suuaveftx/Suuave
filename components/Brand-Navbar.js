@@ -21,14 +21,14 @@ const Navbars = () => {
   const menuItems = [
     { label: 'Jobs', href: '/artist-page/project-page' },
     { label: 'My Proposals', href: '/artist-page/my-proposals' },
-    { label: 'My Contracts', href: '/artist-page/my-contracts' },
+    { label: 'My Contracts', href: '/artist-page/my-contracts-old' },
   ];
 
   const mobileMenuItems = [
     { label: 'Home', href: '/artist-page' },
     { label: 'Jobs', href: '/artist-page/project-page' },
     { label: 'My Proposals', href: '/artist-page/my-proposals' },
-    { label: 'My Contracts', href: '/artist-page/contracts' },
+    { label: 'My Contracts', href: '/artist-page/my-contracts-old' },
     { label: 'Profile', href: '/artist-page/profile-for-artist' },
     { label: 'Settings', href: '/artist-page/settings' },
   ];
@@ -105,67 +105,69 @@ const Navbars = () => {
             </div>
 
             <ChevronDown
-              className={`w-5 h-5 text-gray-600 transition-transform ${
-                isOpen ? 'rotate-180' : ''
-              }`}
+              className={`w-5 h-5 text-gray-600 transition-transform ${isOpen ? 'rotate-180' : ''
+                }`}
             />
           </button>
 
           {/* Dropdown Menu */}
-        {/* Dropdown Menu */}
-{isOpen && (
-  <div className='absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2'>
-    <Link
-      href='/artist-page/profile-for-artist'
-      className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100'
-    >
-      <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
-        <User className='w-3 h-3 text-[#222222]' />
-      </div>
-      My Profile
-    </Link>
+          {/* Dropdown Menu */}
+          {isOpen && (
+            <div className='absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2'>
+              <Link
+                href='/artist-page/profile-for-artist'
+                className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100'
+              >
+                <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
+                  <User className='w-3 h-3 text-[#222222]' />
+                </div>
+                My Profile
+              </Link>
 
-    <Link
-      href='/artist-page/wallet'
-      className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100'
-    >
-      <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
-        <CreditCard className='w-3 h-3 text-[#222222]' />
-      </div>
-      Wallet
-    </Link>
+              <Link
+                href='/artist-page/wallet'
+                className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100'
+              >
+                <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
+                  <CreditCard className='w-3 h-3 text-[#222222]' />
+                </div>
+                Wallet
+              </Link>
 
-    <Link
-      href='/artist-page/help'
-      className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100'
-    >
-      <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
-        <HelpCircle className='w-3 h-3 text-[#222222]' />
-      </div>
-      Help And Support
-    </Link>
+              <Link
+                href='/artist-page/help'
+                className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100'
+              >
+                <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
+                  <HelpCircle className='w-3 h-3 text-[#222222]' />
+                </div>
+                Help And Support
+              </Link>
 
-    <Link
-      href='/artist-page/settings'
-      className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100'
-    >
-      <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
-        <Settings className='w-3 h-3 text-[#222222]' />
-      </div>
-      Settings
-    </Link>
+              <Link
+                href='/artist-page/settings'
+                className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100'
+              >
+                <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
+                  <Settings className='w-3 h-3 text-[#222222]' />
+                </div>
+                Settings
+              </Link>
 
-    <Link
-      href='/#'
-      className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100'
-    >
-      <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
-        <LogOut className='w-3 h-3 text-[#222222]' />
-      </div>
-      Logout
-    </Link>
-  </div>
-)}
+              <div
+                onClick={() => {
+                  localStorage.removeItem('activeCategory');
+                  window.location.href = '/';
+                }}
+                className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer'
+              >
+                <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
+                  <LogOut className='w-3 h-3 text-[#222222]' />
+                </div>
+                Logout
+              </div>
+            </div>
+          )}
 
         </div>
 

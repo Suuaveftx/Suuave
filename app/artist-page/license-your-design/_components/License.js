@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Textarea, Select, Checkbox, SelectItem } from '@heroui/react';
 import { CiImageOn } from 'react-icons/ci';
 import CustomButton from '../../../../components/CustomButton';
@@ -7,10 +7,19 @@ import Link from 'next/link';
 import { color } from 'framer-motion';
 import { useDisclosure } from '@heroui/react';
 import PublishDesignPopUp from './PublishDesignPopUp';
+import { useSearchParams } from 'next/navigation';
+
 const License = () => {
   const [errors, setErrors] = React.useState({});
   const [images, setImages] = useState([]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const searchParams = useSearchParams();
+
+  // Get initial values from URL params
+  const initialTitle = searchParams.get('title') || '';
+  const initialDescription = searchParams.get('description') || '';
+  const initialStyle = searchParams.get('style') || '';
+  const initialPrice = searchParams.get('price') || '';
 
   const handleSubmitPublish = () => {
     onOpen();
@@ -46,6 +55,7 @@ const License = () => {
                 id='designTitle'
                 name='name'
                 type='text'
+                defaultValue={initialTitle}
                 placeholder='What is the title of your design?'
                 required
                 className='text-base text-[#BABABA]  font-normal border-1 border-[#d1d1d1] rounded-lg px-3 py-2'
@@ -69,6 +79,7 @@ const License = () => {
               </label>
               <textarea
                 id='design-description'
+                defaultValue={initialDescription}
                 placeholder='Describe your design in detail'
                 className='w-full h-40 p-3 border rounded-md  focus:outline-none'
               />
@@ -79,7 +90,8 @@ const License = () => {
           <div className='flex flex-col gap-2'>
             <h3 className='text-lg font-semibold'>Design Style</h3>
             <Input
-              placeholder='Enter category'
+              defaultValue={initialStyle}
+              placeholder='Enter category of your design, E.g Casual, etc.'
               className='border-1 border-[#d1d1d1] rounded-lg'
             />
           </div>
@@ -163,12 +175,13 @@ const License = () => {
           <div className='flex flex-col gap-2'>
             <h3 className='text-lg font-semibold'>Asking Price</h3>
             <input
-              placeholder='0.0 $'
-              className='border-1 border-[#d1d1d1] px-4 py-3 rounded-lg w-96'
+              defaultValue={initialPrice}
+              placeholder='$0.00'
+              className='border-1 border-[#d1d1d1] px-4 py-3 rounded-lg w-full lg:w-96'
             />
           </div>
 
-          {/* Choose Sales Type */}
+
 
           {/* Confirmation Checkbox */}
           <div className='flex items-start gap-2'>
@@ -181,16 +194,17 @@ const License = () => {
               </a>
             </p>
           </div>
-          <div className='flex gap-4 w-full lg:justify-start justify-center'>
+          <div className='flex gap-4 w-full justify-between lg:justify-start'>
             <CustomButton
               text='Save as Draft'
-              className='bg-[#F0F0F0] text-[#222222] lg:hidden'
+              className='bg-[#F0F0F0] text-[#222222] w-full lg:w-auto'
               style={{
                 background: '#EDEDED',
               }}
             />
             <CustomButton
-              text='Publish'
+              text='Publish Project'
+              className='w-full lg:w-auto'
               style={{
                 color: '#035A7A',
               }}

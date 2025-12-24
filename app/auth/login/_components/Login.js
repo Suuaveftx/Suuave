@@ -22,9 +22,11 @@ const Login = () => {
 
   const onSubmit = (data) => {
     if (data.email === "artist@gmail.com") {
+      localStorage.setItem("activeCategory", "Fashion Artist");
       return router.push("/artist-page");
     }
     if (data.email === "brand@gmail.com") {
+      localStorage.setItem("activeCategory", "Fashion Designer");
       return router.push("/fashion-designers");
     }
   };

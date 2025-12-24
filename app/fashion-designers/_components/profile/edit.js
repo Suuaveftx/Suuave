@@ -12,14 +12,27 @@ import { useState } from "react";
 
 // This component handle edit title button
 
+// This component handle edit title button
+
 export const EditTitle = ({ setTitleValue, titleValue }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [tempValue, setTempValue] = useState(titleValue);
+
+  const handleOpen = () => {
+    setTempValue(titleValue);
+    onOpen();
+  };
+
+  const handleSave = (onClose) => {
+    setTitleValue(tempValue);
+    onClose();
+  };
 
   return (
     <>
       <button
         className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] flex items-center gap-1 rounded-3xl drop-shadow-lg p-2 md:py-2 md:px-4"
-        onClick={onOpen}
+        onClick={handleOpen}
       >
         <Image
           src="\profile\pencil.svg"
@@ -50,8 +63,8 @@ export const EditTitle = ({ setTitleValue, titleValue }) => {
                   </h1>
 
                   <input
-                    value={titleValue}
-                    onChange={(e) => setTitleValue(e.target.value)}
+                    value={tempValue}
+                    onChange={(e) => setTempValue(e.target.value)}
                     className="border-[#D5D5D5] mt-2 outline-none text-base text-[#222222] p-3 h-12 w-full border-1 rounded-lg"
                   />
                   <div className="flex items-center justify-end gap-1 mt-10 font-bold font-satoshi text-base">
@@ -61,7 +74,10 @@ export const EditTitle = ({ setTitleValue, titleValue }) => {
                     >
                       Cancel
                     </button>
-                    <button className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A] py-2 px-6 rounded-3xl">
+                    <button
+                      onClick={() => handleSave(onClose)}
+                      className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A] py-2 px-6 rounded-3xl"
+                    >
                       Save
                     </button>
                   </div>
@@ -79,12 +95,23 @@ export const EditTitle = ({ setTitleValue, titleValue }) => {
 
 export const EditAboutMe = ({ setAboutValue, aboutValue }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [tempValue, setTempValue] = useState(aboutValue);
+
+  const handleOpen = () => {
+    setTempValue(aboutValue);
+    onOpen();
+  };
+
+  const handleSave = (onClose) => {
+    setAboutValue(tempValue);
+    onClose();
+  };
 
   return (
     <>
       <button
         className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] flex items-center gap-1 rounded-3xl drop-shadow-lg p-2 md:py-2 md:px-4"
-        onClick={onOpen}
+        onClick={handleOpen}
       >
         <Image
           src="\profile\pencil.svg"
@@ -115,8 +142,8 @@ export const EditAboutMe = ({ setAboutValue, aboutValue }) => {
                   </h1>
 
                   <textarea
-                    value={aboutValue}
-                    onChange={(e) => setAboutValue(e.target.value)}
+                    value={tempValue}
+                    onChange={(e) => setTempValue(e.target.value)}
                     className="border-[#D5D5D5] text-[#222222] mt-2 outline-none text-base p-1 md:p-3 h-52 w-full border-1 rounded-lg"
                   />
                   <div className="flex items-center justify-end gap-1 mt-10 font-bold font-satoshi text-base">
@@ -126,7 +153,10 @@ export const EditAboutMe = ({ setAboutValue, aboutValue }) => {
                     >
                       Cancel
                     </button>
-                    <button className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A] py-2 px-6 rounded-3xl">
+                    <button
+                      onClick={() => handleSave(onClose)}
+                      className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A] py-2 px-6 rounded-3xl"
+                    >
                       Save
                     </button>
                   </div>
@@ -178,7 +208,9 @@ export const EditAward = ({ handleAwardChange }) => {
 
 // This component handle edit profile button
 
-export const EditProfile = ({ handleFileChange }) => {
+// This component handle edit profile button
+
+export const EditProfile = ({ handleFileChange, className }) => {
   return (
     <>
       {" "}
@@ -191,7 +223,7 @@ export const EditProfile = ({ handleFileChange }) => {
       />
       <label
         htmlFor="upload-photo"
-        className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] p-2 z-20 cursor-pointer rounded-full absolute"
+        className={`bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] p-2 z-20 cursor-pointer rounded-full absolute ${className}`}
       >
         <Image
           src="\profile\pencil.svg"

@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { TrashIcon } from '@heroicons/react/24/outline';
+import { TrashIcon, ChevronLeftIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import PaginationTab from '../../../../components/Pagination';
 
@@ -49,8 +49,11 @@ const ProposalTables = () => {
   return (
     <div>
       {/* Title */}
-      <div className="w-[90%] border-b-2 text-left mb-[21px] lg:ml-16">
-        <h1 className="text-xl font-bold mt-8 pb-1">My Proposals</h1>
+      <div className="w-[90%] border-b-2 text-left mb-[21px] ml-5 lg:ml-16">
+        <div className="flex items-center gap-2 mt-8 pb-1">
+          <ChevronLeftIcon className="w-6 h-6" />
+          <h1 className="text-xl font-bold">My Proposals</h1>
+        </div>
       </div>
 
       {/* Table */}
@@ -79,11 +82,10 @@ const ProposalTables = () => {
                 >
                   {/* Job Post */}
                   <div
-                    className={`font-bold text-base break-words tracking-[0.33px] text-left ${
-                      proposal.status === 'Inactive'
-                        ? 'text-gray-400'
-                        : 'text-[#3A98BB] hover:underline'
-                    }`}
+                    className={`font-bold text-base break-words tracking-[0.33px] text-left ${proposal.status === 'Inactive'
+                      ? 'text-gray-400'
+                      : 'text-[#3A98BB] hover:underline'
+                      }`}
                   >
                     {proposal.title}
                   </div>
@@ -142,7 +144,7 @@ const ProposalTables = () => {
             </button>
           </div> */}
           <div className='w-full flex justify-center items-center mt-6'>
-          <PaginationTab />
+            <PaginationTab />
           </div>
         </div>
       </section>

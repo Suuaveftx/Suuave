@@ -1,71 +1,102 @@
 "use client";
+import Link from "next/link";
 import SearchBar from "../../../../components/Searchbar";
-import SortByDropdown from "../../../../components/SortByDropdown";
+import FilterDropdown from "../../../../components/FilterDropdown";
+import { useState } from "react";
+
 
 const data = [
   {
-    date: "12 May 2024",
+    date: "12 May, 2024",
     project: "Modern Fashion Attire Illustration",
-    client: "SHOLA ADIN",
+    client: "SHOALA ADIN",
     earnings: "$700",
     status: "Completed",
   },
   {
-    date: "12 May 2024",
-    project: "Modern Fashion Attire Illustration",
-    client: "SHOLA ADIN",
-    earnings: "$700",
+    date: "25 April, 2024",
+    project: "Eco-Friendly Fabric Pattern",
+    client: "LUX WEAR",
+    earnings: "$1,200",
     status: "Completed",
   },
   {
-    date: "12 May 2024",
-    project: "Modern Fashion Attire Illustration",
-    client: "SHOLA ADIN",
-    earnings: "$700",
+    date: "10 March, 2024",
+    project: "Winter Season Lookbook",
+    client: "GLAMOUR CO",
+    earnings: "$2,500",
     status: "Completed",
   },
-  
+
 ];
 
 export default function CompletedContracts() {
+  const [dateFilter, setDateFilter] = useState('Select Date');
+  const [currencyFilter, setCurrencyFilter] = useState('Select Currency');
+
+  const dateOptions = ['Today', 'This Week', 'This Month', 'Last 3 Months', 'Last 6 Months', 'This Year', 'Calendar'];
+  const currencyOptions = ['USD ($)', 'EUR (€)', 'GBP (£)', 'NGN (₦)', 'CAD ($)'];
+
   return (
     <>
       {/* Search & Sort */}
-      <div className="flex items-center justify-between">
-  <SearchBar
-    placeholder="Search by job title"
-    className="w-full lg:max-w-[65%] flex-1"
-  />
-  <div className="lg:mt-4">
-    <SortByDropdown  />
-  </div>
-</div>
+      <div className="flex items-center justify-between mb-8">
+        <SearchBar
+          placeholder="Search by job title"
+          className="w-full lg:max-w-[50%] flex-1"
+        />
+        <div className="flex items-center gap-3">
+          <FilterDropdown
+            label="Date"
+            options={dateOptions}
+            selectedOption={dateFilter}
+            setSelectedOption={setDateFilter}
+            defaultLabel="Select Date"
+          />
+          <FilterDropdown
+            label="Currency"
+            options={currencyOptions}
+            selectedOption={currencyFilter}
+            setSelectedOption={setCurrencyFilter}
+            defaultLabel="Select Currency"
+          />
+        </div>
+      </div>
 
 
-<div className="w-full overflow-x-auto">
-  <table className="min-w-[640px] w-full bg-[#FAFAFA] border-[#EAEAEA] shadow-md mt-6 border border-collapse">
-    <thead className="lg:border-b lg:bg-transparent bg-[#CCE7F2]">
-      <tr>
-        <th className="border border-gray-300 px-6 py-4 text-center lg:border-none">Date</th>
-        <th className="border border-gray-300 px-6 py-4 text-center lg:border-none">Project</th>
-        <th className="border border-gray-300 px-6 py-4 text-center lg:border-none">Client</th>
-        <th className="border border-gray-300 px-6 py-4 text-center lg:border-none">Earnings</th>
-        <th className="border border-gray-300 px-6 py-4 text-center lg:border-none">Status</th>
-      </tr>
-    </thead>
-    <tbody className="h-full">
-      {data.map((item, index) => (
-        <tr key={index} className="bg-[#fafafa] text-center border-b">
-          <td className="border border-gray-300 px-6 py-5 lg:border-none text-[#222222]">{item.date}</td>
-          <td className="text-[#3A98BB] border border-gray-300 px-6 py-5 lg:border-none">{item.project}</td>
-          <td className="border border-gray-300 px-6 py-5 lg:border-none text-[#767676]">{item.client}</td>
-          <td className="border border-gray-300 px-6 py-5 lg:border-none text-[#222222]">{item.earnings}</td>
-          <td className="border border-gray-300 px-6 py-5 lg:border-none text-[#222222]">{item.status}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
+      <div className="w-full bg-white border border-[#EAEAEA] rounded-lg p-6 min-h-[500px] flex flex-col justify-between">
+        <div className="w-full overflow-x-auto">
+          <table className="min-w-[640px] w-full border-collapse">
+            <thead className="border-b border-[#EAEAEA]">
+              <tr>
+                <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Date</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Project</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Client</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Earnings</th>
+                <th className="px-6 py-4 text-right text-xs font-bold text-[#222222] uppercase tracking-wider">Status</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              {data.map((item, index) => (
+                <tr key={index} className="border-b border-[#EAEAEA] last:border-none hover:bg-gray-50">
+                  <td className="px-6 py-6 text-sm text-[#222222]">{item.date}</td>
+                  <td className="px-6 py-6 text-sm text-[#3A98BB] hover:underline cursor-pointer">
+                    <Link href="/artist-page/completed-contract-information">
+                      {item.project}
+                    </Link>
+                  </td>
+                  <td className="px-6 py-6 text-sm text-[#767676] uppercase">{item.client}</td>
+                  <td className="px-6 py-6 text-sm text-[#222222]">{item.earnings}</td>
+                  <td className="px-6 py-6 text-sm text-[#222222] text-right">{item.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination - Centered at the bottom */}
+
+      </div>
 
     </>
   );

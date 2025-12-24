@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import React from "react";
 
@@ -115,11 +113,11 @@ const page = () => {
           </div>
         </section>
         {/* Side section */}
-        <section className=" w-[30%] bg-[#FAFAFA] space-y-5 py-7 px-5 border-1 border-[#EAEAEA] rounded-2xl">
-          <button className="w-full text-[#035A7A] py-4 px-6 bg-[#CCE7F2] rounded-3xl">
+        <section className=" w-[30%] bg-[#FAFAFA] space-y-5 py-7 px-5 border-1 border-[#EAEAEA] rounded-2xl opacity-50 cursor-not-allowed select-none">
+          <button disabled className="w-full text-[#035A7A] py-4 px-6 bg-[#CCE7F2] rounded-3xl cursor-not-allowed">
             Edit Proposal
           </button>
-          <button className="w-full text-[#035A7A] py-4 px-6 bg-[#CCE7F2] rounded-3xl">
+          <button disabled className="w-full text-[#035A7A] py-4 px-6 bg-[#CCE7F2] rounded-3xl cursor-not-allowed">
             Withdraw Proposal
           </button>
         </section>
