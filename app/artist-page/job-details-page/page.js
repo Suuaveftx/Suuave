@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import JobDetailsPage from './_components/JobDetailsPage';
 import BtnProposals from '../../../components/BtnProposals';
 import Abouttheclient from '../../../components/Abouttheclient';
@@ -11,7 +11,7 @@ import ProposalPopUp from '../send-proposal/_components/ProposalPopUp';
 import { useDisclosure } from '@heroui/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-const Page = () => {
+const JobDetailsPageContent = () => {
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [proposalSubmitted, setProposalSubmitted] = useState(false);
@@ -107,6 +107,14 @@ const Page = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <JobDetailsPageContent />
+    </Suspense>
   );
 };
 
