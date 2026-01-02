@@ -46,14 +46,14 @@ const ClientProfileClient = () => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    const words = useMemo(() => fullText.split(/\s+/), [fullText]);
+    const words = useMemo(() => fullText.split(/\s+/), []);
 
     const displayedText = useMemo(() => {
         if (isMobile && !showFull) {
             return words.slice(0, 30).join(" ") + "...";
         }
         return fullText;
-    }, [fullText, isMobile, showFull, words]);
+    }, [isMobile, showFull, words]);
 
     return (
         <div className=" md:bg-[#F1F1F1] md:px-12 pb-20">
