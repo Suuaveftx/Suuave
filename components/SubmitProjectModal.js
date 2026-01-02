@@ -31,7 +31,7 @@ const SubmitProjectModal = ({ trigger }) => {
                 })
             ) : (
                 <Button onPress={confirmDisclosure.onOpen} className="w-full">
-                    Submit
+                    Submit Project
                 </Button>
             )}
 

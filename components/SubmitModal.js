@@ -166,7 +166,10 @@ const SubmitModal = ({
                 </>
               ) : (
                 <div className="flex flex-col items-center justify-center py-8 gap-4 text-center">
-                  <CheckCircle2 className="w-16 h-16 text-green-500" />
+                  <div className="flex gap-2">
+                    <CheckCircle2 className="w-16 h-16 text-green-500" />
+                    <CheckCircle2 className="w-16 h-16 text-green-500" />
+                  </div>
                   <div>
                     <h2 className="text-xl font-bold">Success!</h2>
                     <p className="text-gray-600 mt-2">Thank you for giving your review</p>
