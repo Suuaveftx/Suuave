@@ -9,6 +9,8 @@ import {
   NavbarMenu,
 } from '@heroui/react';
 import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 import CustomButton from './CustomButton';
 import { ChevronDown, User, CreditCard, HelpCircle, Settings, LogOut } from 'lucide-react';
 import Image from 'next/image';
@@ -17,11 +19,23 @@ const Navbars = () => {
   const [textStyle, setTextStyle] = useState('text-black');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (path) => {
+    if (path === '/artist-page/project-page') {
+      return pathname === path || pathname.startsWith('/artist-page/job-details-page');
+    }
+    if (path === '/artist-page/my-contracts-old') {
+      return pathname === path || pathname.startsWith('/artist-page/ongoing-contract-information');
+    }
+    return pathname === path;
+  };
 
   const menuItems = [
     { label: 'Jobs', href: '/artist-page/project-page' },
     { label: 'My Proposals', href: '/artist-page/my-proposals' },
     { label: 'My Contracts', href: '/artist-page/my-contracts-old' },
+    { label: 'Profile', href: '/artist-page/profile-for-artist' },
   ];
 
   const mobileMenuItems = [
@@ -36,8 +50,8 @@ const Navbars = () => {
   return (
     <Navbar
       shouldHideOnScroll
-      className='w-full bg-[#CCE7F2] items-center font-satoshi shadow-md px-2 flex-nowrap'
-      classNames={{ wrapper: 'max-w-[1700px]' }}
+      className='w-full bg-[#CCE7F2] items-center font-satoshi shadow-md px-2 flex-nowrap h-[80px]'
+      classNames={{ wrapper: 'max-w-[1700px] h-full' }}
       onScrollPositionChange={(position) => {
         setTextStyle(position > 600 ? 'text-yellow-500' : 'text-black');
       }}
@@ -57,11 +71,28 @@ const Navbars = () => {
       </div>
 
       {/* MENU */}
-      <NavbarContent className='hidden sm:flex gap-8 ml-8 font-bold' justify='center'>
+      <NavbarContent className='hidden sm:flex gap-8 ml-8 font-bold h-full' justify='center'>
         {menuItems.map((item, index) => (
-          <NavbarItem key={index}>
-            <Link href={item.href} className={`${textStyle} transition duration-300`}>
-              {item.label}
+          <NavbarItem key={index} className="h-full flex items-center">
+            <Link
+              href={item.href}
+              className={`${textStyle} transition duration-300 relative flex items-center h-full`}
+            >
+              <motion.div
+                animate={isActive(item.href) ? "hovered" : "initial"}
+                whileHover="hovered"
+                className="relative flex items-center h-full"
+              >
+                {item.label}
+                <motion.div
+                  variants={{
+                    initial: { scaleX: 0 },
+                    hovered: { scaleX: 1 }
+                  }}
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  className="absolute bottom-[28px] left-0 w-full h-[2px] bg-[#222222] origin-left"
+                />
+              </motion.div>
             </Link>
           </NavbarItem>
         ))}

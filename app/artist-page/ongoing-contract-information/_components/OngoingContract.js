@@ -6,6 +6,7 @@ import Link from "next/link";
 import CustomButton from "../../../../components/CustomButton";
 import { ChevronLeft } from "lucide-react";
 import { IoFlagSharp } from "react-icons/io5";
+import { useSearchParams } from "next/navigation";
 import ChatClientModal from "../../../../components/ChatClientModal";
 import SubmitProjectModal from "../../../../components/SubmitProjectModal";
 
@@ -39,11 +40,16 @@ const clientProfile = {
 };
 
 export default function OngoingContract() {
+    const searchParams = useSearchParams();
+    const id = searchParams.get("id") || contractDetails.contractNumber;
+    const timeStatus = searchParams.get("timeStatus") || "End in : 2 days";
+    const color = searchParams.get("color") || "#3A98BB";
+
     return (
         <div className="w-full max-w-[1400px] mx-auto p-4 md:p-6 lg:p-8 font-proximanova text-[#222222]">
             {/* Mobile Header */}
             <div className="flex items-center gap-2 mb-6 md:hidden">
-                <Link href="#" className="p-1">
+                <Link href="/artist-page/my-contracts-old" className="p-1">
                     <ChevronLeft size={24} color="#222222" />
                 </Link>
                 <h1 className="text-lg font-bold">Contracts Information</h1>
@@ -63,8 +69,8 @@ export default function OngoingContract() {
                                 <span className="px-3 py-1 bg-transparent border border-gray-200 rounded-full text-xs text-[#279711] font-medium">
                                     Ongoing
                                 </span>
-                                <span className="px-3 py-1 bg-transparent border border-gray-200 rounded-full text-xs text-[#444444] font-medium">
-                                    Ends | 2days
+                                <span className="px-3 py-1 text-white rounded-full text-xs font-bold" style={{ backgroundColor: color }}>
+                                    {timeStatus}
                                 </span>
                             </div>
                         </div>
@@ -77,13 +83,21 @@ export default function OngoingContract() {
                             </div>
                             <div className="flex justify-between items-center md:hidden mb-1">
                                 <span className="text-gray-500 text-sm">Status</span>
-                                <span className="font-medium text-sm text-[#279711]">Ongoing</span>
+                                <div className="flex gap-2 items-center">
+                                    <span className="font-medium text-sm text-[#279711]">Ongoing</span>
+                                    <span
+                                        className="px-2 py-0.5 text-white rounded-full text-[10px] font-bold"
+                                        style={{ backgroundColor: color }}
+                                    >
+                                        {timeStatus}
+                                    </span>
+                                </div>
                             </div>
 
                             {/* Shared fields with responsive layout */}
                             <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
                                 <span className="text-gray-500 text-sm">Contract Number <span className="hidden md:inline">-</span></span>
-                                <span className="font-medium text-sm">{contractDetails.contractNumber}</span>
+                                <span className="font-medium text-sm">{id}</span>
                             </div>
                             <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
                                 <span className="text-gray-500 text-sm">Contract Type <span className="hidden md:inline">-</span></span>

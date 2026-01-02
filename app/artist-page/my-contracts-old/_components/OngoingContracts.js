@@ -22,18 +22,24 @@ const OngoingContracts = () => {
       id: '24t64754-A',
       StartDate: '18 June 2024',
       EndDate: '28 July, 2024',
+      timeStatus: 'End in : 2 days',
+      badgeColor: '#3A98BB' // Blue
     },
     {
       title: 'Avant Garde Concept Sketch',
-      id: '24t64754-B',
+      id: '98k21456-B',
       StartDate: '05 July 2024',
       EndDate: '15 August, 2024',
+      timeStatus: '10 days late',
+      badgeColor: '#D32F2F' // Red
     },
     {
       title: 'Summer Collection 3D Mockup',
-      id: '24t64754-C',
+      id: '12m78390-C',
       StartDate: '20 August 2024',
       EndDate: '30 September, 2024',
+      timeStatus: 'Ends in 1 day',
+      badgeColor: '#E6A200' // Deep Yellow
     },
   ];
 
@@ -55,13 +61,6 @@ const OngoingContracts = () => {
             setSelectedOption={setDateFilter}
             defaultLabel='Select Date'
           />
-          <FilterDropdown
-            label='Currency'
-            options={currencyOptions}
-            selectedOption={currencyFilter}
-            setSelectedOption={setCurrencyFilter}
-            defaultLabel='Select Currency'
-          />
         </div>
       </div>
 
@@ -73,7 +72,10 @@ const OngoingContracts = () => {
             className='bg-white border border-[#EAEAEA] lg:bg-white lg:border lg:border-[#EAEAEA] px-4 py-4 rounded-lg shadow-sm lg:shadow-md lg:px-6 lg:py-6 mt-4 lg:mt-[26px] mb-4 flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4'
           >
             {/* Project Info */}
-            <Link href={'/artist-page/ongoing-contract-information'} className='w-full lg:w-auto contents'>
+            <Link
+              href={`/artist-page/ongoing-contract-information?id=${project.id}&timeStatus=${encodeURIComponent(project.timeStatus)}&color=${encodeURIComponent(project.badgeColor)}`}
+              className='w-full lg:w-auto contents'
+            >
               <div className='lg:flex lg:flex-col lg:items-start lg:justify-center w-full lg:gap-2 relative cursor-pointer'>
                 {/* Title Section */}
                 <div className='flex flex-col w-[90%] lg:w-full'>
@@ -114,6 +116,14 @@ const OngoingContracts = () => {
                 <div className='lg:flex lg:flex-col flex-col w-full lg:w-auto justify-start gap-1 lg:gap-1 lg:items-start'>
                   <p className='text-xs lg:text-[14px] text-[#878787] font-normal hover:text-[#3A98BB] transition-colors'>Start Date <span className='mx-1 lg:hidden'>-</span><span className='hidden lg:inline'>:</span> <span className='text-[#222222] font-normal'>{project.StartDate}</span></p>
                   <p className='text-xs lg:text-[14px] text-[#878787] font-normal hover:text-[#3A98BB] transition-colors'>End Date <span className='mx-1 lg:hidden'>-</span><span className='hidden lg:inline'>:</span> <span className='text-[#222222] font-normal'>{project.EndDate}</span></p>
+                  <div className='mt-2'>
+                    <span
+                      className='px-4 py-1.5 text-white text-xs font-bold rounded-full inline-flex items-center'
+                      style={{ backgroundColor: project.badgeColor }}
+                    >
+                      {project.timeStatus}
+                    </span>
+                  </div>
                 </div>
               </div>
             </Link>
@@ -126,7 +136,7 @@ const OngoingContracts = () => {
                     variant='outline'
                     size='sm'
                     className='items-center font-bold px-6'
-                    text='Submit Project'
+                    text='Submit'
                     style={{
                       color: '#035A7A',
                       background: 'linear-gradient(180deg, #E0F2F7 0%, #D1ECF4 100%)',

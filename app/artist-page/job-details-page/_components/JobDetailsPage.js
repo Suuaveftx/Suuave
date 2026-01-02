@@ -8,12 +8,14 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import SkillRequirement from "./SkillRequirement";
 import DesignStyle from "./DesignStyle";
 import Budgets from "./Budgets";
+import ReferenceImage from "./ReferenceImage";
 
 const JobDetailsPage = ({
   proposalSubmitted,
   handleSubmitProposal,
   handleViewProposal,
-  handleWithdrawProposal
+  handleWithdrawProposal,
+  jobId
 }) => {
   return (
     <>
@@ -95,10 +97,13 @@ const JobDetailsPage = ({
 
           {/* Skills & Design Style */}
           <div className="mb-6">
-            <SkillRequirement />
+            <ReferenceImage jobId={jobId} />
           </div>
           <div className="mb-6">
             <DesignStyle />
+          </div>
+          <div className="mb-6">
+            <SkillRequirement />
           </div>
 
           {/* Budget & Duration */}

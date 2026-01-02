@@ -107,127 +107,127 @@ const Page = () => {
 
   const projectTimeframe = [
     {
-      label:"1 Day",
-      key:"1day"
+      label: "1 Day",
+      key: "1day"
     },
     {
-      label:"2 Days",
-      key:"2days"
+      label: "2 Days",
+      key: "2days"
     },
     {
-      label:"3 Days",
-      key:"3days"
+      label: "3 Days",
+      key: "3days"
     },
   ]
 
   const budgetType = [
     {
-      label:"Fixed",
-      key:"fixed"
+      label: "Fixed",
+      key: "fixed"
     },
     {
-      label:"Negotiable",
-      key:"negotiable"
+      label: "Negotiable",
+      key: "negotiable"
     },
   ]
 
-   const designStyle = [
+  const designStyle = [
     {
-      label:"Fixed",
-      key:"fixed"
+      label: "Fixed",
+      key: "fixed"
     },
     {
-      label:"Negotiable",
-      key:"negotiable"
+      label: "Negotiable",
+      key: "negotiable"
     },
   ]
 
   const designStyles = [
-  {
-    label: "Haute Couture",
-    key: "haute-couture",
-    description:
-      "Exclusive, custom-fitted fashion design that is handmade from start to finish with high-quality materials.",
-  },
-  {
-    label: "Ready-to-Wear (Prêt-à-Porter)",
-    key: "ready-to-wear",
-    description:
-      "Fashion clothing produced in standard sizes and sold through retail, blending creativity with accessibility.",
-  },
-  {
-    label: "Streetwear",
-    key: "streetwear",
-    description:
-      "Casual and trendy clothing style inspired by skateboarding, hip-hop, and youth culture.",
-  },
-  {
-    label: "Bohemian (Boho)",
-    key: "bohemian",
-    description:
-      "A relaxed, artistic style featuring flowy fabrics, earthy tones, and ethnic or vintage-inspired elements.",
-  },
-  {
-    label: "Minimalist",
-    key: "minimalist",
-    description:
-      "Simple and clean designs with a focus on neutral colors, streamlined silhouettes, and functionality.",
-  },
-  {
-    label: "Avant-Garde",
-    key: "avant-garde",
-    description:
-      "Experimental and innovative style that challenges traditional fashion rules with bold and artistic designs.",
-  },
-  {
-    label: "Classic",
-    key: "classic",
-    description:
-      "Timeless, elegant, and refined designs that emphasize quality and sophistication over trends.",
-  },
-  {
-    label: "Vintage",
-    key: "vintage",
-    description:
-      "Fashion inspired by past decades, often incorporating retro elements into modern outfits.",
-  },
-  {
-    label: "Athleisure",
-    key: "athleisure",
-    description:
-      "A blend of athletic and casual wear designed for both exercise and everyday use.",
-  },
-  {
-    label: "Glamorous",
-    key: "glamorous",
-    description:
-      "Luxurious and eye-catching designs often featuring sequins, bold cuts, and striking details.",
-  },
-  {
-    label: "Preppy",
-    key: "preppy",
-    description:
-      "A neat, polished style influenced by Ivy League fashion, featuring blazers, polos, and structured pieces.",
-  },
-  {
-    label: "Grunge",
-    key: "grunge",
-    description:
-      "A rugged, edgy style inspired by 90s music culture, often featuring ripped jeans, flannel, and layered looks.",
-  },
-  {
-    label: "Eclectic",
-    key: "eclectic",
-    description:
-      "A mix-and-match style that combines different patterns, textures, and influences to create a unique look.",
-  },
-  {
-    label: "Romantic",
-    key: "romantic",
-    description:
-      "Soft, feminine designs featuring lace, ruffles, pastel colors, and delicate fabrics.",
-  },
-];
+    {
+      label: "Haute Couture",
+      key: "haute-couture",
+      description:
+        "Exclusive, custom-fitted fashion design that is handmade from start to finish with high-quality materials.",
+    },
+    {
+      label: "Ready-to-Wear (Prêt-à-Porter)",
+      key: "ready-to-wear",
+      description:
+        "Fashion clothing produced in standard sizes and sold through retail, blending creativity with accessibility.",
+    },
+    {
+      label: "Streetwear",
+      key: "streetwear",
+      description:
+        "Casual and trendy clothing style inspired by skateboarding, hip-hop, and youth culture.",
+    },
+    {
+      label: "Bohemian (Boho)",
+      key: "bohemian",
+      description:
+        "A relaxed, artistic style featuring flowy fabrics, earthy tones, and ethnic or vintage-inspired elements.",
+    },
+    {
+      label: "Minimalist",
+      key: "minimalist",
+      description:
+        "Simple and clean designs with a focus on neutral colors, streamlined silhouettes, and functionality.",
+    },
+    {
+      label: "Avant-Garde",
+      key: "avant-garde",
+      description:
+        "Experimental and innovative style that challenges traditional fashion rules with bold and artistic designs.",
+    },
+    {
+      label: "Classic",
+      key: "classic",
+      description:
+        "Timeless, elegant, and refined designs that emphasize quality and sophistication over trends.",
+    },
+    {
+      label: "Vintage",
+      key: "vintage",
+      description:
+        "Fashion inspired by past decades, often incorporating retro elements into modern outfits.",
+    },
+    {
+      label: "Athleisure",
+      key: "athleisure",
+      description:
+        "A blend of athletic and casual wear designed for both exercise and everyday use.",
+    },
+    {
+      label: "Glamorous",
+      key: "glamorous",
+      description:
+        "Luxurious and eye-catching designs often featuring sequins, bold cuts, and striking details.",
+    },
+    {
+      label: "Preppy",
+      key: "preppy",
+      description:
+        "A neat, polished style influenced by Ivy League fashion, featuring blazers, polos, and structured pieces.",
+    },
+    {
+      label: "Grunge",
+      key: "grunge",
+      description:
+        "A rugged, edgy style inspired by 90s music culture, often featuring ripped jeans, flannel, and layered looks.",
+    },
+    {
+      label: "Eclectic",
+      key: "eclectic",
+      description:
+        "A mix-and-match style that combines different patterns, textures, and influences to create a unique look.",
+    },
+    {
+      label: "Romantic",
+      key: "romantic",
+      description:
+        "Soft, feminine designs featuring lace, ruffles, pastel colors, and delicate fabrics.",
+    },
+  ];
 
 
   return (
@@ -240,8 +240,12 @@ const Page = () => {
           e.preventDefault();
           let data = Object.fromEntries(new FormData(e.currentTarget));
 
-          setAction(`submit ${JSON.stringify(data)}`);
-          console.log(data);
+          const dataToSave = { ...data };
+          if (dataToSave.referenceImg instanceof File) {
+            dataToSave.referenceImg = dataToSave.referenceImg.name;
+          }
+          localStorage.setItem('postedProject', JSON.stringify(dataToSave));
+          console.log(dataToSave);
         }}
       >
         <Input
@@ -364,7 +368,7 @@ const Page = () => {
           <Button
             type="submit"
             size="sm"
-          radius="full"
+            radius="full"
             variant="outlined"
             className="  text-customWhiteBgText text-xs  shadow-md  font-semibold px-10"
             style={{
