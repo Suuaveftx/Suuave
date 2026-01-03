@@ -24,6 +24,8 @@ import {
 
 import Navbar3 from "../../../../components/Navbar3";
 import ContractHeader from "./contract-header";
+import SubmitProjectModal from "../../../../components/SubmitProjectModal";
+import { useRouter } from "next/navigation";
 
 export default function OngoingDetailsPage({ params }) {
   const contractId = params?.id || "24t64754"; // fallback for demo
@@ -134,17 +136,16 @@ export default function OngoingDetailsPage({ params }) {
                         key={index}
                         className="grid grid-cols-[8rem_1fr] gap-4 items-start"
                       >
-                        <span className={`${item.label === "Status" ? "lg:hidden":""} md:text-md text-sm w-32 mb-1 sm:mb-0 font-light`}>
+                        <span className={`${item.label === "Status" ? "lg:hidden" : ""} md:text-md text-sm w-32 mb-1 sm:mb-0 font-light`}>
                           {item.label} -
                         </span>
                         <span
-                          className={`${
-                            item.label === "Status"
-                              ? `${getStatusColor(
-                                  contractData.status
-                                )} lg:hidden`
-                              : ""
-                          } md:text-md text-sm font-proximanova`}
+                          className={`${item.label === "Status"
+                            ? `${getStatusColor(
+                              contractData.status
+                            )} lg:hidden`
+                            : ""
+                            } md:text-md text-sm font-proximanova`}
                         >
                           {item.value}
                         </span>
@@ -194,14 +195,17 @@ export default function OngoingDetailsPage({ params }) {
             {/* Action Buttons */}
             <Card className="bg-white border border-gray-200 drop-shadow-md">
               <CardBody className=" lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col">
-                <Button
-                  className="w-full bg-radial py-6 from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
-                  size="md"
-                  radius="full"
-                  onPress={onOpen}
-                >
-                  Submit Project
-                </Button>
+                <SubmitProjectModal
+                  trigger={
+                    <Button
+                      className="w-full bg-radial py-6 from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
+                      size="md"
+                      radius="full"
+                    >
+                      Submit
+                    </Button>
+                  }
+                />
                 <Button
                   variant="bordered"
                   className="w-full bg-transparent py-5 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl  shadow-sm"
@@ -258,11 +262,10 @@ export default function OngoingDetailsPage({ params }) {
                       {[...Array(5)].map((_, i) => (
                         <StarIcon
                           key={i}
-                          className={`h-4 w-4 ${
-                            i < Math.floor(contractData.artist.rating)
-                              ? "text-yellow-400 fill-current"
-                              : "text-[#ACACAC] border-none"
-                          }`}
+                          className={`h-4 w-4 ${i < Math.floor(contractData.artist.rating)
+                            ? "text-yellow-400 fill-current"
+                            : "text-[#ACACAC] border-none"
+                            }`}
                         />
                       ))}
                     </div>

@@ -7,6 +7,7 @@ import Abouttheclient from '../../../components/Abouttheclient';
 import Budgets from './_components/Budgets';
 import DesignStyle from './_components/DesignStyle';
 import SkillRequirement from './_components/SkillRequirement';
+import ReferenceImage from './_components/ReferenceImage';
 import ProposalPopUp from '../send-proposal/_components/ProposalPopUp';
 import { useDisclosure } from '@heroui/react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -63,6 +64,7 @@ const JobDetailsPageContent = () => {
           handleSubmitProposal={handleSubmitProposal}
           handleViewProposal={handleViewProposal}
           handleWithdrawProposal={handleWithdrawProposal}
+          jobId={jobId}
         />
         <div className='hidden w-screen max-w-[100%] mb-8'>
           <BtnProposals
@@ -75,6 +77,9 @@ const JobDetailsPageContent = () => {
             saveText={proposalSubmitted ? 'Withdraw Proposal' : 'Save Job'}
             sendText={proposalSubmitted ? 'View Proposal' : 'Send Proposal'}
           />
+        </div>
+        <div className='hidden lg:flex lg:flex-col'>
+          <ReferenceImage jobId={jobId} />
         </div>
         <div className='hidden lg:flex lg:flex-col'>
           <DesignStyle />

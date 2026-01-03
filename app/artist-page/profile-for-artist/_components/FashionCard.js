@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Eye, Plus, Trash2 } from 'lucide-react';
 import ThreeDotsDropdown from './ThreeDotsDropDown';
@@ -132,13 +133,27 @@ const FashionCard = ({ isVisitor = false }) => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-shrink-0 px-6 py-1 text-[16px] md:text-[18px] font-medium leading-tight transition duration-300 
-        ${activeTab === tab.id
-                  ? 'text-[#f4f4f4] border-b-2 border-[#035A7A]'
+              className={`flex-shrink-0 px-6 py-2 text-[16px] md:text-[18px] font-medium leading-tight transition duration-300 relative
+                ${activeTab === tab.id
+                  ? 'text-[#035A7A]'
                   : 'text-[#767676] hover:text-[#035A7A]'
                 }`}
             >
-              {tab.label}
+              <motion.div
+                animate={activeTab === tab.id ? "hovered" : "initial"}
+                whileHover="hovered"
+                className="relative"
+              >
+                {tab.label}
+                <motion.div
+                  variants={{
+                    initial: { scaleX: 0 },
+                    hovered: { scaleX: 1 }
+                  }}
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  className="absolute bottom-[-8px] left-0 w-full h-[2px] bg-[#222222] origin-left"
+                />
+              </motion.div>
             </button>
           ))}
         </div>
@@ -416,12 +431,11 @@ const FashionCard = ({ isVisitor = false }) => {
               ? 'Delete Award'
               : 'Delete Work Sample'
         }
-        message={`Are you sure you want to delete this ${deleteItemType === 'design'
-          ? 'design'
-          : deleteItemType === 'award'
-            ? 'award'
-            : 'work sample'
-          }? This action cannot be undone.`}
+        message={
+          deleteItemType === 'award'
+            ? 'Are you sure you want to delete this ?'
+            : `Are you sure you want to delete this ${deleteItemType === 'design' ? 'design' : 'work sample'}? This action cannot be undone.`
+        }
       />
     </>
   );

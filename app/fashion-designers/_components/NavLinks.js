@@ -19,6 +19,8 @@ import {
   TagUser,
 } from "../../../utils/SvgIcons";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
 export function NavLinks() {
   const icons = {
@@ -33,25 +35,71 @@ export function NavLinks() {
     user: <TagUser className="text-danger" fill="currentColor" size={30} />,
   };
 
+  const pathname = usePathname();
+
+  const isActive = (path) => pathname === path;
+
   return (
-    <nav className="hidden md:flex items-center gap-9  font-medium ">
+    <nav className="hidden md:flex items-center gap-9 font-medium h-full">
       <Link
         href="/fashion-designers"
-        className="text-[#1A1A1A] hover:text-[#B0B0B0] text-[15px] transition-colors"
+        className="group text-[#1A1A1A] hover:text-[#B0B0B0] text-[15px] transition-colors relative flex items-center h-full"
       >
-        Designs
+        <motion.div
+          animate={isActive("/fashion-designers") ? "hovered" : "initial"}
+          whileHover="hovered"
+          className="relative flex items-center h-full"
+        >
+          Designs
+          <motion.div
+            variants={{
+              initial: { scaleX: 0 },
+              hovered: { scaleX: 1 }
+            }}
+            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+            className="absolute bottom-[28px] left-0 w-full h-[2px] bg-[#222222] origin-left"
+          />
+        </motion.div>
       </Link>
       <Link
         href="/fashion-designers/my-projects"
-        className="text-[#1A1A1A] hover:text-[#B0B0B0] text-[15px] transition-colors"
+        className="group text-[#1A1A1A] hover:text-[#B0B0B0] text-[15px] transition-colors relative flex items-center h-full"
       >
-        My Projects
+        <motion.div
+          animate={isActive("/fashion-designers/my-projects") ? "hovered" : "initial"}
+          whileHover="hovered"
+          className="relative flex items-center h-full"
+        >
+          My Projects
+          <motion.div
+            variants={{
+              initial: { scaleX: 0 },
+              hovered: { scaleX: 1 }
+            }}
+            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+            className="absolute bottom-[28px] left-0 w-full h-[2px] bg-[#222222] origin-left"
+          />
+        </motion.div>
       </Link>
       <Link
         href="/fashion-designers/contracts"
-        className="text-[#1A1A1A] hover:text-[#B0B0B0] text-[15px] transition-colors"
+        className="group text-[#1A1A1A] hover:text-[#B0B0B0] text-[15px] transition-colors relative flex items-center h-full"
       >
-        My Contracts
+        <motion.div
+          animate={isActive("/fashion-designers/contracts") ? "hovered" : "initial"}
+          whileHover="hovered"
+          className="relative flex items-center h-full"
+        >
+          My Contracts
+          <motion.div
+            variants={{
+              initial: { scaleX: 0 },
+              hovered: { scaleX: 1 }
+            }}
+            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+            className="absolute bottom-[28px] left-0 w-full h-[2px] bg-[#222222] origin-left"
+          />
+        </motion.div>
       </Link>
       {/* <Dropdown>
         <DropdownTrigger>
