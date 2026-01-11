@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { InputOtp } from "@heroui/react";
 import CustomButton from "../../../../components/CustomButton";
 import OtpValue from "./OtpValue";
@@ -9,6 +9,14 @@ import BackButton from "../../../../components/BackButton";
 
 const Otp = () => {
   const [value, setValue] = React.useState("");
+  const [category, setCategory] = useState("");
+
+  useEffect(() => {
+    const savedCategory = localStorage.getItem("activeCategory");
+    if (savedCategory) {
+      setCategory(savedCategory);
+    }
+  }, []);
 
   return (
     <main className=" h-full  w-full lg:flex items-center bg-[#F1F1F1]">
@@ -38,7 +46,9 @@ const Otp = () => {
               className="object-contain object-left -ml-28 -mt-20"
             />
             <p className="font-bold text-xl text-[#F5F5F5]">
-            Monetize your creativity through global brand collaborations.
+              {category === "Fashion Brand"
+                ? "Collaborate with a pool of talented African fashion artists."
+                : "Monetize your creativity through global brand collaborations."}
             </p>
           </div>
         </div>

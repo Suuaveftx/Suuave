@@ -39,8 +39,7 @@ const LoginOptions = () => {
               className="object-contain object-left -ml-28 -mt-20"
             />
             <p className="font-bold text-xl text-[#F5F5F5]">
-              Collaborate with a pool of <br /> talented African fashion <br />{" "}
-              artists.
+              Connect, collaborate, and create the next generation of African-inspired fashion.
             </p>
           </div>
         </div>

@@ -80,10 +80,10 @@ const AwardsCertification = ({
         <b className='text-[#222222] font-normal text-base'>DOC00263R</b>
 
         {/* submit button */}
-        <div className='w-full px-10 md:px-0 justify-between flex md:justify-end items-center gap-5'>
-          <Link  href="/auth/login" className='text-[#3A98BB] px-6 py-2 cursor-pointer '>Skip</Link>
+        <div className='w-full px-10 md:px-0 justify-center flex md:justify-end items-center gap-5'>
+          <Link href="/artist-page/project-page" className='text-[#3A98BB] px-6 py-2 cursor-pointer '>Skip</Link>
           <Link
-            href="/auth/login"
+            href="/artist-page/project-page"
             className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2  text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]'
           >
             Submit

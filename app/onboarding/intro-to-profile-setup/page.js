@@ -6,19 +6,20 @@ const Page = () => {
   return (
     <div>
       {/* Logo for mobile only */}
-      <div className="block sm:hidden">
-        <Image
-          src="/dev-images/logo.png"
-          alt="Logo"
-          width={70}
-          height={60}
-          className="mb-4 mt-4 ml-6" // Adds spacing below the logo
-        />
+      <div className="block sm:hidden bg-[#F9F9F9] pt-6 pl-6">
+        <div className="bg-[#EAF9FF] w-14 h-14 flex items-center justify-center rounded-lg">
+          <Image
+            src="/dev-images/logo.png"
+            alt="Logo"
+            width={40}
+            height={40}
+          />
+        </div>
       </div>
 
       {/* AppLayout for larger screens */}
       <div className="hidden sm:block">
-          <WelcomePage />
+        <WelcomePage />
       </div>
 
       {/* Show FashionArtist independently for mobile */}

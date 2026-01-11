@@ -23,7 +23,7 @@ const FashionCard = ({ isVisitor = false }) => {
 
   useEffect(() => {
     // Access localStorage in useEffect to avoid hydration issues
-    const role = isVisitor ? 'Fashion Designer' : localStorage.getItem('activeCategory');
+    const role = isVisitor ? 'Fashion Brand' : localStorage.getItem('activeCategory');
     setUserRole(role);
   }, [isVisitor]);
 

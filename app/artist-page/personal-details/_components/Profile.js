@@ -1,7 +1,7 @@
 "use client";
-import Image from "next/image";
 import React from "react";
-import { useState } from "react";
+import Image from "next/image";
+import { Camera } from "lucide-react";
 
 const Profile = ({
   setSelected,
@@ -14,18 +14,22 @@ const Profile = ({
 
   return (
     <div
-      className={`${className}  flex-col items-center p-10 md:p-0 md:items-start gap-2 mb-4 w-full bg-[#FAFAFA] md:bg-transparent rounded-lg md:w-[40%] lg:w-[25%]`}
+      className={`${className} flex-col items-center p-10 md:p-0 md:items-start gap-2 mb-4 w-full bg-white md:bg-transparent shadow-sm md:shadow-none border border-[#EAEAEA] md:border-none rounded-2xl md:w-[40%] lg:w-[25%]`}
     >
-      <div className=" md:mb-10">
-        <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center w-full md:items-start md:mb-10">
+        <div className="relative mb-4">
           <label htmlFor="profile-upload" className="cursor-pointer">
             <Image
               src={preview}
               alt="Profile Picture"
-              width={150}
-              height={150}
-              className="mb-4 rounded-full object-cover border border-gray-300"
+              width={120}
+              height={120}
+              className="rounded-full object-cover border border-[#EAEAEA]"
             />
+            {/* Camera Overlay */}
+            <div className="absolute bottom-1 right-1 bg-[#3A98BB] p-2 rounded-full border-2 border-white">
+              <Camera size={16} className="text-white" />
+            </div>
           </label>
           <input
             id="profile-upload"
@@ -35,12 +39,12 @@ const Profile = ({
             className="hidden"
           />
         </div>
-        <span className="w-full  flex flex-col md:items-center md:gap-2 md:flex-row">
-          <b className="font-bold text-xl text-center md:text-start">
+        <div className="flex flex-col items-center md:items-start w-full">
+          <b className="font-bold text-xl text-[#222222]">
             Chinedu Ozulu
-          </b>{" "}
-          <small className="font-normal text-sm text-center">@ocean</small>
-        </span>
+          </b>
+          <small className="font-normal text-sm text-[#767676]">@ocean</small>
+        </div>
       </div>
       {/* Personal Detail toggle */}
       <section className=" hidden md:flex flex-col ">
@@ -62,7 +66,7 @@ const Profile = ({
               text="Nationality"
             />
 
-             <List
+            <List
               activeState={formData.phoneNumber}
               text="Phone Number"
             />
@@ -99,7 +103,7 @@ const Profile = ({
               activeState={formData.companyName}
               text="Website (Optional)"
             /> */}
-            <List activeState={formData.portfolioLink } text="Portfolio" />
+            <List activeState={formData.portfolioLink} text="Portfolio" />
             <List activeState={formData.availability} text="Availability" />
           </ul>
         )}
@@ -135,11 +139,10 @@ export default Profile;
 const List = ({ text, activeState }) => {
   return (
     <li
-      className={`${
-        activeState
-          ? "border-[#3A98BB] transition-colors duration-300"
-          : "border-[#D1D1D1]"
-      } border-l-2  p-1 text-[#767676] font-normal text-base`}
+      className={`${activeState
+        ? "border-[#3A98BB] transition-colors duration-300"
+        : "border-[#D1D1D1]"
+        } border-l-2  p-1 text-[#767676] font-normal text-base`}
     >
       {text}
     </li>

@@ -17,11 +17,7 @@ const ChooseCategory = () => {
   };
 
   const submitCategory = () => {
-    if (!activeCategory) {
-      return alert('Please select a category to proceed.');
-    }
     router.push('/onboarding/create-new-account');
-    localStorage.removeItem('activeCategory');
   };
 
   return (
@@ -36,16 +32,15 @@ const ChooseCategory = () => {
         />
       </div>
       <h1 className='text-center text-2xl md:text-xl font-bold mt-3'>
-        Sign up as a Fashion Artist or a Fashion Brand/Designer
+        Sign up as a Fashion Artist or a Fashion Brand
       </h1>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-12 mt-8'>
         <label htmlFor='Fashion Artist'>
           <div
             className={`bg-white cursor-pointer rounded-[16px] shadow-md pl-[24px] pr-[24px] pt-[32px] pb-[32px] flex flex-col 
-              justify-between items-center text-center border-2 hover:border-[#CCE7F2] transition-all ${
-                activeCategory === 'Fashion Artist'
-                  ? 'border-[#3A98BB]'
-                  : 'border-transparent'
+              justify-between items-center text-center border-2 hover:border-[#CCE7F2] transition-all ${activeCategory === 'Fashion Artist'
+                ? 'border-[#3A98BB]'
+                : 'border-transparent'
               }`}
           >
             <div className='flex justify-end w-full'>
@@ -74,35 +69,34 @@ const ChooseCategory = () => {
             </div>
           </div>
         </label>
-        <label htmlFor='Fashion Designer'>
+        <label htmlFor='Fashion Brand'>
           <div
             className={`bg-white cursor-pointer rounded-[16px] shadow-md pl-[24px] pr-[24px] pt-[32px] pb-[32px] flex flex-col 
-              justify-between items-center text-center border-2 hover:border-[#CCE7F2] transition-all ${
-                activeCategory === 'Fashion Designer'
-                  ? 'border-[#3A98BB]'
-                  : 'border-transparent'
+              justify-between items-center text-center border-2 hover:border-[#CCE7F2] transition-all ${activeCategory === 'Fashion Brand'
+                ? 'border-[#3A98BB]'
+                : 'border-transparent'
               }`}
           >
             <div className='flex justify-end w-full'>
               <input
-                id='Fashion Designer'
+                id='Fashion Brand'
                 type='radio'
                 className='w-8 h-8 accent-[#3A98BB]'
                 name='category'
-                value='Fashion Designer'
-                checked={activeCategory === 'Fashion Designer'}
-                onChange={() => handleCategoryChange('Fashion Designer')}
+                value='Fashion Brand'
+                checked={activeCategory === 'Fashion Brand'}
+                onChange={() => handleCategoryChange('Fashion Brand')}
               />
             </div>
             <Image
               src='/dev-images/Designers.png'
-              alt='Fashion Designer'
+              alt='Fashion Brand'
               className='object-contain mb-2'
               width={120}
               height={120}
             />
             <div>
-              <h2 className='text-[22px] font-bold pt-1'>Fashion Designer</h2>
+              <h2 className='text-[22px] font-bold pt-1'>Fashion Brand</h2>
               <p className='text-gray-500 text-base mt-1 whitespace-nowrap'>
                 Including Brands, Designers, Clients, etc.
               </p>
@@ -113,7 +107,9 @@ const ChooseCategory = () => {
       <div className='mt-16'>
         <button
           onClick={submitCategory}
-          className='text-[#035A7A] rounded-3xl cursor-pointer px-20 py-3 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]'
+          disabled={!activeCategory}
+          className={`text-[#035A7A] rounded-3xl cursor-pointer px-20 py-3 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] transition-opacity ${!activeCategory ? 'opacity-50 cursor-not-allowed' : 'opacity-100 hover:opacity-90'
+            }`}
         >
           Continue
         </button>

@@ -1,14 +1,23 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import LogoImg from "./_components/LogoImg";
 import CreateAccount from "./_components/Create-Account";
 import Image from "next/image";
 import BackButton from "../../../components/BackButton";
 const Page = () => {
+  const [category, setCategory] = useState("");
+
+  useEffect(() => {
+    const savedCategory = localStorage.getItem("activeCategory");
+    if (savedCategory) {
+      setCategory(savedCategory);
+    }
+  }, []);
+
   return (
     <main className="flex flex-col lg:flex-row h-full  w-full bg-[#F1F1F1]">
-     
+
       <div className=" lg:hidden w-full h-20 ">
         <BackButton />
       </div>
@@ -35,7 +44,9 @@ const Page = () => {
               className="object-contain object-left -ml-28 -mt-20"
             />
             <p className="font-bold text-xl text-[#F5F5F5]">
-             Monetize your creativity through global brand collaborations.
+              {category === "Fashion Brand"
+                ? "Collaborate with a pool of talented African fashion artists."
+                : "Monetize your creativity through global brand collaborations."}
             </p>
           </div>
         </div>
