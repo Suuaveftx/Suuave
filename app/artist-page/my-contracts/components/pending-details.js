@@ -30,7 +30,7 @@ export default function PendingDetailsPage({ params }) {
     artist: {
       name: "Tolu",
       username: "tolu",
-      role: "Fashion Designer",
+      role: "Fashion Brand",
       location: "Lagos, Nigeria",
       rating: 0.0,
       reviews: 0,
@@ -100,20 +100,18 @@ export default function PendingDetailsPage({ params }) {
                         className="grid grid-cols-[8rem_1fr] gap-4 items-start"
                       >
                         <span
-                          className={`${
-                            item.label === "Status" ? "lg:hidden" : ""
-                          } md:text-md text-sm w-32 mb-1 sm:mb-0 font-light`}
+                          className={`${item.label === "Status" ? "lg:hidden" : ""
+                            } md:text-md text-sm w-32 mb-1 sm:mb-0 font-light`}
                         >
                           {item.label} -
                         </span>
                         <span
-                          className={`${
-                            item.label === "Status"
+                          className={`${item.label === "Status"
                               ? `${getStatusColor(
-                                  contractData.status
-                                )} lg:hidden`
+                                contractData.status
+                              )} lg:hidden`
                               : ""
-                          } md:text-md text-sm font-proximanova`}
+                            } md:text-md text-sm font-proximanova`}
                         >
                           {item.value}
                         </span>
@@ -217,11 +215,10 @@ export default function PendingDetailsPage({ params }) {
                       {[...Array(5)].map((_, i) => (
                         <StarIcon
                           key={i}
-                          className={`h-4 w-4 ${
-                            i < Math.floor(contractData.artist.rating)
+                          className={`h-4 w-4 ${i < Math.floor(contractData.artist.rating)
                               ? "text-yellow-400 fill-current"
                               : "text-[#ACACAC] border-none"
-                          }`}
+                            }`}
                         />
                       ))}
                     </div>

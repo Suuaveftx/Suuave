@@ -80,7 +80,7 @@ export default function ContractPage() {
       artist: {
         name: "Aliu",
         username: "aliu",
-        role: "Fashion Designer",
+        role: "Fashion Brand",
         location: "Lagos, Nigeria",
         rating: 0.0,
         reviews: 0,
@@ -97,7 +97,7 @@ export default function ContractPage() {
       artist: {
         name: "Adeniji",
         username: "adeniji",
-        role: "Fashion Designer",
+        role: "Fashion Brand",
         location: "Lagos, Nigeria",
         rating: 0.0,
         reviews: 0,

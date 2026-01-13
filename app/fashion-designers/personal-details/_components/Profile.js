@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React from "react";
 import { useState } from "react";
+import { Camera } from "lucide-react";
 
 const Profile = ({
   setSelected,
@@ -17,7 +18,7 @@ const Profile = ({
     >
       <div className=" md:mb-10">
         <div className="flex flex-col items-center">
-          <label htmlFor="profile-upload" className="cursor-pointer">
+          <label htmlFor="profile-upload" className="cursor-relative cursor-pointer relative">
             <Image
               src={preview}
               alt="Profile Picture"
@@ -25,6 +26,10 @@ const Profile = ({
               height={150}
               className="mb-4 rounded-full object-cover border border-gray-300"
             />
+            {/* Camera Overlay */}
+            <div className="absolute bottom-5 right-1 bg-[#3A98BB] p-2 rounded-full border-2 border-white">
+              <Camera size={20} className="text-white" />
+            </div>
           </label>
           <input
             id="profile-upload"
@@ -89,11 +94,10 @@ export default Profile;
 const List = ({ text, activeState }) => {
   return (
     <li
-      className={`${
-        activeState
+      className={`${activeState
           ? "border-[#3A98BB] transition-colors duration-300"
           : "border-[#D1D1D1]"
-      } border-l-2  p-1 text-[#767676] font-normal text-base`}
+        } border-l-2  p-1 text-[#767676] font-normal text-base`}
     >
       {text}
     </li>

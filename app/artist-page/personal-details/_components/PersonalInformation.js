@@ -99,7 +99,7 @@ const PersonalInformation = ({
           </div>
         </div>
         {/* skip and continue button */}
-        <div className="w-full flex justify-end items-center">
+        <div className="w-full flex justify-center md:justify-end items-center">
           <button
             onClick={() => setSelected("Awards/Certifications")}
             className="text-[#035A7A] rounded-3xl cursor-pointer  px-6 py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"

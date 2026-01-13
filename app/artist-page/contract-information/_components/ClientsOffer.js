@@ -26,7 +26,7 @@ const ClientsOffer = () => {
           </div>
 
           {/* Role */}
-          <h5 className="font-medium">Fashion Designer</h5>
+          <h5 className="font-medium">Fashion Brand</h5>
 
           {/* Location */}
           <div className="flex gap-2 items-center">

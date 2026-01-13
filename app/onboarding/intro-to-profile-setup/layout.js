@@ -8,7 +8,7 @@ export default function Layout({ children }) {
     <HeroUIProvider>
       <div className="max-w-[1700px] mx-auto ">
         {/* Navbar */}
-        <Navbars />
+        {/* <Navbars /> */}
         {/* Main Content */}
         <main className="font-proximanova lg:px-[36.51px]  lg:pt-[95.68px]">
           {children}

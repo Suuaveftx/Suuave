@@ -46,7 +46,7 @@ export default function OngoingDetailsPage({ params }) {
     artist: {
       name: "Tolu",
       username: "tolu",
-      role: "Fashion Designer",
+      role: "Fashion Brand",
       location: "Lagos, Nigeria",
       rating: 0.0,
       reviews: 0,

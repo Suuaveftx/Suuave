@@ -21,14 +21,14 @@ export default function Page() {
     }
   };
 
-   const uploadedPortfolio = (e) => {
+  const uploadedPortfolio = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       setPreviewPortfolio(URL.createObjectURL(file));
     }
   };
 
-     const uploadedAwardCertificate = (e) => {
+  const uploadedAwardCertificate = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       setPreviewAwardCertificate(URL.createObjectURL(file));
@@ -41,7 +41,7 @@ export default function Page() {
     fullName: "",
     username: "",
     email: "",
-    nationality: new Set([]), 
+    nationality: new Set([]),
     phoneCode: new Set([]),
     phoneNumber: "",
     currentCity: "",
@@ -62,13 +62,16 @@ export default function Page() {
   });
   return (
     <>
-      <div className="md:hidden mt-5 px-5">
-        <Image src="/svg/mobile-logo.svg" alt="icon" width={140} height={40} />
+      <div className="md:hidden pt-6 pl-6 bg-[#F9F9F9]">
+        <div className="bg-[#EAF9FF] py-2 px-4 inline-flex items-center gap-2 rounded-lg">
+          <Image src="/dev-images/logo.png" alt="icon" width={24} height={24} />
+          <span className="font-bold text-[#222222] text-xl font-satoshi" style={{ fontFamily: 'var(--font-satoshi), sans-serif', letterSpacing: '0.05em' }}>suuave</span>
+        </div>
       </div>
-      <h1 className=" border-b-2 md:mx-10 border-[#EAEAEA] py-3 font-bold text-2xl text-[#222222] px-5 md:px-0 md:mt-5 hidden md:block">
+      <h1 className=" border-b-2 md:mx-10 border-[#EAEAEA] py-3 font-bold text-2xl text-[#222222] px-5 md:px-0 hidden md:block">
         Profile Setting
       </h1>
-      <div className="flex flex-col md:flex-row mt-10 px-5 md:px-10">
+      <div className="flex flex-col md:flex-row px-5 md:px-10">
         {/* profile view and button switch */}
 
         <Profile
@@ -108,7 +111,7 @@ export default function Page() {
             setFormData={setFormData}
             uploadedPortfolio={uploadedPortfolio}
             previewPortfolio={previewPortfolio}
-            
+
 
           />
         )}

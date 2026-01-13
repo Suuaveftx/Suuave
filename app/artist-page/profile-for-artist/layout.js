@@ -17,7 +17,7 @@ export default function Layout({ children }) {
     <HeroUIProvider>
       <div className="max-w-[1700px] mx-auto">
         {/* Navbar */}
-        {role === "Fashion Designer" ? <FashionDesignerHeader /> : <Navbars />}
+        {role === "Fashion Brand" ? <FashionDesignerHeader /> : <Navbars />}
         {/* Main Content */}
         <main className="font-proximanova">{children}</main>
       </div>

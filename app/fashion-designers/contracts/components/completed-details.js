@@ -29,7 +29,7 @@ export default function CompletedDetailsPage({ params }) {
     artist: {
       name: "Tolu",
       username: "tolu",
-      role: "Fashion Designer",
+      role: "Fashion Brand",
       location: "Lagos, Nigeria",
       rating: 0.0,
       reviews: 0,
@@ -100,24 +100,20 @@ export default function CompletedDetailsPage({ params }) {
                         className="grid grid-cols-[8rem_1fr] gap-4 items-start"
                       >
                         <span
-                          className={`${
-                            item.label === "Status" ? "lg:hidden" : ""
-                          } ${
-                            item.label === "Contract Number" ? "lg:-mt-4" : ""
-                          }  md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
+                          className={`${item.label === "Status" ? "lg:hidden" : ""
+                            } ${item.label === "Contract Number" ? "lg:-mt-4" : ""
+                            }  md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
                         >
                           {item.label} -
                         </span>
                         <span
-                          className={`${
-                            item.label === "Status"
+                          className={`${item.label === "Status"
                               ? `${getStatusColor(
-                                  contractData.status
-                                )} lg:hidden`
+                                contractData.status
+                              )} lg:hidden`
                               : ""
-                          } ${
-                            item.label === "Contract Number" ? "lg:-mt-4" : ""
-                          }  md:text-md text-sm font-proximanova`}
+                            } ${item.label === "Contract Number" ? "lg:-mt-4" : ""
+                            }  md:text-md text-sm font-proximanova`}
                         >
                           {item.value}
                         </span>

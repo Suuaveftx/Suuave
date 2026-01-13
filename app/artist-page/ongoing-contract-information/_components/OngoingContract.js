@@ -27,7 +27,7 @@ const attachments = [
 const clientProfile = {
     name: "Tolu",
     handle: "@tolu",
-    role: "Fashion Designer",
+    role: "Fashion Brand",
     location: "Lagos, Nigeria",
     avatar: "/dev-images/Clients.png",
     rating: 5,

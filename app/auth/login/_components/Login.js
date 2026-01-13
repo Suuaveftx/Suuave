@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaLock } from 'react-icons/fa';
 import { HiOutlineMail } from 'react-icons/hi';
@@ -12,6 +12,14 @@ import { useForm } from 'react-hook-form';
 const Login = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [category, setCategory] = useState("");
+
+  useEffect(() => {
+    const savedCategory = localStorage.getItem("activeCategory");
+    if (savedCategory) {
+      setCategory(savedCategory);
+    }
+  }, []);
 
   const {
     register,
@@ -26,7 +34,7 @@ const Login = () => {
       return router.push("/artist-page");
     }
     if (data.email === "brand@gmail.com") {
-      localStorage.setItem("activeCategory", "Fashion Designer");
+      localStorage.setItem("activeCategory", "Fashion Brand");
       return router.push("/fashion-designers");
     }
   };
@@ -56,7 +64,9 @@ const Login = () => {
               className='object-contain object-left -ml-28 -mt-20'
             />
             <p className='font-bold text-xl text-[#F5F5F5]'>
-              Monetize your creativity through global brand collaborations.
+              {category === "Fashion Brand"
+                ? "Collaborate with a pool of talented African fashion artists."
+                : "Monetize your creativity through global brand collaborations."}
             </p>
           </div>
         </div>

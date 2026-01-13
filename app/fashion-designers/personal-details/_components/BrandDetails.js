@@ -200,9 +200,9 @@ const BrandDetails = ({ setSelected, formData, setFormData }) => {
           onChange={(e) => setFormData({ ...formData, about: e.target.value })}
         />
       </section>
-      <div className='w-full flex justify-end mt-10'>
+      <div className='w-full flex justify-center md:justify-end mt-10'>
         <Link
-          href='/auth/login'
+          href='/fashion-designers'
           className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]'
         >
           Submit
