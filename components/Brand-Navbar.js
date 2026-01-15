@@ -35,7 +35,6 @@ const Navbars = () => {
     { label: 'Jobs', href: '/artist-page/project-page' },
     { label: 'My Proposals', href: '/artist-page/my-proposals' },
     { label: 'My Contracts', href: '/artist-page/my-contracts-old' },
-    { label: 'Profile', href: '/artist-page/profile-for-artist' },
   ];
 
   const mobileMenuItems = [
@@ -43,7 +42,6 @@ const Navbars = () => {
     { label: 'Jobs', href: '/artist-page/project-page' },
     { label: 'My Proposals', href: '/artist-page/my-proposals' },
     { label: 'My Contracts', href: '/artist-page/my-contracts-old' },
-    { label: 'Profile', href: '/artist-page/profile-for-artist' },
     { label: 'Settings', href: '/artist-page/settings' },
   ];
 

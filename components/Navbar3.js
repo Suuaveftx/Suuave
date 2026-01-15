@@ -28,7 +28,6 @@ const Navbar3 = () => {
     { label: "Jobs", href: "/jobpost" },
     { label: "My Proposals", href: "/proposals" },
     { label: "My Contracts", href: "/contracts" },
-    { label: "Profile", href: "/profile" },
     { label: "Settings", href: "/settings" },
   ];
 
