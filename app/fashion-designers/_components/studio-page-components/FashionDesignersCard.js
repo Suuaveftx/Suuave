@@ -139,9 +139,8 @@ const FashionDesignersCard = ({
           >
             <Bookmark
               size={20}
-              className={`${
-                isBookmarked ? 'fill-cyan-400 text-cyan-400' : 'text-white'
-              } transition-colors duration-200`}
+              className={`${isBookmarked ? 'fill-cyan-400 text-cyan-400' : 'text-white'
+                } transition-colors duration-200`}
             />
           </Button>
           <div className='overflow-hidden'>
@@ -175,22 +174,15 @@ const FashionDesignersCard = ({
 
           <p className='font-semibold text-md text-[#3A98BB]'>{formatToUSD(price)}</p>
 
-          <Popover showArrow placement='bottom'>
-            <PopoverTrigger>
-              <Link href='/artist-page/profile-for-artist'>
-                <User
-                  avatarProps={{
-                    src: `https://i.pravatar.cc/150?img=${idx}`,
-                    size: 'sm',
-                  }}
-                  name={userName}
-                />
-              </Link>
-            </PopoverTrigger>
-            <PopoverContent className='p-1'>
-              <UserInfoCard idx={idx} userData={userData} />
-            </PopoverContent>
-          </Popover>
+          <Link href='/artist-page/profile-for-artist'>
+            <User
+              avatarProps={{
+                src: `https://i.pravatar.cc/150?img=${idx}`,
+                size: 'sm',
+              }}
+              name={userName}
+            />
+          </Link>
         </div>
       </CardFooter>
     </Card>

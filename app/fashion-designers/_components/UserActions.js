@@ -16,7 +16,7 @@ import { LuCircleUser } from "react-icons/lu";
 import { HiOutlinePhone } from "react-icons/hi";
 import { TbSettings } from "react-icons/tb";
 import { TbLogout2 } from "react-icons/tb";
-import { Bell, ClipboardList, Mail } from "lucide-react";
+import { Bell, ClipboardList, Mail, Lock } from "lucide-react";
 import CustomButton from "../../../components/CustomButton";
 import Link from "next/link";
 import Notification from "./Notification";
@@ -44,8 +44,9 @@ export function UserActions() {
           Post Project
         </Button> */}
         <Button
-          className="rounded-full px-9 py-2 shadow-md font-proximanova font-semibold  items-center justify-center gap-2 lg:flex hidden border border-neutral-400"
+          className="rounded-full px-9 py-2 shadow-md font-proximanova font-semibold items-center justify-center gap-2 lg:flex hidden border border-neutral-400"
           style={{
+            color: "#035A7A",
             background:
               "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
           }}
@@ -72,14 +73,14 @@ export function UserActions() {
 
         <Dropdown>
           <DropdownTrigger>
-            <div className="flex items-center gap-2">
+            <button className="flex items-center gap-2 outline-none bg-transparent border-none cursor-pointer p-0">
               <Avatar
                 src="https://i.pravatar.cc/150?img=8"
                 isBordered
                 color="success"
               />
               <ChevronDown fill="currentColor" size={16} />
-            </div>
+            </button>
           </DropdownTrigger>
           <DropdownMenu aria-label="User actions">
             <DropdownItem
@@ -89,15 +90,6 @@ export function UserActions() {
               href="/fashion-designers/profile"
             >
               Profile
-            </DropdownItem>
-            <DropdownItem
-              startContent={<Bell className="size-4" />}
-              key="notifications"
-              className="lg:hidden flex"
-              as={Link}
-              href="fashion-designers/_components/Notification"
-            >
-              Notifications
             </DropdownItem>
             <DropdownItem
               as={Link}
@@ -112,22 +104,26 @@ export function UserActions() {
             <DropdownItem
               startContent={<ClipboardList className="size-4" />}
               key="transaction-history"
+              as={Link}
+              href="/fashion-designers/transactions"
             >
               Transaction History
             </DropdownItem>
             <DropdownItem
-              startContent={<HiOutlinePhone className="size-4" />}
-              key="support"
+              startContent={<Bell className="size-4" />}
+              key="notifications"
+              as={Link}
+              href="/fashion-designers/settings"
             >
-              Help & Support
+              Notification
             </DropdownItem>
             <DropdownItem
-              startContent={<TbSettings className="size-4" />}
-              key="settings"
+              startContent={<Lock className="size-4" />}
+              key="security"
               as={Link}
-              href="/artist-page/settings"
+              href="/fashion-designers/settings"
             >
-              Settings
+              Security
             </DropdownItem>
             <DropdownItem
               startContent={<TbLogout2 className="size-4" />}

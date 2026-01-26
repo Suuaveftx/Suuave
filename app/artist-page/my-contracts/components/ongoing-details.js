@@ -232,19 +232,19 @@ export default function OngoingDetailsPage({ params }) {
             >
               <CardBody className="">
                 <div className="text-center font-satoshi">
-                  <h3 className="text-2xl font-bold mb-6">About Artist</h3>
-                  <Avatar
-                    src={contractData.artist.avatar}
-                    className="w-28 h-28 mx-auto mb-4 rounded-full"
-                    name={contractData.artist.name}
-                  />
+                  <h3 className="text-2xl font-bold mb-6">About the Client</h3>
+                  <Link href="/artist-page/client-profile" className="block w-fit mx-auto">
+                    <Avatar
+                      src={contractData.artist.avatar}
+                      className="w-28 h-28 mx-auto mb-4 rounded-full cursor-pointer hover:opacity-80 transition-opacity"
+                      name={contractData.artist.name}
+                    />
+                  </Link>
 
-                  <h3 className="text-md font-proximanova mb-1 text-[#3A98BB]">
-                    {contractData.artist.name}
-                    <span className="font-satoshi text-[#222222]">
-                      {" "}
+                  <h3 className="text-md font-proximanova mb-1">
+                    <Link href="/artist-page/client-profile" className="text-[#3A98BB] hover:underline">
                       @{contractData.artist.username}
-                    </span>
+                    </Link>
                   </h3>
 
                   <p className="text-sm  text-[#222222] mb-4">
@@ -438,7 +438,7 @@ export default function OngoingDetailsPage({ params }) {
               variant="bordered"
               onPress={handleRateOcean}
             >
-              Rate Ocean
+              Rate @{contractData.artist.username}
             </Button>
           </ModalBody>
         </ModalContent>

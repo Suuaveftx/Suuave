@@ -62,9 +62,20 @@ export const CheckoutPage = () => {
   return (
     <div className='mx-auto bg-[#FAFAFA]'>
       <FashionDesignerHeader />
-      <div className='max-w-6xl  -mt-6 mx-auto p-3 lg:p-6'>
+      <div className='max-w-6xl mx-auto px-3 lg:px-6' style={{ paddingTop: '120px' }}>
         {/* Header */}
-        <ContractHeader title='Check-Out' />
+        <h1
+          className='font-black mb-10 text-black block'
+          style={{
+            fontWeight: 900,
+            fontSize: '32px',
+            color: '#000000',
+            display: 'block',
+            lineHeight: '1.2'
+          }}
+        >
+          Checkout
+        </h1>
 
         {/* License Notice */}
 
@@ -72,10 +83,19 @@ export const CheckoutPage = () => {
           color='default'
           variant='flat'
           hideIcon
-          startContent={<Info size={20} className='h-5 w-5 flex-shrink-0 text-black' />}
-          description='Get Licensing right to the design and use as you desire. All files
-            and specification will be transferred to you.'
-          className='border-none bg-gradient-to-r from-[#A5D5E9] to-[#28A5D8] text-[#222222] font-proximanova px-4'
+          description={
+            <div className='flex items-center gap-2 py-1'>
+              <Info size={18} className='text-black flex-shrink-0 self-center' />
+              <span className='m-0 p-0 leading-tight text-sm md:text-base'>
+                Get Licensing right to the design and use as you desire. All files and specification will be transferred to you.
+              </span>
+            </div>
+          }
+          classNames={{
+            base: 'border-none bg-gradient-to-r from-[#A5D5E9] to-[#28A5D8] text-[#222222] font-proximanova px-4 min-h-[56px] flex items-center',
+            mainWrapper: 'p-0 m-0 flex-1',
+            description: 'p-0 m-0 flex items-center',
+          }}
         />
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mt-6'>
           {/* Left Section - Forms */}
@@ -275,9 +295,9 @@ export const CheckoutPage = () => {
                     color='primary'
                     variant='flat'
                     startContent={
-                      <ExclamationTriangleIcon className='h-5 w-5 text-[#3A98BB] flex-shrink-0' />
+                      <ExclamationTriangleIcon className='h-5 w-5 text-[#3A98BB] flex-shrink-0 mt-0.5' />
                     }
-                    className='bg-transparent border-none text-black my-2 px-0'
+                    className='bg-transparent border-none text-black my-2 px-0 items-start'
                   >
                     <div className='text-sm'>
                       <p className='font-satoshi'>

@@ -18,17 +18,30 @@ import {
   ModalFooter,
   useDisclosure,
 } from '@heroui/react';
+import MessageModal from './MessageModal';
+import SubmitModal from '../../../../components/SubmitModal';
+import FilterDropdown from '../../../../components/FilterDropdown';
 
 const OngoingContracts = ({
   contracts = [],
   search = '',
-  onSearchChange = () => {},
-  onContractClick = () => {},
-  onApproveWork = () => {},
-  onMessageArtist = () => {},
-  onMoreOptions = () => {},
+  onSearchChange = () => { },
+  onContractClick = () => { },
+  onApproveWork = () => { },
+  onMessageArtist = () => { },
+  onMoreOptions = () => { },
 }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isMessageOpen,
+    onOpen: onMessageOpen,
+    onOpenChange: onMessageOpenOpenChange
+  } = useDisclosure();
+  const {
+    isOpen: isRateOpen,
+    onOpen: onRateOpen,
+    onOpenChange: onRateOpenChange
+  } = useDisclosure();
 
   const [showCongratulationsModal, setShowCongratulationsModal] = useState(false);
   const [currentContract, setCurrentContract] = useState(null);
@@ -50,38 +63,78 @@ const OngoingContracts = ({
 
   const handleRateOcean = () => {
     setShowCongratulationsModal(false);
-    console.log('Rate Ocean clicked');
+    onRateOpen();
   };
 
-  const months = [
-    { value: 'all', label: 'All Months' },
-    { value: '01', label: 'January' },
-    { value: '02', label: 'February' },
-    { value: '03', label: 'March' },
-    { value: '04', label: 'April' },
-    { value: '05', label: 'May' },
-    { value: '06', label: 'June' },
-    { value: '07', label: 'July' },
-    { value: '08', label: 'August' },
-    { value: '09', label: 'September' },
-    { value: '10', label: 'October' },
-    { value: '11', label: 'November' },
-    { value: '12', label: 'December' },
+  const dateOptions = [
+    'Today',
+    'This week',
+    'This month',
+    'Last 3 month',
+    'Last 6 month',
+    'This year',
+    'Calendar'
   ];
 
-  const [sortBy, setSortBy] = useState('all');
+
+  const [dateFilter, setDateFilter] = useState('');
+
   // Filter by search
   let filteredContracts = contracts.filter((contract) =>
     contract.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Filter by month if not "all"
-  if (sortBy !== 'all') {
+  // Date Filter Logic
+  const parseContractDate = (dateStr) => {
+    if (!dateStr) return new Date(0);
+    // Handle YYYY-MM-DD from calendar
+    if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) return new Date(dateStr);
+    // Handle ordinal dates like "18th June, 2024"
+    const normalized = dateStr.replace(/(\d+)(st|nd|rd|th)/, '$1');
+    return new Date(normalized);
+  };
+
+  const isToday = (date) => {
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear();
+  };
+
+  const isWithinLastDays = (date, days) => {
+    const today = new Date();
+    const diffTime = Math.abs(today - date);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays <= days;
+  };
+
+  // Filter by Date
+  if (dateFilter) {
+    const now = new Date();
     filteredContracts = filteredContracts.filter((contract) => {
-      const contractMonth = new Date(contract.startDate).getMonth() + 1; // 1-12
-      return String(contractMonth).padStart(2, '0') === sortBy;
+      const cDate = parseContractDate(contract.startDate);
+
+      if (dateFilter === 'Today') return isToday(cDate);
+      if (dateFilter === 'This week') return isWithinLastDays(cDate, 7);
+      if (dateFilter === 'This month') {
+        return cDate.getMonth() === now.getMonth() && cDate.getFullYear() === now.getFullYear();
+      }
+      if (dateFilter === 'Last 3 month') return isWithinLastDays(cDate, 90);
+      if (dateFilter === 'Last 6 month') {
+        const sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(now.getMonth() - 6);
+        return cDate >= sixMonthsAgo;
+      }
+      if (dateFilter === 'This year') return cDate.getFullYear() === now.getFullYear();
+      if (dateFilter.includes('-')) {
+        // Date from calendar (YYYY-MM-DD)
+        const filterDate = new Date(dateFilter);
+        return cDate.toDateString() === filterDate.toDateString();
+      }
+      return true;
     });
   }
+
 
   // Pagination state & calculations
   const [currentPage, setCurrentPage] = useState(1);
@@ -95,7 +148,7 @@ const OngoingContracts = ({
   return (
     <div>
       {/* Search and Filter Bar */}
-      <div className='my-6'>
+      <div className='my-6 w-full'>
         <div className='flex items-center justify-between gap-4'>
           <div className='flex items-center gap-3 flex-1'>
             <Input
@@ -113,39 +166,17 @@ const OngoingContracts = ({
             />
           </div>
 
-          <div className='relative flex items-center gap-2'>
-            <Button
-              isIconOnly
-              variant='ghost'
-              className='md:hidden p-2 border-0'
-              aria-label='Filter'
-            >
-              <AdjustmentsVerticalIcon className='h-5 w-5 text-gray-600' />
-            </Button>
-
-            <div className='relative hidden md:flex items-center'>
-              <div className='absolute left-0 pl-3 flex items-center pointer-events-none'>
-                <AdjustmentsVerticalIcon className='h-4 w-4 text-gray-400' />
-              </div>
-              <div className='absolute right-0 pr-3 flex items-center pointer-events-none'>
-                <ChevronDownIcon className='h-4 w-4 text-gray-400' />
-              </div>
-
-              <select
-                value={sortBy}
-                onChange={(e) => {
-                  setSortBy(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className='text-sm text-gray-700 border border-gray-300 rounded-full pl-10 pr-10 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none w-full'
-              >
-                {months.map((month) => (
-                  <option key={month.value} value={month.value}>
-                    {month.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div className='flex items-center gap-3'>
+            <FilterDropdown
+              label='Select Date'
+              options={dateOptions}
+              selectedOption={dateFilter}
+              setSelectedOption={(val) => {
+                setDateFilter(val);
+                setCurrentPage(1);
+              }}
+              defaultLabel='Select Date'
+            />
           </div>
         </div>
       </div>
@@ -155,91 +186,112 @@ const OngoingContracts = ({
         {currentItems.map((contract, index) => (
           <Card
             key={contract.id || index}
-            className='bg-white border border-gray-200 hover:shadow-md transition-shadow'
+            className='bg-white border border-gray-200 hover:shadow-md transition-shadow w-full'
             shadow='none'
           >
-            <CardBody className='md:px-4 px-2 py-4 relative'>
-              <div className='md:grid md:grid-cols-3 md:gap-6 md:items-start'>
-                <div className='flex flex-col items-start'>
-                  <h3
-                    className='font-proximanova text-md w-full truncate cursor-pointer mb-1'
-                    onClick={() => onContractClick(contract.id)}
-                  >
-                    {contract.title}
-                  </h3>
-                  <div className='flex items-center gap-1'>
-                    {contract.status && (
-                      <span className='bg-[#E0F2FE] text-[#2563EB] px-2 py-1 rounded text-xs'>
-                        {contract.status}
-                      </span>
-                    )}
-                    {contract.isLate && (
-                      <span className='text-red-500 text-xs'>
-                        ({contract.daysLate}d late)
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className='block mt-2 md:mt-0 md:flex flex-col items-start text-sm font-proximanova text-gray-600'>
-                  <div className='mb-1'>
-                    <span className='text-xs font-satoshi'>Start Date:</span>{' '}
-                    {contract.startDate}
-                  </div>
-                  <div>
-                    <span className='text-xs font-satoshi'>End Date:</span>{' '}
-                    {contract.endDate}
-                  </div>
-                </div>
-
-                <div className='flex flex-col-reverse md:flex-row justify-end items-start gap-2 -ml-4'>
-                  <div className=' hidden md:flex items-center gap-2'>
-                    <Button
-                      className='mt-4 md:-mt-1 border px-4 py-4 shadow-lg bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-proximanova rounded-full shrink-0'
-                      size='sm'
-                      radius='full'
-                      onPress={() => handleOpenApprovalModal(contract)}
+            <div
+              className="cursor-pointer"
+              onClick={() => onContractClick(contract.id)}
+            >
+              <CardBody className='md:px-4 px-2 py-4 relative'>
+                <div className='md:grid md:grid-cols-[1.5fr_1fr_auto] md:gap-x-8 md:items-center'>
+                  <div className='flex flex-col items-start'>
+                    <h3
+                      className='font-proximanova text-md w-full truncate mb-1'
                     >
-                      Approve Work
-                    </Button>
-                    <Button
-                      className='mt-4 md:-mt-1 border px-4 py-4 shadow-lg bg-radial from-white to-white text-[#222222] font-proximanova rounded-full shrink-0'
-                      size='sm'
-                      radius='full'
-                      variant='bordered'
-                      onPress={() => onMessageArtist(contract)}
-                    >
-                      Message Artist
-                    </Button>
+                      {contract.title}
+                    </h3>
+                    <div className='flex items-center gap-1'>
+                      {contract.status && (contract.status !== 'Ongoing' || (!contract.isLate && !contract.isExpiringSoon)) && (
+                        <span className='bg-[#E0F2FE] text-[#2563EB] px-2 py-1 rounded text-xs'>
+                          {contract.status}
+                        </span>
+                      )}
+                      {contract.isLate && (
+                        <span className='text-red-500 text-xs font-semibold'>
+                          ({contract.daysLate}d late)
+                        </span>
+                      )}
+                      {contract.isExpiringSoon && (
+                        <span className='text-green-600 text-xs font-semibold'>
+                          ({contract.remainingDays}d left)
+                        </span>
+                      )}
+                    </div>
                   </div>
 
-                  <div className='absolute top-5 right-2 md:static flex items-center lg:pl-6 -mt-2'>
-                    <span className='text-sm font-proximanova hidden md:flex'>More</span>
-                    <Button
-                      isIconOnly
-                      variant='faded'
-                      size='md'
-                      className='bg-transparent border-0 rounded-lg transition-colors hover:bg-transparent'
-                      onPress={() => onMoreOptions(contract)}
-                    >
-                      <EllipsisHorizontalIcon className='w-5 h-5 text-gray-500' />
-                    </Button>
+                  <div className='mt-2 md:mt-0 flex flex-col items-start text-sm font-proximanova text-gray-600'>
+                    <div className='mb-1 flex items-center gap-2'>
+                      <span className='text-xs font-satoshi flex-shrink-0 w-16 text-gray-500'>Start Date:</span>
+                      <span className='whitespace-nowrap font-semibold'>{contract.startDate}</span>
+                    </div>
+                    <div className='flex items-center gap-2'>
+                      <span className='text-xs font-satoshi flex-shrink-0 w-16 text-gray-500'>End Date:</span>
+                      <span className='whitespace-nowrap font-semibold'>{contract.endDate}</span>
+                    </div>
+                  </div>
+
+                  <div className='flex flex-col-reverse md:flex-row justify-end items-center gap-4 mt-4 md:mt-0'>
+                    <div className='hidden md:flex items-center gap-3'>
+                      <Button
+                        className='border px-6 py-4 shadow-md bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full shrink-0'
+                        size='sm'
+                        radius='full'
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenApprovalModal(contract);
+                        }}
+                      >
+                        Approve Work
+                      </Button>
+                      <Button
+                        className='border px-6 py-4 shadow-md bg-white text-[#222222] font-medium rounded-full shrink-0'
+                        size='sm'
+                        radius='full'
+                        variant='bordered'
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCurrentContract(contract);
+                          onMessageOpen();
+                        }}
+                      >
+                        Message Artist
+                      </Button>
+                    </div>
+
+                    <div className='absolute top-5 right-2 md:static flex items-center gap-1'>
+                      <span className='text-sm font-proximanova hidden md:flex text-gray-500'>More</span>
+                      <Button
+                        isIconOnly
+                        variant='light'
+                        size='sm'
+                        className='bg-transparent border-0 rounded-lg'
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onMoreOptions(contract);
+                        }}
+                      >
+                        <EllipsisHorizontalIcon className='w-6 h-6 text-gray-400' />
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </CardBody>
+              </CardBody>
+            </div>
           </Card>
         ))}
       </div>
 
       {/* Empty State */}
-      {filteredContracts.length === 0 && (
-        <div className='text-center py-12'>
-          <p className='text-gray-500'>
-            {search ? 'No contracts match your search' : 'No ongoing contracts'}
-          </p>
-        </div>
-      )}
+      {
+        filteredContracts.length === 0 && (
+          <div className='text-center py-12'>
+            <p className='text-gray-500'>
+              {search ? 'No contracts match your search' : 'No ongoing contracts'}
+            </p>
+          </div>
+        )
+      }
 
       {/* Approval Modal */}
       <Modal
@@ -345,50 +397,64 @@ const OngoingContracts = ({
               variant='bordered'
               onPress={handleRateOcean}
             >
-              Rate Ocean
+              Rate {currentContract?.artist.name}
             </Button>
           </ModalBody>
         </ModalContent>
       </Modal>
 
       {/* Pagination */}
-      {totalPages > 0 && (
-        <div className='flex items-center justify-center gap-2 mt-6'>
-          <div className='flex items-center gap-2'>
-            {/* Results info */}
-            <span className='text-sm text-gray-600 mr-4'>
-              {startIndex + 1} - {Math.min(endIndex, filteredContracts.length)} of{' '}
-              {filteredContracts.length}
-            </span>
+      {
+        totalPages > 0 && (
+          <div className='flex items-center justify-center gap-2 mt-6'>
+            <div className='flex items-center gap-2'>
+              {/* Results info */}
+              <span className='text-sm text-gray-600 mr-4'>
+                {startIndex + 1} - {Math.min(endIndex, filteredContracts.length)} of{' '}
+                {filteredContracts.length}
+              </span>
 
-            {/* Previous button */}
-            <Button
-              isIconOnly
-              variant='flat'
-              size='sm'
-              radius='none'
-              isDisabled={currentPage === 1}
-              onPress={() => setCurrentPage(currentPage - 1)}
-              className='min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer'
-            >
-              &lt;
-            </Button>
+              {/* Previous button */}
+              <Button
+                isIconOnly
+                variant='flat'
+                size='sm'
+                radius='none'
+                isDisabled={currentPage === 1}
+                onPress={() => setCurrentPage(currentPage - 1)}
+                className='min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer'
+              >
+                &lt;
+              </Button>
 
-            {/* Next button */}
-            <Button
-              isIconOnly
-              variant='flat'
-              size='sm'
-              radius='none'
-              isDisabled={currentPage === totalPages}
-              onPress={() => setCurrentPage(currentPage + 1)}
-              className='min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2'
-            >
-              &gt;
-            </Button>
+              {/* Next button */}
+              <Button
+                isIconOnly
+                variant='flat'
+                size='sm'
+                radius='none'
+                isDisabled={currentPage === totalPages}
+                onPress={() => setCurrentPage(currentPage + 1)}
+                className='min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2'
+              >
+                &gt;
+              </Button>
+            </div>
           </div>
-        </div>
-      )}
+        )
+      }
+      {/* Message Modal */}
+      <MessageModal
+        isOpen={isMessageOpen}
+        onOpenChange={onMessageOpenOpenChange}
+        artistName={currentContract?.artist?.name || 'Artist'}
+      />
+      <SubmitModal
+        isOpen={isRateOpen}
+        onOpenChange={onRateOpenChange}
+        name={currentContract?.artist?.name}
+        redirectPath='/fashion-designers/contracts'
+      />
     </div>
   );
 };

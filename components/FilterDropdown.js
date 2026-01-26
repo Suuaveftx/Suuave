@@ -86,8 +86,8 @@ const FilterDropdown = ({
             <input
                 type="date"
                 ref={dateInputRef}
-                className="absolute opacity-0 pointer-events-none"
-                style={{ top: '100%', left: 0 }}
+                className="absolute opacity-0 pointer-events-none w-px h-px"
+                style={{ top: '100%', left: '0', marginTop: '4px' }}
                 onChange={handleDateChange}
             />
         </div>

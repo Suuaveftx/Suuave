@@ -5,6 +5,7 @@ import { FaStar } from 'react-icons/fa';
 import CustomButton from '../../../../components/CustomButton';
 import { IoLocationSharp } from 'react-icons/io5';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Pencil } from 'lucide-react';
 import {
   EditAboutMe,
@@ -21,6 +22,12 @@ const ProfileArtist = ({ isVisitor = false }) => {
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [previewProfileUrl, setPreviewProfileUrl] = useState(null);
   const [userRole, setUserRole] = useState(null);
+  const router = useRouter();
+
+  const handleRetainArtist = () => {
+    const returnPath = encodeURIComponent('/artist-page/profile-for-artist');
+    router.push(`/fashion-designers/contracts/retain?artist=Ocean&returnUrl=${returnPath}`);
+  };
 
   useEffect(() => {
     // Access localStorage in useEffect to avoid hydration issues
@@ -130,7 +137,10 @@ const ProfileArtist = ({ isVisitor = false }) => {
         {/* Retain Artist Button - Mobile */}
         {userRole !== 'Fashion Artist' && (
           <div className='flex lg:hidden justify-center w-full mt-6 mb-6'>
-            <button className='w-1/2 py-3 bg-gradient-to-r from-[#D0EBF7] to-[#D0EBF7] text-[#035A7A] font-bold rounded-full shadow-sm text-base'>
+            <button
+              className='w-1/2 py-3 bg-gradient-to-r from-[#D0EBF7] to-[#D0EBF7] text-[#035A7A] font-bold rounded-full shadow-sm text-base'
+              onClick={handleRetainArtist}
+            >
               Retain Artist
             </button>
           </div>
@@ -145,6 +155,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
               style={{
                 color: '#035A7A',
               }}
+              onPress={handleRetainArtist}
             />
           </div>
         )}

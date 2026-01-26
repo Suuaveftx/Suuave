@@ -34,6 +34,21 @@ const PaymentTable = ({ filterType, filterValue }) => {
       return paymentDate >= cutoffDate;
     }
 
+    if (filterType === 'custom') {
+      const { start, end } = filterValue;
+      if (!start || !end) return true;
+      const paymentDate = new Date(payment.dateTime);
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+      // Set end date to end of day
+      endDate.setHours(23, 59, 59, 999);
+      return paymentDate >= startDate && paymentDate <= endDate;
+    }
+
+    if (filterType === 'none') {
+      return true;
+    }
+
     return true;
   });
 

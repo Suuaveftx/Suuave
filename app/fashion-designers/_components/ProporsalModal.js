@@ -20,7 +20,7 @@ const ProporsalModal = ({ proposals }) => {
 
   const data = [
     {
-      id: crypto.randomUUID(),
+      id: "prop-1",
 
       name: "Tega Isama",
       role: "Illustrator",
@@ -31,7 +31,7 @@ const ProporsalModal = ({ proposals }) => {
       sent_time: "5 Hours ago",
     },
     {
-      id: crypto.randomUUID(),
+      id: "prop-2",
 
       name: "Tega Isama",
       role: "Illustrator",

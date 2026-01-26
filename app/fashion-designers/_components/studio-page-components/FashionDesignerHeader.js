@@ -13,14 +13,20 @@ import { UserActions } from "../UserActions";
 import { NavLinks } from "../NavLinks";
 
 const FashionDesignerHeader = () => {
-  const menuItems = ["Designs", "My Job Posts", "My Contracts"];
+  const menuItems = [
+    { label: "Designs", href: "/fashion-designers" },
+    { label: "My Projects", href: "/fashion-designers/my-projects" },
+    { label: "My Contracts", href: "/fashion-designers/contracts" },
+    { label: "My Collections", href: "/fashion-designers/my-collection" },
+    { label: "Settings", href: "/fashion-designers/settings" },
+  ];
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
     <Navbar
-      shouldHideOnScroll
+      shouldHideOnScroll={false}
       maxWidth="full"
-      className="h-[80px] border-b bg-[#CCE7F2]"
+      className="fixed top-0 h-[80px] border-b bg-[#CCE7F2] z-50"
     >
       <NavbarBrand>
         <Link href="/fashion-designers">
@@ -42,20 +48,14 @@ const FashionDesignerHeader = () => {
 
       <NavbarMenu className="bg-[#CCE7F2]/40 pt-8">
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
+          <NavbarMenuItem key={`${item.label}-${index}`}>
             <Link
               className="w-full "
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                  ? "danger"
-                  : "foreground"
-              }
-              href="#"
+              color="foreground"
+              href={item.href}
               size="lg"
             >
-              {item}
+              {item.label}
             </Link>
           </NavbarMenuItem>
         ))}

@@ -31,7 +31,11 @@ const ExploreComponent = () => {
               You are just a step away from owning the right to use these
               designs
             </p>
-            <CustomButton text="Explore More" className="mt-8" />
+            <CustomButton
+              text="Explore More"
+              className="mt-8"
+              href="/onboarding/category"
+            />
           </div>
         </div>
         <div
@@ -77,7 +81,7 @@ const ExploreComponent = () => {
           <CustomButton
             text="Explore More"
             className="mt-4 w-44 h-14 font-semibold text-lg items-center"
-            href="/onboarding"
+            href="/onboarding/category"
           />
         </div>
       </div>

@@ -14,12 +14,8 @@ import {
 } from 'lucide-react';
 
 const settingsMenu = [
-  { id: 'profile', label: 'Profile Settings', icon: LucideCircleUserRound },
   { id: 'notifications', label: 'Notifications', icon: LucideBell },
   { id: 'security', label: 'Security Settings', icon: LucideLock },
-  { id: 'account', label: 'Account', icon: LucideCircleUserRound },
-  { id: 'faq', label: "FAQ's", icon: LucideHelpCircle },
-  { id: 'help', label: 'Help And Support', icon: LucidePhone },
 ];
 
 const SettingsPage = () => {

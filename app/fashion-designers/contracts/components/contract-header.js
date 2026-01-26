@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 
 import React from 'react';
 
-export default function ContractHeader({ title }) {
+export default function ContractHeader({ title, maxWidth = 'max-w-7xl' }) {
   const router = useRouter();
   // Function to handle back navigation
   const handleBack = () => {
@@ -14,7 +14,7 @@ export default function ContractHeader({ title }) {
   };
 
   return (
-    <div className='max-w-6xl mx-auto md:my-8 my-4'>
+    <div className={`${maxWidth} mx-auto md:my-8 my-4 px-2 md:px-0`}>
       <h1 className='text-2xl md:text-4xl font-semibold flex items-center gap-2'>
         {/* Show the arrow only on mobile view (sm and below) */}
         <Button

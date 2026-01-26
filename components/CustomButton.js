@@ -38,15 +38,14 @@ const CustomButton = ({
 
   if (href) {
     return (
-      <Link href={href} passHref legacyBehavior>
-        <Button
-          as="a"
-          className={`flex items-center justify-center gap-2 font-proximanova font-medium px-6 py-3 rounded-full shadow-md ${className}`}
-          style={defaultStyle}
-        >
-          {content}
-        </Button>
-      </Link>
+      <Button
+        as={Link}
+        href={href}
+        className={`flex items-center justify-center gap-2 font-proximanova font-medium px-6 py-3 rounded-full shadow-md ${className}`}
+        style={defaultStyle}
+      >
+        {content}
+      </Button>
     );
   }
 
