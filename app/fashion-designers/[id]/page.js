@@ -144,13 +144,15 @@ const ProductDetails = ({ params }) => {
                     <SvgCautionIcon className="size-5" />
                   </div>
                 </PopoverTrigger>
-                <PopoverContent className="w-60 text-sm">
-                  Grants permission to others to use, modify, or distribute your
-                  work under agreed terms. You retain ownership while allowing
-                  specific usage rights.
-                  <br />
-                  <em>Example:</em> A company pays to use your design in their
-                  app.
+                <PopoverContent className="w-80 p-4 text-sm">
+                  <div className="flex flex-col gap-2">
+                    <p>
+                      You are purchasing a commercial usage license; the artist retains full copyright and original ownership of the work.
+                    </p>
+                    <p>
+                      This means you have the right to use this design for your collection, according to the agreed license terms. You cannot resell the digital file to another company, claim you created the artwork, or register the design as your trademark.
+                    </p>
+                  </div>
                 </PopoverContent>
               </Popover>
 
@@ -162,14 +164,14 @@ const ProductDetails = ({ params }) => {
                 }}
                 onPress={() => handleGetLicense()}
               >
-                {isLicensed ? "Licensed" : "Get License"}
+                Get License
               </Button>
 
               <Button
                 variant="bordered"
                 className="rounded-full w-[70%] text-[#035A7A] text-md h-12 px-9 py-1  shadow-md font-semibold flex items-center justify-center gap-2"
               >
-                Save Design
+                Save
               </Button>
             </CardBody>
           )}
@@ -180,11 +182,15 @@ const ProductDetails = ({ params }) => {
             About the Artist
           </p>
           <div className="flex flex-col items-center mt-5">
-            <Avatar
-              className="w-24 h-24 text-large"
-              src="https://i.pravatar.cc/150?u=a04258114e29026708c"
-            />
-            <p className="mt-3 font-bold">{product.artist.handle}</p>
+            <Link href="/artist-page/profile-for-artist">
+              <Avatar
+                className="w-24 h-24 text-large cursor-pointer"
+                src="https://i.pravatar.cc/150?u=a04258114e29026708c"
+              />
+            </Link>
+            <Link href="/artist-page/profile-for-artist" className="hover:underline">
+              <p className="mt-3 font-bold text-customDarkBlue">{product.artist.handle}</p>
+            </Link>
             <p className="text-sm ">{product.artist.role}</p>
             <div className="flex gap-2 mt-3">
               <TiLocation className="size-5 fill-[#878787]" />
@@ -206,12 +212,12 @@ const ProductDetails = ({ params }) => {
                 ))}
               </div>
               <span className="text-sm text-[#3A98BB]">
-                ({product.artist.reviews} <Link 
-    href="/artist-page/profile-for-artist" 
-    className="cursor-pointer"
-  >
-    Reviews
-  </Link>)
+                ({product.artist.reviews} <Link
+                  href="/artist-page/profile-for-artist?tab=reviews"
+                  className="cursor-pointer"
+                >
+                  Reviews
+                </Link>)
               </span>
             </div>
 
@@ -228,7 +234,6 @@ const ProductDetails = ({ params }) => {
           </div>
         </div>
       </div>
-      {!isLicensed && <LicenseModal />}
     </div>
   );
 };

@@ -88,7 +88,7 @@ const Navbars = () => {
                     hovered: { scaleX: 1 }
                   }}
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  className="absolute bottom-[28px] left-0 w-full h-[2px] bg-[#222222] origin-left"
+                  className="absolute bottom-[20px] left-0 w-full h-[2px] bg-[#222222] origin-left"
                 />
               </motion.div>
             </Link>

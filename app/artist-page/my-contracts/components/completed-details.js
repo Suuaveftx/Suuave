@@ -110,10 +110,10 @@ export default function CompletedDetailsPage({ params }) {
                         </span>
                         <span
                           className={`${item.label === "Status"
-                              ? `${getStatusColor(
-                                contractData.status
-                              )} lg:hidden`
-                              : ""
+                            ? `${getStatusColor(
+                              contractData.status
+                            )} lg:hidden`
+                            : ""
                             } md:text-md text-sm font-proximanova`}
                         >
                           {item.value}
@@ -166,7 +166,7 @@ export default function CompletedDetailsPage({ params }) {
               className="bg-white border border-gray-200 hidden"
               shadow="none"
             >
-              <CardBody className="lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col">
+              <CardBody className="lg:py-6 px-12 items-center flex">
                 <Button
                   className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
                   size="md"
@@ -179,14 +179,6 @@ export default function CompletedDetailsPage({ params }) {
                 >
                   Retain Artist
                 </Button>
-                <Button
-                  variant="bordered"
-                  className="w-full bg-radial from-[#EAF9FF] to-[#E8E8E8] text-[#222222] font-medium rounded-full border-0 shadow-sm"
-                  size="md"
-                  radius="full"
-                >
-                  Learn More
-                </Button>
               </CardBody>
             </Card>
 
@@ -197,19 +189,19 @@ export default function CompletedDetailsPage({ params }) {
             >
               <CardBody className="">
                 <div className="text-center font-satoshi">
-                  <h3 className="text-2xl font-bold mb-6">About Artist</h3>
-                  <Avatar
-                    src={contractData.artist.avatar}
-                    className="w-28 h-28 mx-auto mb-4 rounded-full"
-                    name={contractData.artist.name}
-                  />
+                  <h3 className="text-2xl font-bold mb-6">About the Client</h3>
+                  <Link href="/artist-page/client-profile" className="block w-fit mx-auto">
+                    <Avatar
+                      src={contractData.artist.avatar}
+                      className="w-28 h-28 mx-auto mb-4 rounded-full cursor-pointer hover:opacity-80 transition-opacity"
+                      name={contractData.artist.name}
+                    />
+                  </Link>
 
-                  <h3 className="text-md font-proximanova mb-1 text-[#3A98BB]">
-                    {contractData.artist.name}
-                    <span className="font-satoshi text-[#222222]">
-                      {" "}
+                  <h3 className="text-md font-proximanova mb-1">
+                    <Link href="/artist-page/client-profile" className="text-[#3A98BB] hover:underline">
                       @{contractData.artist.username}
-                    </span>
+                    </Link>
                   </h3>
 
                   <p className="text-sm  text-[#222222] mb-4">
@@ -228,8 +220,8 @@ export default function CompletedDetailsPage({ params }) {
                         <StarIcon
                           key={i}
                           className={`h-4 w-4 ${i < Math.floor(contractData.artist.rating)
-                              ? "text-yellow-400 fill-current"
-                              : "text-[#ACACAC] border-none"
+                            ? "text-yellow-400 fill-current"
+                            : "text-[#ACACAC] border-none"
                             }`}
                         />
                       ))}

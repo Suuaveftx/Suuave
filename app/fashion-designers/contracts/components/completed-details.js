@@ -58,7 +58,7 @@ export default function CompletedDetailsPage({ params }) {
 
   return (
     <>
-      <ContractHeader title="Contract Information" />
+      <ContractHeader title="Contract Information" maxWidth="max-w-6xl" />
       <div className="max-w-6xl mx-auto px-2 md:px-0 pb-6 ">
         <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-1">
           {/* Left Column - Contract Details & Documents */}
@@ -76,10 +76,6 @@ export default function CompletedDetailsPage({ params }) {
                   <div className="space-y-4">
                     {[
                       { label: "Job Title", value: contractData.jobTitle },
-                      {
-                        label: "Status",
-                        value: contractData.status,
-                      },
                       {
                         label: "Contract Number",
                         value: contractData.contractNumber,
@@ -100,19 +96,13 @@ export default function CompletedDetailsPage({ params }) {
                         className="grid grid-cols-[8rem_1fr] gap-4 items-start"
                       >
                         <span
-                          className={`${item.label === "Status" ? "lg:hidden" : ""
-                            } ${item.label === "Contract Number" ? "lg:-mt-4" : ""
+                          className={`${item.label === "Contract Number" ? "lg:-mt-4" : ""
                             }  md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
                         >
                           {item.label} -
                         </span>
                         <span
-                          className={`${item.label === "Status"
-                              ? `${getStatusColor(
-                                contractData.status
-                              )} lg:hidden`
-                              : ""
-                            } ${item.label === "Contract Number" ? "lg:-mt-4" : ""
+                          className={`${item.label === "Contract Number" ? "lg:-mt-4" : ""
                             }  md:text-md text-sm font-proximanova`}
                         >
                           {item.value}
@@ -121,16 +111,7 @@ export default function CompletedDetailsPage({ params }) {
                     ))}
                   </div>
 
-                  {/* Status */}
-                  <Chip
-                    variant="flat"
-                    size="sm"
-                    className={`${getStatusColor(
-                      contractData.status
-                    )} font-proximanova  border-1 hidden lg:flex rounded-full bg-transparent`}
-                  >
-                    {contractData.status}
-                  </Chip>
+                  {/* Status chip removed */}
                 </div>
               </CardBody>
             </Card>
@@ -163,26 +144,18 @@ export default function CompletedDetailsPage({ params }) {
           <div className="flex space-y-2 gap-2 flex-col-reverse lg:flex-col">
             {/* Action Buttons */}
             <Card className="bg-white border border-gray-200" shadow="none">
-              <CardBody className="lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col">
+              <CardBody className="lg:py-6 px-12 items-center flex">
                 <Button
                   className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-proximanova rounded-full border-0 shadow-sm"
                   size="lg"
                   radius="full"
-                  onPress={() =>
+                  onClick={() =>
                     router.push(
                       `/fashion-designers/contracts/retain?artist=${contractData.artist.username}`
                     )
                   }
                 >
                   Retain Artist
-                </Button>
-                <Button
-                  variant="bordered"
-                  className="w-full  border border-[#3A98BB] bg-[#FAFAFA]  text-[#444444] font-proximanova  shadow-sm"
-                  size="lg"
-                  radius="full"
-                >
-                  Learn More
                 </Button>
               </CardBody>
             </Card>
@@ -194,19 +167,19 @@ export default function CompletedDetailsPage({ params }) {
             >
               <CardBody className="">
                 <div className="text-center font-satoshi">
-                  <h3 className="text-2xl font-bold mb-6">About Artist</h3>
-                  <Avatar
-                    src={contractData.artist.avatar}
-                    className="w-28 h-28 mx-auto mb-4 rounded-full"
-                    name={contractData.artist.name}
-                  />
+                  <h3 className="text-2xl font-bold mb-6">About the Artist</h3>
+                  <Link href="/artist-page/profile-for-artist" className="block w-fit mx-auto">
+                    <Avatar
+                      src={contractData.artist.avatar}
+                      className="w-28 h-28 mx-auto mb-4 rounded-full cursor-pointer hover:opacity-80 transition-opacity"
+                      name={contractData.artist.name}
+                    />
+                  </Link>
 
-                  <h3 className="text-md font-proximanova mb-1 text-[#3A98BB]">
-                    {contractData.artist.name}
-                    <span className="font-satoshi text-[#222222]">
-                      {" "}
+                  <h3 className="text-md font-proximanova mb-1">
+                    <Link href="/artist-page/profile-for-artist" className="text-[#3A98BB] hover:underline">
                       @{contractData.artist.username}
-                    </span>
+                    </Link>
                   </h3>
 
                   <p className="text-sm  text-[#222222] mb-4">

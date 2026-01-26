@@ -11,6 +11,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Chip,
+  useDisclosure,
 } from '@heroui/react';
 
 import {
@@ -20,9 +21,12 @@ import {
   PencilIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  UserGroupIcon,
 } from '@heroicons/react/24/outline';
 import ContractHeader from '../../../artist-page/my-contracts/components/contract-header';
 import Link from 'next/link';
+import ProposalsModal from './ProposalsModal';
+import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 const MyProjects = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -140,6 +144,14 @@ const MyProjects = () => {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 5;
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isDeleteOpen,
+    onOpen: onDeleteOpen,
+    onOpenChange: onDeleteOpenChange
+  } = useDisclosure();
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [projectToDelete, setProjectToDelete] = useState(null);
 
   // Filter projects based on search term
   const filteredProjects = projects.filter((project) =>
@@ -158,6 +170,7 @@ const MyProjects = () => {
   // Handle delete project (remove from full list)
   const handleDeleteProject = (projectId) => {
     setProjects(projects.filter((project) => project.id !== projectId));
+    setProjectToDelete(null);
     // If deletion leaves page empty, go to previous page if possible
     if (
       currentProjects.length === 1 &&
@@ -166,6 +179,14 @@ const MyProjects = () => {
     ) {
       setCurrentPage(currentPage - 1);
     }
+  };
+
+  const openDeleteModal = (e, project) => {
+    if (e && typeof e.stopPropagation === 'function') {
+      e.stopPropagation();
+    }
+    setProjectToDelete(project);
+    onDeleteOpen();
   };
 
   // Handle pagination buttons
@@ -193,6 +214,11 @@ const MyProjects = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const handleCardClick = (project) => {
+    setSelectedProject(project);
+    onOpen();
+  };
+
   return (
     <>
       <div className='min-h-screen max-w-[86.5rem] mx-auto'>
@@ -201,7 +227,7 @@ const MyProjects = () => {
           <ContractHeader title='My Projects' />
 
           {/* Search Bar */}
-          <div className='mb-[11px]'>
+          <div className='mb-8 w-full px-4 lg:px-10'>
             <Input
               placeholder='Search'
               value={searchTerm}
@@ -210,247 +236,182 @@ const MyProjects = () => {
                 setCurrentPage(1); // reset to first page on new search
               }}
               startContent={<MagnifyingGlassIcon className='w-5 h-5 text-gray-400' />}
-              className='max-w-md bg-transparent'
+              className='max-w-[50rem]'
               variant='bordered'
               radius='full'
+              size="lg"
+              classNames={{
+                input: "text-md",
+                inputWrapper: "border-[#E1E1E1] bg-white h-14 px-6 shadow-sm"
+              }}
             />
           </div>
 
           {/* Projects List */}
-          <div className='space-y-2 max-w-[61.25rem]'>
+          <div className='space-y-4 w-full px-4 lg:px-10'>
             {currentProjects.length === 0 ? (
-              <p className='text-gray-500 text-center'>No projects found.</p>
+              <p className='text-gray-500 text-center py-20'>No projects found.</p>
             ) : (
-              currentProjects.map((project) =>
-                isMobileView ? (
-                  <Card key={project.id} className='w-full'>
-                    <CardBody className='pb-8'>
-                      <div className='flex items-start justify-between font-satoshi'>
-                        {/* Project Info */}
-                        <div className='flex-1'>
-                          <h3 className='md:text-xl font-medium text-[#222222] text-lg  mb-2'>
-                            {project.title}
-                          </h3>
-                        </div>
-                        {/* More Options */}
-                        <Dropdown>
-                          <DropdownTrigger>
-                            <Button
-                              variant='transparent'
-                              isIconOnly
-                              size='sm'
-                              radius='md'
-                              className='text-gray-400 hover:text-gray-600  py-0 shadow-sm border-1 border-[#EAEAEA] '
-                            >
-                              <EllipsisHorizontalIcon className='w-5 h-5' />
-                            </Button>
-                          </DropdownTrigger>
-                          <DropdownMenu aria-label='Project actions'>
-                            <DropdownItem
-                              key='edit'
-                              as={Link}
-                              href='/fashion-designers/post-project'
-                              color='default'
-                              startContent={<PencilIcon className='w-4 h-4' />}
-                            >
-                              Edit
-                            </DropdownItem>
-                            <DropdownItem
-                              key='delete'
-                              className='text-danger'
-                              color='danger'
-                              startContent={<TrashIcon className='w-4 h-4' />}
-                              onPress={() => handleDeleteProject(project.id)}
-                            >
-                              Delete
-                            </DropdownItem>
-                          </DropdownMenu>
-                        </Dropdown>
-                      </div>
-
-                      {/* Stats */}
-
-                      <div className='flex items-start  justify-between gap-2 my-2'>
-                        <span className='font-satoshi'>Posted:</span>
-                        <span className='font-proximanova text-md'>{project.date}</span>
-                      </div>
-
-                      <div className='flex items-start justify-between gap-2 my-2'>
-                        <span className='font-satoshi'>Status:</span>
-                        <Chip
-                          size='md'
-                          color='success'
-                          variant='transparent'
-                          className='text-[#056D16] p-0 m-0 text-md'
-                        >
-                          {project.status}
-                        </Chip>
-                      </div>
-
-                      <Link
-                        href='/artist-page/submit-contract-congratulation'
-                        className='flex items-start justify-between py-1 my-2 cursor-pointer hover:bg-gray-50 rounded-md px-2'
-                      >
-                        <span className='font-satoshi'>Proposals</span>
-                        <span className='text-[#3A98BB] font-montserrat font-medium text-md'>
-                          {project.proposals}
-                        </span>
-                      </Link>
-
-                      <div className='flex  items-start justify-between    py-1 my-2'>
-                        <span className='font-satoshi'>Hired</span>
-                        <span className='text-[#767676] font-medium text-md'>
-                          {project.hired}
-                        </span>
-                      </div>
-                    </CardBody>
-                  </Card>
-                ) : (
-                  <Card key={project.id} className='max-w-6xl'>
-                    <CardBody className='p-4'>
-                      <div className='flex items-start justify-between font-satoshi'>
-                        {/* Project Info */}
-                        <div className='flex-1'>
-                          <h3 className='md:text-md font-semibold text-[#222222] text-lg  mb-2'>
-                            {project.title}
-                          </h3>
-                          <div className='flex flex-col items-start justify-start gap-2 text-sm '>
-                            <div className='flex items-center gap-2'>
-                              <span>Posted:</span>
-                              <span className='font-proximanova text-md'>
-                                {project.date}
-                              </span>
-                            </div>
-
-                            <div className='flex items-center gap-2'>
-                              <span>Status:</span>
-                              <Chip
-                                size='md'
-                                color='success'
-                                variant='transparent'
-                                className='text-[#056D16] p-0 m-0 text-md'
-                              >
-                                {project.status}
-                              </Chip>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Stats */}
-                        <div className='flex items-start gap-6 text-sm'>
-                          <Link
-                            href='/artist-page/submit-contract-congratulation'
-                            className='flex gap-2 items-center border rounded-full border-[#D1D1D1] px-4 py-1 cursor-pointer hover:bg-gray-50'
+              currentProjects.map((project) => (
+                <div
+                  key={project.id}
+                  className='w-full group'
+                >
+                  <Card
+                    className='w-full border shadow-none group-hover:shadow-md transition-shadow'
+                  >
+                    <CardBody className='p-8 font-satoshi'>
+                      <div className='flex flex-col gap-4'>
+                        {/* Top Row: Title and Stats/Actions */}
+                        <div className='flex items-start justify-between gap-6'>
+                          <div
+                            className="flex-1 cursor-pointer"
+                            onClick={() => handleCardClick(project)}
                           >
-                            <span className='text-[#3A98BB] font-montserrat font-medium text-md'>
-                              {project.proposals}
-                            </span>
-                            <span className='text-gray-500'>Proposals</span>
-                          </Link>
-
-                          {/*  <div className="flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1">
-                            <span className="text-[#767676] font-medium text-md">
-                              {project.replies}
-                            </span>
-                            <span className="text-gray-500">Replies</span>
-                          </div> */}
-
-                          <div className='flex gap-2 items-center  border rounded-full border-[#D1D1D1] px-4 py-1'>
-                            <span className='text-[#767676] font-medium text-md'>
-                              {project.hired}
-                            </span>
-                            <span className='text-gray-500'>Hired</span>
+                            <h3 className='text-xl font-bold text-[#222222]'>
+                              {project.title}
+                            </h3>
                           </div>
 
-                          {/* More Options */}
-                          <Dropdown>
-                            <DropdownTrigger>
-                              <Button
-                                variant='bordered'
-                                isIconOnly
-                                size='md'
-                                className='text-gray-400 mr-10 -py-6'
-                              >
-                                <EllipsisHorizontalIcon className='w-5 h-5' />
-                              </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                              className='w-[120px] p-1 text-sm'
-                              aria-label='Project actions'
-                              itemClasses={{
-                                base: ' py-1.5 text-gray-700 hover:bg-gray-100 rounded-md',
-                              }}
+                          <div className='flex items-center gap-4 shrink-0'>
+                            <div
+                              className='flex gap-2 items-center border border-[#96D2E1] rounded-full px-5 py-1.5 bg-[#F9FEFF] cursor-pointer'
+                              onClick={() => handleCardClick(project)}
                             >
-                              <DropdownItem
-                                key='edit'
-                                as={Link}
-                                href='/fashion-designers/post-project'
-                                color='default'
-                                startContent={<PencilIcon className='w-4 h-4' />}
-                              >
-                                Edit
-                              </DropdownItem>
-                              <DropdownItem
-                                key='delete'
-                                className='text-danger'
-                                color='danger'
-                                startContent={<TrashIcon className='w-4 h-4' />}
-                                onPress={() => handleDeleteProject(project.id)}
-                              >
-                                Delete
-                              </DropdownItem>
-                            </DropdownMenu>
-                          </Dropdown>
+                              <span className='text-[#3A98BB] font-bold text-md'>
+                                {project.proposals}
+                              </span>
+                              <span className='text-[#767676] text-sm'>Proposals</span>
+                            </div>
+
+                            <div
+                              className='flex gap-2 items-center border border-[#E1E1E1] rounded-full px-5 py-1.5 bg-[#F9F9F9]'
+                            >
+                              <span className='text-[#767676] font-bold text-md'>
+                                {project.hired}
+                              </span>
+                              <span className='text-[#767676] text-sm'>Hired</span>
+                            </div>
+
+                            {/* More Options */}
+                            <div onClick={(e) => e.stopPropagation()}>
+                              <Dropdown placement="bottom-end">
+                                <DropdownTrigger>
+                                  <Button
+                                    variant='bordered'
+                                    isIconOnly
+                                    size='sm'
+                                    className='border-[#E1E1E1] rounded-full w-10 h-10 min-w-10 bg-white flex items-center justify-center p-0'
+                                  >
+                                    <EllipsisHorizontalIcon className='w-5 h-5 text-[#222222]' />
+                                  </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                  className='w-[140px]'
+                                  aria-label='Project actions'
+                                >
+
+                                  <DropdownItem
+                                    key='edit'
+                                    as={Link}
+                                    href='/fashion-designers/post-project'
+                                    startContent={<PencilIcon className='w-4 h-4' />}
+                                  >
+                                    Edit
+                                  </DropdownItem>
+                                  <DropdownItem
+                                    key='delete'
+                                    className='text-danger'
+                                    color='danger'
+                                    startContent={<TrashIcon className='w-4 h-4' />}
+                                    onPress={(e) => openDeleteModal(e, project)}
+                                  >
+                                    Delete
+                                  </DropdownItem>
+                                </DropdownMenu>
+                              </Dropdown>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Info Lines (Now below the title) */}
+                        <div
+                          className='flex flex-col gap-2 cursor-pointer'
+                          onClick={() => handleCardClick(project)}
+                        >
+                          <div className='flex items-center gap-2 text-md'>
+                            <span className="text-[#222222]">Posted :</span>
+                            <span className='text-[#767676]'>{project.date}</span>
+                          </div>
+
+                          <div className='flex items-center gap-2 text-md'>
+                            <span className="text-[#222222]">Status :</span>
+                            <span className="text-[#056D16] font-medium">{project.status}</span>
+                          </div>
                         </div>
                       </div>
                     </CardBody>
                   </Card>
-                )
-              )
+                </div>
+              ))
             )}
           </div>
 
           {/* Pagination */}
-          <div className='flex items-center justify-center gap-2 mt-6 mb-20'>
-            <div className='flex items-center gap-2'>
-              <span className='text-sm text-gray-600 mr-4'>
-                {totalProjects === 0
-                  ? '0 - 0 of 0'
-                  : `${indexOfFirstProject + 1} - ${
-                      indexOfLastProject > totalProjects
-                        ? totalProjects
-                        : indexOfLastProject
+          <div className='max-w-[61.25rem] mx-auto'>
+            <div className='flex items-center justify-center gap-2 mt-6 mb-20'>
+              <div className='flex items-center gap-2'>
+                <span className='text-sm text-gray-600 mr-4'>
+                  {totalProjects === 0
+                    ? '0 - 0 of 0'
+                    : `${indexOfFirstProject + 1} - ${indexOfLastProject > totalProjects
+                      ? totalProjects
+                      : indexOfLastProject
                     } of ${totalProjects}`}
-              </span>
+                </span>
 
-              {/* Previous button */}
-              <Button
-                isIconOnly
-                variant='flat'
-                size='sm'
-                radius='none'
-                disabled={currentPage === 1}
-                onPress={handlePrevPage}
-                className='min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer'
-              >
-                <ChevronLeftIcon className='h-4 w-4' />
-              </Button>
+                {/* Previous button */}
+                <Button
+                  isIconOnly
+                  variant='flat'
+                  size='sm'
+                  radius='none'
+                  disabled={currentPage === 1}
+                  onPress={handlePrevPage}
+                  className='min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer'
+                >
+                  <ChevronLeftIcon className='h-4 w-4' />
+                </Button>
 
-              {/* Next button */}
-              <Button
-                isIconOnly
-                variant='flat'
-                size='sm'
-                radius='none'
-                onPress={handleNextPage}
-                disabled={currentPage === totalPages || totalProjects === 0}
-                className='min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2'
-              >
-                <ChevronRightIcon className='h-4 w-4' />
-              </Button>
+                {/* Next button */}
+                <Button
+                  isIconOnly
+                  variant='flat'
+                  size='sm'
+                  radius='none'
+                  onPress={handleNextPage}
+                  disabled={currentPage === totalPages || totalProjects === 0}
+                  className='min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2'
+                >
+                  <ChevronRightIcon className='h-4 w-4' />
+                </Button>
+              </div>
             </div>
           </div>
         </div>
+
+        <ProposalsModal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          project={selectedProject}
+        />
+
+        <DeleteConfirmationModal
+          isOpen={isDeleteOpen}
+          onOpenChange={onDeleteOpenChange}
+          onConfirm={() => handleDeleteProject(projectToDelete?.id)}
+          projectTitle={projectToDelete?.title}
+        />
       </div>
     </>
   );

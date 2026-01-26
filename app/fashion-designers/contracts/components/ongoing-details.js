@@ -28,47 +28,47 @@ import ContractHeader from "./contract-header";
 import { TiLocation } from "react-icons/ti";
 import { FaStar } from "react-icons/fa6";
 import Link from "next/link";
+import SubmitModal from "../../../../components/SubmitModal";
+
+import { ongoingContracts } from "../data";
 
 export default function OngoingDetailsPage({ params }) {
-  const contractId = params?.id || "24t64754"; // fallback for demo
+  const unwrappedParams = React.use(params);
+  const contractId = unwrappedParams?.id || "24t64754"; // fallback for demo
 
-  // Mock data - replace with actual data fetching based on contractId
+  // Find the contract in our centralized data
+  const contractDetails = ongoingContracts.find(c => c.id === contractId) || ongoingContracts[0];
+
+  // Map our centralized data to the local contractData structure
   const contractData = {
-    jobTitle: "Modern Fashion Attire Illustration",
-    contractNumber: contractId,
+    jobTitle: contractDetails.title,
+    contractNumber: contractDetails.id,
     contractType: "Hire",
     role: "Fashion Artist",
     budget: "₦200,000",
     timeframe: "1 Day",
-    status: "Ongoing",
-    isSubmitted: true, //to track submission
+    status: contractDetails.status || "Ongoing",
+    isSubmitted: contractDetails.isSubmitted,
+    isLate: contractDetails.isLate,
+    daysLate: contractDetails.daysLate,
+    isExpiringSoon: contractDetails.isExpiringSoon,
+    remainingDays: contractDetails.remainingDays,
     attachedDocuments: [
       { name: "DocTGFile", type: "document" },
       { name: "DocE75", type: "legal" },
     ],
-    artist: {
-      name: "Tolu",
-      username: "tolu",
-      role: "Fashion Brand",
-      location: "Lagos, Nigeria",
-      rating: 0.0,
-      reviews: 0,
-      avatar: "/contract/designer.jpg",
-      jobsPosted: 1,
-      hire: 0,
-      paymentMade: 0,
-    },
+    artist: contractDetails.artist,
   };
 
   // Function to get color based on status
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
       case "pending":
-        return "text-[#035A7A]";
+        return "text-[#035A7A] bg-[#F2F9FB]";
       case "ongoing":
-        return "text-[#279711]";
+        return "text-[#2563EB] bg-[#E0F2FE]";
       case "completed":
-        return "success";
+        return "text-[#279711] bg-[#ECFDF5]";
       default:
         return "default";
     }
@@ -89,10 +89,15 @@ export default function OngoingDetailsPage({ params }) {
     useState(false);
 
   //function to handle the Rate Ocean button
+  const {
+    isOpen: isRateOpen,
+    onOpen: onRateOpen,
+    onOpenChange: onRateOpenChange
+  } = useDisclosure();
+
   const handleRateOcean = () => {
     setShowCongratulationsModal(false);
-    // Handle rating functionality here
-    console.log("Rate Ocean clicked");
+    onRateOpen();
   };
 
   const [selectedReason, setSelectedReason] = useState("");
@@ -111,7 +116,7 @@ export default function OngoingDetailsPage({ params }) {
 
   return (
     <>
-      <ContractHeader title="Contract Information" />
+      <ContractHeader title="Contract Information" maxWidth="max-w-6xl" />
       <div className="max-w-6xl mx-auto px-2 md:px-0 pb-6 ">
         <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-1">
           {/* Left Column - Contract Details & Documents */}
@@ -123,9 +128,9 @@ export default function OngoingDetailsPage({ params }) {
                 color="primary"
                 variant="flat"
                 startContent={
-                  <ExclamationTriangleIcon className="h-5 w-5 text-[#3A98BB] flex-shrink-0 ml-5" />
+                  <ExclamationTriangleIcon className="h-5 w-5 text-[#3A98BB] flex-shrink-0" />
                 }
-                className="bg-[#FAFAFA] border-none text-[#3A98BB] max-w-[662px] font-medium"
+                className="bg-[#FAFAFA] border-none text-[#3A98BB] max-w-[662px] font-medium items-center"
                 description="This project has be submitted as completed. Waiting for your approval."
               />
             ) : (
@@ -143,7 +148,10 @@ export default function OngoingDetailsPage({ params }) {
                 <div className="flex justify-between items-start">
                   <div className="space-y-4">
                     {[
-                      { label: "Job Title", value: contractData.jobTitle },
+                      {
+                        label: "Job Title",
+                        value: contractData.jobTitle,
+                      },
                       {
                         label: "Status",
                         value: contractData.status,
@@ -176,29 +184,53 @@ export default function OngoingDetailsPage({ params }) {
                         </span>
                         <span
                           className={`${item.label === "Status"
-                              ? `${getStatusColor(
-                                contractData.status
-                              )} lg:hidden`
-                              : ""
+                            ? `${getStatusColor(
+                              contractData.status
+                            )} lg:hidden`
+                            : ""
                             } ${item.label === "Contract Number" ? "lg:-mt-4" : ""
                             }  md:text-md text-sm font-proximanova`}
                         >
                           {item.value}
+                          {item.label === "Status" && contractData.isLate && (
+                            <span className="text-red-500 text-xs font-semibold ml-2">
+                              ({contractData.daysLate}d late)
+                            </span>
+                          )}
+                          {item.label === "Status" && contractData.isExpiringSoon && (
+                            <span className="text-green-600 text-xs font-semibold ml-2">
+                              ({contractData.remainingDays}d left)
+                            </span>
+                          )}
                         </span>
                       </div>
                     ))}
                   </div>
 
-                  {/* Status */}
-                  <Chip
-                    variant="flat"
-                    size="sm"
-                    className={`${getStatusColor(
-                      contractData.status
-                    )} font-semibold  border-1 hidden lg:flex rounded-full bg-transparent`}
-                  >
-                    {contractData.status}
-                  </Chip>
+                  {/* Status and Badges */}
+                  <div className="flex flex-row items-center gap-2">
+                    <div className="hidden lg:flex items-center gap-2">
+                      <span className="border border-[#D1D1D1] text-[#279711] px-3 py-1 rounded-full text-xs font-medium">
+                        Ongoing
+                      </span>
+                      {contractData.isSubmitted && (
+                        <span className="bg-[#E0F2FE] text-[#2563EB] px-2 py-1 rounded text-xs font-medium">
+                          Waiting Approval
+                        </span>
+                      )}
+                    </div>
+
+                    {contractData.isLate && (
+                      <span className="text-red-500 text-xs font-semibold hidden lg:block">
+                        ({contractData.daysLate}d late)
+                      </span>
+                    )}
+                    {contractData.isExpiringSoon && (
+                      <span className="text-green-600 text-xs font-semibold hidden lg:block">
+                        ({contractData.remainingDays}d left)
+                      </span>
+                    )}
+                  </div>
                 </div>
               </CardBody>
             </Card>
@@ -213,7 +245,8 @@ export default function OngoingDetailsPage({ params }) {
                 {contractData.attachedDocuments.map((doc, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg transition-colors cursor-pointer "
+                    onClick={() => window.open("#", "_blank")}
+                    className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-50"
                   >
                     <div className="flex items-center justify-center gap-2">
                       <PaperClipIcon className="md:h-5 md:w-5 h-4 w-4" />
@@ -271,19 +304,19 @@ export default function OngoingDetailsPage({ params }) {
             >
               <CardBody className="">
                 <div className="text-center font-satoshi">
-                  <h3 className="text-2xl font-bold mb-6">About Artist</h3>
-                  <Avatar
-                    src={contractData.artist.avatar}
-                    className="w-28 h-28 mx-auto mb-4 rounded-full"
-                    name={contractData.artist.name}
-                  />
+                  <h3 className="text-2xl font-bold mb-6">About the Artist</h3>
+                  <Link href="/artist-page/profile-for-artist" className="block w-fit mx-auto">
+                    <Avatar
+                      src={contractData.artist.avatar}
+                      className="w-28 h-28 mx-auto mb-4 rounded-full cursor-pointer hover:opacity-80 transition-opacity"
+                      name={contractData.artist.name}
+                    />
+                  </Link>
 
-                  <h3 className="text-md font-proximanova mb-1 text-[#3A98BB]">
-                    {contractData.artist.name}
-                    <span className="font-satoshi text-[#222222]">
-                      {" "}
+                  <h3 className="text-md font-proximanova mb-1">
+                    <Link href="/artist-page/profile-for-artist" className="text-[#3A98BB] hover:underline">
                       @{contractData.artist.username}
-                    </span>
+                    </Link>
                   </h3>
 
                   <p className="text-sm  text-[#222222] mb-4">
@@ -455,7 +488,7 @@ export default function OngoingDetailsPage({ params }) {
               variant="bordered"
               onPress={handleRateOcean}
             >
-              Rate Ocean
+              Rate {contractData.artist.name}
             </Button>
           </ModalBody>
         </ModalContent>
@@ -466,21 +499,21 @@ export default function OngoingDetailsPage({ params }) {
         isOpen={showRejectModal}
         onOpenChange={setShowRejectModal}
         classNames={{
-          base: "bg-white w-[90vw] max-w-sm",
+          base: "bg-white w-[90vw] max-w-2xl p-4",
           backdrop: "bg-black/50",
+          closeButton: "top-6 right-8"
         }}
-        size="md"
+        size="2xl"
         backdrop="blur"
-        hideCloseButton
         placement="center"
       >
-        <ModalContent>
-          <ModalBody className="flex flex-col gap-4">
-            <h3 className="text-md font-proximanova">
+        <ModalContent className="rounded-[2.5rem] p-4">
+          <ModalBody className="flex flex-col gap-6 p-8">
+            <h3 className="text-2xl font-bold text-[#222222]">
               Please state the reason for rejection
             </h3>
 
-            <div className="flex flex-col gap-2 max-w-[200px]">
+            <div className="flex flex-col gap-4">
               <div
                 className="flex items-center justify-between cursor-pointer"
                 onClick={() => setSelectedReason("Work Not Completed")}
@@ -517,21 +550,24 @@ export default function OngoingDetailsPage({ params }) {
                 />
               </div>
             </div>
-            <label className="text-sm font-proximanova">
-              Kindly state a reason
-            </label>
-            <textarea
-              className="w-full border border-gray-300 rounded-md p-2 text-sm resize-none -mt-3 focus:outline-none focus:ring-2 focus:ring-blue-200"
-              rows={3}
-              value={explanation}
-              onChange={(e) => setExplanation(e.target.value)}
-            />
+
+            <div className="space-y-3">
+              <label className="text-lg font-bold text-[#222222]">
+                Kindly state a reason
+              </label>
+              <textarea
+                className="w-full border border-[#E1E1E1] rounded-2xl p-5 text-md resize-none focus:outline-none focus:ring-2 focus:ring-[#CCE7F2] bg-[#F9F9F9]"
+                rows={4}
+                placeholder="Type your explanation here..."
+                value={explanation}
+                onChange={(e) => setExplanation(e.target.value)}
+              />
+            </div>
           </ModalBody>
 
-          <ModalFooter>
+          <ModalFooter className="px-8 pb-10 pt-0">
             <Button
-              className="max-w-lg bg-[#CCE7F2] shadow-md text-[#222222]"
-              radius="full"
+              className="w-full bg-[#CCE7F2] text-[#222222] font-bold py-7 rounded-full text-lg shadow-sm"
               onPress={handleRejectSubmit}
             >
               Submit
@@ -577,6 +613,12 @@ export default function OngoingDetailsPage({ params }) {
           </ModalBody>
         </ModalContent>
       </Modal>
+      <SubmitModal
+        isOpen={isRateOpen}
+        onOpenChange={onRateOpenChange}
+        name={contractData.artist.name}
+        redirectPath='/fashion-designers/contracts'
+      />
     </>
   );
 }

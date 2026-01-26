@@ -24,6 +24,25 @@ export function formatNumberShort(num) {
   return `${scaled.toFixed(scaled < 10 ? 1 : 0)}${unit}`;
 }
 
+export function formatDateWithOrdinal(dateInput) {
+  const date = new Date(dateInput);
+  const day = date.getDate();
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  const month = monthNames[date.getMonth()];
+  const year = date.getFullYear();
+
+  const getOrdinal = (n) => {
+    const s = ["th", "st", "nd", "rd"];
+    const v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+  };
+
+  return `${getOrdinal(day)} ${month}, ${year}`;
+}
+
 export const homePageCardData = [
   {
     title: 'Secure Transaction',

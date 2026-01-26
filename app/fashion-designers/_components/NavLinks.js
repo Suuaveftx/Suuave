@@ -37,7 +37,19 @@ export function NavLinks() {
 
   const pathname = usePathname();
 
-  const isActive = (path) => pathname === path;
+  const isActive = (path) => {
+    if (path === "/fashion-designers") {
+      const isMainSubpath =
+        pathname.startsWith("/fashion-designers/my-projects") ||
+        pathname.startsWith("/fashion-designers/contracts") ||
+        pathname.startsWith("/fashion-designers/my-collection") ||
+        pathname.startsWith("/fashion-designers/post-project") ||
+        pathname.startsWith("/fashion-designers/settings");
+
+      return pathname.startsWith("/fashion-designers") && !isMainSubpath;
+    }
+    return pathname.startsWith(path);
+  };
 
   return (
     <nav className="hidden md:flex items-center gap-9 font-medium h-full">
@@ -57,7 +69,7 @@ export function NavLinks() {
               hovered: { scaleX: 1 }
             }}
             transition={{ type: "spring", stiffness: 380, damping: 30 }}
-            className="absolute bottom-[28px] left-0 w-full h-[2px] bg-[#222222] origin-left"
+            className="absolute bottom-[20px] left-0 w-full h-[2px] bg-[#222222] origin-left"
           />
         </motion.div>
       </Link>
@@ -77,7 +89,7 @@ export function NavLinks() {
               hovered: { scaleX: 1 }
             }}
             transition={{ type: "spring", stiffness: 380, damping: 30 }}
-            className="absolute bottom-[28px] left-0 w-full h-[2px] bg-[#222222] origin-left"
+            className="absolute bottom-[20px] left-0 w-full h-[2px] bg-[#222222] origin-left"
           />
         </motion.div>
       </Link>
@@ -97,7 +109,7 @@ export function NavLinks() {
               hovered: { scaleX: 1 }
             }}
             transition={{ type: "spring", stiffness: 380, damping: 30 }}
-            className="absolute bottom-[28px] left-0 w-full h-[2px] bg-[#222222] origin-left"
+            className="absolute bottom-[20px] left-0 w-full h-[2px] bg-[#222222] origin-left"
           />
         </motion.div>
       </Link>
@@ -114,63 +126,26 @@ export function NavLinks() {
           <DropdownItem key="archived">Archived</DropdownItem>
         </DropdownMenu>
       </Dropdown> */}
-      <Dropdown>
-        <NavbarItem>
-          <DropdownTrigger>
-            <Button
-              disableRipple
-              className="p-0 bg-transparent font-medium text-[15px] data-[hover=true]:bg-transparent text-[#1A1A1A] hover:text-[#B0B0B0]"
-              endContent={icons.chevron}
-              radius="sm"
-              variant="light"
-            >
-              My Collections
-            </Button>
-          </DropdownTrigger>
-        </NavbarItem>
-        <DropdownMenu
-          aria-label="ACME features"
-          itemClasses={{
-            base: "gap-4",
-          }}
+      <Link
+        href="/fashion-designers/my-collection"
+        className="group text-[#1A1A1A] hover:text-[#B0B0B0] text-[15px] transition-colors relative flex items-center h-full"
+      >
+        <motion.div
+          animate={isActive("/fashion-designers/my-collection") ? "hovered" : "initial"}
+          whileHover="hovered"
+          className="relative flex items-center h-full"
         >
-          <DropdownItem
-            key="autoscaling"
-            description="ACME scales apps based on demand and load"
-            startContent={icons.scale}
-          >
-            Autoscaling
-          </DropdownItem>
-          <DropdownItem
-            key="usage_metrics"
-            description="Real-time metrics to debug issues"
-            startContent={icons.activity}
-          >
-            Usage Metrics
-          </DropdownItem>
-          <DropdownItem
-            key="production_ready"
-            description="ACME runs on ACME, join us at web scale"
-            startContent={icons.flash}
-          >
-            Production Ready
-          </DropdownItem>
-          <DropdownItem
-            key="99_uptime"
-            description="High availability and uptime guarantees"
-            startContent={icons.server}
-          >
-            +99% Uptime
-          </DropdownItem>
-          <DropdownItem
-            key="supreme_support"
-            description="Support team ready to respond"
-            startContent={icons.user}
-          >
-            +Supreme Support
-          </DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
+          My Collections
+          <motion.div
+            variants={{
+              initial: { scaleX: 0 },
+              hovered: { scaleX: 1 }
+            }}
+            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+            className="absolute bottom-[20px] left-0 w-full h-[2px] bg-[#222222] origin-left"
+          />
+        </motion.div>
+      </Link>
     </nav>
   );
 }

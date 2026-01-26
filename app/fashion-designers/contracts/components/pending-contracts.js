@@ -12,14 +12,15 @@ import { Input, Card, CardBody, Button, Alert } from "@heroui/react";
 const PendingContracts = ({
   contracts = [],
   search = "",
-  onSearchChange = () => {},
-  onContractClick = () => {},
-  onCancelContract = () => {},
+  onSearchChange = () => { },
+  onContractClick = () => { },
+  onCancelContract = () => { },
+  onMessageArtist = () => { },
   showAlert = true,
   alertContent = {
     title: "These contracts are yet to be accepted by Artists.",
     description:
-      "Artists have 2 days to accept offers, else, the contract will be canceled automatically.",
+      "Artists have 5 days to accept offers, else, the contract will be canceled automatically.",
   },
 }) => {
   // Filter contracts based on search
@@ -58,32 +59,25 @@ const PendingContracts = ({
       )}
 
       {/* Search */}
-      <div className="mb-6">
-        <div className="flex items-center gap-3">
-          <Input
-            type="text"
-            value={search}
-            onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search project"
-            startContent={
-              <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-            }
-            className="flex-1 md:max-w-md md:flex-none"
-            classNames={{
-              input: "text-sm",
-              inputWrapper:
-                "border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500",
-            }}
-          />
-          {/* for mobile view */}
-          <Button
-            isIconOnly
-            variant="ghost"
-            className="md:hidden p-2 border-0 -ml-4"
-            aria-label="Filter"
-          >
-            <AdjustmentsVerticalIcon className="h-5 w-5 text-gray-600" />
-          </Button>
+      <div className="mb-6 w-full">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 flex-1">
+            <Input
+              type="text"
+              value={search}
+              onChange={(e) => onSearchChange(e.target.value)}
+              placeholder="Search project"
+              startContent={
+                <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+              }
+              className="flex-1 md:max-w-md md:flex-none"
+              classNames={{
+                input: "text-sm",
+                inputWrapper:
+                  "border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500",
+              }}
+            />
+          </div>
         </div>
       </div>
 
@@ -92,7 +86,7 @@ const PendingContracts = ({
         {currentItems.map((contract, index) => (
           <Card
             key={contract.id || index}
-            className="bg-white border border-gray-200 hover:shadow-md transition-shadow max-w-[60rem]"
+            className="bg-white border border-gray-200 hover:shadow-md transition-shadow w-full"
             shadow="none"
           >
             <div
@@ -101,38 +95,53 @@ const PendingContracts = ({
             >
               <CardBody className="md:px-6 px-3 py-4 ">
                 <div className="flex md:justify-between items-start w-full">
-                  <div className="flex-1 flex items-start md:items-center flex-col md:flex-row md:justify-between">
-                    <h3 className="md:text-md text-sm font-proximanova mb-1 md:mb-0 line-clamp-1">
-                      {contract.title} ({contract.id})
-                    </h3>
-                    <div className="md:flex items-center justify-center md:gap-1">
-                      <p className="text-sm font-satoshi">
-                        Pending Since -{" "}
-                        <span className="font-proximanova">
-                          {contract.pendingSince}
-                        </span>
-                      </p>
-                      <p className="text-sm font-satoshi">
-                        <span className="max-[860px]:hidden">/</span> Expires in
-                        -{" "}
-                        <span className="font-proximanova">
-                          {contract.expiresIn}
-                        </span>
-                      </p>
+                  <div className="flex-1 md:grid md:grid-cols-[1.5fr_1fr_0.8fr_auto] md:gap-x-8 md:items-center">
+                    <div className="flex flex-col mb-1 md:mb-0">
+                      <h3 className="md:text-md text-sm font-proximanova line-clamp-1">
+                        {contract.title} ({contract.id})
+                      </h3>
                     </div>
 
-                    {/* Desktop Cancel Button */}
-                    <Button
-                      className="mt-4 md:-mt-1 border px-12 py-4 shadow-lg bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full shrink-0 hidden md:flex"
-                      size="sm"
-                      radius="full"
-                      onPress={(e) => {
-                        /*  e.stopPropagation() */
-                        onCancelContract(contract.id);
-                      }}
-                    >
-                      Cancel
-                    </Button>
+                    <p className="text-sm font-satoshi flex items-center gap-2">
+                      <span className="font-light whitespace-nowrap text-gray-500">Pending Since -</span>
+                      <span className="font-semibold whitespace-nowrap">
+                        {contract.pendingSince}
+                      </span>
+                    </p>
+
+                    <p className="text-sm font-satoshi flex items-center gap-2">
+                      <span className="max-[840px]:hidden text-gray-300">|</span>
+                      <span className="font-light whitespace-nowrap text-gray-500">Expires in -</span>
+                      <span className="font-semibold whitespace-nowrap">
+                        {contract.expiresIn}
+                      </span>
+                    </p>
+
+                    {/* Desktop Buttons */}
+                    <div className="hidden md:flex gap-3 shrink-0">
+                      <Button
+                        className=" border px-8 py-4 shadow-md bg-white border-[#CCE7F2] text-[#222222] font-semibold rounded-full"
+                        size="sm"
+                        radius="full"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onMessageArtist(contract);
+                        }}
+                      >
+                        Message Artist
+                      </Button>
+                      <Button
+                        className=" border px-8 py-4 shadow-md bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full"
+                        size="sm"
+                        radius="full"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onCancelContract(contract.id);
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
                   </div>
 
                   {/* Mobile 3 Dots Menu */}
@@ -152,53 +161,57 @@ const PendingContracts = ({
       </div>
 
       {/* Pagination */}
-      {totalPages > 0 && (
-        <div className="flex items-center justify-center gap-2 mt-6">
-          <div className="flex items-center gap-2">
-            {/* Results info */}
-            <span className="text-sm text-gray-600 mr-4">
-              {startIndex + 1} - {Math.min(endIndex, filteredContracts.length)}{" "}
-              of {filteredContracts.length}
-            </span>
+      {
+        totalPages > 0 && (
+          <div className="flex items-center justify-center gap-2 mt-6">
+            <div className="flex items-center gap-2">
+              {/* Results info */}
+              <span className="text-sm text-gray-600 mr-4">
+                {startIndex + 1} - {Math.min(endIndex, filteredContracts.length)}{" "}
+                of {filteredContracts.length}
+              </span>
 
-            {/* Previous button */}
-            <Button
-              isIconOnly
-              variant="flat"
-              size="sm"
-              radius="none"
-              isDisabled={currentPage === 1}
-              onPress={() => setCurrentPage(currentPage - 1)}
-              className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer"
-            >
-              &lt;
-            </Button>
+              {/* Previous button */}
+              <Button
+                isIconOnly
+                variant="flat"
+                size="sm"
+                radius="none"
+                isDisabled={currentPage === 1}
+                onPress={() => setCurrentPage(currentPage - 1)}
+                className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer"
+              >
+                &lt;
+              </Button>
 
-            {/* Next button */}
-            <Button
-              isIconOnly
-              variant="flat"
-              size="sm"
-              radius="none"
-              isDisabled={currentPage === totalPages}
-              onPress={() => setCurrentPage(currentPage + 1)}
-              className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2"
-            >
-              &gt;
-            </Button>
+              {/* Next button */}
+              <Button
+                isIconOnly
+                variant="flat"
+                size="sm"
+                radius="none"
+                isDisabled={currentPage === totalPages}
+                onPress={() => setCurrentPage(currentPage + 1)}
+                className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2"
+              >
+                &gt;
+              </Button>
+            </div>
           </div>
-        </div>
-      )}
+        )
+      }
 
       {/* Empty State */}
-      {filteredContracts.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-500">
-            {search ? "No contracts match your search" : "No pending contracts"}
-          </p>
-        </div>
-      )}
-    </div>
+      {
+        filteredContracts.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500">
+              {search ? "No contracts match your search" : "No pending contracts"}
+            </p>
+          </div>
+        )
+      }
+    </div >
   );
 };
 

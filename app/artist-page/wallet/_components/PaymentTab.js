@@ -10,6 +10,7 @@ export default function PaymentTabs() {
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
   const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
   const [selectedType, setSelectedType] = useState('All Types');
+  const [customRange, setCustomRange] = useState({ start: '', end: '' });
 
   const typeDropdownRef = useRef(null);
   const dateDropdownRef = useRef(null);
@@ -27,14 +28,19 @@ export default function PaymentTabs() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Filter state: { type: 'date' | 'range', value: string | number, label: string }
-  // Default to showing "Date" placeholder or implies all/custom
-  const [filterState, setFilterState] = useState({ type: 'date', value: '', label: 'Date' });
+  // Filter state: { type: 'date' | 'range' | 'custom', value: any, label: string }
+  const [filterState, setFilterState] = useState({ type: 'none', value: null, label: 'Select Date' });
 
-  const handleDateChange = (e) => {
-    const date = e.target.value;
-    setFilterState({ type: 'date', value: date, label: date });
-    setIsDateDropdownOpen(false);
+  const handleCustomDateChange = (field, value) => {
+    const newRange = { ...customRange, [field]: value };
+    setCustomRange(newRange);
+    if (newRange.start && newRange.end) {
+      setFilterState({
+        type: 'custom',
+        value: newRange,
+        label: `${newRange.start} - ${newRange.end}`
+      });
+    }
   };
 
   const handleRangeSelect = (days) => {
@@ -43,7 +49,8 @@ export default function PaymentTabs() {
   };
 
   const handleReset = () => {
-    setFilterState({ type: 'date', value: '', label: 'Date' });
+    setFilterState({ type: 'none', value: null, label: 'Select Date' });
+    setCustomRange({ start: '', end: '' });
     setIsDateDropdownOpen(false);
   };
 
@@ -96,7 +103,7 @@ export default function PaymentTabs() {
             <input
               type='text'
               placeholder='Search'
-              className='block w-full pl-11 pr-4 py-3 bg-white border border-[#E5E5E5] rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-[#3A98BB] placeholder-gray-400'
+              className='block w-full pl-11 pr-4 py-3 bg-white border border-[#E5E5E5] rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-[#3A98BB] placeholder-gray-400 h-12'
             />
           </div>
 
@@ -107,14 +114,14 @@ export default function PaymentTabs() {
             <div className='relative flex-shrink-0' ref={typeDropdownRef}>
               <button
                 onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
-                className='flex items-center justify-between gap-2 px-6 py-3 bg-white border border-[#E5E5E5] rounded-full text-sm text-[#555555] whitespace-nowrap hover:bg-gray-50'
+                className='flex items-center justify-between gap-2 px-6 py-3 bg-white border border-[#E5E5E5] rounded-full text-sm text-[#555555] whitespace-nowrap hover:bg-gray-50 h-10'
               >
                 {selectedType}
                 <ChevronDown className={`h-4 w-4 transition-transform ${isTypeDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {isTypeDropdownOpen && (
-                <div className='absolute top-full left-0 mt-2 w-48 bg-white border border-[#E5E5E5] rounded-xl shadow-lg py-2 z-50 overflow-hidden'>
+                <div className='absolute top-full left-0 mt-2 w-48 bg-white border border-[#E5E5E5] rounded-xl shadow-lg py-2 z-[100] overflow-hidden'>
                   {selectedType !== 'All Types' && (
                     <div
                       onClick={handleTypeReset}
@@ -149,7 +156,7 @@ export default function PaymentTabs() {
             <div className='relative flex-shrink-0' ref={dateDropdownRef}>
               <button
                 onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
-                className='flex items-center justify-between gap-2 px-6 py-3 bg-white border border-[#E5E5E5] rounded-full text-sm text-[#555555] whitespace-nowrap hover:bg-gray-50'
+                className='flex items-center justify-between gap-2 px-6 py-3 bg-white border border-[#E5E5E5] rounded-full text-sm text-[#555555] whitespace-nowrap hover:bg-gray-50 h-10 min-w-[160px]'
               >
                 <Calendar className='h-4 w-4 text-gray-400' />
                 {filterState.label}
@@ -157,7 +164,7 @@ export default function PaymentTabs() {
               </button>
 
               {isDateDropdownOpen && (
-                <div className='absolute top-full left-0 mt-2 w-64 bg-white border border-[#E5E5E5] rounded-xl shadow-lg z-50 overflow-hidden'>
+                <div className='absolute top-full right-0 mt-2 w-72 bg-white border border-[#E5E5E5] rounded-xl shadow-lg z-[100] overflow-hidden'>
                   {/* Range Options */}
                   <div className='py-2 border-b border-gray-100'>
                     <div onClick={handleReset} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB] font-medium'>Reset Filter</div>
@@ -167,15 +174,35 @@ export default function PaymentTabs() {
                     <div onClick={() => handleRangeSelect(30)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 30 days</div>
                   </div>
 
-                  {/* Custom Date Picker */}
-                  <div className='p-4 bg-gray-50'>
-                    <input
-                      type="date"
-                      // If type is range, we don't show a specific date value in the picker, or clear it
-                      value={filterState.type === 'date' ? filterState.value : ''}
-                      onChange={handleDateChange}
-                      className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-[#3A98BB] bg-white"
-                    />
+                  {/* Custom Date Picker Range */}
+                  <div className='p-4 bg-gray-50 space-y-3'>
+                    <p className="text-xs font-bold text-[#767676] uppercase tracking-wider">Custom Range</p>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[10px] text-[#888888] ml-1">From</span>
+                        <input
+                          type="date"
+                          value={customRange.start}
+                          onChange={(e) => handleCustomDateChange('start', e.target.value)}
+                          className="w-full border border-[#E5E5E5] rounded-lg p-2 text-sm text-[#555555] focus:outline-none focus:ring-1 focus:ring-[#3A98BB] bg-white h-10"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[10px] text-[#888888] ml-1">To</span>
+                        <input
+                          type="date"
+                          value={customRange.end}
+                          onChange={(e) => handleCustomDateChange('end', e.target.value)}
+                          className="w-full border border-[#E5E5E5] rounded-lg p-2 text-sm text-[#555555] focus:outline-none focus:ring-1 focus:ring-[#3A98BB] bg-white h-10"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="bg-[#3A98BB] text-white font-bold h-10 rounded-lg mt-2 shadow-sm flex items-center justify-center cursor-pointer text-sm"
+                      onClick={() => setIsDateDropdownOpen(false)}
+                    >
+                      Apply Range
+                    </div>
                   </div>
                 </div>
               )}

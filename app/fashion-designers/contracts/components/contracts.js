@@ -5,48 +5,73 @@ import { Tabs, Tab } from '@heroui/react';
 
 import ContractHeader from './contract-header';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import PendingContracts from './pending-contracts';
 import OngoingContracts from './ongoing-contracts';
 
 import CompletedContracts from './completed-contracts';
+import { ongoingContracts } from '../data';
+import CancelContractModal from './CancelContractModal';
+import MessageModal from './MessageModal';
+import { useDisclosure } from '@heroui/react';
 
 export default function ContractPage() {
-  const [activeTab, setActiveTab] = useState('pending');
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get('tab');
+  const [activeTab, setActiveTab] = React.useState(tabParam || 'pending');
   const [search, setSearch] = useState('');
   const router = useRouter();
   const [sortBy, setSortBy] = useState('date');
+  const { isOpen: isCancelOpen, onOpen: onCancelOpen, onOpenChange: onCancelOpenChange } = useDisclosure();
+  const { isOpen: isMessageOpen, onOpen: onMessageOpen, onOpenChange: onMessageOpenChange } = useDisclosure();
+  const [contractToCancel, setContractToCancel] = useState(null);
+  const [selectedArtist, setSelectedArtist] = useState('');
+
+  React.useEffect(() => {
+    if (tabParam) {
+      setActiveTab(tabParam);
+    }
+  }, [tabParam]);
 
   const pendingContracts = [
     {
       title: 'Modern Fashion Attire Illustration',
       id: '24t64754',
-      pendingSince: '18, June, 2024',
-      expiresIn: '2days',
+      pendingSince: '18th June, 2024',
+      expiresIn: '2 Days',
+      artistName: 'Tolu',
+      status: 'Pending',
     },
     {
       title: 'Modern Fashion Attire Illustration',
       id: '24t64755',
-      pendingSince: '18, June, 2024',
-      expiresIn: '2days',
+      pendingSince: '18th June, 2024',
+      expiresIn: '2 Days',
+      artistName: 'Tolu',
+      status: 'Pending',
     },
     {
       title: 'Modern Fashion Attire Illustration',
       id: '24t64756',
-      pendingSince: '20, June, 2024',
-      expiresIn: '1day',
+      pendingSince: '20th June, 2024',
+      expiresIn: '1 Day',
+      artistName: 'Tolu',
+      status: 'Pending',
     },
     {
       title: 'Modern Fashion Attire Illustration',
       id: '24t64757',
-      pendingSince: '20, June, 2024',
-      expiresIn: '1day',
+      pendingSince: '20th June, 2024',
+      expiresIn: '1 Day',
+      artistName: 'Tolu',
+      status: 'Pending',
     },
     {
       title: 'Modern Fashion Attire Illustration',
       id: '24t64758',
-      pendingSince: '20, June, 2024',
-      expiresIn: '1day',
+      pendingSince: '20th June, 2024',
+      expiresIn: '1 Day',
+      status: 'Pending',
     },
   ];
 
@@ -71,104 +96,18 @@ export default function ContractPage() {
   }; */
 
   const handleCancelContract = (contractId) => {
-    console.log('Cancel contract:', contractId);
-    // Add your cancel logic here
+    setContractToCancel(contractId);
+    onCancelOpen();
+  };
+
+  const confirmCancelContract = (contractId) => {
+    console.log('Contract canceled:', contractId);
+    // Add deletion/update logic here if needed
   };
 
   const handleBack = () => {
     router.back();
   };
-
-  // Sample data structure for ongoing contracts:
-  const ongoingContracts = [
-    {
-      id: '24t64754',
-      title: 'Modern Fashion Attire Illustration',
-      status: 'Waiting Approval', // optional
-      startDate: '18, June, 2024',
-      endDate: '25, June, 2024',
-      isLate: false, // optional
-      daysLate: null, // optional, only if isLate is true
-      artist: {
-        name: 'Aliu',
-        username: 'aliu',
-        role: 'Fashion Brand',
-        location: 'Lagos, Nigeria',
-        rating: 0.0,
-        reviews: 0,
-        avatar: '/contract/designer.jpg',
-      },
-    },
-    {
-      id: '24t64755',
-      title: 'Modern Fashion Attire Illustration',
-      startDate: '18, June, 2024',
-      endDate: '25, June, 2024',
-      isLate: true,
-      daysLate: '10',
-      artist: {
-        name: 'Adeniji',
-        username: 'adeniji',
-        role: 'Fashion Brand',
-        location: 'Lagos, Nigeria',
-        rating: 0.0,
-        reviews: 0,
-        avatar: '/contract/designer.jpg',
-      },
-    },
-    {
-      id: '24t64756',
-      title: 'Modern Fashion Attire Illustration',
-      startDate: '18, June, 2024',
-      endDate: '25, June, 2024',
-      isLate: true,
-      daysLate: '10',
-      artist: {
-        name: 'Adeniji',
-        username: 'adeniji',
-        role: 'Fashion Brand',
-        location: 'Lagos, Nigeria',
-        rating: 0.0,
-        reviews: 0,
-        avatar: '/contract/designer.jpg',
-      },
-    },
-    {
-      id: '24t64757',
-      title: 'Modern Fashion Attire Illustration',
-      startDate: '18, June, 2024',
-      endDate: '25, June, 2024',
-      isLate: true,
-      daysLate: '10',
-      artist: {
-        name: 'Adeniji',
-        username: 'adeniji',
-        role: 'Fashion Brand',
-        location: 'Lagos, Nigeria',
-        rating: 0.0,
-        reviews: 0,
-        avatar: '/contract/designer.jpg',
-      },
-    },
-    {
-      id: '24t64758',
-      title: 'Modern Fashion Attire Illustration',
-      startDate: '18, June, 2024',
-      endDate: '25, June, 2024',
-      isLate: true,
-      daysLate: '10',
-      artist: {
-        name: 'Adeniji',
-        username: 'adeniji',
-        role: 'Fashion Brand',
-        location: 'Lagos, Nigeria',
-        rating: 0.0,
-        reviews: 0,
-        avatar: '/contract/designer.jpg',
-      },
-    },
-    // ... more contracts
-  ];
 
   // Handler functions:
   const handleApproveWork = (contract) => {
@@ -177,8 +116,8 @@ export default function ContractPage() {
   };
 
   const handleMessageArtist = (contract) => {
-    console.log('Message artist for:', contract.title);
-    // Add your messaging logic here
+    setSelectedArtist(contract.artistName || 'Artist');
+    onMessageOpen();
   };
 
   const handleMoreOptions = (contract) => {
@@ -188,7 +127,7 @@ export default function ContractPage() {
   return (
     <>
       <ContractHeader title='My Contracts' />
-      <div className='max-w-6xl mx-auto bg-white px-2 md:px-8 my-6'>
+      <div className='max-w-7xl mx-auto bg-white px-2 md:px-4 my-6'>
         <div className='py-8 font-satoshi'>
           {/* Tab Navigation */}
           <div className='flex w-full flex-col'>
@@ -219,6 +158,7 @@ export default function ContractPage() {
               onSearchChange={setSearch}
               onContractClick={handlePendingClick}
               onCancelContract={handleCancelContract}
+              onMessageArtist={handleMessageArtist}
             />
           )}
 
@@ -241,6 +181,19 @@ export default function ContractPage() {
           {activeTab === 'completed' && <CompletedContracts />}
         </div>
       </div>
+
+      <CancelContractModal
+        isOpen={isCancelOpen}
+        onOpenChange={onCancelOpenChange}
+        onConfirm={confirmCancelContract}
+        contractId={contractToCancel}
+      />
+
+      <MessageModal
+        isOpen={isMessageOpen}
+        onOpenChange={onMessageOpenChange}
+        artistName={selectedArtist}
+      />
     </>
   );
 }

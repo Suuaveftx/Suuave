@@ -35,19 +35,19 @@ const formatNotificationMessage = (type, itemName) => {
 const Notification = () => {
   const notificationMessage = [
     {
-      time: new Date().toISOString(),
+      time: "2024-01-19T20:00:00.000Z",
       title: "Hi Ciara,",
       type: "submitted",
       itemName: "Casual Men Outfit (12343)",
     },
     {
-      time: new Date(Date.now() - 1000 * 60 * 60 * 10).toISOString(),
+      time: "2024-01-19T10:00:00.000Z",
       title: "Oops!",
       type: "declined",
       itemName: "Casual Men Outfit (12343)",
     },
     {
-      time: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+      time: "2024-01-18T20:00:00.000Z",
       title: "Congratulations!",
       type: "accepted",
       itemName: "Casual Men Outfit (12343)",

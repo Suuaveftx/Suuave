@@ -11,9 +11,9 @@ const Page = () => {
 
   const cardsData = [
     {
-      id: crypto.randomUUID(),
+      id: "card-1",
       user: {
-        id: crypto.randomUUID(),
+        id: "user-1",
         userName: "Amira Bashir",
         photo: "userImg",
         handle: "@amirabash",
@@ -26,9 +26,9 @@ const Page = () => {
       images: ["/dev-images/fashionImg1.png"],
     },
     {
-      id: crypto.randomUUID(),
+      id: "card-2",
       user: {
-        id: crypto.randomUUID(),
+        id: "user-2",
         userName: "Leo Tang",
         photo: "userImg",
         handle: "@leotang",
@@ -45,9 +45,9 @@ const Page = () => {
       ],
     },
     {
-      id: crypto.randomUUID(),
+      id: "card-3",
       user: {
-        id: crypto.randomUUID(),
+        id: "user-3",
         userName: "Tega Isama",
         photo: "userImg",
         handle: "@tega",
@@ -60,9 +60,9 @@ const Page = () => {
       images: ["/dev-images/fashionImg1.png"],
     },
     {
-      id: crypto.randomUUID(),
+      id: "card-4",
       user: {
-        id: crypto.randomUUID(),
+        id: "user-4",
         userName: "Kai Nwosu",
         photo: "userImg",
         handle: "@kai_nwosu",
@@ -79,9 +79,9 @@ const Page = () => {
       ],
     },
     {
-      id: crypto.randomUUID(),
+      id: "card-5",
       user: {
-        id: crypto.randomUUID(),
+        id: "user-5",
         userName: "Yuna Lee",
         photo: "userImg",
         handle: "@yunalee.studio",
@@ -98,9 +98,9 @@ const Page = () => {
       ],
     },
     {
-      id: crypto.randomUUID(),
+      id: "card-6",
       user: {
-        id: crypto.randomUUID(),
+        id: "user-6",
         userName: "Obadea Isama",
         photo: "userImg",
         handle: "@isama",
@@ -117,9 +117,9 @@ const Page = () => {
       ],
     },
     {
-      id: crypto.randomUUID(),
+      id: "card-7",
       user: {
-        id: crypto.randomUUID(),
+        id: "user-7",
         userName: "Nico Arora",
         photo: "userImg",
         handle: "@nico.designs",
@@ -132,9 +132,9 @@ const Page = () => {
       images: ["/dev-images/fashionImg1.png", "/dev-images/fashionImg2.png"],
     },
     {
-      id: crypto.randomUUID(),
+      id: "card-8",
       user: {
-        id: crypto.randomUUID(),
+        id: "user-8",
         userName: "Zoé Marchand",
         photo: "userImg",
         handle: "@zoemarchand",
@@ -147,9 +147,9 @@ const Page = () => {
       images: ["/dev-images/fashionImg1.png", "/dev-images/fashionImg3.png"],
     },
     {
-      id: crypto.randomUUID(),
+      id: "card-9",
       user: {
-        id: crypto.randomUUID(),
+        id: "user-9",
         userName: "Luca Bianchi",
         photo: "userImg",
         handle: "@bianchi.studio",
@@ -162,9 +162,9 @@ const Page = () => {
       images: ["/dev-images/fashionImg1.png", "/dev-images/fashionImg2.png"],
     },
     {
-      id: crypto.randomUUID(),
+      id: "card-10",
       user: {
-        id: crypto.randomUUID(),
+        id: "user-10",
         userName: "Nyah Okeke",
         photo: "userImg",
         handle: "@nyah.okeke",
@@ -177,9 +177,9 @@ const Page = () => {
       images: ["/dev-images/fashionImg2.png", "/dev-images/fashionImg3.png"],
     },
     {
-      id: crypto.randomUUID(),
+      id: "card-11",
       user: {
-        id: crypto.randomUUID(),
+        id: "user-11",
         userName: "Nyah Okeke",
         photo: "userImg",
         handle: "@nyah.okeke",
@@ -310,7 +310,7 @@ const Page = () => {
           </Tab>
         </Tabs>
       </div>
-       <FloatingButton />
+      <FloatingButton />
     </div>
   );
 };

@@ -19,7 +19,8 @@ const SubmitModal = ({
   name = "Ciana",
   onSuccess,
   isOpen: externalIsOpen,
-  onOpenChange: externalOnOpenChange
+  onOpenChange: externalOnOpenChange,
+  redirectPath = "/artist-page/my-contracts-old"
 }) => {
   const internalDisclosure = useDisclosure();
 
@@ -48,7 +49,7 @@ const SubmitModal = ({
     }
     // Navigate after a short delay to ensure modals are closed in state
     setTimeout(() => {
-      router.push("/artist-page/my-contracts-old");
+      router.push(redirectPath);
     }, 100);
   };
 
@@ -166,10 +167,7 @@ const SubmitModal = ({
                 </>
               ) : (
                 <div className="flex flex-col items-center justify-center py-8 gap-4 text-center">
-                  <div className="flex gap-2">
-                    <CheckCircle2 className="w-16 h-16 text-green-500" />
-                    <CheckCircle2 className="w-16 h-16 text-green-500" />
-                  </div>
+                  <CheckCircle2 className="w-16 h-16 text-green-500" />
                   <div>
                     <h2 className="text-xl font-bold">Success!</h2>
                     <p className="text-gray-600 mt-2">Thank you for giving your review</p>

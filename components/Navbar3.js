@@ -73,9 +73,10 @@ const Navbar3 = () => {
       <NavbarContent justify="end" className="gap-8">
         <NavbarItem>
           <CustomButton
-            className="hidden lg:flex bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A]"
-            text="License Your Designs"
-            href={"/license"}
+            className="hidden lg:flex"
+            style={{ color: "#035A7A" }}
+            text="Post Project"
+            href={"/fashion-designers/post-project"}
           />
         </NavbarItem>
         <div className="flex gap-2">

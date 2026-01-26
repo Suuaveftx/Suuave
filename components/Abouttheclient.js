@@ -33,7 +33,9 @@ const Abouttheclient = () => {
       {/* Client Info */}
       <div className="mb-8 flex flex-col items-center text-center">
         <div className='font-bold'>
-          <h4>@Ocean</h4>
+          <Link href="/artist-page/client-profile" className="hover:underline">
+            <h4>@Ocean</h4>
+          </Link>
         </div>
         <div className="flex flex-col gap-2 mb-6 items-center">
           <h5 className="font-medium text-sm">Fashion Brand</h5>
