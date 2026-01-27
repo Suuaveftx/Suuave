@@ -10,6 +10,7 @@ import { Card, CardBody, Button, Avatar, Chip } from "@heroui/react";
 
 import Navbar3 from "../../../../components/Navbar3";
 import ContractHeader from "./contract-header";
+import Link from "next/link";
 
 export default function PendingDetailsPage({ params }) {
   const contractId = params?.id || "24t64754"; // fallback for demo

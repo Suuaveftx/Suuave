@@ -58,7 +58,7 @@ export default function RetainArtist() {
                   <ul className='space-y-3'>
                     <li className='flex items-center gap-3 text-sm text-gray-500 font-light'>
                       <span className='w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0'></span>
-                      Direct access to the artist's inbox.
+                      Direct access to the artist&apos;s inbox.
                     </li>
                     <li className='flex items-center gap-3 text-sm text-gray-500 font-light'>
                       <span className='w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0'></span>

@@ -81,14 +81,14 @@ const Page = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const words = useMemo(() => fullText.split(/\s+/), [fullText]);
+  const words = useMemo(() => fullText.split(/\s+/), []);
 
   const displayedText = useMemo(() => {
     if (isMobile && !showFull) {
       return words.slice(0, 30).join(" ") + "...";
     }
     return fullText;
-  }, [fullText, isMobile, showFull, words]);
+  }, [isMobile, showFull, words]);
 
   return (
     <div className=" md:bg-[#F1F1F1] md:px-12">
@@ -199,7 +199,7 @@ const Page = () => {
           )}
         </span>
       </section>
-      
+
       {/* Reviews */}
       <section className="p-4 mt-5 font-satoshi ">
         <h1 className="font-bold text-base  md:text-xl">Reviews</h1>

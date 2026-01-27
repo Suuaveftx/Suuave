@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 /**
  * ProductGallery Component
@@ -32,16 +33,17 @@ const ProductGallery = ({ images, title }) => {
           <button
             key={index}
             onClick={() => setSelectedIndex(index)}
-            className={`relative w-20 h-20 rounded-lg overflow-hidden transition-all duration-300  ${
-              selectedIndex === index
+            className={`relative w-20 h-20 rounded-lg overflow-hidden transition-all duration-300  ${selectedIndex === index
                 ? "ring-2 ring-white ring-opacity-80 scale-105"
                 : "opacity-60 hover:opacity-80"
-            }`}
+              }`}
           >
-            <img
+            <Image
               src={image}
               alt={`${title} thumbnail ${index + 1}`}
-              className="w-full h-full object-cover object-top"
+              className="object-cover object-top"
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
             />
           </button>
         ))}
@@ -65,10 +67,12 @@ const ProductGallery = ({ images, title }) => {
         </button>
 
         {/* Main Image */}
-        <img
+        <Image
           src={images[selectedIndex]}
           alt={`${title} - Image ${selectedIndex + 1}`}
-          className="w-full h-full   object-cover object-top transition-opacity duration-500"
+          className="object-cover object-top transition-opacity duration-500"
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
         />
 
         {/* Image Counter */}

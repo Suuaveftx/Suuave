@@ -28,7 +28,7 @@ const ProductDetails = ({ id }) => {
     if (window.innerWidth >= 768) {
       onOpen();
     }
-  }, []);
+  }, [onOpen]);
 
   // Close modal if window resized below md breakpoint (mobile)
   useEffect(() => {

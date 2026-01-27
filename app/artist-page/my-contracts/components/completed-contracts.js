@@ -26,7 +26,7 @@ export default function CompletedContracts() {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("date");
 
-  const contracts = [
+  const contracts = useMemo(() => [
     {
       id: 1,
       date: "12 May, 2024",
@@ -87,7 +87,7 @@ export default function CompletedContracts() {
       paymentValue: 500,
       status: "completed",
     },
-  ];
+  ], []);
 
   const router = useRouter();
 

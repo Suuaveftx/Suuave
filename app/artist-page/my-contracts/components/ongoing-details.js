@@ -26,6 +26,7 @@ import Navbar3 from "../../../../components/Navbar3";
 import ContractHeader from "./contract-header";
 import SubmitProjectModal from "../../../../components/SubmitProjectModal";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function OngoingDetailsPage({ params }) {
   const contractId = params?.id || "24t64754"; // fallback for demo

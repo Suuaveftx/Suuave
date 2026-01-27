@@ -4,6 +4,7 @@ import { Input, Textarea, Select, Checkbox, SelectItem } from '@heroui/react';
 import { CiImageOn } from 'react-icons/ci';
 import CustomButton from '../../../../components/CustomButton';
 import Link from 'next/link';
+import Image from 'next/image';
 import { color } from 'framer-motion';
 import { useDisclosure } from '@heroui/react';
 import PublishDesignPopUp from './PublishDesignPopUp';
@@ -120,12 +121,13 @@ const License = () => {
                 {images.slice(0, 2).map((file, i) => (
                   <div
                     key={i}
-                    className='w-[110px] h-[110px] bg-gray-200 rounded flex items-center justify-center overflow-hidden'
+                    className='relative w-[110px] h-[110px] bg-gray-200 rounded flex items-center justify-center overflow-hidden'
                   >
-                    <img
+                    <Image
                       src={URL.createObjectURL(file)}
                       alt={`upload-${i}`}
-                      className='object-cover w-full h-full'
+                      className='object-cover'
+                      fill
                     />
                   </div>
                 ))}
@@ -147,12 +149,13 @@ const License = () => {
                 {images.slice(0, 5).map((file, i) => (
                   <div
                     key={i}
-                    className='w-[110px] h-[110px] bg-gray-200 rounded flex items-center justify-center overflow-hidden'
+                    className='relative w-[110px] h-[110px] bg-gray-200 rounded flex items-center justify-center overflow-hidden'
                   >
-                    <img
+                    <Image
                       src={URL.createObjectURL(file)}
                       alt={`upload-${i}`}
-                      className='object-cover w-full h-full'
+                      className='object-cover'
+                      fill
                     />
                   </div>
                 ))}

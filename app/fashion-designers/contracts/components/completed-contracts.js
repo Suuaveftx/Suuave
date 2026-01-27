@@ -27,7 +27,7 @@ export default function CompletedContracts() {
   const [sortBy, setSortBy] = useState("all");
   const [currency, setCurrency] = useState("all");
 
-  const contracts = [
+  const contracts = useMemo(() => [
     {
       id: 1,
       date: "12th May, 2024",
@@ -88,7 +88,7 @@ export default function CompletedContracts() {
       paymentValue: 500,
       status: "completed",
     },
-  ];
+  ], []);
 
   const router = useRouter();
 
@@ -196,7 +196,7 @@ export default function CompletedContracts() {
     const sorted = [...filtered].sort((a, b) => b.dateValue - a.dateValue);
 
     return sorted;
-  }, [search, sortBy, currency, contracts]);
+  }, [search, sortBy, currencyFilter, dateFilter, contracts]);
 
   const onSearchChange = (value) => {
     setSearch(value);
@@ -246,7 +246,7 @@ export default function CompletedContracts() {
       default:
         return cellValue;
     }
-  }, []);
+  }, [router]);
 
 
   // Pagination calculations

@@ -72,7 +72,7 @@ const FashionCard = ({ isVisitor = false }) => {
 
   useEffect(() => {
     if (tabParam) setActiveTab(tabParam);
-  }, [searchParams]);
+  }, [searchParams, tabParam]);
 
   const handleEdit = (designId) => {
     // Mock data based on the card UI
