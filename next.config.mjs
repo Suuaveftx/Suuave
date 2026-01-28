@@ -2,7 +2,7 @@
 
 const nextConfig = {
   experimental: {
-    authInterrupts: true,
+    // authInterrupts: true,
   },
 };
 

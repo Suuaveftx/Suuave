@@ -17,6 +17,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Link from 'next/link';
+import Image from 'next/image';
 import { formatNumberShort, formatToUSD } from '../../../../utils/utils';
 
 /*
@@ -151,11 +152,12 @@ const FashionDesignersCard = ({
                     key={index}
                     className='relative h-80 flex items-center justify-center'
                   >
-                    <img
+                    <Image
                       src={image}
                       alt={`${title} - Image ${index + 1}`}
-                      className='w-full h-full object-cover object-top
-                    '
+                      className='object-cover object-top'
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
                     />
                   </div>
                 ))}

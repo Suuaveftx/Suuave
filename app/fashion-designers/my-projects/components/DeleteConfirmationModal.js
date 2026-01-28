@@ -33,7 +33,7 @@ const DeleteConfirmationModal = ({ isOpen, onOpenChange, onConfirm, projectTitle
                             <div className="space-y-2">
                                 <h2 className="text-xl font-bold text-[#222222]">Delete Project?</h2>
                                 <p className="text-sm text-[#767676] leading-relaxed">
-                                    Are you sure you want to delete <strong>"{projectTitle}"</strong>? This action cannot be undone.
+                                    Are you sure you want to delete <strong>&quot;{projectTitle}&quot;</strong>? This action cannot be undone.
                                 </p>
                             </div>
                         </ModalBody>

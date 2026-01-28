@@ -61,7 +61,7 @@ const FashionCardVisitor = () => {
 
     useEffect(() => {
         if (tabParam) setActiveTab(tabParam);
-    }, [searchParams]);
+    }, [searchParams, tabParam]);
 
     const handleViewMore = (tab) => {
         setVisibleItems((prev) => ({
