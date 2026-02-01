@@ -12,7 +12,7 @@ import {
 import React from "react";
 import CustomButton from "./CustomButton";
 
-const Navbar3 = () => {
+const Navbar3 = ({ activeLink }) => {
   const [textStyle, setTextStyle] = React.useState("text-black");
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -33,8 +33,9 @@ const Navbar3 = () => {
 
   return (
     <Navbar
+      isMenuOpen={isMenuOpen}
       shouldHideOnScroll
-      className="w-full bg-white items-center font-satoshi shadow-md px-2 flex-nowrap"
+      className="w-full bg-[#EAF9FF] items-center font-satoshi shadow-sm px-2 flex-nowrap"
       classNames={{ wrapper: "max-w-[1700px]" }}
       onScrollPositionChange={(position) => {
         setTextStyle(position > 600 ? "text-yellow-500" : "text-black");
@@ -42,8 +43,8 @@ const Navbar3 = () => {
       onMenuOpenChange={setIsMenuOpen}
     >
       {/* LOGO */}
-      <div>
-        <Link href="/jobpost">
+      <div className="flex items-center gap-3">
+        <Link href="/jobpost" className="border-l border-[#8E8E8E]/30 pl-3">
           <Image
             src="/dev-images/logocombo.png"
             alt="Logo"
@@ -61,7 +62,8 @@ const Navbar3 = () => {
           <NavbarItem key={index}>
             <Link
               href={item.href}
-              className={`${textStyle} transition duration-300`}
+              className={`${textStyle} transition duration-300 ${activeLink === item.label ? "text-[#035A7A]" : ""
+                }`}
             >
               {item.label}
             </Link>
@@ -69,48 +71,52 @@ const Navbar3 = () => {
         ))}
       </NavbarContent>
 
-      {/* LOGIN & BUTTON */}
-      <NavbarContent justify="end" className="gap-8">
-        <NavbarItem>
+      {/* LOGIN & BUTTON & ICONS */}
+      <NavbarContent justify="end" className="gap-4 sm:gap-8">
+        <NavbarItem className="hidden lg:flex">
           <CustomButton
-            className="hidden lg:flex"
             style={{ color: "#035A7A" }}
             text="Post Project"
             href={"/fashion-designers/post-project"}
           />
         </NavbarItem>
-        <div className="flex gap-2">
-          <NavbarItem className="hidden lg:flex">
+
+        <div className="flex items-center gap-3 sm:gap-6">
+          <NavbarItem className="flex">
             <Image
               src="/dev-images/Bell.png"
               alt="Bell"
-              width={24}
-              height={24}
+              width={28}
+              height={28}
+              className="w-6 h-6 sm:w-7 sm:h-7"
             />
           </NavbarItem>
-          <NavbarItem className="hidden lg:flex">
+          <NavbarItem className="flex">
             <Link href="/messages">
               <Image
                 src="/dev-images/Messages.png"
                 alt="Messages"
-                width={24}
-                height={24}
+                width={28}
+                height={28}
+                className="w-6 h-6 sm:w-7 sm:h-7"
               />
             </Link>
           </NavbarItem>
         </div>
-        <NavbarItem className="hidden lg:flex">
+
+        <NavbarItem className="flex">
           <Image
             src="/dev-images/Avatar.png"
             alt="Avatar"
-            width={48}
-            height={48}
+            width={40}
+            height={40}
+            className="w-10 h-10 rounded-full border border-gray-200"
           />
         </NavbarItem>
-        <Link className="lg:hidden text-black">Login</Link>
+
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden text-black font-bold text-lg size-6"
+          className="sm:hidden flex items-center justify-center border border-gray-200 rounded-full p-2 h-10 w-10 text-gray-600"
         />
       </NavbarContent>
 

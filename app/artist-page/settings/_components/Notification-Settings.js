@@ -5,16 +5,7 @@ const NotificationSettings = () => {
   return (
     <>
       <div className='w-full'>
-        {/* Notification Settings Header */}
-        <div className='mb-4'>
-          <h2 className='text-xl text-[#222222] font-bold text-[34px]'>
-            Notification Settings
-          </h2>
-          <p className='text-base text-[#767676] font-normal'>
-            Send how you want to be notified.
-          </p>
-        </div>
-        <Card className='w-4/5  p-4 bg-[#F9F9F9] shadow-md rounded-lg'>
+        <Card className='w-full sm:w-4/5 p-4 bg-[#F9F9F9] shadow-md rounded-lg'>
           <CardBody className='space-y-4'>
             {/* Email Notification */}
             <div className='space-y-2'>

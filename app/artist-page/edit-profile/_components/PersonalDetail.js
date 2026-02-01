@@ -5,7 +5,7 @@ import { Select, SelectItem } from "@heroui/react";
 import CustomSelect from "./CustomSelect";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
-
+import { useRouter } from "next/navigation";
 
 const dayOptions = Array.from({ length: 31 }, (_, i) => ({
   key: String(i + 1),
@@ -56,6 +56,7 @@ const language = [
 
 
 const PersonalDetail = ({ setSelected, formData, setFormData }) => {
+  const router = useRouter();
   return (
     <div className="w-full h-full bg-white md:bg-[#FAFAFA] border border-[#EAEAEA] md:border-[#DEDEDE] p-6 md:p-6 rounded-2xl shadow-sm md:shadow-none">
       <h1 className="text-[#3A98BB] font-bold text-xl mb-1">Personal Details</h1>
@@ -91,6 +92,7 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
             />
           </div>
         </div>
+
         {/*Phone Number */}
         <div className="w-full flex flex-col gap-2">
           <Lable htmlFor="phoneCode" text="Phone Number" />
@@ -228,10 +230,12 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
 
       <div className="w-full flex justify-center md:justify-end mt-12">
         <button
-          onClick={() => setSelected("ProfessionalInformation")}
+          onClick={() => {
+            router.push("/artist-page/profile-for-artist");
+          }}
           className="w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] cursor-pointer px-12 py-3.5 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)] active:scale-95 transition-all"
         >
-          Next
+          Submit
         </button>
       </div>
     </div>

@@ -26,6 +26,7 @@ const BtnProposals = ({
   handleSubmitProposal,
   handleViewProposal,
   handleWithdrawProposal,
+  handleSave,
   proposalSubmitted = false,
   isOpen,
   onOpenChange,
@@ -48,7 +49,7 @@ const BtnProposals = ({
             className="w-48 text-[#767676] flex items-center justify-center gap-2"
             icon={null}
             text={saveText}
-            onPress={proposalSubmitted ? handleWithdrawProposal : undefined}
+            onPress={proposalSubmitted ? handleWithdrawProposal : handleSave}
             style={{
               background: "transparent",
               color: "#767676",

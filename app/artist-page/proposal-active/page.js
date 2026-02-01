@@ -3,15 +3,20 @@
 import React from "react";
 import BtnProposals from "../../../components/BtnProposals";
 import Abouttheclient from "../../../components/Abouttheclient";
+import DeleteConfirmationModal from "../../fashion-designers/my-projects/components/DeleteConfirmationModal";
 
 import {
-
   useDisclosure,
 } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import ProposalActive from "./_components/ProposalActive";
 const Page = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isWithdrawModalOpen,
+    onOpen: onWithdrawModalOpen,
+    onOpenChange: onWithdrawModalOpenChange
+  } = useDisclosure();
 
   const router = useRouter();
 
@@ -30,6 +35,20 @@ const Page = () => {
 
     router.push(`/artist-page/send-proposal?${params.toString()}`);
   };
+
+  const confirmWithdrawProposal = () => {
+    // Logic to withdraw proposal (e.g., clear from localStorage)
+    // For this page, we might just assume it's for the generic 'active' one or 'job-0' context if known.
+    // Assuming generic 'proposalActive' or specific ID if passed, but here we'll just clear the generic one for demo.
+    localStorage.removeItem('postedProject'); // Or whichever key stores this specific proposal
+    // Redirect or show toast
+    router.push('/artist-page/my-proposals');
+  };
+
+  const handleWithdrawProposal = () => {
+    onWithdrawModalOpen();
+  };
+
   return (
     <div className="grid grid-cols-10 gap-2">
       {" "}
@@ -48,6 +67,8 @@ const Page = () => {
             saveText="Withdraw Proposal"
             showSaveIcon={false}
             handleSubmitProposal={handleSubmitProposal}
+            handleWithdrawProposal={handleWithdrawProposal}
+            proposalSubmitted={true}
             isOpen={isOpen}
             onOpenChange={onOpenChange}
           />
@@ -60,6 +81,15 @@ const Page = () => {
         </div>
 
       </div>
+
+      <DeleteConfirmationModal
+        isOpen={isWithdrawModalOpen}
+        onOpenChange={onWithdrawModalOpenChange}
+        onConfirm={confirmWithdrawProposal}
+        title="Withdraw Proposal?"
+        message="Are you sure you want to withdraw your proposal? This action cannot be undone."
+        confirmButtonText="Yes"
+      />
     </div>
   );
 };

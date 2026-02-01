@@ -189,7 +189,7 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
         <div className="lg:hidden flex justify-between gap-4 mt-4">
           <button
             className="flex-1 py-3 bg-[#F0F0F0] text-[#222222] font-medium rounded-full text-sm"
-            onClick={() => router.back()}
+            onClick={() => router.push('/artist-page/project-page')}
           >
             Cancel
           </button>

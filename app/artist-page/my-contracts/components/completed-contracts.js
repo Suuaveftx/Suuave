@@ -20,11 +20,27 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
+import FilterDropdown from "../../../../components/FilterDropdown";
 import { useRouter } from "next/navigation";
 
 export default function CompletedContracts() {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("date");
+
+  const dateOptions = [
+    'Today',
+    'This week',
+    'This month',
+    'Last 3 month',
+    'Last 6 month',
+    'This year',
+    'Calendar'
+  ];
+
+  const currencyOptions = ['USD ($)', 'EUR (€)', 'GBP (£)', 'NGN (₦)', 'CAD ($)'];
+
+  const [dateFilter, setDateFilter] = useState('');
+  const [currencyFilter, setCurrencyFilter] = useState('Currency');
 
   const contracts = useMemo(() => [
     {
@@ -122,6 +138,60 @@ export default function CompletedContracts() {
       );
     }
 
+    // Date Filtering Logic
+    const isToday = (date) => {
+      const today = new Date();
+      return date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear();
+    };
+
+    const isWithinLastDays = (date, days) => {
+      const today = new Date();
+      const diffTime = Math.abs(today - date);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays <= days;
+    };
+
+    // Filter by Date
+    if (dateFilter) {
+      const now = new Date();
+      filtered = filtered.filter((contract) => {
+        const cDate = contract.dateValue;
+
+        if (dateFilter === 'Today') return isToday(cDate);
+        if (dateFilter === 'This week') return isWithinLastDays(cDate, 7);
+        if (dateFilter === 'This month') {
+          return cDate.getMonth() === now.getMonth() && cDate.getFullYear() === now.getFullYear();
+        }
+        if (dateFilter === 'Last 3 month') return isWithinLastDays(cDate, 90);
+        if (dateFilter === 'Last 6 month') {
+          const sixMonthsAgo = new Date();
+          sixMonthsAgo.setMonth(now.getMonth() - 6);
+          return cDate >= sixMonthsAgo;
+        }
+        if (dateFilter === 'This year') return cDate.getFullYear() === now.getFullYear();
+        if (dateFilter.includes('-')) {
+          // Date from calendar (YYYY-MM-DD)
+          const filterDate = new Date(dateFilter);
+          return cDate.toDateString() === filterDate.toDateString();
+        }
+        return true;
+      });
+    }
+
+    // Filter by Currency
+    if (currencyFilter !== 'Currency') {
+      filtered = filtered.filter((contract) => {
+        if (currencyFilter === 'USD ($)') return contract.payment.startsWith("$");
+        if (currencyFilter === 'NGN (₦)') return contract.payment.startsWith("₦");
+        if (currencyFilter === 'EUR (€)') return contract.payment.startsWith("€");
+        if (currencyFilter === 'GBP (£)') return contract.payment.startsWith("£");
+        if (currencyFilter === 'CAD ($)') return contract.payment.includes("CA$") || contract.payment.startsWith("$");
+        return true;
+      });
+    }
+
     // Apply sorting
     const sorted = [...filtered].sort((a, b) => {
       switch (sortBy) {
@@ -141,7 +211,7 @@ export default function CompletedContracts() {
     });
 
     return sorted;
-  }, [search, sortBy, contracts]);
+  }, [search, sortBy, contracts, dateFilter, currencyFilter]);
 
   const onSearchChange = (value) => {
     setSearch(value);
@@ -221,43 +291,27 @@ export default function CompletedContracts() {
             />
           </div>
 
-          {/* Sort & Filter Section */}
-          <div className="relative flex items-center gap-2">
-            {/* Filter Icon - Only for mobile view */}
-            <Button
-              isIconOnly
-              variant="ghost"
-              className="md:hidden p-2 border-0"
-              aria-label="Filter"
-            >
-              <AdjustmentsHorizontalIcon className="h-5 w-5 text-gray-600" />
-            </Button>
-
-            {/* Desktop Dropdown with Filter Icon inside */}
-            <div className="relative hidden md:flex items-center">
-              {/* Left-aligned Filter Icon */}
-              <div className="absolute left-0 pl-3 flex items-center pointer-events-none z-10">
-                <AdjustmentsHorizontalIcon className="h-4 w-4 text-gray-400" />
-              </div>
-
-              {/* Chevron on the right */}
-              <div className="absolute right-0 pr-3 flex items-center pointer-events-none z-10">
-                <ChevronDownIcon className="h-4 w-4 text-gray-400" />
-              </div>
-
-              {/* Select input */}
-              <select
-                value={sortBy}
-                onChange={(e) => onSortChange(e.target.value)}
-                className="text-sm text-gray-700 border border-gray-300 rounded-full pl-10 pr-10 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none w-full min-w-[180px]"
-              >
-                <option value="date">Sort by Date</option>
-                <option value="project">Sort by Project</option>
-                <option value="artist">Sort by Artist</option>
-                <option value="payment">Sort by Payment</option>
-                <option value="status">Sort by Status</option>
-              </select>
-            </div>
+          <div className='flex items-center gap-3'>
+            <FilterDropdown
+              label='Select Date'
+              options={dateOptions}
+              selectedOption={dateFilter}
+              setSelectedOption={(val) => {
+                setDateFilter(val);
+                setCurrentPage(1);
+              }}
+              defaultLabel='Select Date'
+            />
+            <FilterDropdown
+              label='Currency'
+              options={currencyOptions}
+              selectedOption={currencyFilter}
+              setSelectedOption={(val) => {
+                setCurrencyFilter(val);
+                setCurrentPage(1);
+              }}
+              defaultLabel='Currency'
+            />
           </div>
         </div>
       </div>

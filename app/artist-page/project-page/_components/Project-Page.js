@@ -1,15 +1,16 @@
 'use client';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
-import { FaRegBookmark, FaShareAlt } from 'react-icons/fa';
+import { FaRegBookmark, FaBookmark, FaShareAlt } from 'react-icons/fa';
 import { FiPlus } from 'react-icons/fi';
 
 const ProjectPage = () => {
   const [activeTab, setActiveTab] = useState('recent');
   const [loading, setLoading] = useState(true);
   const [showLicence, setShowLicence] = useState(false);
-
   const [activeProposals, setActiveProposals] = useState({});
+  const [savedJobs, setSavedJobs] = useState({});
+  const [copiedId, setCopiedId] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -20,8 +21,43 @@ const ProjectPage = () => {
     const storedProposals = JSON.parse(localStorage.getItem('activeProposals') || '{}');
     setActiveProposals(storedProposals);
 
+    // Load saved jobs
+    const storedSavedJobs = JSON.parse(localStorage.getItem('savedJobs') || '{}');
+    setSavedJobs(storedSavedJobs);
+
     return () => clearTimeout(timer);
   }, []);
+
+  const handleBookmark = (e, jobId) => {
+    // Prevent navigation to the job details page
+    e.preventDefault();
+    e.stopPropagation();
+
+    const newSavedJobs = { ...savedJobs };
+    if (newSavedJobs[jobId]) {
+      delete newSavedJobs[jobId];
+    } else {
+      newSavedJobs[jobId] = true;
+    }
+
+    setSavedJobs(newSavedJobs);
+    localStorage.setItem('savedJobs', JSON.stringify(newSavedJobs));
+  };
+
+  const handleShare = async (e, jobId) => {
+    // Prevent navigation
+    e.preventDefault();
+    e.stopPropagation();
+
+    const url = `${window.location.origin}/artist-page/job-details-page?id=${jobId}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopiedId(jobId);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  };
 
   const tabClasses = (tab) =>
     `px-1 py-2 cursor-pointer ${activeTab === tab
@@ -48,7 +84,7 @@ const ProjectPage = () => {
           Recently
         </div>
         <div className={tabClasses('saved')} onClick={() => setActiveTab('saved')}>
-          Saved (90)
+          Saved ({Object.keys(savedJobs).length})
         </div>
       </div>
 
@@ -75,6 +111,10 @@ const ProjectPage = () => {
           : [...Array(6)].map((_, index) => {
             const jobId = `job-${index}`;
             const isApplied = activeProposals[jobId];
+            const isSaved = savedJobs[jobId];
+
+            // If on 'saved' tab and not saved, don't show
+            if (activeTab === 'saved' && !isSaved) return null;
 
             return (
               <div key={index} className={`relative ${index > 1 ? 'hidden md:block' : ''}`}>
@@ -113,11 +153,32 @@ const ProjectPage = () => {
 
                 {/* Job Card */}
                 <Link href={`/artist-page/job-details-page?id=${jobId}`} className="block">
-                  <div className="relative px-4 py-6 bg-white border border-[#EAEAEA] rounded-2xl shadow-sm cursor-pointer mt-6">
+                  <div className="relative px-4 py-6 bg-white border border-[#EAEAEA] rounded-2xl shadow-sm cursor-pointer mt-6 hover:shadow-md transition-shadow">
                     {/* Top-right Icons */}
-                    <div className="absolute top-4 right-4 flex gap-4">
-                      <FaShareAlt className="text-gray-500" />
-                      <FaRegBookmark className="text-[#9FD2E5]" />
+                    <div className="absolute top-4 right-4 flex gap-4 z-20">
+                      <div className="relative group">
+                        <button
+                          onClick={(e) => handleShare(e, jobId)}
+                          className="hover:bg-gray-100 p-1.5 rounded-full transition-colors"
+                        >
+                          <FaShareAlt className="text-gray-500 hover:text-gray-700" />
+                        </button>
+                        {copiedId === jobId && (
+                          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap">
+                            Copied!
+                          </span>
+                        )}
+                      </div>
+                      <button
+                        onClick={(e) => handleBookmark(e, jobId)}
+                        className="hover:bg-gray-100 p-1.5 rounded-full transition-colors"
+                      >
+                        {isSaved ? (
+                          <FaBookmark className="text-[#3A98BB]" />
+                        ) : (
+                          <FaRegBookmark className="text-[#9FD2E5] hover:text-[#3A98BB]" />
+                        )}
+                      </button>
                     </div>
 
                     {/* Job Info */}

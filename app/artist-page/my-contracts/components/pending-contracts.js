@@ -12,14 +12,14 @@ import { Input, Card, CardBody, Button, Alert } from "@heroui/react";
 const PendingContracts = ({
   contracts = [],
   search = "",
-  onSearchChange = () => {},
-  onContractClick = () => {},
-  onCancelContract = () => {},
+  onSearchChange = () => { },
+  onContractClick = () => { },
+  onCancelContract = () => { },
   showAlert = true,
   alertContent = {
     title: "These contracts are yet to be accepted by Artists.",
     description:
-      "Artists have 2 days to accept offers, else, the contract will be canceled automatically.",
+      "Artists have 5 days to accept each offers to avoid automatic cancellation.",
   },
 }) => {
   // Filter contracts based on search
@@ -31,7 +31,7 @@ const PendingContracts = ({
     <div>
       {/* Alert */}
       {showAlert && (
-        <div className="my-6">
+        <div className="my-6 md:pl-8">
           <Alert
             hideIcon
             color="primary"
@@ -93,38 +93,41 @@ const PendingContracts = ({
             >
               <CardBody className="md:px-6 px-3 py-4">
                 <div className="flex md:justify-between items-start w-full">
-                  <div className="flex-1 flex items-start flex-col md:flex-row md:justify-between">
-                    <h3 className="md:text-md text-sm font-proximanova mb-1 md:truncate">
-                      {contract.title} ({contract.id})
-                    </h3>
-                    <div className="md:flex items-center justify-center md:gap-1">
-                      <p className="text-sm font-satoshi">
-                        Pending Since -{" "}
-                        <span className="font-proximanova">
-                          {contract.pendingSince}
-                        </span>
-                      </p>
-                      <p className="text-sm font-satoshi">
-                        <span className="max-[860px]:hidden">/</span> Expires in
-                        -{" "}
-                        <span className="font-proximanova">
-                          {contract.expiresIn}
-                        </span>
-                      </p>
+                  <div className="flex-1 md:grid md:grid-cols-[1.5fr_1fr_0.8fr_auto] md:gap-x-8 md:items-center">
+                    <div className="flex flex-col mb-1 md:mb-0 md:pl-8">
+                      <h3 className="md:text-md text-sm font-proximanova line-clamp-1">
+                        {contract.title} ({contract.id})
+                      </h3>
                     </div>
 
+                    <p className="text-sm font-satoshi flex items-center gap-2">
+                      <span className="font-light whitespace-nowrap text-gray-500">Pending Since -</span>
+                      <span className="font-semibold whitespace-nowrap">
+                        {contract.pendingSince}
+                      </span>
+                    </p>
+
+                    <p className="text-sm font-satoshi flex items-center gap-2">
+                      <span className="max-[840px]:hidden text-gray-300">|</span>
+                      <span className="font-light whitespace-nowrap text-gray-500">Expires in -</span>
+                      <span className="font-semibold whitespace-nowrap">
+                        {contract.expiresIn}
+                      </span>
+                    </p>
+
                     {/* Desktop Cancel Button */}
-                    <Button
-                      className="mt-4 md:-mt-1 border px-12 py-4 shadow-lg bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full shrink-0 hidden md:flex"
-                      size="sm"
-                      radius="full"
-                      onPress={(e) => {
-                        /*  e.stopPropagation(); */
-                        onCancelContract(contract.id);
-                      }}
-                    >
-                      Cancel
-                    </Button>
+                    <div className="hidden md:flex gap-3 shrink-0">
+                      <Button
+                        className="mt-4 md:-mt-1 border px-12 py-4 shadow-lg bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full shrink-0"
+                        size="sm"
+                        radius="full"
+                        onPress={(e) => {
+                          onCancelContract(contract.id);
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
                   </div>
 
                   {/* Mobile 3 Dots Menu */}
@@ -141,17 +144,19 @@ const PendingContracts = ({
             </div>
           </Card>
         ))}
-      </div>
+      </div >
 
       {/* Empty State */}
-      {filteredContracts.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-500">
-            {search ? "No contracts match your search" : "No pending contracts"}
-          </p>
-        </div>
-      )}
-    </div>
+      {
+        filteredContracts.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500">
+              {search ? "No contracts match your search" : "No pending contracts"}
+            </p>
+          </div>
+        )
+      }
+    </div >
   );
 };
 

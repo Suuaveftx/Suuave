@@ -10,8 +10,10 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const PublishDesignPopUp = ({ onOpenChange, isOpen }) => {
+  const router = useRouter();
   return (
     <>
       {/* Modal */}
@@ -52,7 +54,10 @@ const PublishDesignPopUp = ({ onOpenChange, isOpen }) => {
                 <Button
                   className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] rounded-3xl text-[#035A7A] font-bold text-sm"
                   variant="light"
-                  onPress={onClose}
+                  onPress={() => {
+                    onClose();
+                    router.push('/artist-page/project-page');
+                  }}
                 >
                   Back Home
                 </Button>

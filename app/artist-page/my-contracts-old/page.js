@@ -1,9 +1,12 @@
+'use client';
 
 import React from 'react'
+import { useRouter } from 'next/navigation'
 import UnderlinedTabs from './_components/Tabs'
 import SearchBar from '../../../components/Searchbar'
 
 const Page = () => {
+  const router = useRouter();
   return (
     <div>
       {/* Desktop Header */}
@@ -13,7 +16,7 @@ const Page = () => {
 
       {/* Mobile Header */}
       <div className='lg:hidden flex items-center px-5 py-4 bg-white'>
-        <button className='mr-4'>
+        <button className='mr-4' onClick={() => router.back()}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M15 18L9 12L15 6" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>

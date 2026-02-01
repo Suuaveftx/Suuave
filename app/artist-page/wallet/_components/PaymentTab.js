@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { Tabs, Tab } from '@heroui/react';
+import { Tabs, Tab, Button } from '@heroui/react';
 import PaymentTable from './PaymentTable';
 import PayoutHistory from './PayoutHistory';
 import { Search, ChevronDown, Calendar, Info } from 'lucide-react';
@@ -197,12 +197,14 @@ export default function PaymentTabs() {
                         />
                       </div>
                     </div>
-                    <div
-                      className="bg-[#3A98BB] text-white font-bold h-10 rounded-lg mt-2 shadow-sm flex items-center justify-center cursor-pointer text-sm"
+                    <Button
+                      size="sm"
+                      fullWidth
+                      className="bg-[#3A98BB] text-white font-bold h-10 rounded-lg mt-2 shadow-sm"
                       onClick={() => setIsDateDropdownOpen(false)}
                     >
                       Apply Range
-                    </div>
+                    </Button>
                   </div>
                 </div>
               )}

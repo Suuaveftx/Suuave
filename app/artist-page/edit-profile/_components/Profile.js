@@ -88,48 +88,6 @@ const Profile = ({
           </ul>
         )}
       </section>
-      {/*    Professional Information toggle */}
-      <div className=" hidden md:flex flex-col">
-        <button
-          className={` text-start  text-[#222222] font-normal text-lg`}
-          onClick={() => setSelected("ProfessionalInformation")}
-        >
-          Professional Information
-        </button>
-        {selected === "ProfessionalInformation" && (
-          <ul className="font-normal text-sm space-y-3 p-3">
-            <List activeState={formData.skill} text="Skills" />
-            {/* <List
-              activeState={formData.companyName}
-              text="Website (Optional)"
-            /> */}
-            <List activeState={formData.portfolioLink} text="Portfolio" />
-            <List activeState={formData.availability} text="Availability" />
-          </ul>
-        )}
-      </div>
-      {/* Awards/Certifications toggle */}
-      <div className=" hidden md:flex flex-col">
-        <button
-          className={` text-start  text-[#222222] font-normal text-lg`}
-          onClick={() => setSelected("Awards/Certifications")}
-        >
-          Awards/Certifications
-        </button>
-        {selected === "Awards/Certifications" && (
-          <ul className="font-normal text-sm space-y-3 p-3">
-            <List activeState={formData.nameofAwardCertificate} text="Name" />
-            <List
-              activeState={formData.awardedIssuedBy}
-              text="Issued/Awarded by"
-            />
-            <List
-              activeState={formData.uploadCertificateAward}
-              text=" Upload Certificate/Award"
-            />
-          </ul>
-        )}
-      </div>
 
     </div>
   );

@@ -10,13 +10,19 @@ const ReferenceImage = ({ jobId }) => {
         // Check if a project was posted and if it has a reference image
         const postedProject = JSON.parse(localStorage.getItem('postedProject') || 'null');
 
-        // We only show the Reference Image section for the "latest" job (job-0) 
-        // IF the user just posted a project that included one.
-        if (jobId === 'job-0' && postedProject && postedProject.referenceImg) {
+        // Always show for job-0, using posted data if available, otherwise default
+        if (jobId === 'job-0') {
             setHasReference(true);
-            setAttachments([
-                { name: postedProject.referenceImg, size: "N/A" }
-            ]);
+            if (postedProject && postedProject.referenceImg) {
+                setAttachments([
+                    { name: postedProject.referenceImg, size: "N/A" }
+                ]);
+            } else {
+                setAttachments([
+                    { name: "Style-Reference.png", size: "2.4 MB" },
+                    { name: "Moodboard_v2.pdf", size: "1.8 MB" }
+                ]);
+            }
         } else {
             setHasReference(false);
         }
@@ -30,7 +36,6 @@ const ReferenceImage = ({ jobId }) => {
             <div className="lg:hidden mt-6">
                 <h4 className="font-bold text-lg text-[#222222] mb-3">Reference Image</h4>
                 <div className="bg-[#FAFAFA] rounded-2xl p-4 border border-[#EAEAEA]">
-                    <p className="text-sm text-[#767676] mb-4">Attachment files</p>
                     <div className="space-y-3">
                         {attachments.map((file, index) => (
                             <div key={index} className="flex items-center gap-3">
@@ -51,7 +56,6 @@ const ReferenceImage = ({ jobId }) => {
             <div className="hidden lg:block lg:w-screen lg:max-w-[85%] bg-[#F9F9F9] px-8 py-6 mt-6 lg:mx-16 mx-4 rounded-2xl">
                 <h4 className="font-bold text-[22px] text-[#222222] mb-4">Reference Image</h4>
                 <div className="mt-4">
-                    <p className="text-lg text-[#767676] mb-4">Attachment files</p>
                     <div className="flex gap-6">
                         {attachments.map((file, index) => (
                             <div key={index} className="flex items-center gap-3 bg-white p-4 rounded-xl border border-[#EAEAEA] min-w-[240px]">

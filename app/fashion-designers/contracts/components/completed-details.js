@@ -186,6 +186,8 @@ export default function CompletedDetailsPage({ params }) {
                     {contractData.artist.role}
                   </p>
 
+
+
                   <div className="flex items-center justify-center gap-1 text-sm  text-[#222222] mb-2">
                     <TiLocation className="size-5 fill-[#878787]" />
                     <span>{contractData.artist.location}</span>
