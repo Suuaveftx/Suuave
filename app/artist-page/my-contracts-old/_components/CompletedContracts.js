@@ -7,21 +7,21 @@ import { useState } from "react";
 
 const data = [
   {
-    date: "12 May, 2024",
+    date: "12th May, 2024",
     project: "Modern Fashion Attire Illustration",
     client: "SHOALA ADIN",
     earnings: "$700",
     status: "Completed",
   },
   {
-    date: "25 April, 2024",
+    date: "25th April, 2024",
     project: "Eco-Friendly Fabric Pattern",
     client: "LUX WEAR",
     earnings: "$1,200",
     status: "Completed",
   },
   {
-    date: "10 March, 2024",
+    date: "10th March, 2024",
     project: "Winter Season Lookbook",
     client: "GLAMOUR CO",
     earnings: "$2,500",
@@ -31,23 +31,86 @@ const data = [
 ];
 
 export default function CompletedContracts() {
-  const [dateFilter, setDateFilter] = useState('Select Date');
+  const [dateFilter, setDateFilter] = useState('');
   const [currencyFilter, setCurrencyFilter] = useState('Select Currency');
 
-  const dateOptions = ['Today', 'This Week', 'This Month', 'Last 3 Months', 'Last 6 Months', 'This Year', 'Calendar'];
+  const dateOptions = [
+    'Today',
+    'This week',
+    'This month',
+    'Last 3 month',
+    'Last 6 month',
+    'This year',
+    'Calendar'
+  ];
   const currencyOptions = ['USD ($)', 'EUR (€)', 'GBP (£)', 'NGN (₦)', 'CAD ($)'];
+
+  // Date Filter Logic
+  const parseContractDate = (dateStr) => {
+    if (!dateStr) return new Date(0);
+    // Handle YYYY-MM-DD from calendar
+    if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) return new Date(dateStr);
+    // Handle ordinal dates like "18th June, 2024"
+    const normalized = dateStr.replace(/(\d+)(st|nd|rd|th)/, '$1');
+    return new Date(normalized);
+  };
+
+  const isToday = (date) => {
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear();
+  };
+
+  const isWithinLastDays = (date, days) => {
+    const today = new Date();
+    const diffTime = Math.abs(today - date);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays <= days;
+  };
+
+  let filteredProjects = data;
+
+  // Filter by Date
+  if (dateFilter) {
+    const now = new Date();
+    filteredProjects = filteredProjects.filter((item) => {
+      const cDate = parseContractDate(item.date);
+
+      if (dateFilter === 'Today') return isToday(cDate);
+      if (dateFilter === 'This week') return isWithinLastDays(cDate, 7);
+      if (dateFilter === 'This month') {
+        return cDate.getMonth() === now.getMonth() && cDate.getFullYear() === now.getFullYear();
+      }
+      if (dateFilter === 'Last 3 month') return isWithinLastDays(cDate, 90);
+      if (dateFilter === 'Last 6 month') {
+        const sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(now.getMonth() - 6);
+        return cDate >= sixMonthsAgo;
+      }
+      if (dateFilter === 'This year') return cDate.getFullYear() === now.getFullYear();
+      if (dateFilter.includes('-')) {
+        // Date from calendar (YYYY-MM-DD)
+        const filterDate = new Date(dateFilter);
+        return cDate.toDateString() === filterDate.toDateString();
+      }
+      return true;
+    });
+  }
 
   return (
     <>
       {/* Search & Sort */}
-      <div className="flex items-center justify-between mb-8">
-        <SearchBar
-          placeholder="Search by job title"
-          className="w-full lg:max-w-[50%] flex-1"
-        />
+      <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+        <div className="w-full md:max-w-[500px]">
+          <SearchBar
+            placeholder="Search by job title"
+            className="w-full"
+          />
+        </div>
         <div className="flex items-center gap-3">
           <FilterDropdown
-            label="Date"
+            label="Select Date"
             options={dateOptions}
             selectedOption={dateFilter}
             setSelectedOption={setDateFilter}
@@ -58,7 +121,7 @@ export default function CompletedContracts() {
             options={currencyOptions}
             selectedOption={currencyFilter}
             setSelectedOption={setCurrencyFilter}
-            defaultLabel="Select Currency"
+            defaultLabel="Currency"
           />
         </div>
       </div>
@@ -77,7 +140,7 @@ export default function CompletedContracts() {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {data.map((item, index) => (
+              {filteredProjects.map((item, index) => (
                 <tr key={index} className="border-b border-[#EAEAEA] last:border-none hover:bg-gray-50">
                   <td className="px-6 py-6 text-sm text-[#222222]">{item.date}</td>
                   <td className="px-6 py-6 text-sm text-[#3A98BB] hover:underline cursor-pointer">

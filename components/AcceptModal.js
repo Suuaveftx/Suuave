@@ -12,6 +12,8 @@ import {
 } from "@heroui/react";
 import { useRouter } from "next/navigation";
 
+import Link from "next/link";
+
 const AcceptModal = ({ trigger }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
@@ -47,7 +49,7 @@ const AcceptModal = ({ trigger }) => {
               <ModalBody className="p-0 pb-6">
                 <div className="space-y-4">
                   <p className="text-sm text-[#222222] leading-relaxed">
-                    Accepting this offer means you agree to abide by the contract terms, as agreed with the client and also to Suuave terms and conditions
+                    Accepting this offer means you agree to abide by the contract terms, as agreed with the client and also to Suuave <Link href="/terms-and-conditions" className="text-[#3A98BB] hover:underline">Terms and Conditions</Link>
                   </p>
                   <div>
                     <label className="block text-sm font-medium text-[#222222] mb-2">

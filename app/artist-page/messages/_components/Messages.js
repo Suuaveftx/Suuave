@@ -3,10 +3,12 @@
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
+import { useRouter } from 'next/navigation';
 import SearchBar from '../../../../components/Searchbar';
 import CustomButton from '../../../../components/CustomButton';
 
 const Messages = () => {
+  const router = useRouter();
   const [selectedTab, setSelectedTab] = useState('all');
   const [newMessage, setNewMessage] = useState('');
   const [chats, setChats] = useState([]);
@@ -71,9 +73,8 @@ const Messages = () => {
           {/* Tabs */}
           <div className='flex gap-6 mb-4'>
             <button
-              className={`text-left py-2 relative ${
-                selectedTab === 'all' ? 'text-[#3A98BB] font-semibold' : 'text-gray-600'
-              }`}
+              className={`text-left py-2 relative ${selectedTab === 'all' ? 'text-[#3A98BB] font-semibold' : 'text-gray-600'
+                }`}
               onClick={() => setSelectedTab('all')}
             >
               All
@@ -82,11 +83,10 @@ const Messages = () => {
               )}
             </button>
             <button
-              className={`text-left py-2 relative ${
-                selectedTab === 'unread'
-                  ? 'text-[#3A98BB] font-semibold'
-                  : 'text-gray-600'
-              }`}
+              className={`text-left py-2 relative ${selectedTab === 'unread'
+                ? 'text-[#3A98BB] font-semibold'
+                : 'text-gray-600'
+                }`}
               onClick={() => setSelectedTab('unread')}
             >
               Unread
@@ -101,9 +101,8 @@ const Messages = () => {
             {filteredChats.map((chat) => (
               <div
                 key={chat.id}
-                className={`flex items-center p-2 rounded-lg cursor-pointer border-b ${
-                  chat.unread ? 'bg-gray-100' : ''
-                } hover:bg-gray-200`}
+                className={`flex items-center p-2 rounded-lg cursor-pointer border-b ${chat.unread ? 'bg-gray-100' : ''
+                  } hover:bg-gray-200`}
               >
                 <Image
                   src={chat.img}
@@ -212,7 +211,10 @@ const Messages = () => {
           <>
             {/* Header */}
             <div className='flex items-center gap-2 p-4 border-b'>
-              <FiChevronLeft className='text-xl cursor-pointer' />
+              <FiChevronLeft
+                className='text-xl cursor-pointer'
+                onClick={() => router.back()}
+              />
               <h1 className='font-bold text-lg'>Messages</h1>
             </div>
 
@@ -225,21 +227,19 @@ const Messages = () => {
             <div className='flex justify-around border-b'>
               <button
                 onClick={() => setSelectedTab('all')}
-                className={`flex-1 py-2 font-medium ${
-                  selectedTab === 'all'
-                    ? 'text-[#3A98BB] border-b-2 border-[#3A98BB]'
-                    : 'text-gray-500'
-                }`}
+                className={`flex-1 py-2 font-medium ${selectedTab === 'all'
+                  ? 'text-[#3A98BB] border-b-2 border-[#3A98BB]'
+                  : 'text-gray-500'
+                  }`}
               >
                 All
               </button>
               <button
                 onClick={() => setSelectedTab('unread')}
-                className={`flex-1 py-2 font-medium ${
-                  selectedTab === 'unread'
-                    ? 'text-[#3A98BB] border-b-2 border-[#3A98BB]'
-                    : 'text-gray-500'
-                }`}
+                className={`flex-1 py-2 font-medium ${selectedTab === 'unread'
+                  ? 'text-[#3A98BB] border-b-2 border-[#3A98BB]'
+                  : 'text-gray-500'
+                  }`}
               >
                 Unread
               </button>
@@ -251,9 +251,8 @@ const Messages = () => {
                 <div
                   key={chat.id}
                   onClick={() => setActiveChat(chat)} // ✅ open chat on mobile
-                  className={`flex items-center gap-3 p-4 border-b cursor-pointer ${
-                    chat.unread ? 'bg-gray-100' : ''
-                  }`}
+                  className={`flex items-center gap-3 p-4 border-b cursor-pointer ${chat.unread ? 'bg-gray-100' : ''
+                    }`}
                 >
                   <Image
                     src={chat.img}
@@ -279,7 +278,7 @@ const Messages = () => {
             {/* Mobile Active Chat */}
             <div className='flex items-center p-4 border-b relative'>
               <FiChevronLeft
-                className='text-xl cursor-pointer absolute left-4'
+                className='text-xl cursor-pointer absolute left-4 z-10'
                 onClick={() => setActiveChat(null)} // ✅ close chat
               />
               <div className='flex flex-col items-center mx-auto'>

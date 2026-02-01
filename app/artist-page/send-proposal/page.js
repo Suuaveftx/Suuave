@@ -5,10 +5,11 @@ import BtnProposals from '../../../components/BtnProposals';
 import Abouttheclient from '../../../components/Abouttheclient';
 import SendProposal from './_components/SendProposal';
 import ProposalPopUp from './_components/ProposalPopUp';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useDisclosure } from '@heroui/react';
 
 const SendProposalPageContent = () => {
+  const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const searchParams = useSearchParams();
   const jobId = searchParams.get('id');
@@ -23,6 +24,10 @@ const SendProposalPageContent = () => {
       localStorage.setItem('proposalActive', 'true');
     }
     onOpen();
+  };
+
+  const handleCancel = () => {
+    router.push('/artist-page/project-page');
   };
 
   return (
@@ -45,6 +50,7 @@ const SendProposalPageContent = () => {
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             saveText='Cancel'
+            handleSave={handleCancel}
             showSaveIcon={false}
           />
           <ProposalPopUp isOpen={isOpen} onOpenChange={onOpenChange} />

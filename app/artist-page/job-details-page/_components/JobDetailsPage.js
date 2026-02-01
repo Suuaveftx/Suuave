@@ -1,10 +1,12 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { HiShare } from "react-icons/hi";
-import { HiBookmark } from "react-icons/hi2";
+import { HiBookmark, HiOutlineBookmark } from "react-icons/hi2";
 import { Button } from "@heroui/react";
 import { MapPinIcon, CheckBadgeIcon, EnvelopeIcon, PhoneIcon, CreditCardIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
+import { ChevronLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 import SkillRequirement from "./SkillRequirement";
 import DesignStyle from "./DesignStyle";
 import Budgets from "./Budgets";
@@ -15,12 +17,39 @@ const JobDetailsPage = ({
   handleSubmitProposal,
   handleViewProposal,
   handleWithdrawProposal,
-  jobId
+  jobId,
+  isSaved,
+  handleBookmark
 }) => {
+  const router = useRouter();
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    try {
+      await navigator.clipboard.writeText(url);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  };
+
   return (
     <>
       {/* Mobile View */}
       <div className="lg:hidden bg-white min-h-screen pb-24">
+        {/* Back Arrow and Header */}
+        <div className="px-4 pt-6 pb-4 border-b border-gray-200">
+          <button
+            className="flex items-center text-[#222222] font-semibold mb-2"
+            onClick={() => router.back()}
+          >
+            <ChevronLeft className="w-5 h-5 mr-1" />
+            <span className="text-[20px]">Job Details</span>
+          </button>
+        </div>
+
         {/* Header Info */}
         <div className="px-4 pt-6 pb-4">
           <div className="flex justify-between items-start mb-4">
@@ -41,7 +70,23 @@ const JobDetailsPage = ({
               </h1>
               <span className="text-sm text-[#767676] mt-1">Posted 2 days ago</span>
             </div>
-            <HiShare className="text-[#878787] w-6 h-6 shrink-0" />
+            <div className="relative flex items-center gap-3">
+              <button onClick={handleBookmark} className="p-1">
+                {isSaved ? (
+                  <HiBookmark className="text-[#3A98BB] w-6 h-6 shrink-0" />
+                ) : (
+                  <HiOutlineBookmark className="text-[#3A98BB] w-6 h-6 shrink-0" />
+                )}
+              </button>
+              <button onClick={handleShare} className="p-1">
+                <HiShare className="text-[#878787] w-6 h-6 shrink-0" />
+              </button>
+              {isCopied && (
+                <span className="absolute -bottom-8 right-0 bg-black text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
+                  Copied!
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Description */}
@@ -85,8 +130,13 @@ const JobDetailsPage = ({
               </>
             ) : (
               <>
-                <Button variant="bordered" radius="full" className="flex-1 border-[#3A98BB] text-[#222222] font-medium h-12">
-                  Save Post
+                <Button
+                  variant="bordered"
+                  radius="full"
+                  className="flex-1 border-[#3A98BB] text-[#222222] font-medium h-12"
+                  onPress={handleBookmark}
+                >
+                  {isSaved ? "Saved" : "Save Post"}
                 </Button>
                 <Button radius="full" className="flex-1 bg-[#CCE7F2] text-[#0A4A66] font-medium h-12" onPress={handleSubmitProposal}>
                   Send Proposal
@@ -134,10 +184,25 @@ const JobDetailsPage = ({
                   {proposalSubmitted ? "Applied" : "Active"}
                 </span>
               </div>
-              <div className="flex gap-6">
-                <HiShare style={{ color: "#878787" }} />
+              <div className="flex gap-6 items-center">
+                <div className="relative">
+                  <button onClick={handleShare} className="hover:opacity-75 transition-opacity">
+                    <HiShare style={{ color: "#878787", width: "24px", height: "24px" }} />
+                  </button>
+                  {isCopied && (
+                    <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap">
+                      Copied!
+                    </span>
+                  )}
+                </div>
                 <div className="lg:flex hidden">
-                  <HiBookmark style={{ color: "3A98BB" }} />
+                  <button onClick={handleBookmark} className="hover:opacity-75 transition-opacity">
+                    {isSaved ? (
+                      <HiBookmark style={{ color: "#3A98BB", width: "24px", height: "24px" }} />
+                    ) : (
+                      <HiOutlineBookmark style={{ color: "#3A98BB", width: "24px", height: "24px" }} />
+                    )}
+                  </button>
                 </div>
               </div>
             </div>

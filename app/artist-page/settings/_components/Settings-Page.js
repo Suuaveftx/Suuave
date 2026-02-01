@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Sidebar_MenuCard from './Sidebar-MenuCard';
 import NotificationSettings from './Notification-Settings';
 import SecuritySettings from './Security-Settings';
@@ -14,24 +15,24 @@ import {
 } from 'lucide-react';
 
 const settingsMenu = [
+  { id: 'profile', label: 'Profile', icon: LucideCircleUserRound },
   { id: 'notifications', label: 'Notifications', icon: LucideBell },
-  { id: 'security', label: 'Security Settings', icon: LucideLock },
+  { id: 'security', label: 'Security', icon: LucideLock },
 ];
 
 const SettingsPage = () => {
-  const [activeItem, setActiveItem] = useState('notifications');
+  const router = useRouter();
+  const [activeItem, setActiveItem] = useState('profile');
   const [showSidebar, setShowSidebar] = useState(true); // for mobile
 
   const renderActiveComponent = () => {
     switch (activeItem) {
+      case 'profile':
+        return <div>Profile Settings Content</div>;
       case 'notifications':
         return <NotificationSettings />;
       case 'security':
         return <SecuritySettings />;
-      case 'profile':
-        return <div>Profile Settings Content</div>;
-      case 'account':
-        return <div>Account Settings Content</div>;
       default:
         return <div>Select a setting.</div>;
     }
@@ -64,10 +65,8 @@ const SettingsPage = () => {
             activeItem={activeItem}
             setActiveItem={(id) => {
               setActiveItem(id);
-              // hide sidebar only for security settings
-              if (id === 'security') {
-                setShowSidebar(false);
-              }
+              // hide sidebar for any selected setting
+              setShowSidebar(false);
             }}
           />
         ) : (
@@ -78,11 +77,15 @@ const SettingsPage = () => {
               onClick={() => setShowSidebar(true)}
             >
               <ChevronLeft className='w-5 h-5 mr-1' />
-              <span className='text-[20px]'>Security Settings</span>
+              {activeItem !== 'notifications' && (
+                <span className='text-[20px]'>
+                  {activeItem === 'profile' ? 'Profile' : 'Security'}
+                </span>
+              )}
             </button>
 
-            {/* Security Settings full width */}
-            <SecuritySettings />
+            {/* Render active component */}
+            {renderActiveComponent()}
           </div>
         )}
       </div>

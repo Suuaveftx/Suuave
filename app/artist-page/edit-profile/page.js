@@ -2,8 +2,6 @@
 import Image from "next/image";
 import { useState } from "react";
 import PersonalDetail from "./_components/PersonalDetail";
-import PersonalInformation from "./_components/PersonalInformation";
-import AwardsCertification from "./_components/AwardsCertification";
 import Profile from "./_components/Profile";
 
 export default function Page() {
@@ -58,7 +56,6 @@ export default function Page() {
     nameofAwardCertificate: "",
     awardedIssuedBy: "",
     uploadCertificateAward: "",
-
   });
   return (
     <>
@@ -68,9 +65,7 @@ export default function Page() {
           <span className="font-bold text-[#222222] text-xl font-satoshi" style={{ fontFamily: 'var(--font-satoshi), sans-serif', letterSpacing: '0.05em' }}>suuave</span>
         </div>
       </div>
-      <h1 className=" border-b-2 md:mx-10 border-[#EAEAEA] py-3 font-bold text-2xl text-[#222222] px-5 md:px-0 hidden md:block">
-        Profile Setting
-      </h1>
+
       <div className="flex flex-col md:flex-row px-5 md:px-10">
         {/* profile view and button switch */}
 
@@ -102,26 +97,6 @@ export default function Page() {
               setFormData={setFormData}
             />
           </>
-        )}
-
-        {selected === "ProfessionalInformation" && (
-          <PersonalInformation
-            setSelected={setSelected}
-            formData={formData}
-            setFormData={setFormData}
-            uploadedPortfolio={uploadedPortfolio}
-            previewPortfolio={previewPortfolio}
-          />
-        )}
-
-        {selected === "Awards/Certifications" && (
-          <AwardsCertification
-            setSelected={setSelected}
-            formData={formData}
-            setFormData={setFormData}
-            uploadedAwardCertificate={uploadedAwardCertificate}
-            previewAwardCertificate={previewAwardCertificate}
-          />
         )}
 
 

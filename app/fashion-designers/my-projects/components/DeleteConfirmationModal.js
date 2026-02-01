@@ -11,7 +11,7 @@ import {
 } from "@heroui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
-const DeleteConfirmationModal = ({ isOpen, onOpenChange, onConfirm, projectTitle }) => {
+const DeleteConfirmationModal = ({ isOpen, onOpenChange, onConfirm, projectTitle, title = "Delete Project?", message, confirmButtonText = "Yes, Delete" }) => {
     return (
         <Modal
             isOpen={isOpen}
@@ -31,10 +31,16 @@ const DeleteConfirmationModal = ({ isOpen, onOpenChange, onConfirm, projectTitle
                                 <ExclamationTriangleIcon className="w-8 h-8 text-red-500" />
                             </div>
                             <div className="space-y-2">
-                                <h2 className="text-xl font-bold text-[#222222]">Delete Project?</h2>
-                                <p className="text-sm text-[#767676] leading-relaxed">
-                                    Are you sure you want to delete <strong>&quot;{projectTitle}&quot;</strong>? This action cannot be undone.
-                                </p>
+                                <h2 className="text-xl font-bold text-[#222222]">{title}</h2>
+                                {message ? (
+                                    <p className="text-sm text-[#767676] leading-relaxed">
+                                        {message}
+                                    </p>
+                                ) : (
+                                    <p className="text-sm text-[#767676] leading-relaxed">
+                                        Are you sure you want to delete <strong>&quot;{projectTitle}&quot;</strong>? This action cannot be undone.
+                                    </p>
+                                )}
                             </div>
                         </ModalBody>
                         <ModalFooter className="flex gap-3 pt-6 pb-6">
@@ -52,7 +58,7 @@ const DeleteConfirmationModal = ({ isOpen, onOpenChange, onConfirm, projectTitle
                                 }}
                                 className="flex-1 rounded-full font-semibold py-6 shadow-md bg-[#CCE7F2] text-[#222222]"
                             >
-                                Yes, Delete
+                                {confirmButtonText}
                             </Button>
                         </ModalFooter>
                     </>

@@ -15,7 +15,7 @@ export default function Layout({ children }) {
 
   return (
     <HeroUIProvider>
-      <div className="max-w-[1700px] mx-auto pt-[80px]">
+      <div className="max-w-[1700px] mx-auto">
         {/* Navbar */}
         {role === "Fashion Brand" ? <FashionDesignerHeader /> : <Navbars />}
         {/* Main Content */}

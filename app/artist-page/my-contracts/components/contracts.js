@@ -15,26 +15,25 @@ export default function ContractPage() {
   const [activeTab, setActiveTab] = useState("pending");
   const [search, setSearch] = useState("");
   const router = useRouter();
-  const [sortBy, setSortBy] = useState("date");
 
   const pendingContracts = [
     {
       title: "Modern Fashion Attire Illustration",
       id: "24t64754",
       pendingSince: "18, June, 2024",
-      expiresIn: "2days",
+      expiresIn: "2d left",
     },
     {
       title: "Modern Fashion Attire Illustration",
       id: "24t64755",
       pendingSince: "18, June, 2024",
-      expiresIn: "2days",
+      expiresIn: "10d left",
     },
     {
       title: "Logo Design for Tech Startup",
       id: "24t64756",
       pendingSince: "20, June, 2024",
-      expiresIn: "1day",
+      expiresIn: "1d left",
     },
   ];
 
@@ -73,10 +72,11 @@ export default function ContractPage() {
       id: "24t64754",
       title: "Modern Fashion Attire Illustration",
       status: "Waiting Approval", // optional
-      startDate: "18, June, 2024",
-      endDate: "25, June, 2024",
-      isLate: false, // optional
-      daysLate: null, // optional, only if isLate is true
+      startDate: "18th June, 2024",
+      endDate: "25th June, 2024",
+      isLate: false,
+      isExpiringSoon: true,
+      remainingDays: 2,
       artist: {
         name: "Aliu",
         username: "aliu",
@@ -90,10 +90,11 @@ export default function ContractPage() {
     {
       id: "24t64755",
       title: "Modern Fashion Attire Illustration",
-      startDate: "18, June, 2024",
-      endDate: "25, June, 2024",
-      isLate: true,
-      daysLate: "10",
+      startDate: "18th June, 2024",
+      endDate: "25th June, 2024",
+      isLate: false,
+      isExpiringSoon: true,
+      remainingDays: 10,
       artist: {
         name: "Adeniji",
         username: "adeniji",
@@ -101,6 +102,24 @@ export default function ContractPage() {
         location: "Lagos, Nigeria",
         rating: 0.0,
         reviews: 0,
+        avatar: "/contract/designer.jpg",
+      },
+    },
+    {
+      id: "24t64756",
+      title: "Summer Collection 3D Mockup",
+      startDate: "20th June, 2024",
+      endDate: "30th June, 2024",
+      isLate: false,
+      isExpiringSoon: true,
+      remainingDays: 1,
+      artist: {
+        name: "John",
+        username: "john",
+        role: "Fashion Designer",
+        location: "Abuja, Nigeria",
+        rating: 4.5,
+        reviews: 10,
         avatar: "/contract/designer.jpg",
       },
     },
@@ -174,8 +193,6 @@ export default function ContractPage() {
               onApproveWork={handleApproveWork}
               onMessageArtist={handleMessageArtist}
               onMoreOptions={handleMoreOptions}
-              sortBy={sortBy}
-              onSortChange={setSortBy}
             />
           )}
 

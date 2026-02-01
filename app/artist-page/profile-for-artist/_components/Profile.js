@@ -1,17 +1,16 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { Camera } from 'lucide-react';
 import { FaStar } from 'react-icons/fa';
 import CustomButton from '../../../../components/CustomButton';
 import { IoLocationSharp } from 'react-icons/io5';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Pencil } from 'lucide-react';
-import {
-  EditAboutMe,
-  EditProfile,
-  EditTitle,
-} from "../../../fashion-designers/_components/profile/edit";
+import EditOccupationModal from './EditOccupationModal';
+
+
 
 const ProfileArtist = ({ isVisitor = false }) => {
   const fullText = `Sorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex.`;
@@ -22,6 +21,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [previewProfileUrl, setPreviewProfileUrl] = useState(null);
   const [userRole, setUserRole] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
   const handleRetainArtist = () => {
@@ -32,6 +32,10 @@ const ProfileArtist = ({ isVisitor = false }) => {
   useEffect(() => {
     // Access localStorage in useEffect to avoid hydration issues
     const role = isVisitor ? 'Fashion Brand' : localStorage.getItem('activeCategory');
+    const savedOccupation = localStorage.getItem('artist_occupation');
+    if (savedOccupation) {
+      setTitleValue(savedOccupation);
+    }
     setUserRole(role);
   }, [isVisitor]);
 
@@ -46,6 +50,11 @@ const ProfileArtist = ({ isVisitor = false }) => {
       });
       setSelectedProfile(file);
     }
+  };
+
+  const handleSaveOccupation = (newOccupation) => {
+    setTitleValue(newOccupation);
+    localStorage.setItem('artist_occupation', newOccupation);
   };
 
   return (
@@ -76,18 +85,17 @@ const ProfileArtist = ({ isVisitor = false }) => {
               )}
             </div>
 
-            {/* Edit Icon */}
-            {userRole === 'Fashion Artist' && (
-              <EditProfile
-                handleFileChange={handleFileChange}
-                className="bottom-2 right-0 translate-x-1/4 translate-y-1/4 shadow-md bg-white p-1.5"
-              />
-            )}
           </div>
+
 
           {/* Name */}
           <div className='lg:mt-7'>
-            <h4 className='lg:text-2xl font-semibold text-lg text-[#222222] lg:leading-6'>OCEAN CLARA</h4>
+            <div className="flex items-center gap-3">
+              <h4 className='lg:text-2xl font-semibold text-lg text-[#222222] lg:leading-6'>OCEAN CLARA</h4>
+              <Link href="/artist-page/edit-profile" className="bg-[#EAF9FF] p-2 rounded-full hover:bg-[#d0ebf7] transition-colors flex items-center gap-2 px-3">
+                <span className="text-[#3A98BB] text-sm font-medium">Edit</span>
+              </Link>
+            </div>
           </div>
 
           {/* Availability Status */}
@@ -104,13 +112,11 @@ const ProfileArtist = ({ isVisitor = false }) => {
             <p className="text-[#222222] text-sm">
               {titleValue}
             </p>
+            <button onClick={() => setIsModalOpen(true)} className="bg-[#EAF9FF] p-2 rounded-full hover:bg-[#d0ebf7] transition-colors flex items-center gap-2 px-3">
+              <span className="text-[#3A98BB] text-sm font-medium">Edit</span>
+            </button>
 
-            {/* Edit Button */}
-            {userRole === 'Fashion Artist' && (
-              <div className="flex items-center">
-                <EditTitle setTitleValue={setTitleValue} titleValue={titleValue} />
-              </div>
-            )}
+
 
           </div>
 
@@ -183,9 +189,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
           <h4 className='lg:text-[#444444] text-base text-[#222222] lg:font-normal font-bold'>
             About Me
           </h4>
-          {userRole === 'Fashion Artist' && (
-            <EditAboutMe setAboutValue={setAboutValue} aboutValue={aboutValue} />
-          )}
+
         </div>
 
         {/* Text */}
@@ -199,7 +203,13 @@ const ProfileArtist = ({ isVisitor = false }) => {
 
 
       </div>
-    </div>
+      <EditOccupationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        initialValue={titleValue}
+        onSave={handleSaveOccupation}
+      />
+    </div >
   );
 };
 

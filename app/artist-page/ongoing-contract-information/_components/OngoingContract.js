@@ -65,11 +65,11 @@ export default function OngoingContract() {
                     <Card className="w-full p-4 md:p-6 shadow-none md:shadow-sm border-none md:border border-gray-100 rounded-2xl bg-transparent md:bg-white">
                         <div className="hidden md:flex justify-between items-start mb-6">
                             <h2 className="text-xl font-bold">Contract Details</h2>
-                            <div className="flex gap-2">
-                                <span className="px-3 py-1 bg-transparent border border-gray-200 rounded-full text-xs text-[#279711] font-medium">
+                            <div className="flex gap-2 items-center">
+                                <span className="border border-[#D1D1D1] text-[#279711] px-3 py-1 rounded-full text-xs font-medium">
                                     Ongoing
                                 </span>
-                                <span className="px-3 py-1 text-white rounded-full text-xs font-bold" style={{ backgroundColor: color }}>
+                                <span className="px-3 py-1 rounded text-xs font-bold" style={{ backgroundColor: color === '#3A98BB' ? `${color}26` : 'transparent', color: color }}>
                                     {timeStatus}
                                 </span>
                             </div>
@@ -84,10 +84,10 @@ export default function OngoingContract() {
                             <div className="flex justify-between items-center md:hidden mb-1">
                                 <span className="text-gray-500 text-sm">Status</span>
                                 <div className="flex gap-2 items-center">
-                                    <span className="font-medium text-sm text-[#279711]">Ongoing</span>
+                                    <span className="text-[#2563EB] bg-[#E0F2FE] px-2 py-1 rounded text-xs font-medium">Ongoing</span>
                                     <span
-                                        className="px-2 py-0.5 text-white rounded-full text-[10px] font-bold"
-                                        style={{ backgroundColor: color }}
+                                        className="px-2 py-0.5 rounded text-[10px] font-bold"
+                                        style={{ backgroundColor: color === '#3A98BB' ? `${color}26` : 'transparent', color: color }}
                                     >
                                         {timeStatus}
                                     </span>
@@ -190,10 +190,11 @@ export default function OngoingContract() {
                                 </Link>
                             </div>
 
-                            <div className="mb-1">
-                                <span className="font-bold text-[#3A98BB]">{clientProfile.name}</span>
-                                <span className="text-gray-500 ml-1">{clientProfile.handle}</span>
-                            </div>
+                            <Link href="/artist-page/client-profile">
+                                <span className="font-bold text-[#3A98BB] hover:opacity-80 transition-opacity duration-200 cursor-pointer">
+                                    {clientProfile.handle}
+                                </span>
+                            </Link>
 
                             <p className="text-gray-600 text-xs mb-3">{clientProfile.role}</p>
 

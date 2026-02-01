@@ -11,8 +11,6 @@ const SecuritySettings = () => {
   return (
     <div className='w-full'>
       <div className='w-full lg:max-w-[350px] aspect-square'>
-        {/* Page Title (desktop only, mobile gets handled by parent back button) */}
-        <h1 className='hidden sm:block font-bold text-2xl mb-6'>Security Settings</h1>
 
         <div
           className='

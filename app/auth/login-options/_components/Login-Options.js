@@ -17,20 +17,16 @@ const LoginOptions = () => {
   return (
     <main className="h-full  w-full flex bg-[#F1F1F1]">
       <section className=" hidden lg:flex flex-col justify-between w-3/6  bg-gradient-to-b from-[#9FD2E5] from-10% to-[#00709A] ">
-        <div className="p-10">
-          <h1 className="font-bold text-3xl text-[#EAEAEA] tracking-wide">
-            Connect with the African <br /> Fashion World.
-          </h1>
-        </div>
-        <div className="flex">
+
+        <div className="flex h-full items-end">
           <Image
             src="/svg/create-log.svg"
             alt="logo"
-            width={300}
-            height={500}
-            className="object-contain object-left"
+            width={500}
+            height={800}
+            className="object-cover object-bottom"
           />
-          <div className="flex flex-col gap-20 items-start ">
+          <div className="flex flex-col gap-20 items-start mb-10">
             <Image
               src="/svg/create-logo-1.svg"
               alt="logo"
@@ -38,8 +34,8 @@ const LoginOptions = () => {
               height={600}
               className="object-contain object-left -ml-28 -mt-20"
             />
-            <p className="font-bold text-xl text-[#F5F5F5]">
-              Connect, collaborate, and create the next generation of African-inspired fashion.
+            <p className="font-bold text-2xl text-[#EAEAEA] tracking-wide pr-4">
+              Connect, collaborate, and create the next generation of <span className="italic font-light">African-inspired</span> fashion.
             </p>
           </div>
         </div>

@@ -2,15 +2,17 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Textarea, Select, Checkbox, SelectItem } from '@heroui/react';
 import { CiImageOn } from 'react-icons/ci';
+import { ChevronLeft } from 'lucide-react';
 import CustomButton from '../../../../components/CustomButton';
 import Link from 'next/link';
 import Image from 'next/image';
 import { color } from 'framer-motion';
 import { useDisclosure } from '@heroui/react';
 import PublishDesignPopUp from './PublishDesignPopUp';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 const License = () => {
+  const router = useRouter();
   const [errors, setErrors] = React.useState({});
   const [images, setImages] = useState([]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -35,7 +37,17 @@ const License = () => {
   return (
     <>
       <div>
-        <div className='lg:w-4/5 w-full max-w-[90%] px-6 py-2 lg:mx-16 mx-4 mt-8 rounded-lg bg-gradient-to-b from-[#CCE7F2] via-[#A1DCF3] to-[#49C0F0] text-[#393939]'>
+        {/* Back Button for Mobile - Aligned with card */}
+        <div className='lg:hidden w-full max-w-[90%] mx-4 mt-6'>
+          <button
+            onClick={() => router.back()}
+            className='flex items-center text-[#222222] font-semibold'
+          >
+            <ChevronLeft className='w-5 h-5' />
+          </button>
+        </div>
+
+        <div className='lg:w-4/5 w-full max-w-[90%] px-6 py-2 lg:mx-16 mx-4 lg:mt-8 mt-4 rounded-lg bg-gradient-to-b from-[#CCE7F2] via-[#A1DCF3] to-[#49C0F0] text-[#393939]'>
           <h1 className='text-[34px] text-[#393939] font-bold'>License Your Design</h1>
           <p className='text-base'>
             By uploading this design, you attest that you are the creator or legitimate owner and possess all necessary rights and permissions. Uploading work without authorization may constitute copyright infringement.{' '}
@@ -88,13 +100,257 @@ const License = () => {
           </div>
 
           {/* Fashion Style */}
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-2 relative'>
             <h3 className='text-lg font-semibold'>Design Style</h3>
-            <Input
+            <input
+              id='design-style-input'
+              type='text'
               defaultValue={initialStyle}
               placeholder='Enter category of your design, E.g Casual, etc.'
-              className='border-1 border-[#d1d1d1] rounded-lg'
+              className='border-1 border-[#d1d1d1] rounded-lg px-3 py-2 text-base focus:outline-none focus:border-[#3A98BB]'
+              onInput={(e) => {
+                const value = e.target.value.toLowerCase();
+                const dropdown = document.getElementById('style-suggestions');
+                const suggestions = dropdown?.querySelectorAll('button');
+
+                if (!value) {
+                  dropdown.classList.add('hidden');
+                  return;
+                }
+
+                let hasVisibleSuggestion = false;
+                suggestions?.forEach((btn) => {
+                  const text = btn.textContent.toLowerCase();
+                  if (text.includes(value)) {
+                    btn.classList.remove('hidden');
+                    hasVisibleSuggestion = true;
+                  } else {
+                    btn.classList.add('hidden');
+                  }
+                });
+
+                if (hasVisibleSuggestion) {
+                  dropdown.classList.remove('hidden');
+                } else {
+                  dropdown.classList.add('hidden');
+                }
+              }}
+              onFocus={(e) => {
+                const value = e.target.value.toLowerCase();
+                const dropdown = document.getElementById('style-suggestions');
+                if (value) {
+                  dropdown.classList.remove('hidden');
+                }
+              }}
+              onBlur={() => {
+                setTimeout(() => {
+                  const dropdown = document.getElementById('style-suggestions');
+                  dropdown?.classList.add('hidden');
+                }, 200);
+              }}
             />
+
+            {/* Autocomplete Suggestions Dropdown */}
+            <div
+              id='style-suggestions'
+              className='hidden absolute top-full left-0 right-0 mt-1 bg-white border border-[#d1d1d1] rounded-lg shadow-lg max-h-60 overflow-y-auto z-10'
+            >
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Casual';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Casual
+              </button>
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Formal';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Formal
+              </button>
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Streetwear';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Streetwear
+              </button>
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Vintage';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Vintage
+              </button>
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Bohemian';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Bohemian
+              </button>
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Minimalist';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Minimalist
+              </button>
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Avant-Garde';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Avant-Garde
+              </button>
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Sporty';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Sporty
+              </button>
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Elegant';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Elegant
+              </button>
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Preppy';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Preppy
+              </button>
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Grunge';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Grunge
+              </button>
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Chic';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Chic
+              </button>
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Romantic';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Romantic
+              </button>
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Edgy';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Edgy
+              </button>
+              <button
+                type='button'
+                onClick={(e) => {
+                  const input = document.getElementById('design-style-input');
+                  if (input) {
+                    input.value = 'Classic';
+                    input.focus();
+                  }
+                }}
+                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+              >
+                Classic
+              </button>
+            </div>
           </div>
 
           {/* Upload Your Designs */}
