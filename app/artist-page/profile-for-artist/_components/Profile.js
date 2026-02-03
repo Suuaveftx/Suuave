@@ -91,31 +91,31 @@ const ProfileArtist = ({ isVisitor = false }) => {
           {/* Name */}
           <div className='lg:mt-7'>
             <div className="flex items-center gap-3">
-              <h4 className='lg:text-2xl font-semibold text-lg text-[#222222] lg:leading-6'>OCEAN CLARA</h4>
-              <Link href="/artist-page/edit-profile" className="bg-[#EAF9FF] p-2 rounded-full hover:bg-[#d0ebf7] transition-colors flex items-center gap-2 px-3">
-                <span className="text-[#3A98BB] text-sm font-medium">Edit</span>
-              </Link>
+              <h4 className='lg:text-2xl font-semibold text-lg text-[#222222] lg:leading-6 flex items-center gap-2'>
+                OCEAN CLARA
+                <span className='w-2 h-2 bg-green-600 rounded-full'></span>
+              </h4>
+              {userRole === 'Fashion Artist' && (
+                <Link href="/artist-page/edit-profile" className="bg-[#EAF9FF] p-2 rounded-full hover:bg-[#d0ebf7] transition-colors flex items-center gap-2 px-3">
+                  <span className="text-[#3A98BB] text-sm font-medium">Edit</span>
+                </Link>
+              )}
             </div>
           </div>
 
           {/* Availability Status */}
-          <div
-            className='bg-[#EEEEEE] flex items-center text-sm text-[#056D16] rounded-[32px] gap-2 px-2 py-1 
-          w-full max-w-[35%] justify-center lg:justify-start lg:mt-4'
-          >
-            <span>Available</span>
-            <span className='w-2 h-2 bg-green-600 rounded-full'></span>
-          </div>
+
 
           {/* Occupation */}
           <div className="flex items-center gap-2 w-full justify-center lg:justify-start">
             <p className="text-[#222222] text-sm">
               {titleValue}
             </p>
-            <button onClick={() => setIsModalOpen(true)} className="bg-[#EAF9FF] p-2 rounded-full hover:bg-[#d0ebf7] transition-colors flex items-center gap-2 px-3">
-              <span className="text-[#3A98BB] text-sm font-medium">Edit</span>
-            </button>
-
+            {userRole === 'Fashion Artist' && (
+              <button onClick={() => setIsModalOpen(true)} className="bg-[#EAF9FF] p-2 rounded-full hover:bg-[#d0ebf7] transition-colors flex items-center gap-2 px-3">
+                <span className="text-[#3A98BB] text-sm font-medium">Edit</span>
+              </button>
+            )}
 
 
           </div>

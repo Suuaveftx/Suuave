@@ -204,7 +204,7 @@ export default function PendingDetailsPage({ params }) {
               <CardBody className=''>
                 <div className='text-center font-satoshi'>
                   <h3 className='text-2xl font-bold mb-6'>About the Artist</h3>
-                  <Link href="/artist-page/profile-for-artist" className="block w-fit mx-auto">
+                  <Link href="/artist-page/profile-vistor-view" className="block w-fit mx-auto">
                     <Avatar
                       src={contractData.artist.avatar}
                       className='w-28 h-28 mx-auto mb-4 rounded-full cursor-pointer hover:opacity-80 transition-opacity'
@@ -213,7 +213,7 @@ export default function PendingDetailsPage({ params }) {
                   </Link>
 
                   <h3 className='text-md font-proximanova mb-1'>
-                    <Link href="/artist-page/profile-for-artist" className="text-[#3A98BB] hover:underline">
+                    <Link href="/artist-page/profile-vistor-view" className="text-[#3A98BB] hover:underline">
                       @{contractData.artist.username}
                     </Link>
                   </h3>
@@ -245,7 +245,7 @@ export default function PendingDetailsPage({ params }) {
                     </div>
                     <span className='text-sm text-[#3A98BB]'>
                       ({contractData.artist.reviews}{' '}
-                      <Link href='/artist-page/profile-for-artist?tab=reviews'>
+                      <Link href='/artist-page/profile-vistor-view?tab=reviews'>
                         Reviews
                       </Link>
                       )

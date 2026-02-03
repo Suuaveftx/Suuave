@@ -71,7 +71,7 @@ export function UserActions() {
           </Button>
         </Link>
 
-        <Dropdown>
+        <Dropdown shouldBlockScroll={false}>
           <DropdownTrigger>
             <button className="flex items-center gap-2 outline-none bg-transparent border-none cursor-pointer p-0">
               <Avatar

@@ -15,7 +15,7 @@ import {
 
 const settingsMenu = [
   { id: 'notifications', label: 'Notifications', icon: LucideBell },
-  { id: 'security', label: 'Security Settings', icon: LucideLock },
+  { id: 'security', label: 'Security', icon: LucideLock },
 ];
 
 const SettingsPage = () => {
@@ -28,8 +28,6 @@ const SettingsPage = () => {
         return <NotificationSettings />;
       case 'security':
         return <SecuritySettings />;
-      case 'profile':
-        return <div>Profile Settings Content</div>;
       case 'account':
         return <div>Account Settings Content</div>;
       default:
@@ -64,10 +62,7 @@ const SettingsPage = () => {
             activeItem={activeItem}
             setActiveItem={(id) => {
               setActiveItem(id);
-              // hide sidebar only for security settings
-              if (id === 'security') {
-                setShowSidebar(false);
-              }
+              setShowSidebar(false);
             }}
           />
         ) : (
@@ -78,11 +73,13 @@ const SettingsPage = () => {
               onClick={() => setShowSidebar(true)}
             >
               <ChevronLeft className='w-5 h-5 mr-1' />
-              <span className='text-[20px]'>Security Settings</span>
+              <span className='text-[20px]'>
+                {settingsMenu.find((item) => item.id === activeItem)?.label || 'Settings'}
+              </span>
             </button>
 
-            {/* Security Settings full width */}
-            <SecuritySettings />
+            {/* Active Component full width */}
+            {renderActiveComponent()}
           </div>
         )}
       </div>

@@ -31,19 +31,15 @@ export const EditTitle = ({ setTitleValue, titleValue }) => {
   return (
     <>
       <button
-        className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] flex items-center gap-1 rounded-3xl drop-shadow-lg p-2 md:py-2 md:px-4"
+        className="ml-2"
         onClick={handleOpen}
       >
         <Image
-          src="\profile\pencil.svg"
+          src="/profile/pencil.svg"
           alt="icon"
-          width={20}
-          height={20}
-          className=""
+          width={16}
+          height={16}
         />
-        <span className="hidden md:block font-satoshi font-bold text-base text-[#035A7A]">
-          Edit
-        </span>
       </button>
       <Modal
         isOpen={isOpen}

@@ -2,8 +2,8 @@
 import Image from "next/image";
 import { useState } from "react";
 
-import BrandDetails from "./_components/BrandDetails";
-import Profile from "./_components/Profile";
+import BrandDetails from "../_components/BrandDetails";
+import Profile from "../_components/Profile";
 
 export default function Page() {
   const [selected, setSelected] = useState("PersonalDetail");
@@ -67,6 +67,7 @@ export default function Page() {
               setSelected={setSelected}
               formData={formData}
               setFormData={setFormData}
+              submitHref="/fashion-designers/profile"
             />
           </>
         )}
