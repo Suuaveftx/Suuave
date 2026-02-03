@@ -8,6 +8,13 @@ import FloatingButton from "./_components/FloatingButton";
 
 const Page = () => {
   const [isVisible, setIsVisible] = useState(true);
+  const [savedCardIds, setSavedCardIds] = useState([]);
+
+  const toggleSave = (id) => {
+    setSavedCardIds((prev) =>
+      prev.includes(id) ? prev.filter((cardId) => cardId !== id) : [...prev, id]
+    );
+  };
 
   const cardsData = [
     {
@@ -277,6 +284,8 @@ const Page = () => {
                   productID={card?.id}
                   idx={index}
                   userData={card.user}
+                  isBookmarked={savedCardIds.includes(card.id)}
+                  onToggleSave={() => toggleSave(card.id)}
                 />
               ))}
             </div>
@@ -286,15 +295,12 @@ const Page = () => {
             key="saved"
             title={
               <div className="flex items-center space-x-2">
-                <span>Saved</span>
-                {/* <Chip size="sm" variant="faded">
-                  6
-                </Chip> */}
+                <span>Saved ({savedCardIds.length})</span>
               </div>
             }
           >
             <div className="grid grid-cols-2 gap-3 mt-6 lg:gap-6 lg:grid-cols-4  ">
-              {cardsData.slice(3, 9).map((card, index) => (
+              {cardsData.filter(card => savedCardIds.includes(card.id)).map((card, index) => (
                 <FashionDesignersCard
                   key={index}
                   images={card?.images}
@@ -304,6 +310,8 @@ const Page = () => {
                   productID={card?.id}
                   idx={index}
                   userData={card.user}
+                  isBookmarked={true}
+                  onToggleSave={() => toggleSave(card.id)}
                 />
               ))}
             </div>

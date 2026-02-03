@@ -8,6 +8,7 @@ import {
   EditProfile,
   EditTitle,
 } from "../_components/profile/edit";
+import Link from "next/link";
 
 const reviews = [
   {
@@ -93,22 +94,18 @@ const Page = () => {
   return (
     <div className=" md:bg-[#F1F1F1] md:px-12">
       {/* Header */}
-      <div className=" md:hidden">
-        <button className="flex items-center gap-3 px-4 py-2">
-          <Image
-            src="\collectionImage\icons\arrow-left.svg"
-            alt="icon"
-            width={24}
-            height={24}
-          />
-          Profile
-        </button>
-      </div>
+
       {/* User details  */}
-      <div className="mt-3 flex flex-col md:py-5 md:bg-[#F9F9F9] md:px-5 md:rounded-t-lg  md:justify-between md:mt-20 md:flex-row md:items-start md:gap-4 items-center p-4 text-[#222222] font-satoshi">
-        <div className=" flex flex-col items-center md:flex-row md:items-start md:gap-3">
+      <div className="mt-3 bg-white flex relative flex-col md:py-5 md:bg-[#F9F9F9] md:px-5 md:rounded-t-lg  md:justify-between md:mt-20 md:flex-row md:items-start md:gap-4 items-center p-4 text-[#222222] font-satoshi">
+        {/* Mobile Edit Button - Top Right of Card */}
+        <Link href="/fashion-designers/personal-details/edit" className="md:hidden absolute top-4 right-4 bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] flex items-center justify-center rounded-3xl drop-shadow-lg px-4 py-1.5 z-10">
+          <span className="font-satoshi font-bold text-sm text-[#035A7A]">
+            Edit
+          </span>
+        </Link>
+        <div className="w-full flex flex-col items-center md:flex-row md:items-start md:gap-3">
           <div className="flex flex-col items-end w-20 h-20 rounded-full md:w-28 md:h-28">
-            <EditProfile handleFileChange={handleFileChange} />
+            {/* <EditProfile handleFileChange={handleFileChange} /> */}
 
             {/* Image Preview */}
             {previewProfileUrl ? (
@@ -130,42 +127,44 @@ const Page = () => {
             )}
           </div>
 
-          <div className=" flex flex-col items-center md:items-start ">
-            <span className=" font-bold text-lg mt-1 flex items-center gap-2">
-              <h1 className="text-base">OCEAN CLARA </h1>
-              <Image
-                src="\profile\badgeCheck.svg"
-                alt="icon"
-                width={20}
-                height={20}
-              />
-            </span>
-            <div className="  flex items-center gap-2">
+          <div className="w-full flex flex-col items-center md:items-start gap-2 mt-1">
+            <div className="flex items-center gap-2 justify-center md:justify-start">
+              <h1 className="text-base font-bold uppercase flex items-center gap-2">
+                OCEAN CLARA
+                <span className="w-2 h-2 bg-[#056D16] rounded-full"></span>
+              </h1>
+            </div>
+            <div className="flex items-center gap-2 justify-center md:justify-start">
               <p className="font-normal text-base"> {titleValue}</p>
               <EditTitle
                 setTitleValue={setTitleValue}
                 titleValue={titleValue}
               />
             </div>
-            <div className="flex items-center gap-2  font-normal  text-sm">
+            <div className="flex items-center gap-2 font-normal text-sm justify-center md:justify-start">
               <Image
-                src="\profile\locationIcon.svg"
+                src="/profile/locationIcon.svg"
                 alt="icon"
                 width={20}
                 height={20}
               />{" "}
               Lagos, Nigeria
             </div>
-            <div className="flex items-center gap-2 mt-1">
+            <div className="flex items-center gap-2 mt-1 justify-center md:justify-start">
               <RatingStar />
               <p className="text-[#767676] font-normal text-sm">4.0</p>
               <p className="text-[#3A98BB] font-normal text-sm">(5 Reviews)</p>
             </div>
           </div>
         </div>
+        <Link href="/fashion-designers/personal-details/edit" className="hidden md:flex bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] items-center justify-center rounded-3xl drop-shadow-lg px-4 py-1.5">
+          <span className="font-satoshi font-bold text-sm text-[#035A7A]">
+            Edit
+          </span>
+        </Link>
       </div>
       {/* Total jobs and earn */}
-      <section className="flex justify-between md:px-5  md:rounded-b-lg md:py-5  md:bg-[#F9F9F9] md:mt-0 md:justify-start md:gap-10 mt-5 p-4 border-y-2 md:border-t-2 border-[#EAEAEA] font-satoshi">
+      <section className="flex justify-between md:px-5 bg-white md:rounded-b-lg md:py-5  md:bg-[#F9F9F9] md:mt-0 md:justify-start md:gap-10 mt-5 p-4 border-y-2 md:border-t-2 border-[#EAEAEA] font-satoshi">
         <div className="flex flex-col items-center gap-2">
           <h2 className="font-bold text-base md:text-xl">7</h2>
           <p className="text-[#767676] font-normal text-sm">Jobs Posted</p>
@@ -182,10 +181,10 @@ const Page = () => {
         </div>
       </section>
       {/* About user */}
-      <section className="p-4 font-satoshi md:bg-[#F9F9F9] md:mt-10 md:py-5 md:px-5 md:rounded-t-lg ">
+      <section className="p-4 bg-white font-satoshi md:bg-[#F9F9F9] md:mt-10 md:py-5 md:px-5 md:rounded-t-lg ">
         <div className="flex items-start justify-between">
           <h1 className="font-bold text-base md:text-xl md:mb-8">About Me</h1>{" "}
-          <EditAboutMe setAboutValue={setAboutValue} aboutValue={aboutValue} />
+          {/* <EditAboutMe setAboutValue={setAboutValue} aboutValue={aboutValue} /> */}
         </div>
         <span className="font-normal tracking-wide text-sm md:text-base text-[#222222]  mt-2">
           {displayedText}
@@ -201,7 +200,7 @@ const Page = () => {
       </section>
 
       {/* Reviews */}
-      <section className="p-4 mt-5 font-satoshi ">
+      <section className="p-4 mt-5 bg-white font-satoshi ">
         <h1 className="font-bold text-base  md:text-xl">Reviews</h1>
         <div className="flex justify-center md:justify-start md:px-20 ">
           <div className="mt-[28px] flex flex-col items-center gap-2 bg-[#FAFAFA] border-1 border-[#E6E6E6] drop-shadow-lg rounded-lg py-4 px-6">
@@ -219,7 +218,7 @@ const Page = () => {
               className=" flex items-start gap-3 md:w-[60%] md:p-5 md:bg-[#F9F9F9]"
             >
               <Image
-                src="\profile\image-2.svg"
+                src="/profile/image-2.svg"
                 alt="image"
                 className="w-[42px] h-[42px] md:w-[70px] md:h-[70px]"
                 width={0}

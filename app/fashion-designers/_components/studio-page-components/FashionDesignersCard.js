@@ -111,9 +111,9 @@ const FashionDesignersCard = ({
   productID = 'N/A',
   userData,
   idx,
+  isBookmarked,
+  onToggleSave,
 }) => {
-  const [isBookmarked, setIsBookmarked] = useState(false);
-
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -131,12 +131,20 @@ const FashionDesignersCard = ({
   return (
     <Card className='px-0 hover:shadow-xl overflow-hidden' shadow='none'>
       <CardBody className='overflow-hidden p-0'>
-        <Link href={`/fashion-designers/${productID}`} className='block'>
+        <div className='block relative'>
           <Button
             isIconOnly
             className='absolute right-4 top-4 z-20 border-1 bg-[#444444] border-[#444444] backdrop-blur-sm hover:bg-[#444444]/70'
             size='sm'
-            onPress={() => setIsBookmarked(!isBookmarked)}
+            onPress={(e) => {
+              // e.continuePropagation(); // Try to prevent link navigation if necessary, though separate positioning usually helps.
+              // Actually, preventing default on the event might be safer if it bubbles. 
+              // HeroUI Button onPress might behave differently than onClick. 
+              // Let's use onClick on a wrapper or rely on Button's behavior. 
+              // BUT wait, the button was INSIDE the Link. 
+              // Moving the Button OUTSIDE the Link is the most robust way to avoid navigation.
+              onToggleSave();
+            }}
           >
             <Bookmark
               size={20}
@@ -144,27 +152,29 @@ const FashionDesignersCard = ({
                 } transition-colors duration-200`}
             />
           </Button>
-          <div className='overflow-hidden'>
-            <div className='slider-container'>
-              <Slider {...sliderSettings}>
-                {images?.map((image, index) => (
-                  <div
-                    key={index}
-                    className='relative h-80 flex items-center justify-center'
-                  >
-                    <Image
-                      src={image}
-                      alt={`${title} - Image ${index + 1}`}
-                      className='object-cover object-top'
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                  </div>
-                ))}
-              </Slider>
+          <Link href={`/fashion-designers/${productID}`} className='block'>
+            <div className='overflow-hidden'>
+              <div className='slider-container'>
+                <Slider {...sliderSettings}>
+                  {images?.map((image, index) => (
+                    <div
+                      key={index}
+                      className='relative h-80 flex items-center justify-center'
+                    >
+                      <Image
+                        src={image}
+                        alt={`${title} - Image ${index + 1}`}
+                        className='object-cover object-top'
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                    </div>
+                  ))}
+                </Slider>
+              </div>
             </div>
-          </div>
-        </Link>
+          </Link>
+        </div>
       </CardBody>
 
       <CardFooter className='flex flex-col items-start w-full mx-0 px-1 space-y-2'>
@@ -176,7 +186,7 @@ const FashionDesignersCard = ({
 
           <p className='font-semibold text-md text-[#3A98BB]'>{formatToUSD(price)}</p>
 
-          <Link href='/artist-page/profile-for-artist'>
+          <Link href='/artist-page/profile-vistor-view'>
             <User
               avatarProps={{
                 src: `https://i.pravatar.cc/150?img=${idx}`,

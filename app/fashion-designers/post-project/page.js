@@ -105,43 +105,6 @@ const Page = () => {
     },
   ];
 
-  const projectTimeframe = [
-    {
-      label: "1 Day",
-      key: "1day"
-    },
-    {
-      label: "2 Days",
-      key: "2days"
-    },
-    {
-      label: "3 Days",
-      key: "3days"
-    },
-  ]
-
-  const budgetType = [
-    {
-      label: "Fixed",
-      key: "fixed"
-    },
-    {
-      label: "Negotiable",
-      key: "negotiable"
-    },
-  ]
-
-  const designStyle = [
-    {
-      label: "Fixed",
-      key: "fixed"
-    },
-    {
-      label: "Negotiable",
-      key: "negotiable"
-    },
-  ]
-
   const designStyles = [
     {
       label: "Haute Couture",
@@ -230,12 +193,54 @@ const Page = () => {
   ];
 
 
+
+  const projectTimeframe = [
+    {
+      label: "1 Day",
+      key: "1day"
+    },
+    {
+      label: "2 Days",
+      key: "2days"
+    },
+    {
+      label: "3 Days",
+      key: "3days"
+    },
+  ]
+
+  const budgetType = [
+    {
+      label: "Fixed",
+      key: "fixed"
+    },
+    {
+      label: "Negotiable",
+      key: "negotiable"
+    },
+  ]
+
+
+
+
+  const [designValue, setDesignValue] = React.useState("");
+  const [showSuggestions, setShowSuggestions] = React.useState(false);
+
+  const handleStyleSelection = (style) => {
+    setDesignValue(style);
+    setShowSuggestions(false);
+  };
+
   return (
     <div className="max-w-[1500px] mx-auto p-6">
       <p className="font-bold text-2xl mb-6">Post Project</p>
       <Form
         className="w-full gap-7 bg-white border-2 border-gray-200 rounded-md p-7 "
-        onReset={() => setAction("reset")}
+        onReset={() => {
+          setAction("reset");
+          setDesignValue("");
+          setShowSuggestions(false);
+        }}
         onSubmit={(e) => {
           e.preventDefault();
           let data = Object.fromEntries(new FormData(e.currentTarget));
@@ -244,6 +249,9 @@ const Page = () => {
           if (dataToSave.referenceImg instanceof File) {
             dataToSave.referenceImg = dataToSave.referenceImg.name;
           }
+          // Ensure the designValue is captured correctly for the form
+          dataToSave.designStyles = designValue;
+
           localStorage.setItem('postedProject', JSON.stringify(dataToSave));
           console.log(dataToSave);
         }}
@@ -301,21 +309,58 @@ const Page = () => {
             <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>
           )}
         </Autocomplete>
-        <Autocomplete
-          allowsCustomValue
-          radius="sm"
-          className="font-bold"
-          labelPlacement="outside"
-          name="designStyles"
-          defaultItems={designStyles}
-          label="Design Style"
-          variant="bordered"
-          placeholder="Select from the options provided or type when necessary"
-        >
-          {(item) => (
-            <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>
+
+        <div className="flex flex-col gap-2 relative w-full">
+          <label htmlFor="design-style-input" className="text-sm font-bold text-[#222222]">
+            Design Style
+          </label>
+          <input
+            id="design-style-input"
+            type="text"
+            name="designStyles"
+            value={designValue}
+            placeholder="Enter category of your design, E.g Casual, etc."
+            className="border-1 border-[#d1d1d1] rounded-lg px-3 py-2 text-base focus:outline-none focus:border-[#3A98BB]"
+            onChange={(e) => {
+              setDesignValue(e.target.value);
+              setShowSuggestions(true);
+            }}
+            onFocus={() => {
+              if (designValue) setShowSuggestions(true);
+            }}
+            onBlur={() => {
+              setTimeout(() => setShowSuggestions(false), 200);
+            }}
+          />
+
+          {/* Autocomplete Suggestions Dropdown */}
+          {showSuggestions && (
+            <div
+              id="style-suggestions"
+              className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#d1d1d1] rounded-lg shadow-xl max-h-60 overflow-y-auto z-[50]"
+            >
+              {designStyles
+                .filter(item =>
+                  item.label.toLowerCase().includes(designValue.toLowerCase())
+                )
+                .map((item) => (
+                  <button
+                    key={item.key}
+                    type="button"
+                    onClick={() => handleStyleSelection(item.label)}
+                    className="w-full text-left px-4 py-3 hover:bg-[#F3F4F6] transition-colors text-sm border-b border-gray-50 last:border-none"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              {designStyles.filter(item => item.label.toLowerCase().includes(designValue.toLowerCase())).length === 0 && (
+                <div className="px-4 py-3 text-sm text-gray-500 italic">
+                  No matching styles found. press enter to use &quot;{designValue}&quot;
+                </div>
+              )}
+            </div>
           )}
-        </Autocomplete>
+        </div>
 
         <NumberInput
           variant="bordered"
