@@ -50,6 +50,12 @@ export function NavLinks() {
 
       return pathname.startsWith("/fashion-designers") && !isMainSubpath;
     }
+    if (path === "/fashion-designers/contracts") {
+      return (
+        pathname.startsWith("/fashion-designers/contracts") &&
+        !pathname.startsWith("/fashion-designers/contracts/retain")
+      );
+    }
     return pathname.startsWith(path);
   };
 

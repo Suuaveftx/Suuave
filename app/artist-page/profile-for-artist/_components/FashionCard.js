@@ -167,7 +167,10 @@ const FashionCard = ({ isVisitor = false }) => {
                   key={item.id}
                   className="group rounded-xl overflow-hidden shadow-sm bg-white relative aspect-[4/3]"
                 >
-                  <div className="block w-full h-full cursor-default">
+                  <div
+                    className={`block w-full h-full ${isVisitor ? 'cursor-pointer' : 'cursor-default'}`}
+                    onClick={() => isVisitor && router.push('/fashion-designers/card-5')}
+                  >
                     {/* Image Container */}
                     <div
                       className="absolute inset-0 bg-cover bg-center"
