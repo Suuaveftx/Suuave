@@ -45,6 +45,11 @@ const ArtistNavbar = () => {
         pathname.startsWith('/artist-page/pending-contract-information') ||
         pathname.startsWith('/artist-page/completed-contract-information');
     }
+    if (path === '/artist-page/my-proposals') {
+      return pathname === path ||
+        pathname.startsWith('/artist-page/proposal-active') ||
+        pathname.startsWith('/artist-page/closed-project');
+    }
     return pathname === path;
   };
 

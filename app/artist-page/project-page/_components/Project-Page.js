@@ -44,18 +44,30 @@ const ProjectPage = () => {
     localStorage.setItem('savedJobs', JSON.stringify(newSavedJobs));
   };
 
-  const handleShare = async (e, jobId) => {
+  const handleShare = async (e, jobId, jobTitle) => {
     // Prevent navigation
     e.preventDefault();
     e.stopPropagation();
 
     const url = `${window.location.origin}/artist-page/job-details-page?id=${jobId}`;
-    try {
-      await navigator.clipboard.writeText(url);
-      setCopiedId(jobId);
-      setTimeout(() => setCopiedId(null), 2000);
-    } catch (err) {
-      console.error('Failed to copy: ', err);
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: jobTitle || 'Check out this job',
+          url: url,
+        });
+      } catch (err) {
+        console.error('Error sharing:', err);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(url);
+        setCopiedId(jobId);
+        setTimeout(() => setCopiedId(null), 2000);
+      } catch (err) {
+        console.error('Failed to copy: ', err);
+      }
     }
   };
 
@@ -158,7 +170,7 @@ const ProjectPage = () => {
                     <div className="absolute top-4 right-4 flex gap-4 z-20">
                       <div className="relative group">
                         <button
-                          onClick={(e) => handleShare(e, jobId)}
+                          onClick={(e) => handleShare(e, jobId, jobData[0].title)}
                           className="hover:bg-gray-100 p-1.5 rounded-full transition-colors"
                         >
                           <FaShareAlt className="text-gray-500 hover:text-gray-700" />

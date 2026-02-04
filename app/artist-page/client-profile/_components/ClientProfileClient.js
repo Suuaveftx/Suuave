@@ -2,6 +2,8 @@
 import Image from "next/image";
 import RatingStar from "../../../fashion-designers/_components/RatingStar";
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { Pencil } from "lucide-react";
 
 const reviews = [
     {
@@ -95,6 +97,9 @@ const ClientProfileClient = () => {
                         </span>
                         <div className="  flex items-center gap-2">
                             <p className="font-normal text-base"> {titleValue}</p>
+                            <button className="text-[#3A98BB] hover:opacity-75 transition-opacity">
+                                <Pencil size={16} />
+                            </button>
                         </div>
                         <div className="flex items-center gap-2  font-normal  text-sm">
                             <Image
@@ -112,6 +117,10 @@ const ClientProfileClient = () => {
                         </div>
                     </div>
                 </div>
+
+                <Link href="/artist-page/edit-profile" className="hidden md:flex bg-[#EAF9FF] p-2 px-5 rounded-full hover:bg-[#d0ebf7] transition-colors items-center gap-2 shadow-sm border border-[#d0ebf7]">
+                    <span className="text-[#3A98BB] text-sm font-medium">Edit</span>
+                </Link>
             </div>
             {/* Total jobs and earn */}
             <section className="flex justify-between md:px-5  md:rounded-b-lg md:py-5  md:bg-[#F9F9F9] md:mt-0 md:justify-start md:gap-10 mt-5 p-4 border-y-2 md:border-t-2 border-[#EAEAEA] font-satoshi">

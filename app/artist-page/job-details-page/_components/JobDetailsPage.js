@@ -26,12 +26,25 @@ const JobDetailsPage = ({
 
   const handleShare = async () => {
     const url = window.location.href;
-    try {
-      await navigator.clipboard.writeText(url);
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy: ', err);
+    const jobTitle = "Modern Fashion Attire Illustration"; // Should ideally be dynamic
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: jobTitle,
+          url: url,
+        });
+      } catch (err) {
+        console.error('Error sharing:', err);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(url);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+      } catch (err) {
+        console.error('Failed to copy: ', err);
+      }
     }
   };
 
@@ -131,9 +144,13 @@ const JobDetailsPage = ({
             ) : (
               <>
                 <Button
-                  variant="bordered"
+                  variant={isSaved ? "solid" : "bordered"}
                   radius="full"
-                  className="flex-1 border-[#3A98BB] text-[#222222] font-medium h-12"
+                  className={`flex-1 ${isSaved ? "border-none" : "border-[#3A98BB] text-[#222222]"} font-medium h-12`}
+                  style={isSaved ? {
+                    background: "#3A98BB",
+                    color: "white",
+                  } : {}}
                   onPress={handleBookmark}
                 >
                   {isSaved ? "Saved" : "Save Post"}

@@ -8,9 +8,11 @@ const {
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   plugins: [
+    heroui(),
+    require("tailwindcss-animate"),
     require("tailwind-scrollbar-hide"),
     require("@tailwindcss/line-clamp"),
-  ] /* adenijialiu: added line-clamp */,
+  ],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -21,7 +23,6 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        /* adenijialiu: i needed to apply radial gradient */
         radial: "radial-gradient(var(--tw-gradient-stops))",
       },
       fontFamily: {
@@ -89,7 +90,6 @@ module.exports = {
     },
   },
   darkMode: ["class", "class"],
-  plugins: [heroui(), require("tailwindcss-animate")],
 };
 
 function addVariablesForColors({ addBase, theme }) {

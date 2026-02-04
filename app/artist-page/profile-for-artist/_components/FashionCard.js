@@ -167,7 +167,7 @@ const FashionCard = ({ isVisitor = false }) => {
                   key={item.id}
                   className="group rounded-xl overflow-hidden shadow-sm bg-white relative aspect-[4/3]"
                 >
-                  <Link href={`/fashion-designers/${item.id}`} className="block w-full h-full">
+                  <div className="block w-full h-full cursor-default">
                     {/* Image Container */}
                     <div
                       className="absolute inset-0 bg-cover bg-center"
@@ -192,7 +192,7 @@ const FashionCard = ({ isVisitor = false }) => {
                         <span>Licensed {item.licensed}</span>
                       </div>
                     </div>
-                  </Link>
+                  </div>
 
                   {/* Three Dots Menu - Outside Link to avoid redirection on click */}
                   {userRole === 'Fashion Artist' && (

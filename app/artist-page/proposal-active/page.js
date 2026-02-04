@@ -67,6 +67,7 @@ const Page = () => {
             saveText="Withdraw Proposal"
             showSaveIcon={false}
             handleSubmitProposal={handleSubmitProposal}
+            handleViewProposal={handleSubmitProposal}
             handleWithdrawProposal={handleWithdrawProposal}
             proposalSubmitted={true}
             isOpen={isOpen}
