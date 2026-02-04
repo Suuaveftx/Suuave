@@ -28,8 +28,8 @@ const BtnProposals = ({
   handleWithdrawProposal,
   handleSave,
   proposalSubmitted = false,
-  isOpen,
   onOpenChange,
+  isSaved,
 }) => {
   return (
     <>
@@ -51,9 +51,9 @@ const BtnProposals = ({
             text={saveText}
             onPress={proposalSubmitted ? handleWithdrawProposal : handleSave}
             style={{
-              background: "transparent",
-              color: "#767676",
-              border: "1px solid #3A98BB",
+              background: isSaved ? "#3A98BB" : "transparent",
+              color: isSaved ? "white" : "#767676",
+              border: isSaved ? "none" : "1px solid #3A98BB",
               ...saveButtonStyle,
             }}
           />

@@ -12,6 +12,7 @@ const SendProposalPageContent = () => {
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const searchParams = useSearchParams();
+  const isEditMode = searchParams.get('edit') === 'true';
   const jobId = searchParams.get('id');
 
   const handleSubmitProposal = () => {
@@ -26,8 +27,18 @@ const SendProposalPageContent = () => {
     onOpen();
   };
 
+  const handleUpdateProposal = () => {
+    // Logic for updating proposal
+    console.log("Updating proposal...");
+    router.push('/artist-page/my-proposals');
+  };
+
   const handleCancel = () => {
     router.push('/artist-page/project-page');
+  };
+
+  const handleCancelEdit = () => {
+    router.push('/artist-page/my-proposals');
   };
 
   return (
@@ -38,19 +49,22 @@ const SendProposalPageContent = () => {
           isOpen={isOpen}
           onOpen={onOpen}
           onOpenChange={onOpenChange}
-          handleSubmitProposal={handleSubmitProposal}
+          handleSubmitProposal={isEditMode ? handleUpdateProposal : handleSubmitProposal}
           jobId={jobId}
+          isEditMode={isEditMode}
+          handleCancelEdit={handleCancelEdit}
         />
       </div>
       {/* Sidebar */}
       <div className='col-span-10 lg:col-span-3 lg:mt-24 flex flex-col'>
         <div className='hidden lg:flex mb-2 lg:mb-4'>
           <BtnProposals
-            handleSubmitProposal={handleSubmitProposal}
+            handleSubmitProposal={isEditMode ? handleUpdateProposal : handleSubmitProposal}
             isOpen={isOpen}
             onOpenChange={onOpenChange}
-            saveText='Cancel'
-            handleSave={handleCancel}
+            sendText={isEditMode ? "Update" : "Send Proposal"}
+            saveText={isEditMode ? "Cancel" : "Cancel"}
+            handleSave={isEditMode ? handleCancelEdit : handleCancel}
             showSaveIcon={false}
           />
           <ProposalPopUp isOpen={isOpen} onOpenChange={onOpenChange} />

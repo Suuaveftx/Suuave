@@ -15,20 +15,17 @@ import {
 } from 'lucide-react';
 
 const settingsMenu = [
-  { id: 'profile', label: 'Profile', icon: LucideCircleUserRound },
   { id: 'notifications', label: 'Notifications', icon: LucideBell },
   { id: 'security', label: 'Security', icon: LucideLock },
 ];
 
 const SettingsPage = () => {
   const router = useRouter();
-  const [activeItem, setActiveItem] = useState('profile');
+  const [activeItem, setActiveItem] = useState('notifications');
   const [showSidebar, setShowSidebar] = useState(true); // for mobile
 
   const renderActiveComponent = () => {
     switch (activeItem) {
-      case 'profile':
-        return <div>Profile Settings Content</div>;
       case 'notifications':
         return <NotificationSettings />;
       case 'security':
@@ -39,7 +36,7 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className='w-full h-screen'>
+    <div className='w-full h-screen scrollbar-hide'>
       {/* ----- Desktop View ----- */}
       <div className='hidden sm:flex h-full'>
         {/* Sidebar on Desktop */}
@@ -77,11 +74,9 @@ const SettingsPage = () => {
               onClick={() => setShowSidebar(true)}
             >
               <ChevronLeft className='w-5 h-5 mr-1' />
-              {activeItem !== 'notifications' && (
-                <span className='text-[20px]'>
-                  {activeItem === 'profile' ? 'Profile' : 'Security'}
-                </span>
-              )}
+              <span className='text-[20px]'>
+                {activeItem === 'notifications' ? 'Notifications' : 'Security'}
+              </span>
             </button>
 
             {/* Render active component */}

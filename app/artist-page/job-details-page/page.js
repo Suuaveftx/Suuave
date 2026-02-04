@@ -106,6 +106,7 @@ const JobDetailsPageContent = () => {
             handleWithdrawProposal={handleWithdrawProposal}
             handleSave={handleBookmark}
             proposalSubmitted={proposalSubmitted}
+            isSaved={isSaved}
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             saveText={proposalSubmitted ? 'Withdraw Proposal' : (isSaved ? 'Saved' : 'Save Job')}
@@ -135,6 +136,7 @@ const JobDetailsPageContent = () => {
             handleWithdrawProposal={handleWithdrawProposal}
             handleSave={handleBookmark}
             proposalSubmitted={proposalSubmitted}
+            isSaved={isSaved}
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             saveText={proposalSubmitted ? 'Withdraw Proposal' : (isSaved ? 'Saved' : 'Save Job')}
