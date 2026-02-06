@@ -47,7 +47,7 @@ export default function RetainCheckout() {
 
     const handleCloseSuccess = () => {
         setIsSuccessModalOpen(false);
-        router.push(returnUrl || '/fashion-designers/contracts');
+        router.push('/fashion-designers');
     };
 
     return (
