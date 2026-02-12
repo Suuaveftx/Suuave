@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  experimental: {
-    // authInterrupts: true,
-  },
+  serverExternalPackages: ['@prisma/client', '@suuaveftx/prisma-shared'],
 };
 
 export default nextConfig;

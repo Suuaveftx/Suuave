@@ -12,8 +12,16 @@ import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import CustomButton from './CustomButton';
-import { ChevronDown, User, CreditCard, HelpCircle, Settings, LogOut } from 'lucide-react';
+import {
+  ChevronDown,
+  User,
+  CreditCard,
+  HelpCircle,
+  Settings,
+  LogOut,
+} from 'lucide-react';
 import Image from 'next/image';
+import { signOut } from '../app/actions/services';
 
 const Navbars = () => {
   const [textStyle, setTextStyle] = useState('text-black');
@@ -26,7 +34,10 @@ const Navbars = () => {
       return pathname === path || pathname.startsWith('/artist-page/job-details-page');
     }
     if (path === '/artist-page/my-contracts-old') {
-      return pathname === path || pathname.startsWith('/artist-page/ongoing-contract-information');
+      return (
+        pathname === path ||
+        pathname.startsWith('/artist-page/ongoing-contract-information')
+      );
     }
     return pathname === path;
   };
@@ -44,6 +55,11 @@ const Navbars = () => {
     { label: 'My Contracts', href: '/artist-page/my-contracts-old' },
     { label: 'Settings', href: '/artist-page/settings' },
   ];
+
+  const handleArtistLogout = async () => {
+    // await authClient.signOut();
+    await signOut();
+  };
 
   return (
     <Navbar
@@ -69,26 +85,29 @@ const Navbars = () => {
       </div>
 
       {/* MENU */}
-      <NavbarContent className='hidden sm:flex gap-8 ml-8 font-bold h-full' justify='center'>
+      <NavbarContent
+        className='hidden sm:flex gap-8 ml-8 font-bold h-full'
+        justify='center'
+      >
         {menuItems.map((item, index) => (
-          <NavbarItem key={index} className="h-full flex items-center">
+          <NavbarItem key={index} className='h-full flex items-center'>
             <Link
               href={item.href}
               className={`${textStyle} transition duration-300 relative flex items-center h-full`}
             >
               <motion.div
-                animate={isActive(item.href) ? "hovered" : "initial"}
-                whileHover="hovered"
-                className="relative flex items-center h-full"
+                animate={isActive(item.href) ? 'hovered' : 'initial'}
+                whileHover='hovered'
+                className='relative flex items-center h-full'
               >
                 {item.label}
                 <motion.div
                   variants={{
                     initial: { scaleX: 0 },
-                    hovered: { scaleX: 1 }
+                    hovered: { scaleX: 1 },
                   }}
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  className="absolute bottom-[20px] left-0 w-full h-[2px] bg-[#222222] origin-left"
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  className='absolute bottom-[20px] left-0 w-full h-[2px] bg-[#222222] origin-left'
                 />
               </motion.div>
             </Link>
@@ -112,7 +131,12 @@ const Navbars = () => {
           </NavbarItem>
           <NavbarItem className='hidden lg:flex'>
             <Link href='/artist-page/messages'>
-              <Image src='/dev-images/Messages.png' alt='Messages' width={24} height={24} />
+              <Image
+                src='/dev-images/Messages.png'
+                alt='Messages'
+                width={24}
+                height={24}
+              />
             </Link>
           </NavbarItem>
         </div>
@@ -134,8 +158,9 @@ const Navbars = () => {
             </div>
 
             <ChevronDown
-              className={`w-5 h-5 text-gray-600 transition-transform ${isOpen ? 'rotate-180' : ''
-                }`}
+              className={`w-5 h-5 text-gray-600 transition-transform ${
+                isOpen ? 'rotate-180' : ''
+              }`}
             />
           </button>
 
@@ -184,10 +209,7 @@ const Navbars = () => {
               </Link>
 
               <div
-                onClick={() => {
-                  localStorage.removeItem('activeCategory');
-                  window.location.href = '/';
-                }}
+                onClick={() => handleArtistLogout}
                 className='flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer'
               >
                 <div className='w-6 h-6 flex items-center justify-center rounded-full border-1 border-[#000000]'>
@@ -197,7 +219,6 @@ const Navbars = () => {
               </div>
             </div>
           )}
-
         </div>
 
         <Link className='lg:hidden text-black'>Login</Link>
@@ -212,7 +233,11 @@ const Navbars = () => {
       <NavbarMenu>
         {mobileMenuItems.map((item, index) => (
           <NavbarMenuItem key={index}>
-            <Link className='w-full text-black transition duration-300' href={item.href} size='lg'>
+            <Link
+              className='w-full text-black transition duration-300'
+              href={item.href}
+              size='lg'
+            >
               {item.label}
             </Link>
           </NavbarMenuItem>

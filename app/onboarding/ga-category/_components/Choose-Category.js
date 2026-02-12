@@ -32,7 +32,7 @@ const ChooseCategory = () => {
       });
       return;
     }
-    router.push('/onboarding/create-new-account');
+    router.push('/intro-to-profile-setup');
   };
 
   return (

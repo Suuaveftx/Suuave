@@ -1,6 +1,9 @@
-import React from "react";
+import React from 'react';
+import { requireAuth } from '../../lib/protected-routes';
+import { Roles } from '../../utils/enum';
 
-function ProjectPageLayout({ children }) {
+async function ProjectPageLayout({ children }) {
+  await requireAuth(Roles.artist);
   return <>{children}</>;
 }
 
