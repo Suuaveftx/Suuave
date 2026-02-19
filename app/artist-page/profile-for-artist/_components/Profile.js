@@ -106,9 +106,11 @@ const ProfileArtist = ({ isVisitor = false }) => {
               <p className="text-[#222222] text-[16px] font-medium">
                 {userRole === 'Fashion Brand' ? 'Designer/Brand' : titleValue}
               </p>
-              <button onClick={() => setIsModalOpen(true)} className="text-[#3A98BB] hover:opacity-75 transition-opacity">
-                <Pencil size={18} />
-              </button>
+              {!isVisitor && (
+                <button onClick={() => setIsModalOpen(true)} className="text-[#3A98BB] hover:opacity-75 transition-opacity">
+                  <Pencil size={18} />
+                </button>
+              )}
             </div>
 
             {/* Location */}
@@ -129,6 +131,21 @@ const ProfileArtist = ({ isVisitor = false }) => {
                 <span className='text-[#3A98BB]'>(5.0 reviews)</span>
               </div>
             </div>
+
+            {isVisitor && (
+              <div className="mt-4 w-full">
+                <button
+                  onClick={handleRetainArtist}
+                  className="w-full px-6 py-2 rounded-full transition-all flex items-center justify-center shadow-md font-proximanova font-medium"
+                  style={{
+                    background: "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
+                    color: "#035A7A",
+                  }}
+                >
+                  Retain Artist
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
