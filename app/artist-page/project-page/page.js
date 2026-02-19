@@ -1,15 +1,25 @@
 'use client';
-import React from 'react';
+import React, { use } from 'react';
 
 import Footer3 from '../../../components/Footer3';
 import SearchBar from '../../../components/Searchbar';
 import ProjectPage from './_components/Project-Page';
 import { BsExclamationTriangle } from 'react-icons/bs';
 import { signOut } from '../../actions/services';
+import { authClient } from '../../../lib/auth-client';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
+  const router = useRouter();
+  const { data: session } = authClient.useSession(); // Note: Better Auth uses useSession() for hooks
+  const user = session?.user;
   const handleLogout = async () => {
     await signOut();
+    // await authClient.signOut();
+    if (!user) {
+      console.log('User signed out!!');
+      router.push('/auth/login');
+    }
   };
   return (
     <>

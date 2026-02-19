@@ -37,12 +37,18 @@ export const auth = betterAuth({
     modelName: 'Verification',
   },
   secret: process.env.BETTER_AUTH_SECRET || 'placeholder-secret-for-build',
+  emailVerification: {
+    autoSignInAfterVerification: true,
+  },
   emailAndPassword: {
     enabled: true,
-    autoSignIn: true,
     requireEmailVerification: true,
   },
-
+  mapProfileToUser: () => {
+    return {
+      role: 'user_pending',
+    };
+  },
   socialProviders: {
     google: {
       clientId: (process.env.GOOGLE_CLIENT_ID as string) || 'placeholder',
@@ -53,7 +59,7 @@ export const auth = betterAuth({
     emailOTP({
       overrideDefaultEmailVerification: true,
       otpLength: Number(process.env.COUNTER_OTP_LENGTH) || 6,
-      expiresIn: Number(process.env.COUNTER_OTP_EXPIRATION) || 300, // 5 minutes
+
       async sendVerificationOTP({ email, otp, type }) {
         if (type === 'sign-in') {
           // Send the OTP for sign in

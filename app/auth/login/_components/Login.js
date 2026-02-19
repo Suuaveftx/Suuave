@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FaLock } from 'react-icons/fa';
 import { HiOutlineMail } from 'react-icons/hi';
 import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
@@ -15,6 +15,9 @@ import { authClient } from '../../../../lib/auth-client';
 
 const Login = () => {
   const { redirectUser } = useRoleRedirect();
+  const searchParams = useSearchParams();
+
+  const redirect = searchParams.get('redirect');
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState(false);
   const router = useRouter();
@@ -65,6 +68,7 @@ const Login = () => {
   const handleSocialLogin = async (provider) => {
     await authClient.signIn.social({
       provider: provider,
+      // callbackURL: redirect,
     });
   };
   return (

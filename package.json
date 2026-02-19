@@ -14,7 +14,7 @@
     "@heroui/react": "^2.7.5",
     "@neondatabase/serverless": "^1.0.2",
     "@radix-ui/react-slot": "^1.1.2",
-    "@suuaveftx/prisma-shared": "^0.1.32",
+    "@suuaveftx/prisma-shared": "^0.1.33",
     "better-auth": "^1.3.34",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

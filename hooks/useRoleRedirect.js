@@ -5,6 +5,7 @@ export const useRoleRedirect = () => {
   const router = useRouter();
 
   const redirectUser = (role) => {
+    console.log('Redirecting user with role:', role);
     const routes = {
       [Roles.artist]: '/artist-page',
       [Roles.brand]: '/fashion-designers',

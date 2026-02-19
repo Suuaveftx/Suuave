@@ -6,9 +6,8 @@ import { authClient } from '../../lib/auth-client';
 import { APIError } from 'better-auth/api';
 import { type } from 'node:os';
 
-export const signIn = async (email, password) => {
-  return await auth.api.signInEmail({ email, password });
-};
+const DEFAULT_IMAGE =
+  'https://secure.gravatar.com/avatar/1189d655f587502f74c877f9ee995f36?s=40';
 
 export const signUp = async (data) => {
   try {
@@ -95,7 +94,7 @@ export const signInWithEmailAndPassword = async (email, password) => {
         email: email,
         password: password,
       },
-      headers: headers(),
+      headers: await headers(),
     });
     return { success: true, data: result };
   } catch (error) {
@@ -109,7 +108,7 @@ export const signInWithEmailAndPassword = async (email, password) => {
 export const signOut = async () => {
   console.log('Signing out user...');
   return await auth.api.signOut({
-    headers: headers(),
+    headers: await headers(),
   });
 };
 

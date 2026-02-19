@@ -1,20 +1,19 @@
 'use client';
 import Image from 'next/image';
-import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { addToast, Button, InputOtp } from '@heroui/react';
 import CustomButton from '../../../../components/CustomButton';
-import OtpValue from './OtpValue';
 import BackButton from '../../../../components/BackButton';
 import { useForm } from 'react-hook-form';
 import { useCountdown } from '../../../../utils/useCountdown';
 import { checkOtp, sendVerificationEmail, verifyEmail } from '../../../actions/services';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const Otp = ({ email }) => {
   const { displayTime, isFinished, reset } = useCountdown(
     process.env.COUNTER_OTP_EXPIRATION || 300
   );
+
   const [value, setValue] = React.useState('');
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState('');
@@ -24,13 +23,6 @@ const Otp = ({ email }) => {
     handleSubmit,
   } = useForm();
   const router = useRouter();
-
-  // useEffect(() => {
-  //   const savedCategory = localStorage.getItem("activeCategory");
-  //   if (savedCategory) {
-  //     setCategory(savedCategory);
-  //   }
-  // }, []);
 
   const onSubmit = async (data) => {
     console.log('OTP submitted:', data.otp);
@@ -44,7 +36,13 @@ const Otp = ({ email }) => {
         if (verifiedEmail.success) {
           console.log('Email verified successfully:', verifiedEmail.data);
           // Redirect to intro to profile setup page
-          router.push('/onboarding/intro-to-profile-setup');
+          // router.push('/onboarding/intro-to-profile-setup');
+          router.refresh();
+
+          // 2. Give it a tiny moment to ensure the cookie is processed before redirecting
+          setTimeout(() => {
+            router.push('/onboarding/intro-to-profile-setup');
+          }, 100);
         } else {
           addToast({
             title: 'Email verification',
@@ -60,18 +58,6 @@ const Otp = ({ email }) => {
         });
         console.error('Invalid OTP:', checkResult.error);
       }
-      // const verifiedEmail = await verifyEmail(email, data.otp);
-      // if (verifiedEmail.success) {
-      //   console.log('Email verified successfully:', verifiedEmail.data);
-      //   // Redirect to intro to profile setup page
-      //   router.push('/onboarding/intro-to-profile-setup');
-      // } else {
-      //   addToast({
-      //     title: 'Email verification',
-      //     description: verifiedEmail.error || 'Email verification failed',
-      //     color: 'secondary',
-      //   });
-      // }
     } catch (error) {
       addToast({
         title: 'Email or OTP verification failed',
@@ -156,8 +142,8 @@ const Otp = ({ email }) => {
               Confirm your email address
             </h1>
             <p className='text-[#727272] text-sm mb-3 font-normal text-center'>
-              Kindly enter the six(6) digit code sent to the <br /> email address
-              czulu07@gmail.com
+              Kindly enter the six(6) digit code sent to the <br /> email address &nbsp;
+              {email}
             </p>
 
             {/* OTP input fields */}
@@ -183,7 +169,7 @@ const Otp = ({ email }) => {
                 isLoading={loading}
                 isDisabled={loading}
                 type='submit'
-                className='w-72 mt-4'
+                className='w-72 text-[#035A7A] rounded-3xl cursor-pointer py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]'
               >
                 Submit
               </Button>

@@ -9,8 +9,9 @@ import { User, Upload, Briefcase } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@heroui/react';
 import { Roles } from '../../../../utils/enum';
+
 const WelcomePage = ({ user }) => {
-  const [category] = useState(user.role);
+  const [category] = useState(user?.role);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const displayName = user?.name ? user.name.split(' ')[0] : 'there';
