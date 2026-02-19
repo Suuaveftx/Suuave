@@ -1,11 +1,15 @@
 'use client';
 import React, { useState } from 'react';
 import { TrashIcon, ChevronLeftIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PaginationTab from '../../../../components/Pagination';
+import DeleteConfirmationModal from '../../../fashion-designers/my-projects/components/DeleteConfirmationModal';
+import { useDisclosure } from '@heroui/react';
 
 const ProposalTables = () => {
-  const proposals = [
+  const router = useRouter();
+  const [proposals, setProposals] = useState([
     { id: 1, title: 'Fashion Native Bridal illustration', date: 'June 12, 2024', status: 'Active' },
     { id: 2, title: 'Fashion Native Bridal illustration', date: 'September 12, 2024', status: 'Active' },
     { id: 3, title: 'Fashion Native Bridal illustration', date: 'October 12, 2024', status: 'Inactive' },
@@ -18,15 +22,26 @@ const ProposalTables = () => {
     { id: 10, title: 'Fashion Native Bridal illustration', date: 'November 12, 2024', status: 'Active' },
     { id: 11, title: 'Fashion Native Bridal illustration', date: 'December 12, 2024', status: 'Active' },
     { id: 12, title: 'Fashion Native Bridal illustration', date: 'January 1, 2025', status: 'Inactive' },
-  ];
+  ]);
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [proposalToDelete, setProposalToDelete] = useState(null);
 
   const statusColors = {
     Active: 'text-green-800',
     Inactive: 'text-red-500',
   };
 
-  const handleDelete = (id) => {
-    console.log(`Deleting proposal ${id}`);
+  const openDeleteModal = (id, title) => {
+    setProposalToDelete({ id, title });
+    onOpen();
+  };
+
+  const handleConfirmDelete = () => {
+    if (proposalToDelete) {
+      setProposals(proposals.filter((p) => p.id !== proposalToDelete.id));
+      setProposalToDelete(null);
+    }
   };
 
   // Pagination setup
@@ -51,7 +66,9 @@ const ProposalTables = () => {
       {/* Title */}
       <div className="w-[90%] border-b-2 text-left mb-[21px] ml-5 lg:ml-16">
         <div className="flex items-center gap-2 mt-8 pb-1">
-          <ChevronLeftIcon className="w-6 h-6" />
+          <button onClick={() => router.back()} className="flex items-center">
+            <ChevronLeftIcon className="w-6 h-6" />
+          </button>
           <h1 className="text-xl font-bold">My Proposals</h1>
         </div>
       </div>
@@ -101,7 +118,8 @@ const ProposalTables = () => {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        handleDelete(proposal.id);
+                        e.stopPropagation();
+                        openDeleteModal(proposal.id, proposal.title);
                       }}
                       className="text-gray-500 hover:text-red-500 transition-colors"
                     >
@@ -148,8 +166,15 @@ const ProposalTables = () => {
           </div>
         </div>
       </section>
+
+      <DeleteConfirmationModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        onConfirm={handleConfirmDelete}
+        projectTitle={proposalToDelete?.title}
+        title="Delete Proposal?"
+      />
     </div>
   );
 };
-
 export default ProposalTables;

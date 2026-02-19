@@ -196,7 +196,7 @@ export default function CompletedContracts() {
     const sorted = [...filtered].sort((a, b) => b.dateValue - a.dateValue);
 
     return sorted;
-  }, [search, sortBy, currencyFilter, dateFilter, contracts]);
+  }, [search, currencyFilter, dateFilter, contracts]);
 
   const onSearchChange = (value) => {
     setSearch(value);

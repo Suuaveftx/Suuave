@@ -44,9 +44,17 @@ export function NavLinks() {
         pathname.startsWith("/fashion-designers/contracts") ||
         pathname.startsWith("/fashion-designers/my-collection") ||
         pathname.startsWith("/fashion-designers/post-project") ||
-        pathname.startsWith("/fashion-designers/settings");
+        pathname.startsWith("/fashion-designers/settings") ||
+        pathname.startsWith("/fashion-designers/profile") ||
+        pathname.startsWith("/fashion-designers/transactions");
 
       return pathname.startsWith("/fashion-designers") && !isMainSubpath;
+    }
+    if (path === "/fashion-designers/contracts") {
+      return (
+        pathname.startsWith("/fashion-designers/contracts") &&
+        !pathname.startsWith("/fashion-designers/contracts/retain")
+      );
     }
     return pathname.startsWith(path);
   };

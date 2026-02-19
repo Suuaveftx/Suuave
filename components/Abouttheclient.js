@@ -33,12 +33,13 @@ const Abouttheclient = () => {
       {/* Client Info */}
       <div className="mb-8 flex flex-col items-center text-center">
         <div className='font-bold'>
-          <Link href="/artist-page/client-profile" className="hover:underline">
+          <Link href="/artist-page/client-profile" className="text-[#3A98BB] hover:opacity-80 transition-opacity duration-200">
             <h4>@Ocean</h4>
           </Link>
         </div>
         <div className="flex flex-col gap-2 mb-6 items-center">
           <h5 className="font-medium text-sm">Fashion Brand</h5>
+
 
           <div className="flex items-center gap-2 justify-center">
             <MdLocationPin color="#878787" />

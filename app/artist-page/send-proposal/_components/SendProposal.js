@@ -7,7 +7,7 @@ import ProposalPopUpMobile from './ProposalPopUpMobile';
 import ProposalPopUp from './ProposalPopUp';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobId }) => {
+const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobId, isEditMode, handleCancelEdit }) => {
   const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
   const searchParams = useSearchParams();
@@ -49,7 +49,7 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
           <FaChevronLeft color="#878787" />
         </div>
         <div className="w-full lg:text-[34px] text-[20px] font-bold lg:ml-9 lg:mb-[18.68px]">
-          <h4>Send Proposal</h4>
+          <h4>{isEditMode ? "Proposal Details" : "Send Proposal"}</h4>
         </div>
       </div>
 
@@ -189,7 +189,7 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
         <div className="lg:hidden flex justify-between gap-4 mt-4">
           <button
             className="flex-1 py-3 bg-[#F0F0F0] text-[#222222] font-medium rounded-full text-sm"
-            onClick={() => router.back()}
+            onClick={isEditMode ? handleCancelEdit : () => router.push('/artist-page/project-page')}
           >
             Cancel
           </button>
@@ -198,7 +198,7 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
             onClick={handleSubmitProposal}
             className="flex-1 py-3 bg-[#CCE7F2] text-[#0A4A66] font-bold rounded-full text-sm shadow-sm"
           >
-            Send Proposal
+            {isEditMode ? "Update" : "Send Proposal"}
           </button>
         </div>
       </div>

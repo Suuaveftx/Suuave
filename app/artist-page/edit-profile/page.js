@@ -1,0 +1,106 @@
+"use client";
+import Image from "next/image";
+import { useState } from "react";
+import PersonalDetail from "./_components/PersonalDetail";
+import Profile from "./_components/Profile";
+
+export default function Page() {
+  const [selected, setSelected] = useState("PersonalDetail");
+  const [preview, setPreview] = useState("/dev-images/profile.png");
+  const [previewPortfolio, setPreviewPortfolio] = useState(null);
+  const [previewAwardCertificate, setPreviewAwardCertificate] = useState(null);
+
+  // image preview handler
+
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const uploadedPortfolio = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPreviewPortfolio(URL.createObjectURL(file));
+    }
+  };
+
+  const uploadedAwardCertificate = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPreviewAwardCertificate(URL.createObjectURL(file));
+    }
+  };
+
+  // Personal details state
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    username: "",
+    email: "",
+    nationality: new Set([]),
+    phoneCode: new Set([]),
+    phoneNumber: "",
+    currentCity: "",
+    language: new Set([]),
+    day: new Set([]),
+    month: new Set([]),
+    year: new Set([]),
+    about: "",
+    skill: "",
+    companyName: "",
+    portfolioLink: "",
+    uploadedPortfolio: "",
+    availability: false,
+    nameofAwardCertificate: "",
+    awardedIssuedBy: "",
+    uploadCertificateAward: "",
+  });
+  return (
+    <>
+      <div className="md:hidden pt-6 pl-6 bg-[#F9F9F9]">
+        <div className="bg-[#EAF9FF] py-2 px-4 inline-flex items-center gap-2 rounded-lg">
+          <Image src="/dev-images/logo.png" alt="icon" width={24} height={24} />
+          <span className="font-bold text-[#222222] text-xl font-satoshi" style={{ fontFamily: 'var(--font-satoshi), sans-serif', letterSpacing: '0.05em' }}>suuave</span>
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row px-5 md:px-10">
+        {/* profile view and button switch */}
+
+        <Profile
+          setSelected={setSelected}
+          formData={formData}
+          setFormData={setFormData}
+          selected={selected}
+          className="hidden md:flex"
+          preview={preview}
+          handleImageChange={handleImageChange}
+        />
+
+        {/* Conditionally show content */}
+        {selected === "PersonalDetail" && (
+          <>
+            <Profile
+              setSelected={setSelected}
+              formData={formData}
+              setFormData={setFormData}
+              selected={selected}
+              className="flex md:hidden"
+              preview={preview}
+              handleImageChange={handleImageChange}
+            />
+            <PersonalDetail
+              setSelected={setSelected}
+              formData={formData}
+              setFormData={setFormData}
+            />
+          </>
+        )}
+
+
+      </div>
+    </>
+  );
+}

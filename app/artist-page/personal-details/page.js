@@ -111,8 +111,6 @@ export default function Page() {
             setFormData={setFormData}
             uploadedPortfolio={uploadedPortfolio}
             previewPortfolio={previewPortfolio}
-
-
           />
         )}
 
@@ -125,6 +123,8 @@ export default function Page() {
             previewAwardCertificate={previewAwardCertificate}
           />
         )}
+
+
       </div>
     </>
   );

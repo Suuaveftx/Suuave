@@ -123,7 +123,7 @@ const ProposalDetailsPage = ({ params }) => {
                         shadow="none"
                         className="border rounded-2xl hover:shadow-md transition-all duration-300 bg-white"
                         isPressable
-                        onPress={() => router.push("/artist-page/profile-for-artist")}
+                        onPress={() => router.push("/artist-page/profile-vistor-view")}
                     >
                         <CardBody className="flex items-center justify-center gap-6 p-8 py-12">
                             <Avatar
@@ -132,7 +132,7 @@ const ProposalDetailsPage = ({ params }) => {
                             />
                             <div className="flex text-center flex-col items-center justify-center gap-1">
                                 <p className="text-xl font-bold">
-                                    <Link href="/artist-page/profile-for-artist" className="text-[#3A98BB] hover:underline">
+                                    <Link href="/artist-page/profile-vistor-view" className="text-[#3A98BB] hover:underline">
                                         @{proposalData.artist.username}
                                     </Link>
                                 </p>
@@ -158,7 +158,7 @@ const ProposalDetailsPage = ({ params }) => {
                                             </div>
                                         </span>
                                         <Link
-                                            href="/artist-page/profile-for-artist?tab=reviews"
+                                            href="/artist-page/profile-vistor-view?tab=reviews"
                                             className="text-sm text-[#3A98BB] font-medium hover:underline flex items-center gap-1"
                                             onClick={(e) => e.stopPropagation()}
                                         >

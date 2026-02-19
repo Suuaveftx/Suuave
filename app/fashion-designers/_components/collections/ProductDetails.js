@@ -116,7 +116,7 @@ const ProductDetails = ({ id }) => {
           <Text>{details.purchaseDate}</Text>
           {/* Artist */}
           <Header>About the Artist</Header>
-          <Link href="/artist-page/profile-for-artist" className="flex items-center gap-2 border-b-1 border-divider mt-4 pb-6 px-4 cursor-pointer">
+          <Link href="/artist-page/profile-vistor-view" className="flex items-center gap-2 border-b-1 border-divider mt-4 pb-6 px-4 cursor-pointer">
             <Image
               src={details?.artist?.image}
               alt="image"
@@ -212,7 +212,7 @@ const ProductDetails = ({ id }) => {
                   <div>
                     {/* Artist */}
                     <h1 className=" font-bold text-base">About the Artist</h1>
-                    <Link href="/artist-page/profile-for-artist" className="flex mt-4 items-center gap-2 cursor-pointer">
+                    <Link href="/artist-page/profile-vistor-view" className="flex mt-4 items-center gap-2 cursor-pointer">
                       <Image
                         src={details?.artist?.image}
                         alt="image"

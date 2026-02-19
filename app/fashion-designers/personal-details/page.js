@@ -49,9 +49,7 @@ export default function Page() {
       <div className="md:hidden px-5">
         <Image src="/svg/mobile-logo.svg" alt="icon" width={140} height={40} />
       </div>
-      <h1 className=" border-b-2 md:mx-10 border-[#EAEAEA] py-3 font-bold text-2xl text-[#222222] px-5 md:px-0 hidden md:block">
-        Profile Setting
-      </h1>
+
       <div className="flex flex-col md:flex-row px-5 md:px-10">
         {/* Conditionally show content */}
         {selected === "PersonalDetail" && (

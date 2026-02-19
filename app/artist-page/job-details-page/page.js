@@ -9,13 +9,21 @@ import DesignStyle from './_components/DesignStyle';
 import SkillRequirement from './_components/SkillRequirement';
 import ReferenceImage from './_components/ReferenceImage';
 import ProposalPopUp from '../send-proposal/_components/ProposalPopUp';
+import DeleteConfirmationModal from '../../fashion-designers/my-projects/components/DeleteConfirmationModal';
 import { useDisclosure } from '@heroui/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 const JobDetailsPageContent = () => {
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isWithdrawModalOpen,
+    onOpen: onWithdrawModalOpen,
+    onOpenChange: onWithdrawModalOpenChange
+  } = useDisclosure();
+
   const [proposalSubmitted, setProposalSubmitted] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const searchParams = useSearchParams();
   const jobId = searchParams.get('id');
 
@@ -24,6 +32,9 @@ const JobDetailsPageContent = () => {
     if (jobId) {
       const activeProposals = JSON.parse(localStorage.getItem('activeProposals') || '{}');
       setProposalSubmitted(!!activeProposals[jobId]);
+
+      const savedJobs = JSON.parse(localStorage.getItem('savedJobs') || '{}');
+      setIsSaved(!!savedJobs[jobId]);
     } else {
       // Fallback for direct access without ID (optional)
       const isProposalActive = localStorage.getItem('proposalActive');
@@ -33,12 +44,28 @@ const JobDetailsPageContent = () => {
     }
   }, [jobId]);
 
+  const handleBookmark = () => {
+    if (!jobId) return;
+
+    const savedJobs = JSON.parse(localStorage.getItem('savedJobs') || '{}');
+    const newSavedStatus = !isSaved;
+
+    if (newSavedStatus) {
+      savedJobs[jobId] = true;
+    } else {
+      delete savedJobs[jobId];
+    }
+
+    localStorage.setItem('savedJobs', JSON.stringify(savedJobs));
+    setIsSaved(newSavedStatus);
+  };
+
   const handleSubmitProposal = () => {
     // Navigate to send proposal page with ID
     router.push(`/artist-page/send-proposal?id=${jobId}`);
   };
 
-  const handleWithdrawProposal = () => {
+  const confirmWithdrawProposal = () => {
     if (jobId) {
       const activeProposals = JSON.parse(localStorage.getItem('activeProposals') || '{}');
       delete activeProposals[jobId];
@@ -48,6 +75,10 @@ const JobDetailsPageContent = () => {
       localStorage.removeItem('proposalActive');
       setProposalSubmitted(false);
     }
+  };
+
+  const handleWithdrawProposal = () => {
+    onWithdrawModalOpen();
   };
 
   const handleViewProposal = () => {
@@ -65,16 +96,20 @@ const JobDetailsPageContent = () => {
           handleViewProposal={handleViewProposal}
           handleWithdrawProposal={handleWithdrawProposal}
           jobId={jobId}
+          isSaved={isSaved}
+          handleBookmark={handleBookmark}
         />
         <div className='hidden w-screen max-w-[100%] mb-8'>
           <BtnProposals
             handleSubmitProposal={handleSubmitProposal}
             handleViewProposal={handleViewProposal}
             handleWithdrawProposal={handleWithdrawProposal}
+            handleSave={handleBookmark}
             proposalSubmitted={proposalSubmitted}
+            isSaved={isSaved}
             isOpen={isOpen}
             onOpenChange={onOpenChange}
-            saveText={proposalSubmitted ? 'Withdraw Proposal' : 'Save Job'}
+            saveText={proposalSubmitted ? 'Withdraw Proposal' : (isSaved ? 'Saved' : 'Save Job')}
             sendText={proposalSubmitted ? 'View Proposal' : 'Send Proposal'}
           />
         </div>
@@ -99,10 +134,12 @@ const JobDetailsPageContent = () => {
             handleSubmitProposal={handleSubmitProposal}
             handleViewProposal={handleViewProposal}
             handleWithdrawProposal={handleWithdrawProposal}
+            handleSave={handleBookmark}
             proposalSubmitted={proposalSubmitted}
+            isSaved={isSaved}
             isOpen={isOpen}
             onOpenChange={onOpenChange}
-            saveText={proposalSubmitted ? 'Withdraw Proposal' : 'Save Job'}
+            saveText={proposalSubmitted ? 'Withdraw Proposal' : (isSaved ? 'Saved' : 'Save Job')}
             sendText={proposalSubmitted ? 'View Proposal' : 'Send Proposal'}
           />
           <ProposalPopUp isOpen={isOpen} onOpenChange={onOpenChange} />
@@ -111,6 +148,15 @@ const JobDetailsPageContent = () => {
           <Abouttheclient />
         </div>
       </div>
+
+      <DeleteConfirmationModal
+        isOpen={isWithdrawModalOpen}
+        onOpenChange={onWithdrawModalOpenChange}
+        onConfirm={confirmWithdrawProposal}
+        title="Withdraw Proposal?"
+        message="Are you sure you want to withdraw your proposal? This action cannot be undone."
+        confirmButtonText="Yes"
+      />
     </div>
   );
 };

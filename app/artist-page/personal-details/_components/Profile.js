@@ -130,6 +130,7 @@ const Profile = ({
           </ul>
         )}
       </div>
+
     </div>
   );
 };

@@ -1,17 +1,16 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { Camera, Pencil } from 'lucide-react';
 import { FaStar } from 'react-icons/fa';
 import CustomButton from '../../../../components/CustomButton';
 import { IoLocationSharp } from 'react-icons/io5';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Pencil } from 'lucide-react';
-import {
-  EditAboutMe,
-  EditProfile,
-  EditTitle,
-} from "../../../fashion-designers/_components/profile/edit";
+import EditOccupationModal from './EditOccupationModal';
+
+
 
 const ProfileArtist = ({ isVisitor = false }) => {
   const fullText = `Sorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex.`;
@@ -22,6 +21,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [previewProfileUrl, setPreviewProfileUrl] = useState(null);
   const [userRole, setUserRole] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
   const handleRetainArtist = () => {
@@ -32,6 +32,10 @@ const ProfileArtist = ({ isVisitor = false }) => {
   useEffect(() => {
     // Access localStorage in useEffect to avoid hydration issues
     const role = isVisitor ? 'Fashion Brand' : localStorage.getItem('activeCategory');
+    const savedOccupation = localStorage.getItem('artist_occupation');
+    if (savedOccupation) {
+      setTitleValue(savedOccupation);
+    }
     setUserRole(role);
   }, [isVisitor]);
 
@@ -48,158 +52,161 @@ const ProfileArtist = ({ isVisitor = false }) => {
     }
   };
 
+  const handleSaveOccupation = (newOccupation) => {
+    setTitleValue(newOccupation);
+    localStorage.setItem('artist_occupation', newOccupation);
+  };
+
   return (
     <div
-      className='w-full h-full lg:max-w-xs lg:mx-auto  lg:bg-white rounded-lg lg:space-y-2 max-h-[820px] overflow-hidden 
-      flex flex-col items-center  lg:items-start lg:text-left'
+      className='w-full h-full lg:h-fit lg:sticky lg:top-[120px] lg:max-w-xs lg:mx-auto lg:bg-white rounded-lg lg:space-y-2 
+      flex flex-col items-center lg:items-start lg:text-left shadow-sm lg:shadow-none'
     >
-      <div className='bg-[#fafafa] w-full  lg:bg-[#ffffff] lg:px-6 lg:py-6 px-4 py-4'>
-        <div className='space-y-3  pb-3 w-full flex flex-col items-center lg:items-start'>
-          {/* Profile Initials */}
-          <div className='relative w-28 h-28'>
-            {/* Circle */}
-            <div className='w-[100px] h-[100px] flex items-center justify-center rounded-full ml-4 lg:mb-7 overflow-hidden relative'>
-              {previewProfileUrl ? (
-                <Image
-                  src={previewProfileUrl}
-                  alt="Preview"
-                  fill
-                  className="object-cover"
-                />
-              ) : (
-                <Image
-                  src='/dev-images/Clients.png'
-                  alt='Profile Picture'
-                  fill
-                  className='object-cover'
-                />
-              )}
-            </div>
-
-            {/* Edit Icon */}
-            {userRole === 'Fashion Artist' && (
-              <EditProfile
-                handleFileChange={handleFileChange}
-                className="bottom-2 right-0 translate-x-1/4 translate-y-1/4 shadow-md bg-white p-1.5"
-              />
-            )}
+      <div className='bg-white lg:bg-[#ffffff] w-full lg:px-6 lg:py-6 px-4 py-8 rounded-lg shadow-sm relative'>
+        {userRole === 'Fashion Artist' && (
+          <div className="absolute top-6 right-4 z-10">
+            <Link
+              href="/artist-page/edit-profile"
+              className="px-6 py-2 rounded-full transition-all flex items-center justify-center shadow-md font-proximanova font-medium"
+              style={{
+                background: "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
+                color: "#035A7A",
+              }}
+            >
+              Edit
+            </Link>
           </div>
+        )}
+
+        <div className='space-y-4 pb-3 w-full flex flex-col items-center'>
+          {/* Profile Initials */}
+          <div className='flex justify-center w-full'>
+            <div className='w-[100px] h-[100px] flex items-center justify-center rounded-full overflow-hidden relative border-2 border-[#f1f1f1]'>
+              <Image
+                src='/dev-images/Clients.png'
+                alt='Profile Picture'
+                fill
+                className='object-cover'
+              />
+            </div>
+          </div>
+
 
           {/* Name */}
-          <div className='lg:mt-7'>
-            <h4 className='lg:text-2xl font-semibold text-lg text-[#222222] lg:leading-6'>OCEAN CLARA</h4>
-          </div>
-
-          {/* Availability Status */}
-          <div
-            className='bg-[#EEEEEE] flex items-center text-sm text-[#056D16] rounded-[32px] gap-2 px-2 py-1 
-          w-full max-w-[35%] justify-center lg:justify-start lg:mt-4'
-          >
-            <span>Available</span>
-            <span className='w-2 h-2 bg-green-600 rounded-full'></span>
+          <div className='w-full flex flex-col items-center'>
+            <h4 className='lg:text-2xl font-bold text-xl text-[#222222] flex items-center gap-2'>
+              OCEAN CLARA
+              <span className='w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white shadow-sm'></span>
+            </h4>
           </div>
 
           {/* Occupation */}
-          <div className="flex items-center gap-2 w-full justify-center lg:justify-start">
-            <p className="text-[#222222] text-sm">
-              {titleValue}
-            </p>
+          <div className="flex flex-col items-center gap-2 w-full">
+            <div className="flex items-center gap-2">
+              <p className="text-[#222222] text-[16px] font-medium">
+                {userRole === 'Fashion Brand' ? 'Designer/Brand' : titleValue}
+              </p>
+              {!isVisitor && (
+                <button onClick={() => setIsModalOpen(true)} className="text-[#3A98BB] hover:opacity-75 transition-opacity">
+                  <Pencil size={18} />
+                </button>
+              )}
+            </div>
 
-            {/* Edit Button */}
-            {userRole === 'Fashion Artist' && (
-              <div className="flex items-center">
-                <EditTitle setTitleValue={setTitleValue} titleValue={titleValue} />
+            {/* Location */}
+            <div className='flex items-center space-x-2 text-[#767676] text-sm font-medium mt-1'>
+              <IoLocationSharp size={18} />
+              <span>Lagos, Nigeria</span>
+            </div>
+
+            <div className='flex items-center space-x-2 mt-2'>
+              <div className='flex gap-1'>
+                {[...Array(5)].map((_, i) => (
+                  <FaStar key={i} size={16} className={i < 4 ? 'text-[#F8B73B]' : 'text-gray-300'} />
+                ))}
+              </div>
+              <div className="flex items-center gap-1 text-sm">
+                <span className="text-[#222222] font-semibold">4.0</span>
+                <span className='text-[#3A98BB]'>(5.0 reviews)</span>
+              </div>
+            </div>
+
+            {isVisitor && (
+              <div className="mt-4 w-full">
+                <button
+                  onClick={handleRetainArtist}
+                  className="w-full px-6 py-2 rounded-full transition-all flex items-center justify-center shadow-md font-proximanova font-medium"
+                  style={{
+                    background: "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
+                    color: "#035A7A",
+                  }}
+                >
+                  Retain Artist
+                </button>
               </div>
             )}
-
-          </div>
-
-
-          {/* Location */}
-          <div className='flex items-center justify-center lg:justify-start space-x-2 text-gray-600 text-sm'>
-            <IoLocationSharp color='#878787' />
-            <span>Lagos, Nigeria</span>
           </div>
         </div>
-
-        {/* Rating */}
-        <div className='flex items-center justify-center lg:justify-start space-x-2 text-gray-600 text-sm'>
-          <div className='flex text-base'>
-            {[...Array(5)].map((_, i) => (
-              <FaStar key={i} className={i < 4 ? 'text-yellow-500' : 'text-gray-300'} />
-            ))}
-          </div>
-          <span>
-            4.0 <span className='text-[#3A98BB]'>(5.0 reviews)</span>
-          </span>
-        </div>
-
-        {/* Retain Artist Button - Mobile */}
-        {userRole !== 'Fashion Artist' && (
-          <div className='flex lg:hidden justify-center w-full mt-6 mb-6'>
-            <button
-              className='w-1/2 py-3 bg-gradient-to-r from-[#D0EBF7] to-[#D0EBF7] text-[#035A7A] font-bold rounded-full shadow-sm text-base'
-              onClick={handleRetainArtist}
-            >
-              Retain Artist
-            </button>
-          </div>
-        )}
-
-        {/* Retain Artist Button - Desktop */}
-        {userRole !== 'Fashion Artist' && (
-          <div className=' hidden pb-8 lg:flex justify-center lg:justify-start mt-[39px] border-b'>
-            <CustomButton
-              text='Retain Artist'
-              className='w-52 text-sm font-medium'
-              style={{
-                color: '#035A7A',
-              }}
-              onPress={handleRetainArtist}
-            />
-          </div>
-        )}
       </div>
+
+      {/* Brand specific divider if needed */}
+      <div className="w-full h-2 bg-[#F1F1F1] lg:hidden"></div>
 
       {/* Stats */}
-      <div className='w-full lg:px-6 px-4 mt-4 lg:mt-0 border-b lg:border-none pb-4 lg:pb-0'>
-        <div className='flex flex-row lg:flex-col justify-center gap-6 lg:gap-0 lg:space-y-2'>
-          <div className='flex items-center gap-2 lg:justify-between text-sm text-[#222222] lg:w-full'>
-            <span className='font-bold lg:font-normal lg:order-last'>14</span>
-            <h4 className='text-[#767676] text-[16px]'>Design Collections</h4>
+      <div className='bg-white w-full py-8 lg:py-0 border-y border-[#f1f1f1] lg:border-none'>
+        <div className={`flex flex-row justify-center ${userRole === 'Fashion Brand' ? 'gap-4 px-2' : 'gap-12'}`}>
+          <div className='flex flex-col items-center text-[#222222] min-w-[80px]'>
+            <span className='font-bold text-xl mb-1 order-first'>7</span>
+            <h4 className='text-[#767676] text-[12px] font-medium text-center uppercase tracking-tight'>
+              {userRole === 'Fashion Brand' ? 'Jobs Posted' : 'Design Collections'}
+            </h4>
           </div>
 
-          <div className='flex items-center gap-2 lg:justify-between text-sm text-[#222222] lg:w-full'>
-            <span className='font-bold lg:font-normal lg:order-last'>14</span>
-            <h4 className='text-[#767676] text-[16px]'>Completed Projects</h4>
+          <div className='flex flex-col items-center text-[#222222] min-w-[80px]'>
+            <span className='font-bold text-xl mb-1 order-first'>7</span>
+            <h4 className='text-[#767676] text-[12px] font-medium text-center uppercase tracking-tight'>
+              Projects Completed
+            </h4>
           </div>
+
+          {userRole === 'Fashion Brand' && (
+            <div className='flex flex-col items-center text-[#222222] min-w-[80px]'>
+              <span className='font-bold text-xl mb-1 order-first'>$10000</span>
+              <h4 className='text-[#767676] text-[12px] font-medium text-center uppercase tracking-tight'>
+                Total Spent
+              </h4>
+            </div>
+          )}
         </div>
       </div>
 
+      <div className="w-full h-2 bg-[#F1F1F1] lg:hidden"></div>
+
       {/* About Us Section */}
-      <div className='lg:bg-[#ffffff] bg-[#fafafa] w-full flex flex-col items-start lg:px-6 px-4 lg:py-0 py-2 text-left lg:mt-0 mt-[10px]'>
-        {/* Heading with Edit Icon */}
-        <div className='flex items-center w-full mt-[22px] justify-between'>
-          <h4 className='lg:text-[#444444] text-base text-[#222222] lg:font-normal font-bold'>
+      <div className='bg-white lg:bg-[#ffffff] w-full flex flex-col items-start lg:px-6 px-4 py-8 text-left lg:mt-0 rounded-lg shadow-sm mb-10'>
+        {/* Heading */}
+        <div className='flex items-center w-full justify-between mb-4'>
+          <h4 className='text-lg text-[#222222] font-bold'>
             About Me
           </h4>
-          {userRole === 'Fashion Artist' && (
-            <EditAboutMe setAboutValue={setAboutValue} aboutValue={aboutValue} />
-          )}
         </div>
 
         {/* Text */}
         <p
-          className={`text-[#222222] text-sm font-normal 
+          className={`text-[#222222] text-sm leading-relaxed
       ${isExpanded ? '' : 'line-clamp-3'} 
       lg:line-clamp-none`}
         >
           {aboutValue}
         </p>
-
-
       </div>
-    </div>
+      <EditOccupationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        initialValue={titleValue}
+        onSave={handleSaveOccupation}
+      />
+    </div >
   );
 };
 

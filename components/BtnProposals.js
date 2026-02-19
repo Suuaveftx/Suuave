@@ -26,9 +26,10 @@ const BtnProposals = ({
   handleSubmitProposal,
   handleViewProposal,
   handleWithdrawProposal,
+  handleSave,
   proposalSubmitted = false,
-  isOpen,
   onOpenChange,
+  isSaved,
 }) => {
   return (
     <>
@@ -48,11 +49,11 @@ const BtnProposals = ({
             className="w-48 text-[#767676] flex items-center justify-center gap-2"
             icon={null}
             text={saveText}
-            onPress={proposalSubmitted ? handleWithdrawProposal : undefined}
+            onPress={proposalSubmitted ? handleWithdrawProposal : handleSave}
             style={{
-              background: "transparent",
-              color: "#767676",
-              border: "1px solid #3A98BB",
+              background: isSaved ? "#3A98BB" : "transparent",
+              color: isSaved ? "white" : "#767676",
+              border: isSaved ? "none" : "1px solid #3A98BB",
               ...saveButtonStyle,
             }}
           />

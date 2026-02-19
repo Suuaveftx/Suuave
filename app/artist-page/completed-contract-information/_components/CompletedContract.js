@@ -136,8 +136,9 @@ export default function CompletedContract() {
                                 </div>
                             </Link>
                             <div className="mb-1">
-                                <span className="font-bold text-[#3A98BB]">{clientProfile.name}</span>
-                                <span className="text-gray-500 ml-1">{clientProfile.handle}</span>
+                                <Link href="/artist-page/client-profile" className="font-bold text-[#3A98BB] hover:underline transition-all">
+                                    {clientProfile.handle}
+                                </Link>
                             </div>
 
                             <p className="text-gray-600 text-xs mb-3">{clientProfile.role}</p>
