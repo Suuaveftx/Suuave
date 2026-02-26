@@ -119,6 +119,7 @@ export const requestResetPassword = async (email) => {
         email: email, // required
       },
     });
+    console.log(result);
     return { success: true, data: result };
   } catch (error) {
     if (error instanceof APIError) {
