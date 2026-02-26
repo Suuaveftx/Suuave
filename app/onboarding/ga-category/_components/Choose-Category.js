@@ -8,11 +8,10 @@ import { Alert, addToast } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import { getActiveCategory } from '../../../../utils/utils';
 import { useAppStore } from '../../../../store';
+import { authClient } from '../../../../lib/auth-client';
 // import { Roles } from '@suuaveftx/prisma-shared';
 
-const ChooseCategory = () => {
-  // const [activeCategory, setActiveCategory] = useState('');
-  // const selectedCategory = getActiveCategory();
+const ChooseCategory = ({ user }) => {
   const activeCategory = useAppStore((state) => state.activeCategory);
   const setActiveCategory = useAppStore((state) => state.setActiveCategory);
 
@@ -23,7 +22,7 @@ const ChooseCategory = () => {
     setActiveCategory(category);
   };
 
-  const submitCategory = () => {
+  const submitCategory = async () => {
     if (!activeCategory) {
       addToast({
         title: 'Warning',
@@ -32,7 +31,22 @@ const ChooseCategory = () => {
       });
       return;
     }
-    router.push('/intro-to-profile-setup');
+
+    const { data, eror } = await authClient.updateUser({
+      role: activeCategory,
+      username: user.email.split('@')[0],
+    });
+
+    if (!data.status) {
+      addToast({
+        title: 'Warning',
+        description: eror || 'Something went wrong try again.',
+        color: 'Warning',
+      });
+      return;
+    }
+
+    router.push('/onboarding/intro-to-profile-setup');
   };
 
   return (

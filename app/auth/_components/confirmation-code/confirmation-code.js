@@ -36,6 +36,8 @@ function ConfirmationCode({ email }) {
       if (checkResult.success) {
         console.log('OTP verified successfully:', checkResult.data);
         setResetPasswordOTP(data.otp);
+        // Clear the timer from memory so it doesn't interfere later
+        localStorage.removeItem('otp_expiry_time');
         setTimeout(() => {
           router.push('/auth/reset-password');
         }, 100);

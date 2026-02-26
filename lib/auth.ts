@@ -18,11 +18,13 @@ export const auth = betterAuth({
       role: {
         type: 'string',
         required: true,
+        defaultValue: 'user_pending',
         fieldName: 'role',
       },
       username: {
         type: 'string',
         required: true,
+        defaultValue: '',
         fieldName: 'username',
       },
     },
@@ -44,16 +46,18 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: true,
   },
-  mapProfileToUser: () => {
-    return {
-      role: 'user_pending',
-    };
-  },
+
   socialProviders: {
     google: {
       clientId: (process.env.GOOGLE_CLIENT_ID as string) || 'placeholder',
       clientSecret: (process.env.GOOGLE_CLIENT_SECRET as string) || 'placeholder',
     },
+    // mapProfileToUser: (profile) => {
+    //   return {
+    //     role: 'user_pending',
+    //     username: profile.name || profile.email.split('@')[0], // Also need username since it's required
+    //   };
+    // },
   },
   plugins: [
     emailOTP({

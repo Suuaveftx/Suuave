@@ -68,7 +68,7 @@ const Login = () => {
   const handleSocialLogin = async (provider) => {
     await authClient.signIn.social({
       provider: provider,
-      // callbackURL: redirect,
+      callbackURL: '/onboarding/ga-category',
     });
   };
   return (
