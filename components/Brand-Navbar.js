@@ -32,17 +32,13 @@ import { LuCircleUser } from 'react-icons/lu';
 import { TbLogout2 } from 'react-icons/tb';
 import Image from 'next/image';
 import Notification from './Notification';
+import { signOut } from '../app/actions/services';
 
 const ArtistNavbar = () => {
   const [textStyle, setTextStyle] = useState('text-black');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-
-  const handleLogout = () => {
-    localStorage.removeItem('activeCategory');
-    window.location.href = '/';
-  };
 
   const isActive = (path) => {
     if (path === '/artist-page/project-page') {
@@ -77,9 +73,7 @@ const ArtistNavbar = () => {
     { label: 'My Proposals', href: '/artist-page/my-proposals' },
     { label: 'My Contracts', href: '/artist-page/my-contracts-old' },
   ];
-
-  const handleArtistLogout = async () => {
-    // await authClient.signOut();
+  const handleLogout = async () => {
     await signOut();
   };
 

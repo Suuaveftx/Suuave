@@ -12,6 +12,7 @@ import { addToast, Button } from '@heroui/react';
 import { signInWithEmailAndPassword, signInWithGoogle } from '../../../actions/services';
 import { useRoleRedirect } from '../../../../hooks/useRoleRedirect';
 import { authClient } from '../../../../lib/auth-client';
+import { PROVIDERS } from '../../../../utils/constants';
 
 const Login = () => {
   const { redirectUser } = useRoleRedirect();
@@ -68,7 +69,7 @@ const Login = () => {
   const handleSocialLogin = async (provider) => {
     await authClient.signIn.social({
       provider: provider,
-      callbackURL: '/onboarding/ga-category',
+      callbackURL: '/auth/re_3VLEV5wq_Pxbep5U3J4ALWJG3NJnBmtxT',
     });
   };
   return (
@@ -133,7 +134,7 @@ const Login = () => {
           </h1>
           <button
             className='flex mt-5 items-center justify-center gap-2 border-[#D1D1D1] border-1 rounded-lg py-2 w-full'
-            onClick={() => handleSocialLogin('google')}
+            onClick={() => handleSocialLogin(PROVIDERS)}
           >
             <Image src='/svg/google.svg' alt='icon' width={24} height={24} />
             Continue with Google

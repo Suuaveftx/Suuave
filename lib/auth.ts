@@ -52,12 +52,6 @@ export const auth = betterAuth({
       clientId: (process.env.GOOGLE_CLIENT_ID as string) || 'placeholder',
       clientSecret: (process.env.GOOGLE_CLIENT_SECRET as string) || 'placeholder',
     },
-    // mapProfileToUser: (profile) => {
-    //   return {
-    //     role: 'user_pending',
-    //     username: profile.name || profile.email.split('@')[0], // Also need username since it's required
-    //   };
-    // },
   },
   plugins: [
     emailOTP({

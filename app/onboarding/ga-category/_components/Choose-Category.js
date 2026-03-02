@@ -32,7 +32,7 @@ const ChooseCategory = ({ user }) => {
       return;
     }
 
-    const { data, eror } = await authClient.updateUser({
+    const { data, error } = await authClient.updateUser({
       role: activeCategory,
       username: user.email.split('@')[0],
     });
@@ -40,7 +40,7 @@ const ChooseCategory = ({ user }) => {
     if (!data.status) {
       addToast({
         title: 'Warning',
-        description: eror || 'Something went wrong try again.',
+        description: error.message || 'Something went wrong try again.',
         color: 'Warning',
       });
       return;

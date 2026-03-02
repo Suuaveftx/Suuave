@@ -10,24 +10,21 @@ import { authClient } from '../../../lib/auth-client';
 import { useRouter } from 'next/navigation';
 
 const Page = () => {
-  const router = useRouter();
-  const { data: session } = authClient.useSession(); // Note: Better Auth uses useSession() for hooks
-  const user = session?.user;
-  const handleLogout = async () => {
-    await signOut();
-    // await authClient.signOut();
-    if (!user) {
-      console.log('User signed out!!');
-      router.push('/auth/login');
-    }
-  };
+  // const router = useRouter();
+  // const { data: session } = authClient.useSession(); // Note: Better Auth uses useSession() for hooks
+  // const user = session?.user;
+  // if (!user) {
+  //   console.log('User signed out!!');
+  //   router.push('/auth/login');
+  // }
+
   return (
     <>
       <div className='hidden lg:flex bg-[#EFF8FB] text-[#3A98BB] p-4 rounded-md mt-4  ml-4 mr-4 mb-8'>
         <BsExclamationTriangle className='text-2xl' />
         <h3 className='ml-2 font-bold text-base pt-1'>Complete your profile setup</h3>
       </div>
-      <button onClick={handleLogout}>Logout</button>
+
       <div className='flex justify-center w-full lg:mx-0  mt-6'>
         <div className='lg:w-full lg:max-w-[75%] w-[90%]'>
           <SearchBar placeholder='search jobs' />

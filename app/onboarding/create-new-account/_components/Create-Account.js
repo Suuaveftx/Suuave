@@ -12,6 +12,8 @@ import { EyeIcon, EyeOff } from 'lucide-react';
 import { useAppStore } from '../../../../store';
 import { sendVerificationEmail, signUp } from '../../../actions/services';
 import { useRouter } from 'next/navigation';
+import { PROVIDERS } from '../../../../utils/constants';
+import { authClient } from '../../../../lib/auth-client';
 
 const CreateAccount = () => {
   const [terms, setTerms] = React.useState(false);
@@ -80,11 +82,20 @@ const CreateAccount = () => {
     }
   };
 
+  const handleSocialLogin = async (provider) => {
+    await authClient.signIn.social({
+      provider: provider,
+      callbackURL: '/auth/re_3VLEV5wq_Pxbep5U3J4ALWJG3NJnBmtxT',
+    });
+  };
   return (
     <div className='flex flex-col p-5 lg:p-10 rounded-2xl items-center bg-[#FAFAFA] border-1 border[#EAEAEA] h-full'>
       <Image src='/dev-images/logo.png' alt='Logo' width={60} height={60} />
       <h1 className='font-medium text-2xl text-[#181818] mt-5'>Create New Account</h1>
-      <button className='flex mt-5 items-center justify-center gap-2 border-[#D1D1D1] border-1 rounded-lg py-2 w-full'>
+      <button
+        onClick={() => handleSocialLogin(PROVIDERS)}
+        className='flex mt-5 items-center justify-center gap-2 border-[#D1D1D1] border-1 rounded-lg py-2 w-full'
+      >
         <Image src='/svg/google.svg' alt='icon' width={24} height={24} />
         Continue with Google
       </button>
