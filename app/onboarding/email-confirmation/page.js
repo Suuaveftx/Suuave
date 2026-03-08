@@ -6,7 +6,7 @@ import { useRoleRedirect } from '../../../hooks/useRoleRedirect';
 import { useEffect } from 'react';
 import Loading from './loading';
 
-const page = () => {
+const Page = () => {
   const searchParams = useSearchParams();
   const email = searchParams.get('email');
   const { data: session, isPending } = authClient.useSession();
@@ -31,4 +31,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
