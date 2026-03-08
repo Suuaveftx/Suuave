@@ -18,11 +18,21 @@ import React, { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import CustomButton from './CustomButton';
-import { ChevronDown, Bell, CreditCard, Mail, Lock, User as UserIcon, Settings, HelpCircle } from 'lucide-react';
-import { LuCircleUser } from "react-icons/lu";
-import { TbLogout2 } from "react-icons/tb";
+import {
+  ChevronDown,
+  Bell,
+  CreditCard,
+  Mail,
+  Lock,
+  User as UserIcon,
+  Settings,
+  HelpCircle,
+} from 'lucide-react';
+import { LuCircleUser } from 'react-icons/lu';
+import { TbLogout2 } from 'react-icons/tb';
 import Image from 'next/image';
 import Notification from './Notification';
+import { signOut } from '../app/actions/services';
 
 const ArtistNavbar = () => {
   const [textStyle, setTextStyle] = useState('text-black');
@@ -30,25 +40,24 @@ const ArtistNavbar = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleLogout = () => {
-    localStorage.removeItem("activeCategory");
-    window.location.href = '/';
-  };
-
   const isActive = (path) => {
     if (path === '/artist-page/project-page') {
       return pathname === path || pathname.startsWith('/artist-page/job-details-page');
     }
     if (path === '/artist-page/my-contracts-old') {
-      return pathname === path ||
+      return (
+        pathname === path ||
         pathname.startsWith('/artist-page/ongoing-contract-information') ||
         pathname.startsWith('/artist-page/pending-contract-information') ||
-        pathname.startsWith('/artist-page/completed-contract-information');
+        pathname.startsWith('/artist-page/completed-contract-information')
+      );
     }
     if (path === '/artist-page/my-proposals') {
-      return pathname === path ||
+      return (
+        pathname === path ||
         pathname.startsWith('/artist-page/proposal-active') ||
-        pathname.startsWith('/artist-page/closed-project');
+        pathname.startsWith('/artist-page/closed-project')
+      );
     }
     return pathname === path;
   };
@@ -64,6 +73,9 @@ const ArtistNavbar = () => {
     { label: 'My Proposals', href: '/artist-page/my-proposals' },
     { label: 'My Contracts', href: '/artist-page/my-contracts-old' },
   ];
+  const handleLogout = async () => {
+    await signOut();
+  };
 
   return (
     <Navbar
@@ -77,8 +89,11 @@ const ArtistNavbar = () => {
     >
       {/* LOGO */}
       <NavbarBrand>
-        <div className="flex items-center gap-3">
-          <Link href='/artist-page' className="sm:border-l sm:border-[#8E8E8E]/30 sm:pl-3">
+        <div className='flex items-center gap-3'>
+          <Link
+            href='/artist-page'
+            className='sm:border-l sm:border-[#8E8E8E]/30 sm:pl-3'
+          >
             <Image
               src='/dev-images/logocombo.png'
               alt='Logo'
@@ -93,24 +108,24 @@ const ArtistNavbar = () => {
       {/* MENU */}
       <NavbarContent className='hidden sm:flex gap-9 font-bold h-full' justify='center'>
         {menuItems.map((item, index) => (
-          <NavbarItem key={index} className="h-full flex items-center">
+          <NavbarItem key={index} className='h-full flex items-center'>
             <Link
               href={item.href}
               className={`${textStyle} transition duration-300 relative flex items-center h-full`}
             >
               <motion.div
-                animate={isActive(item.href) ? "hovered" : "initial"}
-                whileHover="hovered"
-                className="relative flex items-center h-full"
+                animate={isActive(item.href) ? 'hovered' : 'initial'}
+                whileHover='hovered'
+                className='relative flex items-center h-full'
               >
                 {item.label}
                 <motion.div
                   variants={{
                     initial: { scaleX: 0 },
-                    hovered: { scaleX: 1 }
+                    hovered: { scaleX: 1 },
                   }}
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  className="absolute bottom-[20px] left-0 w-full h-[2px] bg-[#222222] origin-left"
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  className='absolute bottom-[20px] left-0 w-full h-[2px] bg-[#222222] origin-left'
                 />
               </motion.div>
             </Link>
@@ -137,7 +152,7 @@ const ArtistNavbar = () => {
               alt='Messages'
               width={28}
               height={28}
-              className="w-6 h-6 sm:w-7 sm:h-7"
+              className='w-6 h-6 sm:w-7 sm:h-7'
             />
           </Link>
         </NavbarItem>
@@ -146,52 +161,52 @@ const ArtistNavbar = () => {
         <NavbarItem className='flex'>
           <Dropdown shouldBlockScroll={false}>
             <DropdownTrigger>
-              <button className="flex items-center gap-2 outline-none bg-transparent border-none cursor-pointer p-0">
+              <button className='flex items-center gap-2 outline-none bg-transparent border-none cursor-pointer p-0'>
                 <Avatar
-                  src="/dev-images/Avatar.png"
-                  className="w-10 h-10 rounded-full border border-gray-200"
+                  src='/dev-images/Avatar.png'
+                  className='w-10 h-10 rounded-full border border-gray-200'
                 />
-                <ChevronDown className="hidden sm:block w-4 h-4 text-gray-600" />
+                <ChevronDown className='hidden sm:block w-4 h-4 text-gray-600' />
               </button>
             </DropdownTrigger>
-            <DropdownMenu aria-label="User actions" className="w-[200px]">
+            <DropdownMenu aria-label='User actions' className='w-[200px]'>
               <DropdownItem
-                startContent={<LuCircleUser className="size-4" />}
-                key="profile"
+                startContent={<LuCircleUser className='size-4' />}
+                key='profile'
                 as={Link}
-                href="/artist-page/profile-for-artist"
+                href='/artist-page/profile-for-artist'
               >
                 Profile
               </DropdownItem>
               <DropdownItem
-                startContent={<CreditCard className="size-4" />}
-                key="wallet"
+                startContent={<CreditCard className='size-4' />}
+                key='wallet'
                 as={Link}
-                href="/artist-page/wallet"
+                href='/artist-page/wallet'
               >
                 Wallet
               </DropdownItem>
               <DropdownItem
-                startContent={<Settings className="size-4" />}
-                key="settings"
+                startContent={<Settings className='size-4' />}
+                key='settings'
                 as={Link}
-                href="/artist-page/settings"
+                href='/artist-page/settings'
               >
                 Settings
               </DropdownItem>
               <DropdownItem
-                startContent={<HelpCircle className="size-4" />}
-                key="help"
+                startContent={<HelpCircle className='size-4' />}
+                key='help'
                 as={Link}
-                href="/artist-page/help"
+                href='/artist-page/help'
               >
                 Help and support
               </DropdownItem>
               <DropdownItem
-                startContent={<TbLogout2 className="size-4" />}
-                key="logout"
-                className="text-danger"
-                color="danger"
+                startContent={<TbLogout2 className='size-4' />}
+                key='logout'
+                className='text-danger'
+                color='danger'
                 onPress={handleLogout}
               >
                 Logout
@@ -212,7 +227,11 @@ const ArtistNavbar = () => {
       <NavbarMenu>
         {mobileMenuItems.map((item, index) => (
           <NavbarMenuItem key={index}>
-            <Link className='w-full text-black transition duration-300' href={item.href} size='lg'>
+            <Link
+              className='w-full text-black transition duration-300'
+              href={item.href}
+              size='lg'
+            >
               {item.label}
             </Link>
           </NavbarMenuItem>
