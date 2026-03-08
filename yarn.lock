@@ -32,6 +32,11 @@
   resolved "https://registry.yarnpkg.com/@better-auth/memory-adapter/-/memory-adapter-1.5.3.tgz#0a82743c0b2ca1381d927e5514ec61141c57488c"
   integrity sha512-QdeTI3bvUmaPkHsjcSMfroXyuGsgnxobv7wZVl57e+ox6yQVR1j4VKbqmCILP6PL6Rr2gpcBH/liHr8v5gqY5Q==
 
+"@better-auth/prisma-adapter@^1.5.4":
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/@better-auth/prisma-adapter/-/prisma-adapter-1.5.4.tgz#81db9f0a50e287ce31dd6711cd426f969ec9dc8b"
+  integrity sha512-ZQTbcBopw/ezjjbNFsfR3CRp0QciC4tJCarAnB5G9fZtUYbDjfY0vZOxIRmU4kI3x755CXQpGqTrkwmXaMRa3w==
+
 "@better-auth/telemetry@1.5.3":
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/@better-auth/telemetry/-/telemetry-1.5.3.tgz#07f82288d0f5bd6af6745643e4305a16648203b2"

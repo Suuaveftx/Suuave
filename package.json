@@ -10,6 +10,7 @@
     "dev:local": "$env:process.env.NPM_TOKEN && next dev --turbopack"
   },
   "dependencies": {
+    "@better-auth/prisma-adapter": "^1.5.4",
     "@heroicons/react": "^2.2.0",
     "@heroui/react": "^2.7.5",
     "@neondatabase/serverless": "^1.0.2",
