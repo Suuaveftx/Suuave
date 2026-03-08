@@ -67,7 +67,7 @@ export default function OngoingContract() {
                     {/* Contract Details Card */}
                     <Card className="w-full p-4 md:p-6 shadow-sm border border-gray-100 rounded-2xl bg-white">
                         <div className="hidden md:flex justify-between items-start mb-6">
-                            <h2 className="text-xl font-bold">Contract Details</h2>
+                            <h2 className="text-xl font-bold">Contract Details </h2>
                             <div className="flex gap-2 items-center">
                                 <span className="border border-[#D1D1D1] text-[#279711] px-3 py-1 rounded-full text-xs font-medium">
                                     Ongoing
