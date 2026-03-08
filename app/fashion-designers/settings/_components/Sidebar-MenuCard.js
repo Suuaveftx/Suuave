@@ -1,22 +1,27 @@
 'use client';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Sidebar_MenuCard = ({ menuItems, activeItem, setActiveItem }) => {
+  const router = useRouter();
+
   return (
     <div
       className='
-        h-fit p-0 bg-[#fafafa] shadow-md
+        h-screen  p-0 bg-[#fafafa] shadow-md
         w-full       /* full width on mobile */
         sm:w-64      /* fixed width on desktop */
         m-0 sm:m-0
         sm:rounded-lg
-        sm:sticky sm:top-28
       '
     >
       {/* Mobile Header */}
       <div className='flex items-center gap-3 p-4 border-b sm:hidden'>
-        <ChevronLeft className='w-6 h-6 text-gray-700' />
+        <ChevronLeft
+          className='w-6 h-6 text-gray-700 cursor-pointer'
+          onClick={() => router.push('/fashion-designers')}
+        />
         <h2 className='text-[20px] font-bold text-[#222222]'>Settings</h2>
       </div>
 

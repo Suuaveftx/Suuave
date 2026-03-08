@@ -21,7 +21,7 @@ const NationalityMobile = () => {
         <div className="space-y-4 mb-[16px]">
           {/* Header and Paragraph */}
           <div className="mb-[24px]">
-            <h1 className="text-[22px] font-bold text-[#444444]">
+            <h1 className="text-[32px] font-bold text-[#444444]">
               Tell us about where you reside
             </h1>
             <p className="text-sm text-[#BABABA]">Fill in your location.</p>
@@ -72,7 +72,7 @@ const NationalityMobile = () => {
         <div className="space-y-4">
           {/* Header and Paragraph */}
           <div>
-            <h1 className="text-[22px] font-bold text-[#444444]">
+            <h1 className="text-[32px] font-bold text-[#444444]">
               Kindly fill in your Phone number
             </h1>
             <p className="text-sm text-gray-500">

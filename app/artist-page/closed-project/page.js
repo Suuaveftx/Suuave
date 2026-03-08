@@ -1,18 +1,29 @@
+"use client";
 import Image from "next/image";
 import React from "react";
+import { ChevronLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
+  const router = useRouter();
   return (
-    <div className="">
-      <h1 className="text-2xl font-bold text-[#222222] py-5 border-b-2 border-[#EAEAEA]">
-        Proposal Details
-      </h1>
-      <div className="mt-10 flex items-start gap-10">
-        <section className="w-[70%]">
+    <div className="pt-2 lg:pt-24 pb-10 w-full">
+      <div className="flex items-center gap-4 py-4 lg:py-5 border-b-2 border-[#EAEAEA] px-5 lg:px-16">
+        <ChevronLeft
+          className="lg:hidden cursor-pointer text-[#878787]"
+          onClick={() => router.push("/artist-page/my-proposals")}
+          size={24}
+        />
+        <h1 className="text-[32px] lg:text-2xl font-bold text-[#222222]">
+          Proposal Details
+        </h1>
+      </div>
+      <div className="mt-6 lg:mt-10 flex flex-col lg:flex-row items-start gap-6 lg:gap-10 px-5 lg:px-16">
+        <section className="w-full lg:w-[70%] flex flex-col gap-5">
           {/* Related Job */}
-          <div className="bg-[#FAFAFA] border-1 border-[#EAEAEA] rounded-2xl p-8">
+          <div className="bg-[#FAFAFA] border-1 border-[#EAEAEA] rounded-2xl p-4 md:p-6 lg:p-8 w-full">
             <h2 className="text-[#222222] font-bold text-xl">Related Job</h2>
-            <div className="flex items-center justify-between mt-3">
+            <div className="flex flex-col md:flex-row md:items-center justify-between mt-3 gap-2">
               <p className="text-[#767676] font-normal text-sm">
                 Posted : 23-06-2024
               </p>
@@ -36,7 +47,7 @@ const page = () => {
             </span>
           </div>
           {/* Write Proposal */}
-          <div className="bg-[#FAFAFA] border-1 border-[#EAEAEA] rounded-2xl p-8 mt-5">
+          <div className="bg-[#FAFAFA] border-1 border-[#EAEAEA] rounded-2xl p-4 lg:p-8">
             <h2 className="text-[#222222] font-bold text-xl">Write Proposal</h2>
             <p className="text-[#222222] font-bold text-base mt-3">
               Cover Letter
@@ -92,7 +103,7 @@ const page = () => {
               10% commission charge applies{" "}
               <span className="text-[#3A98BB] cursor-pointer">Learn more</span>{" "}
             </span>
-            <div className="w-72 py-2 px-2.5 border-1 border-[#EAEAEA] rounded-lg text-[#767676] font-bold text-base mt-5">
+            <div className="w-full lg:w-72 py-2 px-2.5 border-1 border-[#EAEAEA] rounded-lg text-[#767676] font-bold text-base mt-5">
               N200,000
             </div>
             <p className="text-[#3A98BB] font-normal text-xs mt-3">
@@ -101,7 +112,7 @@ const page = () => {
             <p className="text-[#222222] font-bold text-base mt-10">
               How Long Will It Take You To Complete This Work?
             </p>
-            <div className="flex items-center gap-2 w-72 py-2 px-2.5 border-1 border-[#EAEAEA] rounded-lg text-[#222222] font-bold text-sm mt-5">
+            <div className="flex items-center gap-2 w-full lg:w-72 py-2 px-2.5 border-1 border-[#EAEAEA] rounded-lg text-[#222222] font-bold text-sm mt-5">
               <Image
                 src="/icons/calendar.svg"
                 alt="icon"
@@ -113,7 +124,7 @@ const page = () => {
           </div>
         </section>
         {/* Side section */}
-        <section className=" w-[30%] bg-[#FAFAFA] space-y-5 py-7 px-5 border-1 border-[#EAEAEA] rounded-2xl opacity-50 cursor-not-allowed select-none">
+        <section className="w-full lg:w-[30%] bg-[#FAFAFA] space-y-5 py-7 px-5 border-1 border-[#EAEAEA] rounded-2xl opacity-50 cursor-not-allowed select-none">
           <button disabled className="w-full text-[#035A7A] py-4 px-6 bg-[#CCE7F2] rounded-3xl cursor-not-allowed">
             Edit Proposal
           </button>
@@ -126,4 +137,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

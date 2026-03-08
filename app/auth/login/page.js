@@ -1,12 +1,12 @@
 import React from 'react'
 import Login from './_components/Login'
 
-const page = () => {
+const Page = () => {
   return (
     <div>
-        <Login />
+      <Login />
     </div>
   )
 }
 
-export default page
+export default Page

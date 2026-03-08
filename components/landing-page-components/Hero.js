@@ -18,9 +18,9 @@ const HeroSection = () => {
   return (
     <div className="relative ">
       <BackgroundBeams />
-      <div className="lg:grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 min-h-[94vh] bg-customNavBg pb-8 flex flex-col">
+      <div className="lg:grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 min-h-[94vh] bg-customNavBg pb-8 flex flex-col relative z-20">
         <div className="col-span-2 h-6"></div>
-        <div className="space-y-6 place-self-center  w-full">
+        <div className="space-y-6 place-self-center w-full relative z-50">
           <div className="grid lg:grid-cols-2 grid-rows-2 grid-cols-[0.7fr_1fr] text-white lg:w-fit lg:ml-4 ml-0  w-full ">
             <Image
               src="/dev-images/userImages.png" // Replace with your mobile image path
@@ -42,30 +42,30 @@ const HeroSection = () => {
             <p className="text-white z-20">Over 5000 Fashion Artists</p>
           </div>
           <p className="font-medium lg:text-[48px] text-[33px] text-white lg:pl-14 pl-0 md:p-2 lg:leading-[60px] leading-[40px] z-30 lg:w-[84%] lg:text-start text-center w-full ">
-            Find and Collaborate with the Ideal{" "}
-            <span className="italic font-[40]">African</span> Fashion Artists.
+            The Global Marketplace for Premium{" "}
+            <span className="italic font-[40]">African</span> Fashion Artistry.
           </p>
           <p className="text-customGray lg:pl-14 lg:w-[90%] lg:text-[17px] z-30 w-full lg:text-start text-center text-[16.6px]  pl-3 p-2 px-3 ">
-            Unlock the potential of fashion collaboration and merge creativity,
-            culture and expertise to create groundbreaking culturally-rich
-            designs.
+            The premier B2B marketplace connecting global fashion houses with
+            verified African talented artists - from digital patterns to 3D
+            couture.
           </p>
           <CustomButton
-            className="lg:ml-14 mx-auto w-40 text-lg h-[52px]"
+            className="lg:ml-14 mx-auto w-40 text-lg h-[52px] relative z-50"
             href="/onboarding/category"
           />
         </div>
         <div className="lg:pr-14 py-14 relative pr-5 px-5 lg:px-0 lg:mt-0 mt-7">
           <ScrollParallax isAbsolutelyPositioned strength={0.1} zIndex={30}>
             <HeroSlimCard
-              text="Streamlined Collaboration"
+              text="End-to-End Creative Management"
               svg={<SvgCollabIcon className="size-5" />}
               className="absolute top-12 lg:left-0 right-6"
             />
           </ScrollParallax>
           <ScrollParallax isAbsolutelyPositioned strength={0.3} zIndex={30}>
             <HeroSlimCard
-              text="Community Development"
+              text="COMMUNITY DEVELOPMENT"
               svg={<SvgCUserIcon className="size-5" />}
               className="absolute right-8 hidden lg:flex"
             />
@@ -84,7 +84,7 @@ const HeroSection = () => {
           />
           <ScrollParallax isAbsolutelyPositioned strength={0.05} zIndex={30}>
             <HeroSlimCard
-              text="Copyright Protection"
+              text="Digital Rights Management"
               svg={<SvgCopyRightIcon className="size-5" />}
               className="absolute bottom-4 hidden lg:flex"
             />

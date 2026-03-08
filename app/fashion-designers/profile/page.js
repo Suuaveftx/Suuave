@@ -98,7 +98,7 @@ const Page = () => {
       {/* User details  */}
       <div className="mt-3 bg-white flex relative flex-col md:py-5 md:bg-[#F9F9F9] md:px-5 md:rounded-t-lg  md:justify-between md:mt-20 md:flex-row md:items-start md:gap-4 items-center p-4 text-[#222222] font-satoshi">
         {/* Mobile Edit Button - Top Right of Card */}
-        <Link href="/fashion-designers/personal-details/edit" className="md:hidden absolute top-4 right-4 bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] flex items-center justify-center rounded-3xl drop-shadow-lg px-4 py-1.5 z-10">
+        <Link href="/fashion-designers/personal-details/edit" className="md:hidden absolute top-4 right-4 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] flex items-center justify-center rounded-3xl drop-shadow-lg px-4 py-1.5 z-10">
           <span className="font-satoshi font-bold text-sm text-[#035A7A]">
             Edit
           </span>
@@ -157,7 +157,7 @@ const Page = () => {
             </div>
           </div>
         </div>
-        <Link href="/fashion-designers/personal-details/edit" className="hidden md:flex bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] items-center justify-center rounded-3xl drop-shadow-lg px-4 py-1.5">
+        <Link href="/fashion-designers/personal-details/edit" className="hidden md:flex bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] items-center justify-center rounded-3xl drop-shadow-lg px-4 py-1.5">
           <span className="font-satoshi font-bold text-sm text-[#035A7A]">
             Edit
           </span>

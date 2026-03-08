@@ -24,7 +24,7 @@ const WelcomePage = () => {
         <div className="flex flex-col w-full max-w-md bg-white border border-[#EAEAEA] shadow-sm rounded-xl sm:shadow-none sm:border-none px-6 pt-8 pb-10">
           <h1 className="text-2xl font-bold leading-tight text-[#222222] mb-10">
             Hi Kate, <br /> To begin, let&apos;s take a moment to complete your
-            profile set-up.
+            profile setup.
           </h1>
 
           <div className="space-y-0 text-[#555555]">
@@ -43,7 +43,7 @@ const WelcomePage = () => {
               <div className="text-[#3A98BB]">
                 <Upload size={24} strokeWidth={1.5} />
               </div>
-              {category === "Fashion Artist" ? (
+              {category === "artist" ? (
                 <span className="text-[16px] font-medium leading-tight">
                   Upload sample works / necessary documents.
                 </span>
@@ -59,7 +59,7 @@ const WelcomePage = () => {
               <div className="text-[#3A98BB]">
                 <Briefcase size={24} strokeWidth={1.5} />
               </div>
-              {category === "Fashion Artist" ? (
+              {category === "artist" ? (
                 <span className="text-[16px] font-medium leading-tight">
                   Apply for jobs and license your designs.
                 </span>
@@ -75,11 +75,11 @@ const WelcomePage = () => {
           <div className="mt-14 flex justify-center w-full">
             <Link
               href={
-                category === "Fashion Brand"
+                category === "brand"
                   ? "/fashion-designers/personal-details"
                   : "/artist-page/personal-details"
               }
-              className="w-full text-[#035A7A] font-semibold text-lg py-4 rounded-full text-center transition-all bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)] active:scale-95"
+              className="w-full max-w-[240px] text-[#035A7A] font-semibold text-lg py-4 rounded-full text-center transition-all bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)] active:scale-95"
             >
               Continue
             </Link>

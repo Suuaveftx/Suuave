@@ -1,7 +1,7 @@
 "use client";
 
 import { HeroUIProvider } from "@heroui/react";
-import Navbars from "../../../components/Brand-Navbar";
+import Navbars from "../../../components/ArtistNavbar";
 
 export default function Layout({ children }) {
   return (

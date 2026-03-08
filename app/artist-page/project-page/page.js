@@ -14,13 +14,13 @@ const Page = () => {
       </div>
       <div className='flex justify-center w-full lg:mx-0  mt-6'>
         <div className='lg:w-full lg:max-w-[75%] w-[90%]'>
-          <SearchBar placeholder='search jobs' />
+          <SearchBar placeholder='Search Jobs' />
         </div>
       </div>
       <div>
         <ProjectPage />
       </div>
-      <div className='m-4 w-full bg-[#12333E]'>
+      <div className='bg-[#12333E] mt-8'>
         <Footer3 />
       </div>
     </>

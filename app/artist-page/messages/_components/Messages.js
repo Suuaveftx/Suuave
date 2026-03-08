@@ -213,13 +213,13 @@ const Messages = () => {
             <div className='flex items-center gap-2 p-4 border-b'>
               <FiChevronLeft
                 className='text-xl cursor-pointer'
-                onClick={() => router.back()}
+                onClick={() => router.push("/artist-page")}
               />
               <h1 className='font-bold text-lg'>Messages</h1>
             </div>
 
             {/* Search */}
-            <div className='p-4 border-b mb-4'>
+            <div className='pt-2 px-4 pb-4 border-b mb-4'>
               <SearchBar placeholder='Search chats...' className='w-full' />
             </div>
 

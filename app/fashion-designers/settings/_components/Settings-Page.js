@@ -36,11 +36,11 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className='w-full min-h-screen'>
+    <div className='w-full h-screen scrollbar-hide'>
       {/* ----- Desktop View ----- */}
-      <div className='hidden sm:flex h-full gap-8 items-start'>
+      <div className='hidden sm:flex h-full'>
         {/* Sidebar on Desktop */}
-        <div className='w-64 flex-shrink-0 sticky top-28'>
+        <div className='w-64 flex-shrink-0'>
           <Sidebar_MenuCard
             menuItems={settingsMenu}
             activeItem={activeItem}
@@ -49,7 +49,7 @@ const SettingsPage = () => {
         </div>
 
         {/* Content on Desktop (fills remaining space) */}
-        <div className='flex-1 p-6 bg-white overflow-hidden sticky top-28 rounded-lg shadow-sm'>
+        <div className='flex p-6  bg-white lg:w-full lg:max-w-[950px] w-full max-w-[3640px] overflow-hidden'>
           {renderActiveComponent()}
         </div>
       </div>
@@ -62,6 +62,7 @@ const SettingsPage = () => {
             activeItem={activeItem}
             setActiveItem={(id) => {
               setActiveItem(id);
+              // hide sidebar for any selected setting
               setShowSidebar(false);
             }}
           />
@@ -74,11 +75,11 @@ const SettingsPage = () => {
             >
               <ChevronLeft className='w-5 h-5 mr-1' />
               <span className='text-[20px]'>
-                {settingsMenu.find((item) => item.id === activeItem)?.label || 'Settings'}
+                {activeItem === 'notifications' ? 'Notifications' : 'Security'}
               </span>
             </button>
 
-            {/* Active Component full width */}
+            {/* Render active component */}
             {renderActiveComponent()}
           </div>
         )}

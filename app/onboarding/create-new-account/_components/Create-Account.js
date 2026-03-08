@@ -37,7 +37,7 @@ const CreateAccount = () => {
       >
         <div className="w-full flex items-center justify-between gap-10">
           <label className="w-full  text-[#222222] text-base font-medium">
-            First Name
+            First Name <span className="text-red-500 ml-1">*</span>
             <input
               placeholder="First name"
               {...register("firstName")}
@@ -45,7 +45,7 @@ const CreateAccount = () => {
             />
           </label>
           <label className="w-full text-[#222222] text-base font-medium">
-            Last Name
+            Last Name <span className="text-red-500 ml-1">*</span>
             <input
               placeholder="Last name"
               {...register("lastName")}
@@ -54,7 +54,7 @@ const CreateAccount = () => {
           </label>
         </div>
         <label className="w-full text-[#222222] text-base font-medium">
-          Username
+          Username <span className="text-red-500 ml-1">*</span>
           <input
             placeholder="ocean"
             {...register("userName")}
@@ -62,7 +62,7 @@ const CreateAccount = () => {
           />
         </label>
         <label className="w-full text-[#222222] text-base font-medium">
-          Email
+          Email <span className="text-red-500 ml-1">*</span>
           <input
             placeholder="cdzzsfd@email.com"
             {...register("email")}
@@ -70,7 +70,7 @@ const CreateAccount = () => {
           />
         </label>
         <label className="w-full text-[#222222] text-base font-medium">
-          Create Password
+          Create Password <span className="text-red-500 ml-1">*</span>
           <span className="w-full flex items-center border border-[#D1D1D1] rounded-lg px-2 focus-within:border-[#9FD2E5]">
             <input
               type={showPassword ? "text" : "password"}

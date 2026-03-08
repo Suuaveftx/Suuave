@@ -38,7 +38,7 @@ const ChooseCategory = () => {
         <label htmlFor='Fashion Artist'>
           <div
             className={`bg-white cursor-pointer rounded-[16px] shadow-md pl-[24px] pr-[24px] pt-[32px] pb-[32px] flex flex-col 
-              justify-between items-center text-center border-2 hover:border-[#CCE7F2] transition-all ${activeCategory === 'Fashion Artist'
+              justify-between items-center text-center border-2 hover:border-[#CCE7F2] transition-all ${activeCategory === 'artist'
                 ? 'border-[#3A98BB]'
                 : 'border-transparent'
               }`}
@@ -49,9 +49,9 @@ const ChooseCategory = () => {
                 type='radio'
                 className='w-8 h-8 accent-[#3A98BB]'
                 name='category'
-                value='Fashion Artist'
-                checked={activeCategory === 'Fashion Artist'}
-                onChange={() => handleCategoryChange('Fashion Artist')}
+                value='artist'
+                checked={activeCategory === 'artist'}
+                onChange={() => handleCategoryChange('artist')}
               />
             </div>
             <Image
@@ -72,7 +72,7 @@ const ChooseCategory = () => {
         <label htmlFor='Fashion Brand'>
           <div
             className={`bg-white cursor-pointer rounded-[16px] shadow-md pl-[24px] pr-[24px] pt-[32px] pb-[32px] flex flex-col 
-              justify-between items-center text-center border-2 hover:border-[#CCE7F2] transition-all ${activeCategory === 'Fashion Brand'
+              justify-between items-center text-center border-2 hover:border-[#CCE7F2] transition-all ${activeCategory === 'brand'
                 ? 'border-[#3A98BB]'
                 : 'border-transparent'
               }`}
@@ -83,9 +83,9 @@ const ChooseCategory = () => {
                 type='radio'
                 className='w-8 h-8 accent-[#3A98BB]'
                 name='category'
-                value='Fashion Brand'
-                checked={activeCategory === 'Fashion Brand'}
-                onChange={() => handleCategoryChange('Fashion Brand')}
+                value='brand'
+                checked={activeCategory === 'brand'}
+                onChange={() => handleCategoryChange('brand')}
               />
             </div>
             <Image
@@ -102,17 +102,21 @@ const ChooseCategory = () => {
               </p>
             </div>
           </div>
-        </label>
+        </label >
       </div>
-      <div className='mt-16'>
-        <button
+
+      <div className='w-full max-w-[700px] flex justify-center mt-12'>
+        <CustomButton
+          text='Continue'
           onClick={submitCategory}
           disabled={!activeCategory}
-          className={`text-[#035A7A] rounded-3xl cursor-pointer px-20 py-3 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] transition-opacity ${!activeCategory ? 'opacity-50 cursor-not-allowed' : 'opacity-100 hover:opacity-90'
+          className={`w-full md:w-auto md:px-16 py-4 rounded-full text-lg ${!activeCategory ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
             }`}
-        >
-          Continue
-        </button>
+          style={{
+            background: 'radial-gradient(circle at center, #EAF9FF, #CCE7F2)',
+            color: '#035A7A',
+          }}
+        />
       </div>
     </div>
   );

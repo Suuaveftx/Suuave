@@ -30,11 +30,11 @@ const Login = () => {
 
   const onSubmit = (data) => {
     if (data.email === "artist@gmail.com") {
-      localStorage.setItem("activeCategory", "Fashion Artist");
+      localStorage.setItem("activeCategory", "artist");
       return router.push("/artist-page");
     }
     if (data.email === "brand@gmail.com") {
-      localStorage.setItem("activeCategory", "Fashion Brand");
+      localStorage.setItem("activeCategory", "brand");
       return router.push("/fashion-designers");
     }
   };
@@ -64,7 +64,7 @@ const Login = () => {
               className='object-contain object-left -ml-28 -mt-20'
             />
             <p className='font-bold text-xl text-[#F5F5F5]'>
-              {category === "Fashion Brand"
+              {category === "brand"
                 ? "Collaborate with a pool of talented African fashion artists."
                 : "Monetize your creativity through global brand collaborations."}
             </p>

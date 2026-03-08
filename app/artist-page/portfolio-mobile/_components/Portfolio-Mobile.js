@@ -18,7 +18,7 @@ const PortfolioMobile = () => {
       <div className="sm:hidden flex flex-col items-center bg-[#FAFAFA] px-4 py-6 space-y-8 w-full min-h-screen overflow-y-auto mb-[24px]">
         {/* Portfolio Header and Description */}
         <div className="w-full space-y-2 mb-[24px] text-left">
-          <h1 className="text-[22px] font-bold text-[#444444]">Portfolio</h1>
+          <h1 className="text-[32px] font-bold text-[#444444]">Portfolio</h1>
           <p className="text-sm text-gray-500">Upload some sample works.</p>
         </div>
 

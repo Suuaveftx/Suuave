@@ -21,7 +21,7 @@ const SendProposalsBtnMobile = ({ handleSubmitProposal, isOpen, onOpenChange }) 
         <CustomButton
           text='Send Proposal'
           style={{
-            background: 'radial-gradient(circle at top left, #FFFFFF, #CCE7F2)',
+            background: 'radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)',
             color: '#035A7A',
           }}
           onClick={handleSubmitProposal} // ✅ fixed event handler

@@ -26,13 +26,13 @@ const HeroSection = () => {
           </Card>
         </div>
         <div className='lg:pr-14 py-14 relative pr-5 px-5 lg:px-0 lg:mt-0 mt-7'>
-          <p className='font-medium  text-[33px] text-white lg:pl-14 pl-0 md:p-2 lg:leading-[60px] leading-[40px] z-30 lg:w-[84%] lg:text-start text-center w-full '>
-            Join wailist. Find and Collaborate with the Ideal{' '}
-            <span className='italic font-[40]'>African</span> Fashion Artists.
+          <p className='font-medium mb-10 lg:mb-0 text-[33px] text-white lg:pl-14 pl-0 md:p-2 lg:leading-[60px] leading-[40px] z-30 lg:w-[84%] lg:text-start text-center w-full '>
+            Join Waitlist. The Global Marketplace for Premium{' '}
+            <span className='italic font-[40]'>African</span> Fashion Artistry.
           </p>
           <ScrollParallax isAbsolutelyPositioned strength={0.1} zIndex={30}>
             <HeroSlimCard
-              text='Streamlined Collaboration'
+              text='End-to-End Creative Management'
               svg={<SvgCollabIcon className='size-5' />}
               className='absolute top-12 lg:left-0 right-6'
             />
@@ -58,7 +58,7 @@ const HeroSection = () => {
           />
           <ScrollParallax isAbsolutelyPositioned strength={0.05} zIndex={30}>
             <HeroSlimCard
-              text='Copyright Protection'
+              text='Digital Rights Management'
               svg={<SvgCopyRightIcon className='size-5' />}
               className='absolute bottom-4 hidden lg:flex'
             />
@@ -72,8 +72,9 @@ const HeroSection = () => {
           </ScrollParallax>
 
           <p className='text-customGray lg:pl-14 lg:w-[90%] lg:text-[17px] z-30 w-full lg:text-start text-center text-[16.6px]  pl-3 p-2 px-3 '>
-            Unlock the potential of fashion collaboration and merge creativity, culture
-            and expertise to create groundbreaking culturally-rich designs.
+            The premier B2B marketplace connecting global fashion houses with
+            verified African talented artists - from digital patterns to 3D
+            couture.
           </p>
         </div>
       </div>

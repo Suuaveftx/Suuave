@@ -8,7 +8,7 @@ export default function Layout({ children }) {
   return (
     <HeroUIProvider>
       <div className='max-w-[1700px] mx-auto bg-customNavBg'>
-        <CustomNavbar bgColor='bg-transparent' />
+        <CustomNavbar bgColor='bg-transparent' mobileLogo="/dev-images/LogoMark.png" desktopLogo="/dev-images/SuaaveTxtWhite.png" />
         <main className='font-proximanova'>{children}</main>
         <Footer />
       </div>

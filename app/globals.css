@@ -200,7 +200,7 @@ body::-webkit-scrollbar {
 
 /* Custom styles for React Slick carousel */
 .slider-container .slick-slider {
-  height: 320px;
+  height: 360px;
 }
 
 .slider-container .slick-list {
@@ -212,11 +212,13 @@ body::-webkit-scrollbar {
 }
 
 .slider-container .slick-slide {
-  height: 320px;
+  height: 360px;
 }
 
 .slider-container .slick-slide>div {
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Hide scrollbar but allow scrolling */
@@ -260,4 +262,17 @@ body::-webkit-scrollbar {
 
 .custom-dots li div:before {
   display: none !important;
+}
+
+/* Aggressively hide all floating elements when mobile menu is open, 
+   but explicitly EXCLUDE the navigation-related components. */
+body.menu-open [class*="fixed"]:not([class*="Navbar"]):not(nav):not(header):not([class*="navbar"]) {
+  display: none !important;
+}
+
+/* Ensure the navbar itself stays visible */
+body.menu-open header.fixed,
+body.menu-open nav.fixed,
+body.menu-open [class*="NavbarMenu"] {
+  display: flex !important;
 }

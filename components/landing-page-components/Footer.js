@@ -1,5 +1,6 @@
 "use client";
-import { Button, Link } from "@heroui/react";
+import { Link as HeroLink } from "@heroui/react";
+import Link from "next/link";
 import Image from "next/image";
 
 const Footer = () => {
@@ -29,12 +30,12 @@ const Footer = () => {
           <ul className="space-y-2 text-sm font-thin text-[#C8C8C8]">
             <li>Contact Us</li>
             <li>
-              <Link
+              <HeroLink
                 href="/about-page"
                 className=" text-sm font-thin text-[#C8C8C8]"
               >
                 About Us
-              </Link>
+              </HeroLink>
             </li>
             <li>Help and Support</li>
           </ul>
@@ -72,50 +73,43 @@ const Footer = () => {
         </h2>
 
         <div className="flex lg:justify-center lg:items-center gap-6 mt-4">
-          <Button
-            isIconOnly
-            as={Link}
-            radius="full"
-            variant="bordered"
+          <a
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-white hover:bg-white/10 transition-colors"
             target="_blank"
-            href={"https://www.instagram.com/suuaveftx?igsh=dWgzYzF6YXl5M3N3"}
+            rel="noopener noreferrer"
+            href="https://www.instagram.com/suuaveftx?igsh=dWgzYzF6YXl5M3N3"
           >
             <Image
               src="/dev-images/insta.png"
               alt="Instagram"
-              width={40}
-              height={40}
+              width={20}
+              height={20}
             />
-          </Button>
-          <Button
-            isIconOnly
-            as={Link}
-            radius="full"
-            variant="bordered"
+          </a>
+          <a
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-white hover:bg-white/10 transition-colors"
             target="_blank"
-            href={"https://x.com/SuuaveFTx"}
+            rel="noopener noreferrer"
+            href="https://x.com/SuuaveFTx"
           >
             <Image
               src="/dev-images/X.png"
-              alt="Instagram"
-              width={40}
-              height={40}
+              alt="X"
+              width={20}
+              height={20}
             />
-          </Button>
-          <Button
-            isIconOnly
-            as={Link}
-            radius="full"
-            variant="bordered"
-            href={"/"}
+          </a>
+          <Link
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-white hover:bg-white/10 transition-colors"
+            href="/"
           >
             <Image
               src="/dev-images/Face.png"
-              alt="Instagram"
-              width={40}
-              height={40}
+              alt="Facebook"
+              width={20}
+              height={20}
             />
-          </Button>
+          </Link>
         </div>
       </div>
     </footer>

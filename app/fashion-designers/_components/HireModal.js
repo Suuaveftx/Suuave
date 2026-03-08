@@ -81,7 +81,7 @@ const HireModal = ({ isOpen, onOpenChange, artistName = "Artist" }) => {
                                 onPress={handleHire}
                                 isDisabled={!isSelected}
                                 className={`flex-1 rounded-full font-semibold py-6 shadow-md transition-all ${isSelected
-                                    ? "bg-[radial-gradient(circle_at_top_left,#FFFFFF,#CCE7F2)] text-[#035A7A] opacity-100"
+                                    ? "bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] opacity-100"
                                     : "bg-gray-200 text-gray-400 opacity-50 cursor-not-allowed"
                                     }`}
                             >

@@ -31,7 +31,10 @@ const ProfileArtist = ({ isVisitor = false }) => {
 
   useEffect(() => {
     // Access localStorage in useEffect to avoid hydration issues
-    const role = isVisitor ? 'Fashion Brand' : localStorage.getItem('activeCategory');
+    let role = isVisitor ? 'brand' : localStorage.getItem('activeCategory');
+    if (role === 'Fashion Artist') role = 'artist';
+    if (role === 'Fashion Brand') role = 'brand';
+
     const savedOccupation = localStorage.getItem('artist_occupation');
     if (savedOccupation) {
       setTitleValue(savedOccupation);
@@ -63,13 +66,13 @@ const ProfileArtist = ({ isVisitor = false }) => {
       flex flex-col items-center lg:items-start lg:text-left shadow-sm lg:shadow-none'
     >
       <div className='bg-white lg:bg-[#ffffff] w-full lg:px-6 lg:py-6 px-4 py-8 rounded-lg shadow-sm relative'>
-        {userRole === 'Fashion Artist' && (
+        {userRole === 'artist' && (
           <div className="absolute top-6 right-4 z-10">
             <Link
               href="/artist-page/edit-profile"
               className="px-6 py-2 rounded-full transition-all flex items-center justify-center shadow-md font-proximanova font-medium"
               style={{
-                background: "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
+                background: "radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)",
                 color: "#035A7A",
               }}
             >
@@ -94,7 +97,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
 
           {/* Name */}
           <div className='w-full flex flex-col items-center'>
-            <h4 className='lg:text-2xl font-bold text-xl text-[#222222] flex items-center gap-2'>
+            <h4 className='lg:text-2xl font-bold text-[32px] text-[#222222] flex items-center gap-2'>
               OCEAN CLARA
               <span className='w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white shadow-sm'></span>
             </h4>
@@ -104,7 +107,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
           <div className="flex flex-col items-center gap-2 w-full">
             <div className="flex items-center gap-2">
               <p className="text-[#222222] text-[16px] font-medium">
-                {userRole === 'Fashion Brand' ? 'Designer/Brand' : titleValue}
+                {userRole === 'brand' ? 'Designer/Brand' : titleValue}
               </p>
               {!isVisitor && (
                 <button onClick={() => setIsModalOpen(true)} className="text-[#3A98BB] hover:opacity-75 transition-opacity">
@@ -138,7 +141,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
                   onClick={handleRetainArtist}
                   className="w-full px-6 py-2 rounded-full transition-all flex items-center justify-center shadow-md font-proximanova font-medium"
                   style={{
-                    background: "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
+                    background: "radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)",
                     color: "#035A7A",
                   }}
                 >
@@ -155,11 +158,11 @@ const ProfileArtist = ({ isVisitor = false }) => {
 
       {/* Stats */}
       <div className='bg-white w-full py-8 lg:py-0 border-y border-[#f1f1f1] lg:border-none'>
-        <div className={`flex flex-row justify-center ${userRole === 'Fashion Brand' ? 'gap-4 px-2' : 'gap-12'}`}>
+        <div className={`flex flex-row justify-center ${userRole === 'brand' ? 'gap-4 px-2' : 'gap-12'}`}>
           <div className='flex flex-col items-center text-[#222222] min-w-[80px]'>
             <span className='font-bold text-xl mb-1 order-first'>7</span>
             <h4 className='text-[#767676] text-[12px] font-medium text-center uppercase tracking-tight'>
-              {userRole === 'Fashion Brand' ? 'Jobs Posted' : 'Design Collections'}
+              {userRole === 'brand' ? 'Jobs Posted' : 'Design Collections'}
             </h4>
           </div>
 
@@ -170,7 +173,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
             </h4>
           </div>
 
-          {userRole === 'Fashion Brand' && (
+          {userRole === 'brand' && (
             <div className='flex flex-col items-center text-[#222222] min-w-[80px]'>
               <span className='font-bold text-xl mb-1 order-first'>$10000</span>
               <h4 className='text-[#767676] text-[12px] font-medium text-center uppercase tracking-tight'>
@@ -187,7 +190,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
       <div className='bg-white lg:bg-[#ffffff] w-full flex flex-col items-start lg:px-6 px-4 py-8 text-left lg:mt-0 rounded-lg shadow-sm mb-10'>
         {/* Heading */}
         <div className='flex items-center w-full justify-between mb-4'>
-          <h4 className='text-lg text-[#222222] font-bold'>
+          <h4 className='text-[32px] text-[#222222] font-bold'>
             About Me
           </h4>
         </div>

@@ -46,6 +46,7 @@ export function NavLinks() {
         pathname.startsWith("/fashion-designers/post-project") ||
         pathname.startsWith("/fashion-designers/settings") ||
         pathname.startsWith("/fashion-designers/profile") ||
+        pathname.startsWith("/fashion-designers/messages") ||
         pathname.startsWith("/fashion-designers/transactions");
 
       return pathname.startsWith("/fashion-designers") && !isMainSubpath;

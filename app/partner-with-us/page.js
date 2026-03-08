@@ -2,7 +2,7 @@ import React from 'react';
 import CustomNavbar from '../../components/Navbar';
 import Footer from '../about-page/components/Footer';
 
-const page = () => {
+const Page = () => {
   return (
     <>
       <CustomNavbar bgColor='bg-[#012D3E]' />
@@ -49,4 +49,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

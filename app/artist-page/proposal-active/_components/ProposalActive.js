@@ -1,10 +1,20 @@
 'use client'
 import React, { useState } from 'react'
 import { Paperclip } from 'lucide-react';
+import { useRouter } from "next/navigation";
 import { Textarea } from "@heroui/react";
 import { FaChevronLeft } from "react-icons/fa";
+import Link from "next/link";
 import { IoMdInformationCircleOutline } from "react-icons/io";
-const ProposalActive = () => {
+import BtnProposals from '../../../../components/BtnProposals';
+
+const ProposalActive = ({
+  handleSubmitProposal,
+  handleWithdrawProposal,
+  isOpen,
+  onOpenChange
+}) => {
+  const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
   const fullText = "Yorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis. Ut commodo efficitur neque.";
   const previewText = fullText.substring(0, 120); // Adjust character limit as needed
@@ -15,11 +25,14 @@ const ProposalActive = () => {
   return (
     <>
       <div className='flex items-center lg:mt-0 mt-4 px-4 lg:px-0 py-[10px] mx-4 lg:mx-0'>
-        <div className='lg:hidden'>
+        <div
+          className='lg:hidden cursor-pointer p-1'
+          onClick={() => router.push("/artist-page/my-proposals")}
+        >
           <FaChevronLeft color='#878787' />
         </div>
         <div className='border-b-2 w-[90%] lg:ml-16'>
-          <h4 className='font-bold lg:text-[34px] lg:text-[#222222] text-[34px] text-[#444444]'>Proposal Details</h4>
+          <h4 className='font-bold lg:text-[34px] lg:text-[#222222] text-[32px] text-[#444444]'>Proposal Details</h4>
         </div>
       </div>
       <div className='bg-[#FAFAFA] lg:flex lg:flex-col hidden text-[#222222] px-8 py-8 lg:ml-16 lg:w-[90%] w-full  rounded-2xl border-1 border-[#EAEAEA]'>
@@ -105,9 +118,9 @@ My illustration style blends creativity with clarity, ensuring each sketch commu
             <IoMdInformationCircleOutline color='#878787' />
             <span>
               10% commission charge applies{" "}
-              <a href="#" className="text-[#3A98BB]">
+              <Link href="#" className="text-[#3A98BB]">
                 Learn More
-              </a>
+              </Link>
             </span>
           </div>
 
@@ -160,6 +173,24 @@ My illustration style blends creativity with clarity, ensuring each sketch commu
               ))}
             </ul>
           )}
+        </div>
+
+        {/* Action Buttons for Mobile */}
+        <div className="lg:hidden mt-8 w-full flex justify-center">
+          <BtnProposals
+            sendText="Edit Proposal"
+            saveText="Withdraw Proposal"
+            showSaveIcon={false}
+            handleSubmitProposal={handleSubmitProposal}
+            handleViewProposal={handleSubmitProposal}
+            handleWithdrawProposal={handleWithdrawProposal}
+            proposalSubmitted={true}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            containerClassName="!p-0 !border-none !bg-transparent !gap-4 !w-full !flex-row-reverse !justify-center"
+            buttonWidth="lg:w-48 !w-auto !min-w-[120px] !px-4 !py-2 !text-sm whitespace-nowrap"
+            buttonWrapperClassName="!w-auto"
+          />
         </div>
       </div>
     </>

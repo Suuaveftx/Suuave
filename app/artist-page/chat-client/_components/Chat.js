@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, CardHeader } from "@heroui/react";
 import CustomButton from "../../../../components/CustomButton";
-import Modal3 from "../../../../components/Modal3";
+import Modal3 from "../../../../components/LeaveMessageModal";
 import SearchBar from "../../../../components/Searchbar";
 import SortByDropdown from "../../../../components/SortByDropdown";
 
