@@ -4,12 +4,18 @@ This is how to get started with project.
 
 1.  Clone this repo
 2.  Create `.env` file in the root of the project
-3.  Create `.npmrc` file in the root of the project, this enables you to connect to our shared schema. replace `token_here` with the github token Lamodot will share with you.
+3.  Authenticate with development token
+    In terminal run this one and Restart the terminal. so you dont need to authenticate each session
 
 ```bash
-@suuaveftx:registry=https://npm.pkg.github.com
-@prisma:registry=https://registry.npmjs.org
-//npm.pkg.github.com/:_authToken="token_here"
+setx NPM_TOKEN "ghp_xxxxx"
+
+```
+
+Or run per session:
+
+```bash
+$env:NPM_TOKEN="ghp_xxxxx"
 
 ```
 
