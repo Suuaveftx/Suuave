@@ -40,6 +40,7 @@ export default function ContractPage() {
       pendingSince: '18th June, 2024',
       expiresIn: '2 Days',
       artistName: 'Tolu',
+      artistRole: 'Fashion Artist',
       status: 'Pending',
     },
     {
@@ -48,6 +49,7 @@ export default function ContractPage() {
       pendingSince: '18th June, 2024',
       expiresIn: '2 Days',
       artistName: 'Tolu',
+      artistRole: 'Fashion Artist',
       status: 'Pending',
     },
     {
@@ -56,6 +58,7 @@ export default function ContractPage() {
       pendingSince: '20th June, 2024',
       expiresIn: '1 Day',
       artistName: 'Tolu',
+      artistRole: 'Fashion Artist',
       status: 'Pending',
     },
     {
@@ -64,6 +67,7 @@ export default function ContractPage() {
       pendingSince: '20th June, 2024',
       expiresIn: '1 Day',
       artistName: 'Tolu',
+      artistRole: 'Fashion Artist',
       status: 'Pending',
     },
     {
@@ -71,13 +75,15 @@ export default function ContractPage() {
       id: '24t64758',
       pendingSince: '20th June, 2024',
       expiresIn: '1 Day',
+      artistName: 'Tolu',
+      artistRole: 'Fashion Artist',
       status: 'Pending',
     },
   ];
 
   const tabs = [
-    { id: 'pending', label: 'Pending Contracts', count: 2 },
-    { id: 'ongoing', label: 'Ongoing Contracts', count: 3 },
+    { id: 'pending', label: 'Pending Contracts', count: pendingContracts.length },
+    { id: 'ongoing', label: 'Ongoing Contracts', count: ongoingContracts.length },
     { id: 'completed', label: 'Completed Contracts', count: 5 },
   ];
 
@@ -106,7 +112,7 @@ export default function ContractPage() {
   };
 
   const handleBack = () => {
-    router.back();
+    router.push('/fashion-designers');
   };
 
   // Handler functions:
@@ -116,7 +122,7 @@ export default function ContractPage() {
   };
 
   const handleMessageArtist = (contract) => {
-    setSelectedArtist(contract.artistName || 'Artist');
+    setSelectedArtist(contract.artistName || contract.artist?.name || 'Artist');
     onMessageOpen();
   };
 
@@ -130,7 +136,7 @@ export default function ContractPage() {
       <div className='max-w-7xl mx-auto bg-white px-2 md:px-4 my-6'>
         <div className='py-8 font-satoshi'>
           {/* Tab Navigation */}
-          <div className='flex w-full flex-col'>
+          <div className='flex w-full flex-col mb-8'>
             <Tabs
               selectedKey={activeTab}
               onSelectionChange={setActiveTab}

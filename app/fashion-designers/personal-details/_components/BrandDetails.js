@@ -1,5 +1,4 @@
 'use client';
-'use client';
 import React from 'react';
 import { Select, SelectItem } from '@heroui/react';
 import CustomSelect from './CustomSelect';
@@ -62,7 +61,7 @@ const BrandDetails = ({ setSelected, formData, setFormData, submitHref = '/fashi
       <section className='grid md:grid-cols-2 mt-7 gap-10'>
         {/* Enter Full Name */}
         <div className='w-full flex flex-col gap-2'>
-          <Lable htmlFor='fullName' text='Full Name' />
+          <Lable htmlFor='fullName' text='Full Name' required />
           <Input
             id='fullName'
             placeholder='Enter Full Name'
@@ -72,7 +71,7 @@ const BrandDetails = ({ setSelected, formData, setFormData, submitHref = '/fashi
         </div>
         {/* Username */}
         <div className='w-full flex flex-col gap-2'>
-          <Lable htmlFor='username' text='Username' />
+          <Lable htmlFor='username' text='Username' required />
           <Input
             id='username'
             placeholder='@ocean'
@@ -82,7 +81,7 @@ const BrandDetails = ({ setSelected, formData, setFormData, submitHref = '/fashi
         </div>
         {/* Email Address */}
         <div className='w-full flex flex-col gap-2'>
-          <Lable htmlFor='emailAddress' text='Email Address' />
+          <Lable htmlFor='emailAddress' text='Email Address' required />
           <Input
             id='emailAddress'
             placeholder='@czysdgv@gmail.com'
@@ -92,7 +91,7 @@ const BrandDetails = ({ setSelected, formData, setFormData, submitHref = '/fashi
         </div>
         {/*Nationality */}
         <div className='w-full flex flex-col gap-2'>
-          <Lable htmlFor='nationality' text='Nationality' />
+          <Lable htmlFor='nationality' text='Nationality' required />
 
           <CustomSelect
             formData={formData}
@@ -105,7 +104,7 @@ const BrandDetails = ({ setSelected, formData, setFormData, submitHref = '/fashi
         </div>
         {/*Phone Number */}
         <div className='w-full flex flex-col gap-2'>
-          <Lable htmlFor='phoneCode' text='Phone Number' />
+          <Lable htmlFor='phoneCode' text='Phone Number' required />
 
           <div className='flex items-center gap-3'>
             <CustomSelect
@@ -127,17 +126,17 @@ const BrandDetails = ({ setSelected, formData, setFormData, submitHref = '/fashi
         </div>
         {/*Current City*/}
         <div className='w-full flex flex-col gap-2'>
-          <Lable htmlFor='currentCity' text='Current City' />
+          <Lable htmlFor='currentCity' text='Current City' required />
           <Input
             id='currentCity'
-            placeholder='New york city'
+            placeholder='New York City'
             value={formData.currentCity}
             onChange={(e) => setFormData({ ...formData, currentCity: e.target.value })}
           />
         </div>
         {/*Language */}
         <div className='w-full flex flex-col gap-2'>
-          <Lable htmlFor='Language' text='Language' />
+          <Lable htmlFor='Language' text='Language' required />
 
           <CustomSelect
             formData={formData}
@@ -150,7 +149,7 @@ const BrandDetails = ({ setSelected, formData, setFormData, submitHref = '/fashi
         </div>
         {/*Date of Birth*/}
         <div className='w-full flex flex-col gap-2'>
-          <Lable htmlFor='dateofBirth' text='Date of Birth' />
+          <Lable htmlFor='dateofBirth' text='Date Of Birth' required />
 
           <div className='flex items-center gap-7'>
             {/* day */}
@@ -188,13 +187,13 @@ const BrandDetails = ({ setSelected, formData, setFormData, submitHref = '/fashi
       </section>
       {/* textarea */}
       <section className='w-full flex flex-col gap-2 mt-10'>
-        <Lable htmlFor='about' text='Describe yourself' />
+        <Lable htmlFor='about' text='Describe Yourself' required />
         <textarea
           name='about'
           id='about'
           cols='30'
           rows='10'
-          placeholder='Tell us about yourself, your relevant skills and professional experience.'
+          placeholder='Tell Us About Yourself, Your Relevant Skills and Professional Experience.'
           className='w-full  border border-[#D1D1D1] text-[#878787] font-normal text-base py-2 px-2 rounded-lg outline-[#3A98BB] bg-transparent h-32 resize-none'
           value={formData.about}
           onChange={(e) => setFormData({ ...formData, about: e.target.value })}
@@ -203,7 +202,7 @@ const BrandDetails = ({ setSelected, formData, setFormData, submitHref = '/fashi
       <div className='w-full flex justify-center md:justify-end mt-10'>
         <Link
           href={submitHref}
-          className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]'
+          className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 mt-4 text-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)]'
         >
           Submit
         </Link>
@@ -226,6 +225,10 @@ const Input = ({ placeholder, id, value, onChange }) => {
   );
 };
 
-const Lable = ({ text, htmlFor }) => {
-  return <label htmlFor={htmlFor}>{text}</label>;
+const Lable = ({ text, htmlFor, required }) => {
+  return (
+    <label htmlFor={htmlFor} className="text-sm font-medium text-[#222222]">
+      {text}{required && <span className="text-red-500 ml-0.5">*</span>}
+    </label>
+  );
 };

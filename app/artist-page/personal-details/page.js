@@ -9,8 +9,8 @@ import Profile from "./_components/Profile";
 export default function Page() {
   const [selected, setSelected] = useState("PersonalDetail");
   const [preview, setPreview] = useState("/dev-images/profile.png");
-  const [previewPortfolio, setPreviewPortfolio] = useState(null);
-  const [previewAwardCertificate, setPreviewAwardCertificate] = useState(null);
+  const [previewPortfolio, setPreviewPortfolio] = useState([]);
+  const [previewAwardCertificate, setPreviewAwardCertificate] = useState([]);
 
   // image preview handler
 
@@ -22,17 +22,27 @@ export default function Page() {
   };
 
   const uploadedPortfolio = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPreviewPortfolio(URL.createObjectURL(file));
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      const newPreviews = files.map((file) => URL.createObjectURL(file));
+      setPreviewPortfolio((prev) => [...prev, ...newPreviews]);
     }
   };
 
+  const removePortfolioItem = (index) => {
+    setPreviewPortfolio((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const uploadedAwardCertificate = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPreviewAwardCertificate(URL.createObjectURL(file));
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      const newPreviews = files.map((file) => URL.createObjectURL(file));
+      setPreviewAwardCertificate((prev) => [...prev, ...newPreviews]);
     }
+  };
+
+  const removeAwardCertificateItem = (index) => {
+    setPreviewAwardCertificate((prev) => prev.filter((_, i) => i !== index));
   };
 
   // Personal details state
@@ -62,12 +72,6 @@ export default function Page() {
   });
   return (
     <>
-      <div className="md:hidden pt-6 pl-6 bg-[#F9F9F9]">
-        <div className="bg-[#EAF9FF] py-2 px-4 inline-flex items-center gap-2 rounded-lg">
-          <Image src="/dev-images/logo.png" alt="icon" width={24} height={24} />
-          <span className="font-bold text-[#222222] text-xl font-satoshi" style={{ fontFamily: 'var(--font-satoshi), sans-serif', letterSpacing: '0.05em' }}>suuave</span>
-        </div>
-      </div>
       <h1 className=" border-b-2 md:mx-10 border-[#EAEAEA] py-3 font-bold text-2xl text-[#222222] px-5 md:px-0 hidden md:block">
         Profile Setting
       </h1>
@@ -111,6 +115,7 @@ export default function Page() {
             setFormData={setFormData}
             uploadedPortfolio={uploadedPortfolio}
             previewPortfolio={previewPortfolio}
+            removePortfolioItem={removePortfolioItem}
           />
         )}
 
@@ -121,6 +126,7 @@ export default function Page() {
             setFormData={setFormData}
             uploadedAwardCertificate={uploadedAwardCertificate}
             previewAwardCertificate={previewAwardCertificate}
+            removeAwardCertificateItem={removeAwardCertificateItem}
           />
         )}
 

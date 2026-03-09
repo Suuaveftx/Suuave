@@ -34,7 +34,7 @@ const ProposalPopUp = ({ onOpenChange, isOpen }) => {
               <ModalFooter className='w-full flex justify-center'>
                 <Link href='/artist-page/project-page'>
                   <Button
-                    className='bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A] font-bold text-sm'
+                    className='bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold text-sm'
                     onPress={onClose}
                   >
                     OK

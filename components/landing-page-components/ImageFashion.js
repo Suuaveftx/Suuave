@@ -148,10 +148,10 @@ const ImageFashion = () => {
           alt="woman Designing"
         />
         <p className="text-customWhiteBgText font-medium lg:text-2xl text-lg">
-          FOR FASHION ARTISTS
+          FOR AFRICAN FASHION ARTISTS
         </p>
         <p className="text-customWhite font-normal lg:font-medium lg:text-[50px] text-[28px] mt-0 lg:mt-3 lg:leading-[57px]">
-          Get global exposure and monetize your creativity.
+          Scale Your Vision Globally.
         </p>
       </div>
       <div className="mt-auto">

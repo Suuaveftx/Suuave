@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React from "react";
 import { Switch } from "@heroui/react";
+import { X } from "lucide-react";
 
 const PersonalInformation = ({
   setSelected,
@@ -10,17 +11,18 @@ const PersonalInformation = ({
   setFormData,
   uploadedPortfolio,
   previewPortfolio,
+  removePortfolioItem,
 }) => {
   return (
     <div className="bg-[#FAFAFA] border border-[#DEDEDE] rounded-2xl p-3 md:p-6 w-full h-full">
-      <h1 className="text-[#3A98BB] font-bold text-xl">Professional Information</h1>
+      <h1 className="text-[#3A98BB] font-bold text-[32px]">Professional Information</h1>
       <p className="text-[#767676] font-normal text-base mt-2">
         Add any relevant information
       </p>
       <section className="space-y-10 mt-5">
         {/*Illustrator */}
         <div className="w-full flex flex-col gap-2">
-          <Lable htmlFor="skills" text="Skills" />
+          <Lable htmlFor="skills" text="Skills" required />
           <Input
             id="skills"
             placeholder="Eg Illustrator"
@@ -44,7 +46,7 @@ const PersonalInformation = ({
         </div> */}
         {/*Portfolio link*/}
         <div className="w-full flex flex-col gap-2">
-          <Lable htmlFor="portfolioLink" text="Link to Your Portfolio/Personal Website" />
+          <Lable htmlFor="portfolioLink" text="Link To Your Portfolio/Personal Website" required />
           <Input
             id="portfolioLink"
             placeholder="Enter portfolio link"
@@ -56,58 +58,53 @@ const PersonalInformation = ({
         </div>
         {/*upload Portfolio*/}
         <div className="w-full flex flex-col gap-2">
-          <Lable htmlFor="uploadedPortfolio" text="Portfolio" />
-          {previewPortfolio ? (
-            <Image src={previewPortfolio} alt="icon" width={128} height={128} className="object-cover" />
-          ) : (
+          <Lable htmlFor="uploadedPortfolio" text="Portfolio" required />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {previewPortfolio.map((src, index) => (
+              <div key={index} className="relative w-full h-32 rounded-lg overflow-hidden border border-[#D1D1D1]">
+                <Image src={src} alt={`portfolio-${index}`} fill className="object-cover" />
+                <button
+                  type="button"
+                  onClick={() => removePortfolioItem(index)}
+                  className="absolute top-1 right-1 bg-white/80 hover:bg-white rounded-full p-1 shadow-sm transition-colors"
+                >
+                  <X size={14} className="text-red-500" />
+                </button>
+              </div>
+            ))}
             <label
               htmlFor="uploadedPortfolio"
-              className="flex flex-col md:flex-row items-center cursor-pointer justify-center gap-3 w-full h-32 rounded-lg border border-[#D1D1D1]"
+              className="flex flex-col items-center cursor-pointer justify-center gap-1 w-full h-32 rounded-lg border border-dashed border-[#3A98BB] bg-[#F4FBFE]"
             >
               <Image
                 src="/svg/paper-clip.svg"
                 alt="icon"
-                width={24}
-                height={24}
+                width={20}
+                height={20}
               />
-              <p className="text-[#767676] font-normal text-base">
-                Upload sample of your designs
+              <p className="text-[#3A98BB] font-medium text-xs text-center px-2">
+                {previewPortfolio.length > 0 ? "Add more" : "Upload Design"}
               </p>
               <input
                 id="uploadedPortfolio"
                 type="file"
                 accept="image/*"
+                multiple
                 onChange={uploadedPortfolio}
                 className="hidden"
               />
             </label>
-          )}
-        </div>
-
-        {/* Availability */}
-        <div>
-          <p className="text-[#222222] font-normal text-base">Availability</p>
-          <div className="flex items-center gap-20 mt-5">
-            <p className="text-[#222222] font-bold text-base">Monday</p>
-            <Switch
-              color="success"
-              isSelected={formData.availability}
-              onChange={(e) =>
-                setFormData({ ...formData, availability: e.target.checked })
-              }
-            />
           </div>
         </div>
-        {/* skip and continue button */}
-        <div className="w-full flex justify-center md:justify-end items-center">
-          <button
-            onClick={() => setSelected("Awards/Certifications")}
-            className="text-[#035A7A] rounded-3xl cursor-pointer  px-6 py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
-          >
-            Continue
-          </button>
-        </div>
       </section>
+      <div className="w-full flex justify-center md:justify-end items-center">
+        <button
+          onClick={() => setSelected("Awards/Certifications")}
+          className="text-[#035A7A] rounded-3xl cursor-pointer  px-6 py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]"
+        >
+          Continue
+        </button>
+      </div>
     </div>
   );
 };
@@ -126,6 +123,10 @@ const Input = ({ placeholder, id, value, onChange }) => {
   );
 };
 
-const Lable = ({ text, htmlFor }) => {
-  return <label htmlFor={htmlFor}>{text}</label>;
+const Lable = ({ text, htmlFor, required }) => {
+  return (
+    <label htmlFor={htmlFor} className="text-sm font-medium text-[#222222]">
+      {text}{required && <span className="text-red-500 ml-0.5">*</span>}
+    </label>
+  );
 };

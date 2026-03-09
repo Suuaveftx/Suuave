@@ -74,7 +74,7 @@ const SettingsPage = () => {
               onClick={() => setShowSidebar(true)}
             >
               <ChevronLeft className='w-5 h-5 mr-1' />
-              <span className='text-[20px]'>
+              <span className='text-[32px]'>
                 {activeItem === 'notifications' ? 'Notifications' : 'Security'}
               </span>
             </button>

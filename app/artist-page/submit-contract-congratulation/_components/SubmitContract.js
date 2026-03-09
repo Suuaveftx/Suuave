@@ -3,7 +3,7 @@ import { Card, CardHeader } from "@heroui/react";
 import CustomButton from "../../../../components/CustomButton";
 import SearchBar from "../../../../components/Searchbar";
 import SortByDropdown from "../../../../components/SortByDropdown";
-import Modal2 from "../../../../components/Modal2";
+import Modal2 from "../../../../components/SubmissionSuccessModal";
 
 const OngoingContracts = () => {
   return (

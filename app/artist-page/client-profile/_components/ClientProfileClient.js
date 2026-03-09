@@ -3,7 +3,8 @@ import Image from "next/image";
 import RatingStar from "../../../fashion-designers/_components/RatingStar";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Pencil } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 
 const reviews = [
     {
@@ -29,12 +30,19 @@ const reviews = [
 const fullText = `Sorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel bibendum lorem. Morbi convallis convallis diam sit amet lacinia. Aliquam in elementum tellus. Curabitur tempor quis eros tempus lacinia. Nam bibendum pellentesque quam a convallis. Sed ut vulputate nisi. Integer in felis sed leo vestibulum venenatis. Suspendisse quis arcu sem. Aenean feugiat ex eu vestibulum vestibulum. Morbi a eleifend magna. Nam metus lacus, porttitor eu mauris a, blandit ultrices nibh. Mauris sit amet magna non ligula vestibul`;
 
 const ClientProfileClient = () => {
+    const router = useRouter();
     const [isMobile, setIsMobile] = useState(false);
     const [showFull, setShowFull] = useState(false);
     const [aboutValue, setAboutValue] = useState(fullText);
     const [titleValue, setTitleValue] = useState(
         "Designer/Brand"
     );
+    const [userRole, setUserRole] = useState(null);
+
+    useEffect(() => {
+        const role = localStorage.getItem('activeCategory');
+        setUserRole(role);
+    }, []);
 
     useEffect(() => {
         const handleResize = () => {
@@ -58,10 +66,13 @@ const ClientProfileClient = () => {
     }, [isMobile, showFull, words]);
 
     return (
-        <div className=" md:bg-[#F1F1F1] md:px-12 pb-20">
+        <div className=" bg-[#F1F1F1] md:px-12 pb-20">
             {/* Header */}
             <div className=" md:hidden font-satoshi">
-                <button className="flex items-center gap-3 px-4 py-2">
+                <button
+                    className="flex items-center gap-3 px-4 py-2"
+                    onClick={() => router.push("/artist-page/project-page")}
+                >
                     <Image
                         src="/collectionImage/icons/arrow-left.svg"
                         alt="icon"
@@ -72,7 +83,7 @@ const ClientProfileClient = () => {
                 </button>
             </div>
             {/* User details  */}
-            <div className="mt-3 flex flex-col md:py-5 md:bg-[#F9F9F9] md:px-5 md:rounded-t-lg  md:justify-between md:mt-20 md:flex-row md:items-start md:gap-4 items-center p-4 text-[#222222] font-satoshi">
+            <div className="mt-3 flex flex-col py-5 bg-[#F9F9F9] px-5 rounded-t-lg md:justify-between md:mt-20 md:flex-row md:items-start md:gap-4 items-center p-4 text-[#222222] font-satoshi">
                 <div className=" flex flex-col items-center md:flex-row md:items-start md:gap-3">
                     <div className="flex flex-col items-end w-20 h-20 rounded-full md:w-28 md:h-28 relative">
                         {/* Image Preview */}
@@ -88,18 +99,10 @@ const ClientProfileClient = () => {
                     <div className=" flex flex-col items-center md:items-start ">
                         <span className=" font-bold text-lg mt-1 flex items-center gap-2">
                             <h1 className="text-base uppercase">OCEAN CLARA</h1>
-                            <Image
-                                src="/profile/badgeCheck.svg"
-                                alt="icon"
-                                width={20}
-                                height={20}
-                            />
                         </span>
                         <div className="  flex items-center gap-2">
                             <p className="font-normal text-base"> {titleValue}</p>
-                            <button className="text-[#3A98BB] hover:opacity-75 transition-opacity">
-                                <Pencil size={16} />
-                            </button>
+
                         </div>
                         <div className="flex items-center gap-2  font-normal  text-sm">
                             <Image
@@ -118,12 +121,11 @@ const ClientProfileClient = () => {
                     </div>
                 </div>
 
-                <Link href="/artist-page/edit-profile" className="hidden md:flex bg-[#EAF9FF] p-2 px-5 rounded-full hover:bg-[#d0ebf7] transition-colors items-center gap-2 shadow-sm border border-[#d0ebf7]">
-                    <span className="text-[#3A98BB] text-sm font-medium">Edit</span>
-                </Link>
+
             </div>
+
             {/* Total jobs and earn */}
-            <section className="flex justify-between md:px-5  md:rounded-b-lg md:py-5  md:bg-[#F9F9F9] md:mt-0 md:justify-start md:gap-10 mt-5 p-4 border-y-2 md:border-t-2 border-[#EAEAEA] font-satoshi">
+            <section className="flex justify-between px-5  rounded-b-lg py-5  bg-[#F9F9F9] md:mt-0 md:justify-start md:gap-10 mt-5 p-4 border-y-2 md:border-t-2 border-[#EAEAEA] font-satoshi">
                 <div className="flex flex-col items-center gap-2">
                     <h2 className="font-bold text-base md:text-xl">7</h2>
                     <p className="text-[#767676] font-normal text-sm">Jobs Posted</p>
@@ -139,8 +141,9 @@ const ClientProfileClient = () => {
                     <p className="text-[#767676] font-normal text-sm">Total Spent</p>
                 </div>
             </section>
+
             {/* About user */}
-            <section className="p-4 font-satoshi md:bg-[#F9F9F9] md:mt-10 md:py-5 md:px-5 md:rounded-t-lg ">
+            <section className="p-4 font-satoshi bg-[#F9F9F9] md:mt-10 py-5 px-5 rounded-t-lg ">
                 <div className="flex items-start justify-between">
                     <h1 className="font-bold text-base md:text-xl md:mb-8 text-[#222222]">About Me</h1>
                 </div>
@@ -173,7 +176,7 @@ const ClientProfileClient = () => {
                     {reviews.map((review) => (
                         <div
                             key={review.id}
-                            className=" flex items-start gap-3 md:w-[60%] md:p-5 md:bg-[#F9F9F9]"
+                            className=" flex items-start gap-3 md:w-[60%] p-5 bg-[#F9F9F9]"
                         >
                             <Image
                                 src="/profile/image-2.svg"

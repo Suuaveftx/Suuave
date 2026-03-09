@@ -24,7 +24,7 @@ const MessageModal = ({ isOpen, onOpenChange, artistName }) => {
             scrollBehavior='inside'
             hideCloseButton
             classNames={{
-                base: 'bg-white rounded-[2rem] sm:mx-auto max-w-3xl w-full sm:w-full',
+                base: 'bg-white rounded-[2rem] mx-4 sm:mx-auto max-w-3xl w-full sm:w-full',
                 header: 'border-none pt-8 px-6 md:px-10 pb-2',
                 body: 'px-6 md:px-10 pb-8',
                 footer: 'border-none px-6 md:px-10 pb-10 pt-0',

@@ -5,8 +5,7 @@ import { Button, Card, CardBody } from '@heroui/react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
-import Navbar3 from '../../../../components/Navbar3';
-import ContractHeader from './contract-header';
+
 
 export default function RetainArtist() {
   const searchParams = useSearchParams();
@@ -90,7 +89,7 @@ export default function RetainArtist() {
               <Button
                 as={Link}
                 href={`/fashion-designers/contracts/retain/checkout${returnUrl ? `?returnUrl=${encodeURIComponent(returnUrl)}` : ''}`}
-                className='bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-semibold w-full rounded-full py-6 text-sm shadow-sm'
+                className='bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold w-full rounded-full py-6 text-sm shadow-sm'
                 size='lg'
               >
                 Retain SHOALA ADIH

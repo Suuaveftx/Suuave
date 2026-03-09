@@ -9,7 +9,7 @@ import {
 } from '@heroui/react';
 import { FaLocationDot } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
-import ContractHeader from '../../../../artist-page/my-contracts/components/contract-header';
+import ContractHeader from '../../../contracts/components/contract-header';
 
 const ProposalsList = ({ params }) => {
     const { id } = use(params);

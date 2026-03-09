@@ -12,7 +12,7 @@ import {
   User,
 } from '@heroui/react';
 import React, { useState } from 'react';
-import { Bookmark } from 'lucide-react';
+import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -129,28 +129,23 @@ const FashionDesignersCard = ({
   };
 
   return (
-    <Card className='px-0 hover:shadow-xl overflow-hidden' shadow='none'>
+    <Card className='px-0 hover:shadow-xl overflow-hidden bg-white shadow-md border-none' shadow='none'>
       <CardBody className='overflow-hidden p-0'>
         <div className='block relative'>
           <Button
             isIconOnly
-            className='absolute right-4 top-4 z-20 border-1 bg-[#444444] border-[#444444] backdrop-blur-sm hover:bg-[#444444]/70'
+            className='absolute right-4 top-4 z-20 bg-white shadow-md border-none hover:bg-white/90'
             size='sm'
+            radius='full'
             onPress={(e) => {
-              // e.continuePropagation(); // Try to prevent link navigation if necessary, though separate positioning usually helps.
-              // Actually, preventing default on the event might be safer if it bubbles. 
-              // HeroUI Button onPress might behave differently than onClick. 
-              // Let's use onClick on a wrapper or rely on Button's behavior. 
-              // BUT wait, the button was INSIDE the Link. 
-              // Moving the Button OUTSIDE the Link is the most robust way to avoid navigation.
               onToggleSave();
             }}
           >
-            <Bookmark
-              size={20}
-              className={`${isBookmarked ? 'fill-cyan-400 text-cyan-400' : 'text-white'
-                } transition-colors duration-200`}
-            />
+            {isBookmarked ? (
+              <IoBookmark size={20} className='text-[#3A98BB]' />
+            ) : (
+              <IoBookmarkOutline size={20} className='text-gray-600' />
+            )}
           </Button>
           <Link href={`/fashion-designers/${productID}`} className='block'>
             <div className='overflow-hidden'>
@@ -177,24 +172,17 @@ const FashionDesignersCard = ({
         </div>
       </CardBody>
 
-      <CardFooter className='flex flex-col items-start w-full mx-0 px-1 space-y-2'>
-        <div className='space-y-2'>
-          {/* Title */}
-          <p className='line-clamp-2 font-semibold text-sm hover:underline min-h-[40px]'>
+      <CardFooter className='flex flex-col items-start w-full p-4 pt-4'>
+        <div className='flex flex-col gap-1.5 w-full'>
+          <p className='line-clamp-1 font-medium text-[15px] text-gray-800 '>
             {title}
           </p>
-
-          <p className='font-semibold text-md text-[#3A98BB]'>{formatToUSD(price)}</p>
-
-          <Link href='/artist-page/profile-vistor-view'>
-            <User
-              avatarProps={{
-                src: `https://i.pravatar.cc/150?img=${idx}`,
-                size: 'sm',
-              }}
-              name={userName}
-            />
-          </Link>
+          <p className='font-semibold text-[16px] text-[#3A98BB]'>
+            {formatToUSD(price)}
+          </p>
+          <p className='text-[13px] text-gray-600 font-normal'>
+            {userName}
+          </p>
         </div>
       </CardFooter>
     </Card>

@@ -1,4 +1,3 @@
-import { Card } from "@heroui/react";
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -20,16 +19,13 @@ const NotificationMessage = ({ title, message, time }) => {
     };
 
     return (
-        <Card
-            className="border-b-2 w-full rounded-t-md max-w-[350px] items-start gap-1.5 py-3.5 text-start px-2"
-            radius="none"
-            shadow="none"
-            isPressable
+        <div
+            className="border-b-2 w-full rounded-t-md max-w-[350px] flex flex-col items-start gap-1.5 py-3.5 text-start px-2 hover:bg-gray-50 cursor-pointer transition-colors"
         >
-            <p className="font-medium">{title}</p>
-            <p className="line-clamp-2">{message}</p>
+            <p className="font-medium text-[#222222]">{title}</p>
+            <p className="line-clamp-2 text-[#222222]">{message}</p>
             <p className="text-gray-500 text-xs">{formatTimeToUTC(time)}</p>
-        </Card>
+        </div>
     );
 };
 

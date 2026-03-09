@@ -15,7 +15,9 @@ const FashionCard = () => {
   const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
-    const role = localStorage.getItem('activeCategory');
+    let role = localStorage.getItem('activeCategory');
+    if (role === 'Fashion Artist') role = 'artist';
+    if (role === 'Fashion Brand') role = 'brand';
     setUserRole(role);
   }, []);
 
@@ -69,7 +71,7 @@ const FashionCard = () => {
                   </div>
 
                   {/* Three Dots Menu */}
-                  {userRole === 'Fashion Artist' && (
+                  {userRole === 'artist' && (
                     <div className="absolute top-0 lg:ml-[250px] ml-[128px] mt-1 flex items-center justify-center rounded-md w-10 cursor-pointer">
                       <ThreeDotsDropdown />
                     </div>
@@ -145,7 +147,7 @@ const FashionCard = () => {
             </div>
 
             {/* Add More button - hidden on mobile */}
-            {userRole === 'Fashion Artist' && (
+            {userRole === 'artist' && (
               <div className="mt-6 flex justify-center">
                 <AwardUploadModal />
               </div>
@@ -174,7 +176,7 @@ const FashionCard = () => {
             </div>
 
             {/* Upload modal trigger below */}
-            {userRole === 'Fashion Artist' && (
+            {userRole === 'artist' && (
               <div className="mt-6 flex justify-center">
                 <UploadModal />
               </div>

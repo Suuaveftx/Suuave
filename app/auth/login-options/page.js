@@ -1,12 +1,12 @@
 import React from 'react'
 import LoginOptions from './_components/Login-Options'
 
-const page = () => {
+const Page = () => {
   return (
     <div>
-        <LoginOptions />
+      <LoginOptions />
     </div>
   )
 }
 
-export default page
+export default Page

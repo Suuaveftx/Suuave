@@ -1,15 +1,23 @@
+'use client';
 import React from 'react';
 import Payment from './_components/Payment';
 import PaymentAll from './_components/PaymentAll';
 import { ChevronLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
+  const router = useRouter();
+
   return (
     <>
-      <div className='w-full md:max-w-none md:mx-0 md:w-64 px-4 md:pl-8 mt-4 flex items-center gap-4'>
+      <div className='w-full md:max-w-none md:mx-0 md:w-64 px-4 md:pl-8 mt-4 flex items-center gap-2 sm:gap-4'>
         {/* Show chevron only on mobile */}
-        <ChevronLeft className='w-5 h-5 mr-2 sm:hidden' color='#878787' />
-        <h1 className='lg:text-2xl text-[20px] font-bold border-b-[0.5px] leading-[100%]'>
+        <ChevronLeft
+          className='w-5 h-5 sm:hidden cursor-pointer'
+          color='#878787'
+          onClick={() => router.push("/artist-page/profile-for-artist")}
+        />
+        <h1 className='lg:text-2xl text-[32px] font-bold border-b-[0.5px] leading-[100%]'>
           Wallet
         </h1>
       </div>

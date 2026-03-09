@@ -18,7 +18,7 @@ export const collectionData = [
         image: "/collectionImage/image-6.svg",
       },
       price: "$100,000",
-      purchaseDate: "2nd, November 2024.",
+      purchaseDate: "2nd November, 2024",
     },
   },
   {
@@ -38,7 +38,7 @@ export const collectionData = [
         image: "/collectionImage/image-6.svg",
       },
       price: "$420,000",
-      purchaseDate: "2nd, November 2024.",
+      purchaseDate: "2nd November, 2024",
     },
   },
   {
@@ -58,7 +58,7 @@ export const collectionData = [
         image: "/collectionImage/image-6.svg",
       },
       price: "$10,000",
-      purchaseDate: "2nd, November 2024.",
+      purchaseDate: "2nd November, 2024",
     },
   },
   {
@@ -78,7 +78,7 @@ export const collectionData = [
         image: "/collectionImage/image-6.svg",
       },
       price: "$200,000",
-      purchaseDate: "2nd, November 2024.",
+      purchaseDate: "2nd November, 2024",
     },
   },
   {
@@ -98,7 +98,7 @@ export const collectionData = [
         image: "/collectionImage/image-6.svg",
       },
       price: "$200,000",
-      purchaseDate: "2nd, November 2024.",
+      purchaseDate: "2nd November, 2024",
     },
   },
   {
@@ -118,7 +118,7 @@ export const collectionData = [
         image: "/collectionImage/image-6.svg",
       },
       price: "$200,000",
-      purchaseDate: "2nd, November 2024.",
+      purchaseDate: "2nd November, 2024",
     },
   },
   {
@@ -138,7 +138,7 @@ export const collectionData = [
         image: "/collectionImage/image-6.svg",
       },
       price: "$200,000",
-      purchaseDate: "2nd, November 2024.",
+      purchaseDate: "2nd November, 2024",
     },
   },
 ];

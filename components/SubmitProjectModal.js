@@ -4,7 +4,6 @@ import {
     Modal,
     ModalContent,
     ModalBody,
-    Button,
     useDisclosure,
 } from "@heroui/react";
 import { Check } from "lucide-react";
@@ -26,13 +25,20 @@ const SubmitProjectModal = ({ trigger }) => {
         <>
             {trigger ? (
                 React.cloneElement(trigger, {
-                    onPress: confirmDisclosure.onOpen,
-                    onClick: confirmDisclosure.onOpen
+                    onClick: (e) => {
+                        if (trigger.props.onClick) trigger.props.onClick(e);
+                        if (trigger.props.onPress) trigger.props.onPress(e);
+                        confirmDisclosure.onOpen();
+                    }
                 })
             ) : (
-                <Button onPress={confirmDisclosure.onOpen} className="w-full">
+                <button
+                    onClick={confirmDisclosure.onOpen}
+                    className="w-full bg-[#3A98BB] text-white py-3 rounded-full font-bold hover:bg-[#3489a8] transition-colors"
+                    type="button"
+                >
                     Submit Project
-                </Button>
+                </button>
             )}
 
             <Modal
@@ -52,12 +58,13 @@ const SubmitProjectModal = ({ trigger }) => {
                                 <Check size={40} className="text-[#035A7A]" strokeWidth={3} />
                             </div>
                             <h2 className="text-xl font-bold text-[#222222]">Project Submitted</h2>
-                            <Button
-                                onPress={handleRateTransition}
-                                className="mt-8 px-8 py-3 bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A] rounded-full font-bold text-base shadow-sm hover:opacity-90 transition-opacity"
+                            <button
+                                onClick={handleRateTransition}
+                                className="mt-8 px-8 py-3 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] rounded-full font-bold text-base shadow-sm hover:opacity-90 transition-opacity"
+                                type="button"
                             >
                                 Rate Rahman
-                            </Button>
+                            </button>
                         </ModalBody>
                     )}
                 </ModalContent>
@@ -67,6 +74,7 @@ const SubmitProjectModal = ({ trigger }) => {
                 name="Rahman"
                 isOpen={reviewDisclosure.isOpen}
                 onOpenChange={reviewDisclosure.onOpenChange}
+                onClose={reviewDisclosure.onClose}
                 onSuccess={() => {
                     // This can be used for any additional cleanup
                 }}

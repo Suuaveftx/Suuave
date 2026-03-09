@@ -59,11 +59,8 @@ export default function Page() {
   });
   return (
     <>
-      <div className="md:hidden pt-6 pl-6 bg-[#F9F9F9]">
-        <div className="bg-[#EAF9FF] py-2 px-4 inline-flex items-center gap-2 rounded-lg">
-          <Image src="/dev-images/logo.png" alt="icon" width={24} height={24} />
-          <span className="font-bold text-[#222222] text-xl font-satoshi" style={{ fontFamily: 'var(--font-satoshi), sans-serif', letterSpacing: '0.05em' }}>suuave</span>
-        </div>
+      <div className="md:hidden pt-10 px-6 bg-[#F9F9F9]">
+        <h1 className="text-[32px] font-bold text-[#222222] font-proximanova">Personal Details</h1>
       </div>
 
       <div className="flex flex-col md:flex-row px-5 md:px-10">

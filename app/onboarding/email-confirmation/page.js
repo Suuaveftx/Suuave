@@ -1,12 +1,12 @@
 import React from 'react'
 import Otp from './_components/Otp'
 
-const page = () => {
+const Page = () => {
   return (
     <div>
-        <Otp />
+      <Otp />
     </div>
   )
 }
 
-export default page
+export default Page

@@ -1,7 +1,7 @@
 import React from "react";
 import ChooseCategory from "./_components/Choose-Category";
 
-const page = () => {
+const Page = () => {
   return (
     <div>
       <ChooseCategory />
@@ -9,4 +9,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

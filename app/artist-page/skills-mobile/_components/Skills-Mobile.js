@@ -4,7 +4,7 @@ const SkillsFormMobile = () => {
   return (
     <div className="sm:hidden bg-white p-4 rounded shadow-md w-full">
       {/* Header: Let's know your major skills */}
-      <h2 className="text-lg font-semibold mb-2">Let&apos;s know your major skills</h2>
+      <h2 className="text-[32px] font-semibold mb-2">Let&apos;s know your major skills</h2>
       <p className="text-sm text-gray-600 mb-4">
         Fill in your most comfortable skills.
       </p>
@@ -15,7 +15,7 @@ const SkillsFormMobile = () => {
       />
 
       {/* Header: Tell us about Yourself */}
-      <h2 className="text-lg font-semibold mt-6 mb-2">Tell us about Yourself</h2>
+      <h2 className="text-[32px] font-semibold mt-6 mb-2">Tell us about Yourself</h2>
       <p className="text-sm text-gray-600 mb-4">
         Describe yourself to attract potential clients.
       </p>
@@ -26,7 +26,7 @@ const SkillsFormMobile = () => {
       ></textarea>
 
       {/* Header: What language are you most comfortable with? */}
-      <h2 className="text-lg font-semibold mt-6 mb-2">
+      <h2 className="text-[32px] font-semibold mt-6 mb-2">
         What language are you most comfortable with?
       </h2>
       <p className="text-sm text-gray-600 mb-4">

@@ -8,10 +8,14 @@ import {
   TableCell,
   Chip,
   Link,
-  Card,
-  CardBody,
   Input,
   Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Card,
+  CardBody,
 } from "@heroui/react";
 import {
   MagnifyingGlassIcon,
@@ -19,6 +23,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
+import { Calendar, CircleDollarSign } from "lucide-react";
 import FilterDropdown from "../../../../components/FilterDropdown";
 import { useRouter } from "next/navigation";
 
@@ -231,17 +236,18 @@ export default function CompletedContracts() {
         return <div className="font-satoshi text-sm ">{cellValue}</div>;
       case "action":
         return (
-          <Button
-            className="bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-proximanova rounded-full border-0 shadow-sm"
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              const returnPath = encodeURIComponent('/fashion-designers/contracts?tab=completed');
-              router.push(`/fashion-designers/contracts/retain?artist=${contract.artist || 'Ocean'}&returnUrl=${returnPath}`);
-            }}
-          >
-            Retain Artist
-          </Button>
+          <span onClick={(e) => e.stopPropagation()}>
+            <Button
+              className="bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-proximanova rounded-full border-0 shadow-sm"
+              size="sm"
+              onPress={() => {
+                const returnPath = encodeURIComponent('/fashion-designers/contracts?tab=completed');
+                router.push(`/fashion-designers/contracts/retain?artist=${contract.artist || 'Ocean'}&returnUrl=${returnPath}`);
+              }}
+            >
+              Retain Artist
+            </Button>
+          </span>
         );
       default:
         return cellValue;
@@ -263,47 +269,88 @@ export default function CompletedContracts() {
     <div className="w-full max-w-full mx-auto ">
       {/* Search and Filter Bar */}
       <div className="mt-8 pb-2">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           {/* Search Input - Always left-aligned */}
-          <div className="flex items-center gap-3 flex-1">
+          <div className="flex items-center gap-3 w-full md:flex-1">
             <Input
               type="text"
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder="Search contracts"
+              placeholder="Search Project"
               startContent={
                 <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
               }
-              className="flex-1 md:max-w-md md:flex-none"
+              className="w-full md:max-w-md"
               classNames={{
                 input: "text-sm",
                 inputWrapper:
-                  "border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500",
+                  "border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500 pr-2",
               }}
+              endContent={
+                <div className="flex items-center gap-1">
+                  <Dropdown placement="bottom-end" classNames={{ content: 'min-w-[150px]' }}>
+                    <DropdownTrigger>
+                      <Button
+                        isIconOnly
+                        variant="light"
+                        size="sm"
+                        className="text-gray-400 hover:text-gray-600 min-w-8 w-8 h-8 rounded-full"
+                      >
+                        <Calendar size={18} />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label="Date Filter"
+                      onAction={(key) => {
+                        setDateFilter(key);
+                        setCurrentPage(1);
+                      }}
+                      selectedKeys={[dateFilter]}
+                      selectionMode="single"
+                    >
+                      {dateOptions.map((option) => (
+                        <DropdownItem key={option}>{option}</DropdownItem>
+                      ))}
+                      <DropdownItem key="" className="text-danger" color="danger">
+                        Reset Date
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+
+                  <Dropdown placement="bottom-end" classNames={{ content: 'min-w-[150px]' }}>
+                    <DropdownTrigger>
+                      <Button
+                        isIconOnly
+                        variant="light"
+                        size="sm"
+                        className="text-gray-400 hover:text-gray-600 min-w-8 w-8 h-8 rounded-full"
+                      >
+                        <CircleDollarSign size={18} />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label="Currency Filter"
+                      onAction={(key) => {
+                        setCurrencyFilter(key);
+                        setCurrentPage(1);
+                      }}
+                      selectedKeys={[currencyFilter]}
+                      selectionMode="single"
+                    >
+                      {currencyOptions.map((option) => (
+                        <DropdownItem key={option}>{option}</DropdownItem>
+                      ))}
+                      <DropdownItem key="Currency" className="text-danger" color="danger">
+                        Reset Currency
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
+              }
             />
           </div>
 
-          <div className='flex items-center gap-3'>
-            <FilterDropdown
-              label='Select Date'
-              options={dateOptions}
-              selectedOption={dateFilter}
-              setSelectedOption={(val) => {
-                setDateFilter(val);
-                setCurrentPage(1);
-              }}
-              defaultLabel='Select Date'
-            />
-            <FilterDropdown
-              label='Currency'
-              options={currencyOptions}
-              selectedOption={currencyFilter}
-              setSelectedOption={(val) => {
-                setCurrencyFilter(val);
-                setCurrentPage(1);
-              }}
-              defaultLabel='Currency'
-            />
+          <div className='flex items-center justify-center md:justify-start gap-4 md:gap-3 w-full md:w-auto pb-1 md:pb-0'>
           </div>
         </div>
       </div>
@@ -321,53 +368,55 @@ export default function CompletedContracts() {
         )
       }
 
-      {/* Table */}
-      <Card className="w-full mt-4">
+      {/* Table - Responsive View */}
+      <Card className="w-full mt-4 !overflow-visible" shadow="none">
         <CardBody className="p-0">
-          <Table
-            aria-label="Completed contracts table"
-            classNames={{
-              wrapper: "shadow-none rounded-none",
-              th: "bg-[#CCE7F2] text-xs uppercase tracking-wide",
-              td: "py-4 px-1",
-              tbody: "divide-y divide-gray-100",
-            }}
-          >
-            <TableHeader columns={columns}>
-              {(column) => (
-                <TableColumn key={column.uid} className="text-justify">
-                  {column.name}
-                </TableColumn>
-              )}
-            </TableHeader>
-            <TableBody
-              /* items={filteredAndSortedContracts} */
-              items={currentItems}
-              emptyContent={
-                <div className="text-center py-8">
-                  <p className="text-gray-500">
-                    {search
-                      ? `No contracts found matching "${search}"`
-                      : "No contracts found"}
-                  </p>
-                </div>
-              }
+          <div className="overflow-x-auto">
+            <Table
+              aria-label="Completed contracts table"
+              classNames={{
+                wrapper: "shadow-none rounded-none min-w-[700px] md:min-w-full",
+                th: "bg-[#CCE7F2] text-xs uppercase tracking-wide",
+                td: "py-4 px-2",
+                tbody: "divide-y divide-gray-100",
+              }}
             >
-              {(item) => (
-                <TableRow
-                  key={item.id}
-                  className="hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
-                  onClick={() => handleCompletedClick(item.id)}
-                >
-                  {(columnKey) => (
-                    <TableCell className="py-3 text-left">
-                      {renderCell(item, columnKey)}
-                    </TableCell>
-                  )}
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+              <TableHeader columns={columns}>
+                {(column) => (
+                  <TableColumn key={column.uid} className="text-justify">
+                    {column.name}
+                  </TableColumn>
+                )}
+              </TableHeader>
+              <TableBody
+                /* items={filteredAndSortedContracts} */
+                items={currentItems}
+                emptyContent={
+                  <div className="text-center py-8">
+                    <p className="text-gray-500">
+                      {search
+                        ? `No contracts found matching "${search}"`
+                        : "No contracts found"}
+                    </p>
+                  </div>
+                }
+              >
+                {(item) => (
+                  <TableRow
+                    key={item.id}
+                    className="hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+                    onClick={() => handleCompletedClick(item.id)}
+                  >
+                    {(columnKey) => (
+                      <TableCell className="py-3 text-left">
+                        {renderCell(item, columnKey)}
+                      </TableCell>
+                    )}
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </CardBody>
       </Card>
 
@@ -412,6 +461,6 @@ export default function CompletedContracts() {
           </div>
         )
       }
-    </div >
+    </div>
   );
 }

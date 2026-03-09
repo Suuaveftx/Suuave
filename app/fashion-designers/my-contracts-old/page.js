@@ -18,7 +18,7 @@ import {
 import { HiDotsHorizontal } from "react-icons/hi";
 import ProporsalModal from "../_components/ProporsalModal";
 
-const page = () => {
+const Page = () => {
   const jobListings = [
     {
       title: "Modern Fashion Attire Illustration",
@@ -243,4 +243,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

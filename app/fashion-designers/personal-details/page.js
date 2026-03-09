@@ -46,9 +46,6 @@ export default function Page() {
 
   return (
     <>
-      <div className="md:hidden px-5">
-        <Image src="/svg/mobile-logo.svg" alt="icon" width={140} height={40} />
-      </div>
 
       <div className="flex flex-col md:flex-row px-5 md:px-10">
         {/* Conditionally show content */}

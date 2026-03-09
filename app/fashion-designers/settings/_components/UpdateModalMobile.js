@@ -94,7 +94,7 @@ const UpdateModalMobile = () => {
             <div className="flex justify-center mb-[45px] mx-8 mt-6">
               <Button
                 onPress={handleSubmit}
-                className="bg-[radial-gradient(#FFFFFF,#CCE7F2)] text-[#0A4A66] font-semibold rounded-full px-6 py-2 w-full"
+                className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full px-6 py-2 w-full"
               >
                 Submit
               </Button>

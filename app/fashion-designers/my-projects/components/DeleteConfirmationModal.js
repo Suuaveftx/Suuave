@@ -56,7 +56,7 @@ const DeleteConfirmationModal = ({ isOpen, onOpenChange, onConfirm, projectTitle
                                     onConfirm();
                                     onClose();
                                 }}
-                                className="flex-1 rounded-full font-semibold py-6 shadow-md bg-[#CCE7F2] text-[#222222]"
+                                className="flex-1 rounded-full font-semibold py-6 shadow-md bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A]"
                             >
                                 {confirmButtonText}
                             </Button>

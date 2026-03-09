@@ -1,11 +1,14 @@
 "use client";
-import Image from "next/image";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { Button } from "@heroui/react";
 
 import BrandDetails from "../_components/BrandDetails";
 import Profile from "../_components/Profile";
 
 export default function Page() {
+  const router = useRouter();
   const [selected, setSelected] = useState("PersonalDetail");
   const [preview, setPreview] = useState("/dev-images/profile.png");
 
@@ -46,8 +49,16 @@ export default function Page() {
 
   return (
     <>
-      <div className="md:hidden px-5">
-        <Image src="/svg/mobile-logo.svg" alt="icon" width={140} height={40} />
+      <div className="md:hidden px-5 py-4 flex items-center gap-2">
+        <Button
+          isIconOnly
+          variant="light"
+          className="-ml-3 text-black"
+          onPress={() => router.push('/fashion-designers/profile')}
+        >
+          <ChevronLeftIcon className="w-6 h-6" />
+        </Button>
+        <h1 className="text-xl font-bold text-gray-900 font-satoshi">Personal Information</h1>
       </div>
 
       <div className="flex flex-col md:flex-row px-5 md:px-10">

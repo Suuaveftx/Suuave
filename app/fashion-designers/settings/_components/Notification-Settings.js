@@ -6,7 +6,7 @@ const NotificationSettings = () => {
     <>
       <div className='w-full'>
 
-        <Card className='w-4/5  p-4 bg-[#F9F9F9] shadow-md rounded-lg'>
+        <Card className='w-full sm:w-4/5 p-4 bg-[#F9F9F9] shadow-md rounded-lg'>
           <CardBody className='space-y-4'>
             {/* Email Notification */}
             <div className='space-y-2'>

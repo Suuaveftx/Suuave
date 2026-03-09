@@ -39,16 +39,17 @@ const WhySuaave = () => {
       </div>
 
       {/* for mobile slider */}
-      <div className="slider-container lg:hidden overflow-hidden ">
+      <div className="slider-container lg:hidden overflow-hidden [&_.slick-track]:flex [&_.slick-track]:items-stretch [&_.slick-slide]:h-auto [&_.slick-slide>div]:h-full">
         <Slider {...settings}>
           {homePageCardData.map((card, index) => (
-            <WhySuuaveCard
-              key={index}
-              title={card.title}
-              text={card.text}
-              svgIcon={card.image}
-              className="min-h-72 p-4 w-[94%] mb-7"
-            />
+            <div key={index} className="h-full px-2">
+              <WhySuuaveCard
+                title={card.title}
+                text={card.text}
+                svgIcon={card.image}
+                className="h-full p-4 w-full mb-7 flex flex-col"
+              />
+            </div>
           ))}
         </Slider>
       </div>
@@ -57,7 +58,7 @@ const WhySuaave = () => {
       <div className="text-center w-full mt-8 hidden lg:block">
         <CustomButton
           text="Join 5000+ Members"
-          className="shadow-md h-12 mx-auto"
+          className="shadow-md h-12 mx-auto w-fit"
           href="/onboarding"
         />
       </div>

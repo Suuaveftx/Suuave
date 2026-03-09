@@ -12,7 +12,9 @@ const Otp = () => {
   const [category, setCategory] = useState("");
 
   useEffect(() => {
-    const savedCategory = localStorage.getItem("activeCategory");
+    let savedCategory = localStorage.getItem("activeCategory");
+    if (savedCategory === "Fashion Artist") savedCategory = "artist";
+    if (savedCategory === "Fashion Brand") savedCategory = "brand";
     if (savedCategory) {
       setCategory(savedCategory);
     }
@@ -46,7 +48,7 @@ const Otp = () => {
               className="object-contain object-left -ml-28 -mt-20"
             />
             <p className="font-bold text-xl text-[#F5F5F5]">
-              {category === "Fashion Brand"
+              {category === "brand"
                 ? "Collaborate with a pool of talented African fashion artists."
                 : "Monetize your creativity through global brand collaborations."}
             </p>

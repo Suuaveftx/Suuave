@@ -6,7 +6,6 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
   useDisclosure,
   Textarea,
 } from "@heroui/react";
@@ -17,11 +16,21 @@ const DeclineModal = ({ trigger }) => {
   return (
     <>
       {trigger ? (
-        React.cloneElement(trigger, { onPress: onOpen, onClick: onOpen })
+        React.cloneElement(trigger, {
+          onClick: (e) => {
+            if (trigger.props.onClick) trigger.props.onClick(e);
+            if (trigger.props.onPress) trigger.props.onPress(e);
+            onOpen();
+          }
+        })
       ) : (
-        <Button onPress={onOpen}>
+        <button
+          className="border border-[#035A7A] bg-transparent hover:bg-gray-50 text-[#035A7A] rounded-full px-6 py-2 transition-colors font-medium"
+          onClick={onOpen}
+          type="button"
+        >
           Decline
-        </Button>
+        </button>
       )}
       <Modal
         isOpen={isOpen}
@@ -56,12 +65,13 @@ const DeclineModal = ({ trigger }) => {
                 </div>
               </ModalBody>
               <ModalFooter className="p-0 justify-end">
-                <Button
-                  onPress={onClose}
-                  className="bg-[#CCE7F2] text-[#222222] rounded-full px-12 py-6 text-base font-medium hover:bg-[#B8DCE8] transition-colors"
+                <button
+                  onClick={onClose}
+                  className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] rounded-full px-12 py-3 text-base font-medium hover:opacity-90 transition-opacity"
+                  type="button"
                 >
                   Send
-                </Button>
+                </button>
               </ModalFooter>
             </>
           )}

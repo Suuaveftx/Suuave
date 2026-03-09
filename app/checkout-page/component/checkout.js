@@ -18,11 +18,12 @@ import {
   ModalBody,
 } from '@heroui/react';
 import { CreditCard, Info, Shield } from 'lucide-react';
-import ContractHeader from '../../artist-page/my-contracts/components/contract-header';
+import ContractHeader from '../../fashion-designers/contracts/components/contract-header';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import FashionDesignerHeader from '../../fashion-designers/_components/studio-page-components/FashionDesignerHeader';
 import Footer from '../../about-page/components/Footer';
@@ -64,18 +65,28 @@ export const CheckoutPage = () => {
       <FashionDesignerHeader />
       <div className='max-w-6xl mx-auto px-3 lg:px-6' style={{ paddingTop: '120px' }}>
         {/* Header */}
-        <h1
-          className='font-black mb-10 text-black block'
-          style={{
-            fontWeight: 900,
-            fontSize: '32px',
-            color: '#000000',
-            display: 'block',
-            lineHeight: '1.2'
-          }}
-        >
-          Checkout
-        </h1>
+        <div className='flex items-center gap-3 mb-4'>
+          <Button
+            isIconOnly
+            variant='light'
+            radius='full'
+            className='md:hidden text-black -ml-2'
+            onPress={() => router.back()}
+          >
+            <ArrowLeft size={24} />
+          </Button>
+          <h1
+            className='font-black text-black'
+            style={{
+              fontWeight: 900,
+              fontSize: '32px',
+              color: '#000000',
+              lineHeight: '1.2'
+            }}
+          >
+            Checkout
+          </h1>
+        </div>
 
         {/* License Notice */}
 

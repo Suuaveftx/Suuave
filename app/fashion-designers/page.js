@@ -5,16 +5,11 @@ import React, { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import FashionDesignersCard from "./_components/studio-page-components/FashionDesignersCard";
 import FloatingButton from "./_components/FloatingButton";
+import { useBookmarks } from "./_components/BookmarkContext";
 
 const Page = () => {
   const [isVisible, setIsVisible] = useState(true);
-  const [savedCardIds, setSavedCardIds] = useState([]);
-
-  const toggleSave = (id) => {
-    setSavedCardIds((prev) =>
-      prev.includes(id) ? prev.filter((cardId) => cardId !== id) : [...prev, id]
-    );
-  };
+  const { savedCardIds, toggleBookmark } = useBookmarks();
 
   const cardsData = [
     {
@@ -235,14 +230,10 @@ const Page = () => {
         }}
         className="lg:h-[300px] h-[110px] w-full font-satoshi rounded-lg mt-10 text-white flex flex-col items-center justify-center"
       >
-        <h2
-          className="lg:text-[52px] text-xl font-semibold lg:mb-9
-          "
-        >
-          {" "}
+        <h2 className="lg:text-[52px] text-[18px] font-semibold lg:mb-9 mb-1 text-center w-full px-1 whitespace-nowrap">
           Explore Hundreds of Creative Designs
         </h2>
-        <p className="lg:text-[22px] text-sm font-thin">
+        <p className="lg:text-[22px] text-[12.29px] font-normal text-center w-full px-1 whitespace-nowrap">
           Get licensing access for your brand and collections.
         </p>
       </div>
@@ -285,7 +276,7 @@ const Page = () => {
                   idx={index}
                   userData={card.user}
                   isBookmarked={savedCardIds.includes(card.id)}
-                  onToggleSave={() => toggleSave(card.id)}
+                  onToggleSave={() => toggleBookmark(card.id)}
                 />
               ))}
             </div>
@@ -311,7 +302,7 @@ const Page = () => {
                   idx={index}
                   userData={card.user}
                   isBookmarked={true}
-                  onToggleSave={() => toggleSave(card.id)}
+                  onToggleSave={() => toggleBookmark(card.id)}
                 />
               ))}
             </div>

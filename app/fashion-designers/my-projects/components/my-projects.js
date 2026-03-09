@@ -23,17 +23,18 @@ import {
   ChevronRightIcon,
   UserGroupIcon,
 } from '@heroicons/react/24/outline';
-import ContractHeader from '../../../artist-page/my-contracts/components/contract-header';
-import Link from 'next/link';
+import ContractHeader from '../../contracts/components/contract-header';
+import { useRouter } from 'next/navigation';
 import ProposalsModal from './ProposalsModal';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 const MyProjects = () => {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [projects, setProjects] = useState([
     {
       id: 1,
-      title: 'Modern Fashion Attire Illustration',
+      title: 'Modern Fashion Attire Illustration Classic .....',
       date: '25-06-2024',
       status: 'Active',
       proposals: 3,
@@ -42,7 +43,7 @@ const MyProjects = () => {
     },
     {
       id: 2,
-      title: 'Modern Fashion Attire Illustration',
+      title: 'Modern Fashion Attire Illustration Classic....',
       date: '25-06-2024',
       status: 'Active',
       proposals: 3,
@@ -51,7 +52,7 @@ const MyProjects = () => {
     },
     {
       id: 3,
-      title: 'Modern Fashion Attire Illustration',
+      title: 'Modern Fashion Attire Illustration Classic....',
       date: '25-06-2024',
       status: 'Active',
       proposals: 3,
@@ -60,7 +61,7 @@ const MyProjects = () => {
     },
     {
       id: 4,
-      title: 'Modern Fashion Attire Illustration',
+      title: 'Modern Fashion Attire Illustration Classic....',
       date: '25-06-2024',
       status: 'Active',
       proposals: 3,
@@ -69,7 +70,7 @@ const MyProjects = () => {
     },
     {
       id: 5,
-      title: 'Modern Fashion Attire Illustration',
+      title: 'Modern Fashion Attire Illustration Classic....',
       date: '25-06-2024',
       status: 'Active',
       proposals: 3,
@@ -78,7 +79,7 @@ const MyProjects = () => {
     },
     {
       id: 6,
-      title: 'Second Project Example',
+      title: 'Second Project Example Fashion Classic....',
       date: '26-06-2024',
       status: 'Completed',
       proposals: 10,
@@ -87,7 +88,7 @@ const MyProjects = () => {
     },
     {
       id: 7,
-      title: 'Third Project Example',
+      title: 'Third Project Example Fashion Classic....',
       date: '27-06-2024',
       status: 'Active',
       proposals: 5,
@@ -96,7 +97,7 @@ const MyProjects = () => {
     },
     {
       id: 8,
-      title: 'Fourth Project Example',
+      title: 'Fourth Project Example Fashion Classic....',
       date: '28-06-2024',
       status: 'On Hold',
       proposals: 2,
@@ -105,7 +106,7 @@ const MyProjects = () => {
     },
     {
       id: 9,
-      title: 'Fifth Project Example',
+      title: 'Fifth Project Example Fashion Classic....',
       date: '29-06-2024',
       status: 'Active',
       proposals: 8,
@@ -114,7 +115,7 @@ const MyProjects = () => {
     },
     {
       id: 10,
-      title: 'Sixth Project Example',
+      title: 'Sixth Project Example Fashion Classic....',
       date: '30-06-2024',
       status: 'Active',
       proposals: 6,
@@ -123,7 +124,7 @@ const MyProjects = () => {
     },
     {
       id: 11,
-      title: 'Seventh Project Example',
+      title: 'Seventh Project Example Fashion Classic....',
       date: '01-07-2024',
       status: 'Completed',
       proposals: 12,
@@ -132,7 +133,7 @@ const MyProjects = () => {
     },
     {
       id: 12,
-      title: 'Eighth Project Example',
+      title: 'Eighth Project Example Fashion Classic....',
       date: '02-07-2024',
       status: 'Active',
       proposals: 9,
@@ -167,18 +168,10 @@ const MyProjects = () => {
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
   const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastProject);
 
-  // Handle delete project (remove from full list)
-  const handleDeleteProject = (projectId) => {
-    setProjects(projects.filter((project) => project.id !== projectId));
-    setProjectToDelete(null);
-    // If deletion leaves page empty, go to previous page if possible
-    if (
-      currentProjects.length === 1 &&
-      currentPage > 1 &&
-      indexOfFirstProject >= totalProjects - 1
-    ) {
-      setCurrentPage(currentPage - 1);
-    }
+  const handleEditProject = (project) => {
+    console.log("Navigating to edit project:", project);
+    localStorage.setItem('editProject', JSON.stringify(project));
+    router.push('/fashion-designers/post-project?edit=true');
   };
 
   const openDeleteModal = (e, project) => {
@@ -260,48 +253,39 @@ const MyProjects = () => {
                   <Card
                     className='w-full border shadow-none group-hover:shadow-md transition-shadow'
                   >
-                    <CardBody className='p-8 font-satoshi'>
+                    <CardBody className='p-5 sm:p-8 font-satoshi'>
                       <div className='flex flex-col gap-4'>
-                        {/* Top Row: Title and Stats/Actions */}
-                        <div className='flex items-start justify-between gap-6'>
+                        {/* Top Row: Title and Multi-options button */}
+                        <div className='flex items-start justify-between gap-4'>
                           <div
                             className="flex-1 cursor-pointer"
                             onClick={() => handleCardClick(project)}
                           >
-                            <h3 className='text-xl font-bold text-[#222222]'>
+                            <h3 className='text-lg sm:text-xl font-bold text-[#222222] leading-tight'>
                               {project.title}
                             </h3>
                           </div>
 
-                          <div className='flex items-center gap-4 shrink-0'>
+                          <div className="flex items-center gap-3 shrink-0">
+                            {/* Proposals badge for desktop */}
                             <div
-                              className='flex gap-2 items-center border border-[#96D2E1] rounded-full px-5 py-1.5 bg-[#F9FEFF] cursor-pointer'
+                              className='hidden sm:flex gap-2 items-center border border-[#96D2E1] rounded-full px-4 sm:px-5 py-1.5 bg-[#F9FEFF] cursor-pointer'
                               onClick={() => handleCardClick(project)}
                             >
-                              <span className='text-[#3A98BB] font-bold text-md'>
+                              <span className='text-[#3A98BB] font-bold text-sm sm:text-md'>
                                 {project.proposals}
                               </span>
-                              <span className='text-[#767676] text-sm'>Proposals</span>
+                              <span className='text-[#767676] text-xs sm:text-sm'>Proposals</span>
                             </div>
 
-                            <div
-                              className='flex gap-2 items-center border border-[#E1E1E1] rounded-full px-5 py-1.5 bg-[#F9F9F9]'
-                            >
-                              <span className='text-[#767676] font-bold text-md'>
-                                {project.hired}
-                              </span>
-                              <span className='text-[#767676] text-sm'>Hired</span>
-                            </div>
-
-                            {/* More Options */}
-                            <div onClick={(e) => e.stopPropagation()}>
+                            <div onClick={(e) => e.stopPropagation()} className="shrink-0">
                               <Dropdown placement="bottom-end">
                                 <DropdownTrigger>
                                   <Button
                                     variant='bordered'
                                     isIconOnly
                                     size='sm'
-                                    className='border-[#E1E1E1] rounded-full w-10 h-10 min-w-10 bg-white flex items-center justify-center p-0'
+                                    className='border-[#E1E1E1] rounded-full w-9 h-9 sm:w-10 sm:h-10 min-w-[36px] bg-white flex items-center justify-center p-0'
                                   >
                                     <EllipsisHorizontalIcon className='w-5 h-5 text-[#222222]' />
                                   </Button>
@@ -309,12 +293,13 @@ const MyProjects = () => {
                                 <DropdownMenu
                                   className='w-[140px]'
                                   aria-label='Project actions'
+                                  onAction={(key) => {
+                                    if (key === 'edit') handleEditProject(project);
+                                    if (key === 'delete') openDeleteModal(null, project);
+                                  }}
                                 >
-
                                   <DropdownItem
                                     key='edit'
-                                    as={Link}
-                                    href='/fashion-designers/post-project'
                                     startContent={<PencilIcon className='w-4 h-4' />}
                                   >
                                     Edit
@@ -324,7 +309,6 @@ const MyProjects = () => {
                                     className='text-danger'
                                     color='danger'
                                     startContent={<TrashIcon className='w-4 h-4' />}
-                                    onPress={(e) => openDeleteModal(e, project)}
                                   >
                                     Delete
                                   </DropdownItem>
@@ -334,7 +318,20 @@ const MyProjects = () => {
                           </div>
                         </div>
 
-                        {/* Info Lines (Now below the title) */}
+                        {/* Stats Row (Proposals) - Mobile Only */}
+                        <div className='flex sm:hidden items-center gap-4'>
+                          <div
+                            className='flex gap-2 items-center border border-[#96D2E1] rounded-full px-4 sm:px-5 py-1.5 bg-[#F9FEFF] cursor-pointer'
+                            onClick={() => handleCardClick(project)}
+                          >
+                            <span className='text-[#3A98BB] font-bold text-sm sm:text-md'>
+                              {project.proposals}
+                            </span>
+                            <span className='text-[#767676] text-xs sm:text-sm'>Proposals</span>
+                          </div>
+                        </div>
+
+                        {/* Info Lines */}
                         <div
                           className='flex flex-col gap-2 cursor-pointer'
                           onClick={() => handleCardClick(project)}
@@ -412,7 +409,7 @@ const MyProjects = () => {
           onConfirm={() => handleDeleteProject(projectToDelete?.id)}
           projectTitle={projectToDelete?.title}
         />
-      </div>
+      </div >
     </>
   );
 };

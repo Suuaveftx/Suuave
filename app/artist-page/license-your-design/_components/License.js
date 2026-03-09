@@ -34,13 +34,17 @@ const License = () => {
     }
   };
 
+  const removeImage = (indexToRemove) => {
+    setImages((prev) => prev.filter((_, index) => index !== indexToRemove));
+  };
+
   return (
     <>
       <div>
         {/* Back Button for Mobile - Aligned with card */}
         <div className='lg:hidden w-full max-w-[90%] mx-4 mt-6'>
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push("/artist-page")}
             className='flex items-center text-[#222222] font-semibold'
           >
             <ChevronLeft className='w-5 h-5' />
@@ -48,7 +52,7 @@ const License = () => {
         </div>
 
         <div className='lg:w-4/5 w-full max-w-[90%] px-6 py-2 lg:mx-16 mx-4 lg:mt-8 mt-4 rounded-lg bg-gradient-to-b from-[#CCE7F2] via-[#A1DCF3] to-[#49C0F0] text-[#393939]'>
-          <h1 className='text-[34px] text-[#393939] font-bold'>License Your Design</h1>
+          <h1 className='lg:text-[32px] text-2xl text-[#393939] font-bold'>License Your Design</h1>
           <p className='text-base'>
             By uploading this design, you attest that you are the creator or legitimate owner and possess all necessary rights and permissions. Uploading work without authorization may constitute copyright infringement.{' '}
             <Link className='text-[#3A98BB]' href={'/'}>
@@ -62,7 +66,7 @@ const License = () => {
           <div className='flex flex-col gap-4 w-full'>
             <div className='flex flex-col gap-1'>
               <label htmlFor='designTitle' className='text-base font-bold text-[#222222]'>
-                Design Title
+                Design Title<span className='text-red-500 ml-0.5'>*</span>
               </label>
               <input
                 id='designTitle'
@@ -88,7 +92,7 @@ const License = () => {
                 htmlFor='design-description'
                 className='block text-base font-semibold mb-2'
               >
-                Design Description
+                Design Description<span className='text-red-500 ml-0.5'>*</span>
               </label>
               <textarea
                 id='design-description'
@@ -101,7 +105,7 @@ const License = () => {
 
           {/* Fashion Style */}
           <div className='flex flex-col gap-2 relative'>
-            <h3 className='text-lg font-semibold'>Design Style</h3>
+            <h3 className='text-lg font-semibold'>Design Style<span className='text-red-500 ml-0.5'>*</span></h3>
             <input
               id='design-style-input'
               type='text'
@@ -355,7 +359,7 @@ const License = () => {
 
           {/* Upload Your Designs */}
           <div className='flex flex-col gap-2'>
-            <h3 className='text-lg font-semibold'>Upload Your Designs</h3>
+            <h3 className='text-lg font-semibold'>Upload Your Designs<span className='text-red-500 ml-0.5'>*</span></h3>
             <p className='text-sm'>
               Uploading different views (e.g., front, back, and side views) helps attract
               potential clients faster.
@@ -372,12 +376,12 @@ const License = () => {
             />
 
             <div>
-              {/* Show 2 items on mobile */}
-              <div className='flex gap-4 md:hidden'>
-                {images.slice(0, 2).map((file, i) => (
+              {/* Show items on mobile */}
+              <div className='flex gap-4 md:hidden overflow-x-auto pb-4'>
+                {images.map((file, i) => (
                   <div
-                    key={i}
-                    className='relative w-[110px] h-[110px] bg-gray-200 rounded flex items-center justify-center overflow-hidden'
+                    key={`mobile-img-${i}`}
+                    className='relative w-[110px] h-[110px] min-w-[110px] bg-gray-200 rounded flex items-center justify-center overflow-hidden'
                   >
                     <Image
                       src={URL.createObjectURL(file)}
@@ -385,26 +389,32 @@ const License = () => {
                       className='object-cover'
                       fill
                     />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(i)}
+                      className="absolute top-1 right-1 bg-white/70 hover:bg-white text-black rounded-full p-1"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
                   </div>
                 ))}
 
-                {/* Empty slots (clickable icons) */}
-                {[...Array(2 - images.length)].map((_, i) => (
+                {/* Show one empty slot to add more */}
+                {images.length < 5 && (
                   <label
-                    key={i}
                     htmlFor='design-upload'
-                    className='w-[110px] h-[110px] bg-gray-200 rounded flex items-center justify-center text-3xl cursor-pointer'
+                    className='w-[110px] h-[110px] min-w-[110px] bg-gray-200 rounded flex items-center justify-center text-3xl cursor-pointer'
                   >
                     <CiImageOn />
                   </label>
-                ))}
+                )}
               </div>
 
-              {/* Show 5 items on md+ (desktop) */}
-              <div className='hidden md:flex gap-4'>
-                {images.slice(0, 5).map((file, i) => (
+              {/* Show items on md+ (desktop) */}
+              <div className='hidden md:flex gap-4 flex-wrap'>
+                {images.map((file, i) => (
                   <div
-                    key={i}
+                    key={`desktop-img-${i}`}
                     className='relative w-[110px] h-[110px] bg-gray-200 rounded flex items-center justify-center overflow-hidden'
                   >
                     <Image
@@ -413,26 +423,32 @@ const License = () => {
                       className='object-cover'
                       fill
                     />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(i)}
+                      className="absolute top-1 right-1 bg-white/70 hover:bg-white text-black rounded-full p-1"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
                   </div>
                 ))}
 
-                {/* Empty slots (clickable icons) */}
-                {[...Array(5 - images.length)].map((_, i) => (
+                {/* Show one empty slot to add more */}
+                {images.length < 5 && (
                   <label
-                    key={i}
                     htmlFor='design-upload'
                     className='w-[110px] h-[110px] bg-gray-200 rounded flex items-center justify-center text-3xl cursor-pointer'
                   >
                     <CiImageOn />
                   </label>
-                ))}
+                )}
               </div>
             </div>
           </div>
 
           {/* Asking Price */}
           <div className='flex flex-col gap-2'>
-            <h3 className='text-lg font-semibold'>Asking Price</h3>
+            <h3 className='text-lg font-semibold'>Asking Price<span className='text-red-500 ml-0.5'>*</span></h3>
             <input
               defaultValue={initialPrice}
               placeholder='$0.00'
@@ -448,22 +464,22 @@ const License = () => {
             <p className='text-sm'>
               By publishing, you confirm you have the necessary rights and permission to
               the ownership of this design.{' '}
-              <a href='#' className='text-blue-600 underline'>
+              <Link href='#' className='text-blue-600 underline'>
                 Learn More
-              </a>
+              </Link>
             </p>
           </div>
-          <div className='flex gap-4 w-full justify-between lg:justify-start'>
+          <div className='flex flex-row gap-4 w-full justify-between lg:justify-start'>
             <CustomButton
               text='Save as Draft'
-              className='bg-[#F0F0F0] text-[#222222] w-full lg:w-auto'
+              className='bg-[#F0F0F0] text-[#222222] flex-1 sm:flex-none sm:w-auto'
               style={{
                 background: '#EDEDED',
               }}
             />
             <CustomButton
-              text='Publish Project'
-              className='w-full lg:w-auto'
+              text='Publish'
+              className='flex-1 sm:flex-none sm:w-auto'
               style={{
                 color: '#035A7A',
               }}

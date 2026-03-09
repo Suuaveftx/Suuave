@@ -27,7 +27,7 @@ const PostDetailsPage = () => {
           </div>
           <div className='lg:font-bold lg:text-[22px] lg:w-screen lg:max-w-[100%] w-full max-w-[100%]'>
             <div className='flex items-center gap-6'>
-              <h4 className='font-bold text-[20px] leading-6 whitespace-nowrap'>
+              <h4 className='font-bold text-[32px] leading-tight whitespace-normal'>
                 Modern Fashion Attire Illustration
               </h4>
               <div className='lg:flex hidden font-normal text-[12px] bg-[#035A7A] text-white px-2 py-1 rounded-sm'>

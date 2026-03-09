@@ -1,5 +1,4 @@
 "use client";
-"use client";
 import React from "react";
 import { Select, SelectItem } from "@heroui/react";
 import CustomSelect from "./CustomSelect";
@@ -53,13 +52,11 @@ const language = [
   { key: "Spanish", label: "Spanish" },
 ];
 
-
-
 const PersonalDetail = ({ setSelected, formData, setFormData }) => {
   const router = useRouter();
   return (
     <div className="w-full h-full bg-white md:bg-[#FAFAFA] border border-[#EAEAEA] md:border-[#DEDEDE] p-6 md:p-6 rounded-2xl shadow-sm md:shadow-none">
-      <h1 className="text-[#3A98BB] font-bold text-xl mb-1">Personal Details</h1>
+      <h1 className="text-[#3A98BB] font-bold text-xl mb-1 hidden md:block">Personal Details</h1>
       <p className="text-[#767676] font-normal text-sm mb-8">
         Fill in the following information carefully
       </p>
@@ -86,9 +83,6 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
               value={formData.email}
               readOnly
               className="bg-[#F1F1F1] border-none text-[#767676]"
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
             />
           </div>
         </div>
@@ -97,16 +91,15 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
         <div className="w-full flex flex-col gap-2">
           <Lable htmlFor="phoneCode" text="Phone Number" />
           <div className="flex items-center gap-3">
-            <div className="w-[35%] relative">
+            <div className="w-[35%]">
               <CustomSelect
                 formData={formData}
                 setFormData={setFormData}
                 value={formData.phoneCode}
                 data={numCode}
                 className="w-full"
-                htmlFor="number"
+                htmlFor="phoneCode"
               />
-              <ChevronDown size={18} className="absolute right-2 top-1/2 -translate-y-1/2 text-[#767676] md:hidden pointer-events-none" />
             </div>
             <Input
               id="number"
@@ -121,25 +114,22 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
         {/*Language */}
         <div className="w-full flex flex-col gap-2">
           <Lable htmlFor="Language" text="Language" />
-          <div className="relative">
-            <CustomSelect
-              formData={formData}
-              setFormData={setFormData}
-              value={formData.language}
-              data={language}
-              className="w-full"
-              htmlFor="language"
-            />
-            <ChevronDown size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#767676] md:hidden pointer-events-none" />
-          </div>
+          <CustomSelect
+            formData={formData}
+            setFormData={setFormData}
+            value={formData.language}
+            data={language}
+            className="w-full"
+            htmlFor="language"
+          />
         </div>
         {/* textarea */}
         <div className="w-full flex flex-col gap-2">
-          <Lable htmlFor="about" text="Describe yourself" />
+          <Lable htmlFor="about" text="Describe Yourself" />
           <textarea
             name="about"
             id="about"
-            placeholder="Write about your design style"
+            placeholder="Write About Your Design Style"
             className="w-full border border-[#D1D1D1] text-[#222222] placeholder:text-[#ADADAD] font-normal text-sm py-2 px-3 rounded-lg outline-none focus:border-[#3A98BB] bg-transparent h-32 resize-none"
             value={formData.about}
             onChange={(e) => setFormData({ ...formData, about: e.target.value })}
@@ -147,7 +137,7 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
         </div>
         {/* Company Name */}
         <div className="w-full flex flex-col gap-2">
-          <Lable htmlFor="companyName" text="Company/brand Name(Optional)" />
+          <Lable htmlFor="companyName" text="Company/Brand Name (Optional)" />
           <Input
             id="companyName"
             placeholder="Enter Company Name"
@@ -160,17 +150,14 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
         {/*Nationality */}
         <div className="w-full flex flex-col gap-2">
           <Lable htmlFor="nationality" text="Nationality" />
-          <div className="relative">
-            <CustomSelect
-              formData={formData}
-              setFormData={setFormData}
-              value={formData.nationality}
-              data={nationality}
-              className="w-full"
-              htmlFor="nationality"
-            />
-            <ChevronDown size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#767676] md:hidden pointer-events-none" />
-          </div>
+          <CustomSelect
+            formData={formData}
+            setFormData={setFormData}
+            value={formData.nationality}
+            data={nationality}
+            className="w-full"
+            htmlFor="nationality"
+          />
         </div>
         {/*Current City*/}
         <div className="w-full flex flex-col gap-2">
@@ -191,39 +178,30 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
         <div className="w-full flex flex-col gap-2">
           <Lable htmlFor="dateofBirth" text="Date of Birth" />
           <div className="grid grid-cols-3 gap-3">
-            <div className="relative">
-              <CustomSelect
-                formData={formData}
-                setFormData={setFormData}
-                value={formData.day}
-                data={dayOptions}
-                className="w-full"
-                htmlFor="day"
-              />
-              <ChevronDown size={16} className="absolute right-1 top-1/2 -translate-y-1/2 text-[#767676] md:hidden pointer-events-none" />
-            </div>
-            <div className="relative">
-              <CustomSelect
-                formData={formData}
-                setFormData={setFormData}
-                value={formData.month}
-                data={monthOptions}
-                className="w-full"
-                htmlFor="month"
-              />
-              <ChevronDown size={16} className="absolute right-1 top-1/2 -translate-y-1/2 text-[#767676] md:hidden pointer-events-none" />
-            </div>
-            <div className="relative">
-              <CustomSelect
-                formData={formData}
-                setFormData={setFormData}
-                value={formData.year}
-                data={yearOptions}
-                className="w-full"
-                htmlFor="year"
-              />
-              <ChevronDown size={16} className="absolute right-1 top-1/2 -translate-y-1/2 text-[#767676] md:hidden pointer-events-none" />
-            </div>
+            <CustomSelect
+              formData={formData}
+              setFormData={setFormData}
+              value={formData.day}
+              data={dayOptions}
+              className="w-full"
+              htmlFor="day"
+            />
+            <CustomSelect
+              formData={formData}
+              setFormData={setFormData}
+              value={formData.month}
+              data={monthOptions}
+              className="w-full"
+              htmlFor="month"
+            />
+            <CustomSelect
+              formData={formData}
+              setFormData={setFormData}
+              value={formData.year}
+              data={yearOptions}
+              className="w-full"
+              htmlFor="year"
+            />
           </div>
         </div>
       </section>

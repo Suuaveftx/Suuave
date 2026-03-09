@@ -1,4 +1,3 @@
-import { Button } from '@heroui/react';
 import Link from 'next/link';
 import React from 'react';
 
@@ -18,15 +17,22 @@ const CustomButton = ({
   href,
   className = '',
   onPress,
+  onClick,
   icon,
   showIcon = true,
   style = {},
+  ...props
 }) => {
   // Default radial background
   const defaultStyle = {
-    background: 'radial-gradient(circle at top left, #FFFFFF, #CCE7F2)',
-    color: '#767676',
+    background: 'radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)',
+    color: '#035A7A',
     ...style,
+  };
+
+  const handleClick = (e) => {
+    if (onClick) onClick(e);
+    if (onPress) onPress(e);
   };
 
   const content = (
@@ -38,25 +44,28 @@ const CustomButton = ({
 
   if (href) {
     return (
-      <Button
-        as={Link}
+      <Link
         href={href}
-        className={`flex items-center justify-center gap-2 font-proximanova font-medium px-6 py-3 rounded-full shadow-md ${className}`}
+        className={`flex items-center justify-center gap-2 font-proximanova font-medium px-6 py-3 rounded-full shadow-md transition-shadow hover:shadow-lg whitespace-nowrap ${className}`}
         style={defaultStyle}
+        onClick={handleClick}
+        {...props}
       >
         {content}
-      </Button>
+      </Link>
     );
   }
 
   return (
-    <Button
-      className={`flex items-center justify-center gap-2 font-proximanova font-medium px-6 py-3 rounded-full shadow-md ${className}`}
-      onClick={onPress}
+    <button
+      className={`flex items-center justify-center gap-2 font-proximanova font-medium px-6 py-3 rounded-full shadow-md transition-shadow hover:shadow-lg active:shadow-sm active:scale-[0.98] whitespace-nowrap ${className}`}
+      onClick={handleClick}
       style={defaultStyle}
+      type="button"
+      {...props}
     >
       {content}
-    </Button>
+    </button>
   );
 };
 
