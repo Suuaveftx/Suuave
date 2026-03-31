@@ -28,14 +28,24 @@ export function formatDateWithOrdinal(dateInput) {
   const date = new Date(dateInput);
   const day = date.getDate();
   const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
   const month = monthNames[date.getMonth()];
   const year = date.getFullYear();
 
   const getOrdinal = (n) => {
-    const s = ["th", "st", "nd", "rd"];
+    const s = ['th', 'st', 'nd', 'rd'];
     const v = n % 100;
     return n + (s[(v - 20) % 10] || s[v] || s[0]);
   };
@@ -116,3 +126,10 @@ export const fashionDsignRightSection = [
     btnText: 'Explore',
   },
 ];
+
+export const getActiveCategory = () => {
+  if (typeof window !== 'undefined') {
+    const selectedCategory = localStorage.getItem('activeCategory') || null;
+    return selectedCategory;
+  }
+};

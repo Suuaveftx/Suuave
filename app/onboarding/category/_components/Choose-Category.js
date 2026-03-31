@@ -4,19 +4,34 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import CustomButton from '../../../../components/CustomButton';
-import { Alert, toast } from '@heroui/react';
+import { Alert, addToast } from '@heroui/react';
 import { useRouter } from 'next/navigation';
+import { getActiveCategory } from '../../../../utils/utils';
+import { useAppStore } from '../../../../store';
+// import { Roles } from '@suuaveftx/prisma-shared';
 
 const ChooseCategory = () => {
-  const [activeCategory, setActiveCategory] = useState('');
+  // const [activeCategory, setActiveCategory] = useState('');
+  // const selectedCategory = getActiveCategory();
+  const activeCategory = useAppStore((state) => state.activeCategory);
+  const setActiveCategory = useAppStore((state) => state.setActiveCategory);
+
+  console.log('THESelected Category from State:', activeCategory);
   const router = useRouter();
 
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
-    localStorage.setItem('activeCategory', category);
   };
 
   const submitCategory = () => {
+    if (!activeCategory) {
+      addToast({
+        title: 'Warning',
+        description: 'Please select a category',
+        color: 'Warning',
+      });
+      return;
+    }
     router.push('/onboarding/create-new-account');
   };
 
@@ -35,23 +50,22 @@ const ChooseCategory = () => {
         Sign up as a Fashion Artist or a Fashion Brand
       </h1>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-12 mt-8'>
-        <label htmlFor='Fashion Artist'>
+        <label htmlFor='artist'>
           <div
             className={`bg-white cursor-pointer rounded-[16px] shadow-md pl-[24px] pr-[24px] pt-[32px] pb-[32px] flex flex-col 
-              justify-between items-center text-center border-2 hover:border-[#CCE7F2] transition-all ${activeCategory === 'artist'
-                ? 'border-[#3A98BB]'
-                : 'border-transparent'
+              justify-between items-center text-center border-2 hover:border-[#CCE7F2] transition-all ${
+                activeCategory === 'artist' ? 'border-[#3A98BB]' : 'border-transparent'
               }`}
           >
             <div className='flex justify-end w-full'>
               <input
-                id='Fashion Artist'
+                id='artist'
                 type='radio'
                 className='w-8 h-8 accent-[#3A98BB]'
                 name='category'
-                value='artist'
+                value={'artist'}
                 checked={activeCategory === 'artist'}
-                onChange={() => handleCategoryChange('artist')}
+                onChange={() => setActiveCategory('artist')}
               />
             </div>
             <Image
@@ -69,17 +83,16 @@ const ChooseCategory = () => {
             </div>
           </div>
         </label>
-        <label htmlFor='Fashion Brand'>
+        <label htmlFor='brand'>
           <div
             className={`bg-white cursor-pointer rounded-[16px] shadow-md pl-[24px] pr-[24px] pt-[32px] pb-[32px] flex flex-col 
-              justify-between items-center text-center border-2 hover:border-[#CCE7F2] transition-all ${activeCategory === 'brand'
-                ? 'border-[#3A98BB]'
-                : 'border-transparent'
+              justify-between items-center text-center border-2 hover:border-[#CCE7F2] transition-all ${
+                activeCategory === 'brand' ? 'border-[#3A98BB]' : 'border-transparent'
               }`}
           >
             <div className='flex justify-end w-full'>
               <input
-                id='Fashion Brand'
+                id='brand'
                 type='radio'
                 className='w-8 h-8 accent-[#3A98BB]'
                 name='category'
@@ -102,21 +115,22 @@ const ChooseCategory = () => {
               </p>
             </div>
           </div>
-        </label >
+        </label>
       </div>
 
       <div className='w-full max-w-[700px] flex justify-center mt-12'>
-        <CustomButton
-          text='Continue'
+        <button
+          // text='Continue'
           onClick={submitCategory}
-          disabled={!activeCategory}
-          className={`w-full md:w-auto md:px-16 py-4 rounded-full text-lg ${!activeCategory ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-            }`}
-          style={{
-            background: 'radial-gradient(circle at center, #EAF9FF, #CCE7F2)',
-            color: '#035A7A',
-          }}
-        />
+          // disabled={!activeCategory}
+          className={`text-[#035A7A] rounded-3xl cursor-pointer px-20 py-3 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] transition-opacity ${
+            !activeCategory
+              ? 'opacity-50 cursor-not-allowed'
+              : 'opacity-100 hover:opacity-90'
+          }`}
+        >
+          Continue
+        </button>
       </div>
     </div>
   );

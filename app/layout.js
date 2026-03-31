@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import './globals.css';
+import { Providers } from './providers';
 
 // Metadata
 export const metadata = {
@@ -23,7 +24,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang='en'>
-      <body className={`font-proximanova`}>{children}</body>
+      <body className={`font-proximanova`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

@@ -1,12 +1,16 @@
-import React from 'react'
-import Login from './_components/Login'
+import React from 'react';
+import Login from './_components/Login';
+import { redirectIfAuthenticated } from '../../../lib/auth-guards';
 
-const Page = () => {
+const page = async () => {
+  await redirectIfAuthenticated();
+
   return (
     <div>
       <Login />
+      <Login />
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default page;
