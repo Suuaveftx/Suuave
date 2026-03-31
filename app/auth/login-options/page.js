@@ -7,7 +7,6 @@ const page = async () => {
   return (
     <div>
       <LoginOptions />
-      <LoginOptions />
     </div>
   );
 };
