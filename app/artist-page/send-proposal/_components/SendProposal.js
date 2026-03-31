@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Paperclip } from 'lucide-react';
 import { FaChevronLeft } from 'react-icons/fa';
+import Link from "next/link";
 import { IoMdInformationCircleOutline } from 'react-icons/io';
 import ProposalPopUpMobile from './ProposalPopUpMobile';
 import ProposalPopUp from './ProposalPopUp';
@@ -45,10 +46,10 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
     <>
       {/* Back icon and header section */}
       <div className="flex items-center lg:mt-0 mt-4 px-4 py-[10px] mx-4 gap-4">
-        <div className="lg:hidden mt-[-4px]" onClick={() => router.back()}>
+        <div className="lg:hidden mt-[-4px]" onClick={() => router.push('/artist-page/project-page')}>
           <FaChevronLeft color="#878787" />
         </div>
-        <div className="w-full lg:text-[34px] text-[20px] font-bold lg:ml-9 lg:mb-[18.68px]">
+        <div className="w-full lg:text-[34px] text-[32px] font-bold lg:ml-9 lg:mb-[18.68px]">
           <h4>{isEditMode ? "Proposal Details" : "Send Proposal"}</h4>
         </div>
       </div>
@@ -130,9 +131,9 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
             <IoMdInformationCircleOutline className="w-4 h-4" />
             <span>
               10% commission charge applies{' '}
-              <a href="#" className="text-[#3A98BB]">
+              <Link href="#" className="text-[#3A98BB]">
                 Learn more
-              </a>
+              </Link>
             </span>
           </div>
           <div className="relative">

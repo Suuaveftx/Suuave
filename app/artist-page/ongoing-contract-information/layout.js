@@ -1,7 +1,7 @@
 "use client";
 
 import { HeroUIProvider } from "@heroui/react";
-import Navbars from "../../../components/Brand-Navbar";
+import Navbars from "../../../components/ArtistNavbar";
 
 export default function Layout({ children }) {
     return (
@@ -10,7 +10,7 @@ export default function Layout({ children }) {
                 {/* Navbar */}
                 <Navbars />
                 {/* Main Content */}
-                <main className="font-proximanova">{children}</main>
+                <main className="font-proximanova pt-20 lg:pt-20">{children}</main>
             </div>
         </HeroUIProvider>
     );

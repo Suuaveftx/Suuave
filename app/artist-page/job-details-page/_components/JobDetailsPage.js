@@ -2,11 +2,12 @@
 import React, { useState, useEffect } from "react";
 import { HiShare } from "react-icons/hi";
 import { HiBookmark, HiOutlineBookmark } from "react-icons/hi2";
-import { Button } from "@heroui/react";
+import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/react";
 import { MapPinIcon, CheckBadgeIcon, EnvelopeIcon, PhoneIcon, CreditCardIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { FaShareAlt, FaWhatsapp, FaTwitter, FaFacebook, FaLinkedin, FaCopy } from 'react-icons/fa';
 import SkillRequirement from "./SkillRequirement";
 import DesignStyle from "./DesignStyle";
 import Budgets from "./Budgets";
@@ -48,23 +49,55 @@ const JobDetailsPage = ({
     }
   };
 
+  const handleSocialShare = (platform) => {
+    const url = window.location.href;
+    const text = "Check out this fashion illustrator job!";
+
+    let shareUrl = "";
+    switch (platform) {
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
+        break;
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+        break;
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        break;
+      case 'linkedin':
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+        break;
+      case 'copy':
+        navigator.clipboard.writeText(url);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+        return;
+      default:
+        return;
+    }
+
+    if (shareUrl) {
+      window.open(shareUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   return (
     <>
       {/* Mobile View */}
-      <div className="lg:hidden bg-white min-h-screen pb-24">
+      <div className="lg:hidden bg-white min-h-full pb-4">
         {/* Back Arrow and Header */}
         <div className="px-4 pt-6 pb-4 border-b border-gray-200">
           <button
             className="flex items-center text-[#222222] font-semibold mb-2"
-            onClick={() => router.back()}
+            onClick={() => router.push("/artist-page/project-page")}
           >
             <ChevronLeft className="w-5 h-5 mr-1" />
-            <span className="text-[20px]">Job Details</span>
+            <h1 className="text-[32px] font-bold">Job Details</h1>
           </button>
         </div>
 
         {/* Header Info */}
-        <div className="px-4 pt-6 pb-4">
+        <div className="px-4 pt-2 pb-2">
           <div className="flex justify-between items-start mb-4">
             <div className="flex flex-col gap-1">
               <div className="flex gap-2 items-center text-sm">
@@ -73,27 +106,55 @@ const JobDetailsPage = ({
                   {proposalSubmitted ? "Applied" : "Active"}
                 </span>
               </div>
-              <h1 className="font-bold text-xl text-[#222222] leading-tight mt-1 flex items-center gap-2">
+              <h2 className="font-bold text-[20px] text-[#222222] leading-tight mt-1">
                 Modern Fashion Attire Illustration
-                {proposalSubmitted && (
-                  <span className="bg-[#035A7A] text-white text-xs font-medium px-[8px] py-[4px] rounded-[4px]">
-                    Applied
-                  </span>
-                )}
-              </h1>
+              </h2>
               <span className="text-sm text-[#767676] mt-1">Posted 2 days ago</span>
             </div>
-            <div className="relative flex items-center gap-3">
-              <button onClick={handleBookmark} className="p-1">
-                {isSaved ? (
-                  <HiBookmark className="text-[#3A98BB] w-6 h-6 shrink-0" />
-                ) : (
-                  <HiOutlineBookmark className="text-[#3A98BB] w-6 h-6 shrink-0" />
-                )}
-              </button>
-              <button onClick={handleShare} className="p-1">
-                <HiShare className="text-[#878787] w-6 h-6 shrink-0" />
-              </button>
+            <div className="relative flex flex-col items-end gap-3">
+              <div className="flex items-center gap-3">
+                <button onClick={handleBookmark} className="p-1">
+                  {isSaved ? (
+                    <HiBookmark className="text-[#3A98BB] w-6 h-6 shrink-0" />
+                  ) : (
+                    <HiOutlineBookmark className="text-[#3A98BB] w-6 h-6 shrink-0" />
+                  )}
+                </button>
+                <div className="relative">
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <button className="p-1 hover:bg-gray-100 rounded-full transition-colors">
+                        <FaShareAlt className="text-[#878787] w-6 h-6 shrink-0" />
+                      </button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label="Share options"
+                      onAction={(key) => handleSocialShare(key)}
+                    >
+                      <DropdownItem key="whatsapp" startContent={<FaWhatsapp className="text-green-500" />}>
+                        WhatsApp
+                      </DropdownItem>
+                      <DropdownItem key="twitter" startContent={<FaTwitter className="text-blue-400" />}>
+                        X (Twitter)
+                      </DropdownItem>
+                      <DropdownItem key="facebook" startContent={<FaFacebook className="text-blue-700" />}>
+                        Facebook
+                      </DropdownItem>
+                      <DropdownItem key="linkedin" startContent={<FaLinkedin className="text-blue-800" />}>
+                        LinkedIn
+                      </DropdownItem>
+                      <DropdownItem key="copy" startContent={<FaCopy className="text-gray-500" />}>
+                        Copy Link
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
+              </div>
+              {proposalSubmitted && (
+                <span className="bg-[#035A7A] text-white text-xs font-medium px-[8px] py-[4px] rounded-[4px] whitespace-nowrap">
+                  Applied
+                </span>
+              )}
               {isCopied && (
                 <span className="absolute -bottom-8 right-0 bg-black text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
                   Copied!
@@ -121,51 +182,14 @@ const JobDetailsPage = ({
             </ul>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-4 mb-8">
-            {proposalSubmitted ? (
-              <>
-                <Button
-                  variant="bordered"
-                  radius="full"
-                  className="flex-1 border-[#3A98BB] text-[#222222] font-medium h-12"
-                  onPress={handleWithdrawProposal}
-                >
-                  Withdraw Proposal
-                </Button>
-                <Button
-                  radius="full"
-                  className="flex-1 bg-[#CCE7F2] text-[#0A4A66] font-medium h-12"
-                  onPress={handleViewProposal}
-                >
-                  View Proposal
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  variant={isSaved ? "solid" : "bordered"}
-                  radius="full"
-                  className={`flex-1 ${isSaved ? "border-none" : "border-[#3A98BB] text-[#222222]"} font-medium h-12`}
-                  style={isSaved ? {
-                    background: "#3A98BB",
-                    color: "white",
-                  } : {}}
-                  onPress={handleBookmark}
-                >
-                  {isSaved ? "Saved" : "Save Post"}
-                </Button>
-                <Button radius="full" className="flex-1 bg-[#CCE7F2] text-[#0A4A66] font-medium h-12" onPress={handleSubmitProposal}>
-                  Send Proposal
-                </Button>
-              </>
-            )}
-          </div>
+
 
           {/* Skills & Design Style */}
           <div className="mb-6">
             <ReferenceImage jobId={jobId} />
           </div>
+
+
           <div className="mb-6">
             <DesignStyle />
           </div>
@@ -174,8 +198,51 @@ const JobDetailsPage = ({
           </div>
 
           {/* Budget & Duration */}
-          <div className="mb-6">
+          <div className="mb-2">
             <Budgets />
+          </div>
+
+          {/* Action Buttons with separate background */}
+          <div className="bg-[#FAFAFA] rounded-lg">
+            <div className="flex gap-4">
+              {proposalSubmitted ? (
+                <>
+                  <Button
+                    variant="bordered"
+                    radius="full"
+                    className="flex-1 border-[#3A98BB] text-[#222222] font-medium h-12"
+                    onPress={handleWithdrawProposal}
+                  >
+                    Withdraw Proposal
+                  </Button>
+                  <Button
+                    radius="full"
+                    className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-medium h-12"
+                    onPress={handleViewProposal}
+                  >
+                    View Proposal
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant={isSaved ? "solid" : "bordered"}
+                    radius="full"
+                    className={`flex-1 ${isSaved ? "border-none" : "border-[#3A98BB] text-[#222222]"} font-medium h-12`}
+                    style={isSaved ? {
+                      background: "#3A98BB",
+                      color: "white",
+                    } : {}}
+                    onPress={handleBookmark}
+                  >
+                    {isSaved ? "Saved" : "Save Post"}
+                  </Button>
+                  <Button radius="full" className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-medium h-12" onPress={handleSubmitProposal}>
+                    Send Proposal
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -203,11 +270,35 @@ const JobDetailsPage = ({
               </div>
               <div className="flex gap-6 items-center">
                 <div className="relative">
-                  <button onClick={handleShare} className="hover:opacity-75 transition-opacity">
-                    <HiShare style={{ color: "#878787", width: "24px", height: "24px" }} />
-                  </button>
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <button className="hover:opacity-75 transition-opacity">
+                        <FaShareAlt style={{ color: "#878787", width: "24px", height: "24px" }} />
+                      </button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label="Share options"
+                      onAction={(key) => handleSocialShare(key)}
+                    >
+                      <DropdownItem key="whatsapp" startContent={<FaWhatsapp className="text-green-500" />}>
+                        WhatsApp
+                      </DropdownItem>
+                      <DropdownItem key="twitter" startContent={<FaTwitter className="text-blue-400" />}>
+                        X (Twitter)
+                      </DropdownItem>
+                      <DropdownItem key="facebook" startContent={<FaFacebook className="text-blue-700" />}>
+                        Facebook
+                      </DropdownItem>
+                      <DropdownItem key="linkedin" startContent={<FaLinkedin className="text-blue-800" />}>
+                        LinkedIn
+                      </DropdownItem>
+                      <DropdownItem key="copy" startContent={<FaCopy className="text-gray-500" />}>
+                        Copy Link
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
                   {isCopied && (
-                    <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap">
+                    <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap z-40">
                       Copied!
                     </span>
                   )}

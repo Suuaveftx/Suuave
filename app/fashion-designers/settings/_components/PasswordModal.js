@@ -31,7 +31,7 @@ const PasswordModal = ({ isOpen, onOpenChange }) => {
             <div className="flex justify-center mt-8 w-full">
               <Button
                 onPress={onClose}
-                className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#0A4A66] font-semibold rounded-full px-6 py-2 w-32"
+                className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full px-6 py-2 w-32"
               >
                 Ok
               </Button>

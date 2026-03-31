@@ -6,7 +6,6 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
-    Button,
     useDisclosure,
     Textarea,
 } from "@heroui/react";
@@ -17,11 +16,21 @@ const ChatClientModal = ({ clientName = "Tolu", trigger }) => {
     return (
         <>
             {trigger ? (
-                React.cloneElement(trigger, { onPress: onOpen, onClick: onOpen })
+                React.cloneElement(trigger, {
+                    onClick: (e) => {
+                        if (trigger.props.onClick) trigger.props.onClick(e);
+                        if (trigger.props.onPress) trigger.props.onPress(e);
+                        onOpen();
+                    }
+                })
             ) : (
-                <Button onPress={onOpen}>
+                <button
+                    onClick={onOpen}
+                    className="bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-6 py-2 transition-colors font-medium text-sm"
+                    type="button"
+                >
                     Chat client
-                </Button>
+                </button>
             )}
             <Modal
                 isOpen={isOpen}
@@ -56,12 +65,13 @@ const ChatClientModal = ({ clientName = "Tolu", trigger }) => {
                                 </div>
                             </ModalBody>
                             <ModalFooter className="p-0 justify-end">
-                                <Button
-                                    onPress={onClose}
-                                    className="bg-[#CCE7F2] text-[#222222] rounded-full px-12 py-6 text-base font-medium hover:bg-[#B8DCE8] transition-colors"
+                                <button
+                                    onClick={onClose}
+                                    className="bg-[#CCE7F2] text-[#222222] rounded-full px-12 py-3 text-base font-medium hover:bg-[#B8DCE8] transition-colors"
+                                    type="button"
                                 >
                                     Send
-                                </Button>
+                                </button>
                             </ModalFooter>
                         </>
                     )}

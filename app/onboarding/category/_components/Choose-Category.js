@@ -99,6 +99,9 @@ const ChooseCategory = () => {
                 value='brand'
                 checked={activeCategory === 'brand'}
                 onChange={() => handleCategoryChange('brand')}
+                value='brand'
+                checked={activeCategory === 'brand'}
+                onChange={() => handleCategoryChange('brand')}
               />
             </div>
             <Image
@@ -117,8 +120,10 @@ const ChooseCategory = () => {
           </div>
         </label>
       </div>
-      <div className='mt-16'>
+
+      <div className='w-full max-w-[700px] flex justify-center mt-12'>
         <button
+          // text='Continue'
           onClick={submitCategory}
           // disabled={!activeCategory}
           className={`text-[#035A7A] rounded-3xl cursor-pointer px-20 py-3 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] transition-opacity ${

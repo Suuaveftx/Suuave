@@ -20,7 +20,7 @@ const Sidebar_MenuCard = ({ menuItems, activeItem, setActiveItem }) => {
       <div className='flex items-center gap-3 p-4 border-b sm:hidden'>
         <ChevronLeft
           className='w-6 h-6 text-gray-700 cursor-pointer'
-          onClick={() => router.back()}
+          onClick={() => router.push("/artist-page")}
         />
         <h2 className='text-[20px] font-bold text-[#222222]'>Settings</h2>
       </div>

@@ -9,14 +9,19 @@ import {
   PopoverTrigger,
   Chip,
   Avatar,
+  Alert,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
 } from "@heroui/react";
 import React, { useState } from "react";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaShareAlt, FaWhatsapp, FaTwitter, FaFacebook, FaLinkedin, FaCopy } from "react-icons/fa";
 import { SvgCautionIcon } from "../../../utils/SvgIcons";
-import { HiDotsHorizontal } from "react-icons/hi";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { IoBookmark } from "react-icons/io5";
+import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
 import { TiLocation } from "react-icons/ti";
+import { Info, ArrowLeft } from "lucide-react";
 import LicenseModal from "../_components/licenseModal";
 import ProductGallery from "../_components/designer-details/ProductGallery";
 import { useRouter } from "next/navigation";
@@ -24,6 +29,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
+import { useBookmarks } from "../_components/BookmarkContext";
 
 const ProductDetails = ({ params }) => {
   // const { id } = params; // Extract 'id' from the params object
@@ -54,7 +60,8 @@ const ProductDetails = ({ params }) => {
 
   const [isLicensed, setIsLicensed] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const { toggleBookmark, isBookmarked, refreshBookmarks } = useBookmarks();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const dragControls = useDragControls();
 
@@ -63,12 +70,50 @@ const ProductDetails = ({ params }) => {
   const resolvedParams = React.use(params);
   const id = resolvedParams.id;
 
+  const isSaved = isBookmarked(id);
+
+  useEffect(() => {
+    refreshBookmarks();
+  }, [refreshBookmarks]);
+
   const handleGetLicense = () => {
     router.push(`/checkout-page?id=${id}`);
   };
 
   const handleSave = () => {
-    setIsSaved(!isSaved);
+    toggleBookmark(id);
+  };
+
+  const handleSocialShare = (platform) => {
+    const url = window.location.href;
+    const text = "Check out this fashion design!";
+
+    let shareUrl = "";
+    switch (platform) {
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
+        break;
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+        break;
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        break;
+      case 'linkedin':
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+        break;
+      case 'copy':
+        navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        return;
+      default:
+        return;
+    }
+
+    if (shareUrl) {
+      window.open(shareUrl, '_blank', 'noopener,noreferrer');
+    }
   };
 
   useEffect(() => {
@@ -95,6 +140,8 @@ const ProductDetails = ({ params }) => {
           <ProductGallery
             images={product.images}
             title={product.title}
+            isBookmarked={isBookmarked(String(id || "").trim())}
+            onToggleSave={handleSave}
             onOpenDetails={(index) => {
               setCurrentImageIndex(index);
               setIsSheetOpen(true);
@@ -106,9 +153,41 @@ const ProductDetails = ({ params }) => {
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-bold truncate">{product.title}</h1>
               <div className="flex items-center gap-4">
-                <Button size="md" variant="light" isIconOnly radius="full" onPress={() => alert("Options clicked")}>
-                  <HiDotsHorizontal className="size-5  fill-[#878787]" />{" "}
-                </Button>
+                {/* Share Dropdown - Desktop */}
+                <div className="relative">
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button size="md" variant="light" isIconOnly radius="full">
+                        <FaShareAlt className="size-5 text-[#878787] hover:text-gray-700" />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label="Share options"
+                      onAction={(key) => handleSocialShare(key)}
+                    >
+                      <DropdownItem key="whatsapp" startContent={<FaWhatsapp className="text-green-500" />}>
+                        WhatsApp
+                      </DropdownItem>
+                      <DropdownItem key="twitter" startContent={<FaTwitter className="text-blue-400" />}>
+                        X (Twitter)
+                      </DropdownItem>
+                      <DropdownItem key="facebook" startContent={<FaFacebook className="text-blue-700" />}>
+                        Facebook
+                      </DropdownItem>
+                      <DropdownItem key="linkedin" startContent={<FaLinkedin className="text-blue-800" />}>
+                        LinkedIn
+                      </DropdownItem>
+                      <DropdownItem key="copy" startContent={<FaCopy className="text-gray-500" />}>
+                        Copy Link
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                  {copied && (
+                    <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap z-30">
+                      Copied!
+                    </span>
+                  )}
+                </div>
                 <div className="flex items-center gap-1">
                   <MdOutlineRemoveRedEye className="size-5  fill-[#878787]" />
                   <p>12</p>
@@ -120,7 +199,11 @@ const ProductDetails = ({ params }) => {
                   radius="full"
                   onPress={handleSave}
                 >
-                  <IoBookmark className={`size-5 ${isSaved ? "fill-customDarkBlue" : "fill-gray-400"}`} />
+                  {isBookmarked(String(id || "").trim()) ? (
+                    <IoBookmark className="size-5 fill-[#3A98BB] text-[#3A98BB]" />
+                  ) : (
+                    <IoBookmarkOutline className="size-5 text-gray-400" />
+                  )}
                 </Button>
               </div>
             </div>
@@ -184,7 +267,7 @@ const ProductDetails = ({ params }) => {
                   className="rounded-full w-[70%]  text-customWhiteBgText text-md h-12 px-9 py-1 shadow-md  font-semibold flex items-center justify-center gap-2 mt-6"
                   style={{
                     background:
-                      "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
+                      "radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)",
                   }}
                   onPress={() => handleGetLicense()}
                 >
@@ -193,10 +276,10 @@ const ProductDetails = ({ params }) => {
 
                 <Button
                   variant="bordered"
-                  className={`rounded-full w-[70%] text-md h-12 px-9 py-1 shadow-md font-semibold flex items-center justify-center gap-2 ${isSaved ? "bg-customDarkBlue text-white" : "text-[#035A7A]"}`}
+                  className={`rounded-full w-[70%] text-md h-12 px-9 py-1 shadow-md font-semibold flex items-center justify-center gap-2 ${isBookmarked(String(id || "").trim()) ? "bg-[#3A98BB] text-white border-[#3A98BB]" : "text-[#035A7A]"}`}
                   onPress={handleSave}
                 >
-                  {isSaved ? "Saved" : "Save"}
+                  {isBookmarked(String(id || "").trim()) ? "Saved" : "Save"}
                 </Button>
               </CardBody>
             )}
@@ -274,10 +357,24 @@ const ProductDetails = ({ params }) => {
           <>
             <div>
               <p className="text-xl font-bold">{product.price}</p>
-              <div className="flex items-center gap-1 text-[10px] text-gray-500">
-                <span>Licensing price</span>
-                <SvgCautionIcon className="size-3" />
-              </div>
+              <Popover showArrow={true} placement="top">
+                <PopoverTrigger>
+                  <div className="flex items-center gap-1.5 text-black cursor-pointer">
+                    <span className="text-[13px] font-bold">Licensing Right</span>
+                    <SvgCautionIcon className="size-4" />
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className="w-72 p-4 text-xs">
+                  <div className="flex flex-col gap-2">
+                    <p>
+                      You are purchasing a commercial usage license; the artist retains full copyright and original ownership of the work.
+                    </p>
+                    <p>
+                      This means you have the right to use this design for your collection, according to the agreed license terms. You cannot resell the digital file to another company, claim you created the artwork, or register the design as your trademark.
+                    </p>
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
             <Button
               className="rounded-full text-customWhiteBgText text-sm px-6 py-2 shadow-md font-semibold"
@@ -311,20 +408,22 @@ const ProductDetails = ({ params }) => {
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
               drag="y"
               dragControls={dragControls}
-              dragListener={false}
+              dragListener={true}
               dragConstraints={{ top: 0 }}
-              dragElastic={0.1}
+              dragElastic={0.7}
               onDragEnd={(_, info) => {
-                if (info.offset.y > 100) setIsSheetOpen(false);
+                if (info.offset.y > 150 || info.velocity.y > 500) {
+                  setIsSheetOpen(false);
+                }
               }}
-              className="lg:hidden fixed bottom-1 left-0 right-0 bg-white rounded-t-[40px] z-[60] h-[85vh] flex flex-col shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.3)] border-t border-neutral-100"
+              className="lg:hidden fixed bottom-0 left-0 right-0 bg-white rounded-t-[40px] z-[60] h-[92vh] flex flex-col shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.3)] border-t border-neutral-100"
             >
-              {/* Drag Handle Area */}
+              {/* Drag Handle Area - Tactile and larger */}
               <div
-                className="w-full pt-4 pb-2 cursor-grab active:cursor-grabbing flex-shrink-0"
+                className="w-full pt-6 pb-4 cursor-grab active:cursor-grabbing flex-shrink-0"
                 onPointerDown={(e) => dragControls.start(e)}
               >
-                <div className="w-16 h-1.5 bg-neutral-200 rounded-full mx-auto" />
+                <div className="w-20 h-1.5 bg-neutral-300 rounded-full mx-auto" />
               </div>
 
               {/* Scrollable Content Wrapper */}
@@ -398,16 +497,30 @@ const ProductDetails = ({ params }) => {
                   <>
                     <div>
                       <p className="text-xl font-bold">{product.price}</p>
-                      <div className="flex items-center gap-1 text-[10px] text-gray-500">
-                        <span>Licensing price</span>
-                        <SvgCautionIcon className="size-3" />
-                      </div>
+                      <Popover showArrow={true} placement="top">
+                        <PopoverTrigger>
+                          <div className="flex items-center gap-1.5 text-black cursor-pointer">
+                            <span className="text-[13px] font-bold">Licensing Right</span>
+                            <SvgCautionIcon className="size-4" />
+                          </div>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-72 p-4 text-xs">
+                          <div className="flex flex-col gap-2">
+                            <p>
+                              You are purchasing a commercial usage license; the artist retains full copyright and original ownership of the work.
+                            </p>
+                            <p>
+                              This means you have the right to use this design for your collection, according to the agreed license terms. You cannot resell the digital file to another company, claim you created the artwork, or register the design as your trademark.
+                            </p>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
                     </div>
                     <Button
                       className="rounded-full text-customWhiteBgText text-sm px-6 py-2 shadow-md font-semibold"
                       style={{
                         background:
-                          "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
+                          "radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)",
                       }}
                       onPress={() => handleGetLicense()}
                     >

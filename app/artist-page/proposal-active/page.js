@@ -55,7 +55,12 @@ const Page = () => {
       {/* reduced from gap-4 to gap-2 */}
       {/* Main Content */}
       <div className="lg:col-span-7 col-span-10">
-        <ProposalActive />
+        <ProposalActive
+          handleSubmitProposal={handleSubmitProposal}
+          handleWithdrawProposal={handleWithdrawProposal}
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+        />
       </div>
       {/* Sidebar */}
       <div className="col-span-10 lg:col-span-3 lg:mt-20 flex flex-col">

@@ -3,10 +3,10 @@ import HeroSection from './_components/Hero/Horo';
 import CustomNavbar from 'components/Navbar';
 import Footer from 'app/about-page/components/Footer';
 
-function page() {
+function Page() {
   return (
     <div className='max-w-[1700px] mx-auto bg-customNavBg'>
-      <CustomNavbar bgColor='bg-transparent' />
+      <CustomNavbar bgColor='bg-transparent' mobileLogo="/dev-images/LogoMark.png" desktopLogo="/dev-images/SuaaveTxtWhite.png" />
       <main className='font-proximanova'>
         <HeroSection />
       </main>
@@ -15,4 +15,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

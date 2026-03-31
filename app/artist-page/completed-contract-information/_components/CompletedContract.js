@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardBody } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,7 +13,7 @@ const contractDetails = {
     contractType: "Hire",
     role: "Fashion Artist",
     budget: "N200,000",
-    duration: "Within A Month",
+    duration: "3 Days",
 };
 
 const attachments = [
@@ -36,24 +37,27 @@ const clientProfile = {
 };
 
 export default function CompletedContract() {
+    const router = useRouter();
     return (
         <div className="w-full max-w-[1400px] mx-auto p-4 md:p-6 lg:p-8 font-proximanova text-[#222222]">
             {/* Mobile Header */}
-            <div className="flex items-center gap-2 mb-6 md:hidden">
-                <Link href="#" className="p-1">
+            <div className="flex items-center gap-2 mb-6 mt-4 pt-2 md:hidden">
+                <div
+                    onClick={() => router.push("/artist-page/my-contracts?tab=completed")}
+                    className="p-1 cursor-pointer"
+                >
                     <ChevronLeft size={24} color="#222222" />
-                </Link>
-                <h1 className="text-lg font-bold">Contracts Information</h1>
+                </div>
             </div>
 
             {/* Desktop Page Title */}
             <h1 className="hidden md:block text-2xl md:text-3xl font-bold mb-6">Contract Information</h1>
 
-            <div className="flex flex-col lg:flex-row gap-6">
+            <div className="flex flex-col lg:flex-row gap-2 lg:gap-6">
                 {/* Left Column */}
-                <div className="flex-1 space-y-6">
+                <div className="flex-1 space-y-2 lg:space-y-6">
                     {/* Contract Details Card */}
-                    <Card className="w-full p-4 md:p-6 shadow-none md:shadow-sm border-none md:border border-gray-100 rounded-2xl bg-transparent md:bg-white">
+                    <Card className="w-full p-4 md:p-6 shadow-sm border border-gray-100 rounded-2xl bg-white">
                         <div className="hidden md:flex justify-between items-start mb-6">
                             <h2 className="text-xl font-bold">Contract Details</h2>
                             <span className="px-3 py-1 bg-transparent border border-gray-200 rounded-full text-xs text-gray-500 font-medium">
@@ -64,46 +68,46 @@ export default function CompletedContract() {
                         <div className="space-y-4">
                             {/* Mobile-only fields order and styling */}
                             <div className="flex justify-between items-start md:hidden mb-1">
-                                <span className="text-gray-500 text-sm">Job Title</span>
+                                <span className="text-gray-500 text-sm">Job Title:</span>
                                 <span className="font-medium text-sm text-right max-w-[60%]">{contractDetails.jobTitle}</span>
                             </div>
                             <div className="flex justify-between items-center md:hidden mb-1">
-                                <span className="text-gray-500 text-sm">Status</span>
+                                <span className="text-gray-500 text-sm">Status:</span>
                                 <span className="font-medium text-sm text-gray-500">Completed</span>
                             </div>
 
                             {/* Shared fields with responsive layout */}
                             <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
-                                <span className="text-gray-500 text-sm">Contract Number <span className="hidden md:inline">-</span></span>
+                                <span className="text-gray-500 text-sm">Contract Number :</span>
                                 <span className="font-medium text-sm">{contractDetails.contractNumber}</span>
                             </div>
                             <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
-                                <span className="text-gray-500 text-sm">Contract Type <span className="hidden md:inline">-</span></span>
+                                <span className="text-gray-500 text-sm">Contract Type :</span>
                                 <span className="font-medium text-sm">{contractDetails.contractType}</span>
                             </div>
                             <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
-                                <span className="text-gray-500 text-sm">Role <span className="hidden md:inline">-</span></span>
+                                <span className="text-gray-500 text-sm">Role :</span>
                                 <span className="font-medium text-sm">{contractDetails.role}</span>
                             </div>
                             <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
-                                <span className="text-gray-500 text-sm">Budget <span className="hidden md:inline">-</span></span>
+                                <span className="text-gray-500 text-sm">Budget :</span>
                                 <span className="font-medium text-sm">{contractDetails.budget}</span>
                             </div>
                             <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start">
-                                <span className="text-gray-500 text-sm">Contract Duration <span className="hidden md:inline">-</span></span>
+                                <span className="text-gray-500 text-sm">Timeframe :</span>
                                 <span className="font-medium text-sm">{contractDetails.duration}</span>
                             </div>
 
                             {/* Desktop only Job Title */}
                             <div className="hidden md:grid grid-cols-1 md:grid-cols-[200px_1fr] gap-2 md:gap-4">
-                                <span className="text-gray-500 text-sm">Job Title -</span>
+                                <span className="text-gray-500 text-sm">Job Title :</span>
                                 <span className="font-medium text-sm">{contractDetails.jobTitle}</span>
                             </div>
                         </div>
                     </Card>
 
                     {/* Attached Documents Card */}
-                    <Card className="w-full p-4 md:p-6 shadow-none md:shadow-sm border-none md:border border-gray-100 rounded-2xl bg-transparent md:bg-white">
+                    <Card className="w-full p-4 md:p-6 shadow-sm border border-gray-100 rounded-2xl bg-white">
                         <h2 className="text-base md:text-xl font-bold mb-4 md:mb-6">Attached Documents</h2>
                         <div className="space-y-3">
                             {attachments.map((doc, index) => (
@@ -118,7 +122,7 @@ export default function CompletedContract() {
                 </div>
 
                 {/* Right Column (Sidebar) */}
-                <div className="w-full lg:w-[350px] space-y-6">
+                <div className="w-full lg:w-[350px] space-y-2 lg:space-y-6">
                     {/* Client Profile Card */}
                     <Card className="w-full p-6 shadow-sm border border-gray-100 rounded-2xl text-center bg-white">
                         <h2 className="text-xl font-bold mb-6">Client&#39;s Profile</h2>

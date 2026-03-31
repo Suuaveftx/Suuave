@@ -14,11 +14,10 @@ const ImageDesigners = () => {
       {/* Right section */}
       <div className="bg-[#124456] lg:px-14 px-4   pt-12 pb-14">
         <p className="text-[#049AD1] lg:font-medium font-normal text-[18px]">
-          FOR FASHION DESIGNERS / BRANDS
+          FOR FASHION BRANDS/DESIGNERS
         </p>
         <p className="lg:font-medium lg:text-[44px] text-[28px] text-white mt-3 lg:leading-[54px]">
-          Access Africa’s top fashion{" "}
-          <span className="italic font-thin">artists</span> in few steps.
+          Source Authenticity. License Excellence.
         </p>
 
         <div className="flex flex-col gap-5 lg:mt-6 mt-14">

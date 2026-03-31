@@ -3,7 +3,8 @@ import { useState, useRef, useEffect } from 'react';
 import { Tabs, Tab, Button } from '@heroui/react';
 import PaymentTable from './PaymentTable';
 import PayoutHistory from './PayoutHistory';
-import { Search, ChevronDown, Calendar, Info } from 'lucide-react';
+import { Search, ChevronDown, Calendar, Info, Filter } from 'lucide-react';
+import SearchBar from '../../../../components/Searchbar';
 
 export default function PaymentTabs() {
   const [selectedTab, setSelectedTab] = useState('earnings');
@@ -93,127 +94,121 @@ export default function PaymentTabs() {
 
       {/* Filter Row (Only for Earning History for now) */}
       {selectedTab === 'earnings' && (
-        <div className='mt-8 flex flex-col xl:flex-row gap-4 justify-between items-center'>
+        <div className='mt-8 flex flex-col lg:flex-row gap-4 justify-between items-center'>
 
-          {/* Left Side: Search Bar */}
-          <div className='relative flex-grow max-w-2xl w-full'>
-            <div className='absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none'>
-              <Search className='h-5 w-5 text-gray-400' />
-            </div>
-            <input
-              type='text'
+          {/* Search Bar with Integrated Filters */}
+          <div className='flex-grow max-w-2xl w-full'>
+            <SearchBar
               placeholder='Search'
-              className='block w-full pl-11 pr-4 py-3 bg-white border border-[#E5E5E5] rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-[#3A98BB] placeholder-gray-400 h-12'
+              endContent={
+                <div className='flex items-center gap-3 pr-2'>
+                  {/* All Types Dropdown */}
+                  <div className='relative' ref={typeDropdownRef}>
+                    <button
+                      onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
+                      className='flex items-center gap-1 cursor-pointer hover:bg-gray-100 p-1.5 rounded-full transition-colors'
+                      title='Filter by Type'
+                    >
+                      <Filter className='h-4 w-4 text-gray-400' />
+                      <span className='text-[10px] text-gray-400'>▼</span>
+                    </button>
+
+                    {isTypeDropdownOpen && (
+                      <div className='absolute top-full right-0 mt-2 w-48 bg-white border border-[#E5E5E5] rounded-xl shadow-lg py-2 z-[100] overflow-hidden'>
+                        {selectedType !== 'All Types' && (
+                          <div
+                            onClick={handleTypeReset}
+                            className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB] font-medium border-b border-gray-100'
+                          >
+                            Reset Filter
+                          </div>
+                        )}
+                        <div
+                          onClick={() => handleTypeSelect('Licensing')}
+                          className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'
+                        >
+                          Licensing
+                        </div>
+                        <div
+                          onClick={() => handleTypeSelect('Projects')}
+                          className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'
+                        >
+                          Projects
+                        </div>
+                        <div
+                          onClick={() => handleTypeSelect('Buy more time')}
+                          className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'
+                        >
+                          Buy more time
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Date Dropdown */}
+                  <div className='relative' ref={dateDropdownRef}>
+                    <button
+                      onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
+                      className='flex items-center gap-1 cursor-pointer hover:bg-gray-100 p-1.5 rounded-full transition-colors'
+                      title='Filter by Date'
+                    >
+                      <Calendar className='h-4 w-4 text-gray-400' />
+                      <span className='text-[10px] text-gray-400'>▼</span>
+                    </button>
+
+                    {isDateDropdownOpen && (
+                      <div className='absolute top-full right-0 mt-2 w-72 bg-white border border-[#E5E5E5] rounded-xl shadow-lg z-[100] overflow-hidden'>
+                        <div className='py-2 border-b border-gray-100'>
+                          <div onClick={handleReset} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB] font-medium'>Reset Filter</div>
+                          <div className='border-t border-gray-100 my-1'></div>
+                          <div onClick={() => handleRangeSelect(7)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 7 days</div>
+                          <div onClick={() => handleRangeSelect(14)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 14 days</div>
+                          <div onClick={() => handleRangeSelect(30)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 30 days</div>
+                        </div>
+                        <div className='p-4 bg-gray-50 space-y-3'>
+                          <p className="text-xs font-bold text-[#767676] uppercase tracking-wider">Custom Range</p>
+                          <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-1">
+                              <span className="text-[10px] text-[#888888] ml-1">From</span>
+                              <input
+                                type="date"
+                                value={customRange.start}
+                                onChange={(e) => handleCustomDateChange('start', e.target.value)}
+                                className="w-full border border-[#E5E5E5] rounded-lg p-2 text-sm text-[#555555] focus:outline-none focus:ring-1 focus:ring-[#3A98BB] bg-white h-10"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <span className="text-[10px] text-[#888888] ml-1">To</span>
+                              <input
+                                type="date"
+                                value={customRange.end}
+                                onChange={(e) => handleCustomDateChange('end', e.target.value)}
+                                className="w-full border border-[#E5E5E5] rounded-lg p-2 text-sm text-[#555555] focus:outline-none focus:ring-1 focus:ring-[#3A98BB] bg-white h-10"
+                              />
+                            </div>
+                          </div>
+                          <Button
+                            size="sm"
+                            fullWidth
+                            className="bg-[#3A98BB] text-white font-bold h-10 rounded-lg mt-2 shadow-sm"
+                            onClick={() => setIsDateDropdownOpen(false)}
+                          >
+                            Apply Range
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              }
             />
           </div>
 
-          {/* Right Side: Filters + Report Button */}
-          <div className='flex gap-4 items-center w-full xl:w-auto mt-4 xl:mt-0 overflow-x-auto xl:overflow-visible pb-2 xl:pb-0 scrollbar-hide'>
-
-            {/* All Types Dropdown */}
-            <div className='relative flex-shrink-0' ref={typeDropdownRef}>
-              <button
-                onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
-                className='flex items-center justify-between gap-2 px-6 py-3 bg-white border border-[#E5E5E5] rounded-full text-sm text-[#555555] whitespace-nowrap hover:bg-gray-50 h-10'
-              >
-                {selectedType}
-                <ChevronDown className={`h-4 w-4 transition-transform ${isTypeDropdownOpen ? 'rotate-180' : ''}`} />
-              </button>
-
-              {isTypeDropdownOpen && (
-                <div className='absolute top-full left-0 mt-2 w-48 bg-white border border-[#E5E5E5] rounded-xl shadow-lg py-2 z-[100] overflow-hidden'>
-                  {selectedType !== 'All Types' && (
-                    <div
-                      onClick={handleTypeReset}
-                      className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB] font-medium border-b border-gray-100'
-                    >
-                      Reset Filter
-                    </div>
-                  )}
-                  <div
-                    onClick={() => handleTypeSelect('Licensing')}
-                    className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'
-                  >
-                    Licensing
-                  </div>
-                  <div
-                    onClick={() => handleTypeSelect('Projects')}
-                    className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'
-                  >
-                    Projects
-                  </div>
-                  <div
-                    onClick={() => handleTypeSelect('Buy more time')}
-                    className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'
-                  >
-                    Buy more time
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Date Dropdown */}
-            <div className='relative flex-shrink-0' ref={dateDropdownRef}>
-              <button
-                onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
-                className='flex items-center justify-between gap-2 px-6 py-3 bg-white border border-[#E5E5E5] rounded-full text-sm text-[#555555] whitespace-nowrap hover:bg-gray-50 h-10 min-w-[160px]'
-              >
-                <Calendar className='h-4 w-4 text-gray-400' />
-                {filterState.label}
-                <ChevronDown className={`h-4 w-4 transition-transform ${isDateDropdownOpen ? 'rotate-180' : ''}`} />
-              </button>
-
-              {isDateDropdownOpen && (
-                <div className='absolute top-full right-0 mt-2 w-72 bg-white border border-[#E5E5E5] rounded-xl shadow-lg z-[100] overflow-hidden'>
-                  {/* Range Options */}
-                  <div className='py-2 border-b border-gray-100'>
-                    <div onClick={handleReset} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB] font-medium'>Reset Filter</div>
-                    <div className='border-t border-gray-100 my-1'></div>
-                    <div onClick={() => handleRangeSelect(7)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 7 days</div>
-                    <div onClick={() => handleRangeSelect(14)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 14 days</div>
-                    <div onClick={() => handleRangeSelect(30)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 30 days</div>
-                  </div>
-
-                  {/* Custom Date Picker Range */}
-                  <div className='p-4 bg-gray-50 space-y-3'>
-                    <p className="text-xs font-bold text-[#767676] uppercase tracking-wider">Custom Range</p>
-                    <div className="flex flex-col gap-2">
-                      <div className="flex flex-col gap-1">
-                        <span className="text-[10px] text-[#888888] ml-1">From</span>
-                        <input
-                          type="date"
-                          value={customRange.start}
-                          onChange={(e) => handleCustomDateChange('start', e.target.value)}
-                          className="w-full border border-[#E5E5E5] rounded-lg p-2 text-sm text-[#555555] focus:outline-none focus:ring-1 focus:ring-[#3A98BB] bg-white h-10"
-                        />
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <span className="text-[10px] text-[#888888] ml-1">To</span>
-                        <input
-                          type="date"
-                          value={customRange.end}
-                          onChange={(e) => handleCustomDateChange('end', e.target.value)}
-                          className="w-full border border-[#E5E5E5] rounded-lg p-2 text-sm text-[#555555] focus:outline-none focus:ring-1 focus:ring-[#3A98BB] bg-white h-10"
-                        />
-                      </div>
-                    </div>
-                    <Button
-                      size="sm"
-                      fullWidth
-                      className="bg-[#3A98BB] text-white font-bold h-10 rounded-lg mt-2 shadow-sm"
-                      onClick={() => setIsDateDropdownOpen(false)}
-                    >
-                      Apply Range
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Report Button */}
+          {/* Right Side: Report Button */}
+          <div className='flex flex-wrap lg:flex-nowrap gap-4 items-center w-full lg:w-auto mt-4 lg:mt-0 pb-2 lg:pb-0'>
             <button className='flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-[#FFF5F5] border border-[#FFE0E0] rounded-full text-[#FF4D4D] text-sm font-medium hover:bg-[#ffe6e6] whitespace-nowrap'>
               <Info className='h-4 w-4' />
-              Report an Issue
+              Report Any Issue
             </button>
           </div>
 

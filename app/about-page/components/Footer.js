@@ -1,4 +1,5 @@
 import Image from "next/image"; // Ensure you import the Next.js Image component no forget am
+import Link from "next/link";
 const Footer = () => {
   return (
     <footer className="bg-[#223B44] py-12 text-white text-sm mt-7">
@@ -26,19 +27,19 @@ const Footer = () => {
           </h6>
           <ul className="text-[#F3F3F3]">
             <li className="mb-1">
-              <a href="#" className="hover:text-teal-300">
+              <Link href="#" className="hover:text-teal-300">
                 Contact Us
-              </a>
+              </Link>
             </li>
             <li className="mb-1">
-              <a href="#" className="hover:text-teal-300">
+              <Link href="#" className="hover:text-teal-300">
                 About Us
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:text-teal-300">
+              <Link href="#" className="hover:text-teal-300">
                 Help And Support
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -49,24 +50,24 @@ const Footer = () => {
 
           <ul className="text-[#F3F3F3]">
             <li className="mb-1">
-              <a href="#" className="hover:text-teal-300">
+              <Link href="#" className="hover:text-teal-300">
                 Job Posts
-              </a>
+              </Link>
             </li>
             <li className="mb-1">
-              <a href="#" className="hover:text-teal-300">
+              <Link href="#" className="hover:text-teal-300">
                 Explore Talents
-              </a>
+              </Link>
             </li>
             <li className="mb-1">
-              <a href="#" className="hover:text-teal-300">
+              <Link href="#" className="hover:text-teal-300">
                 How it Works
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:text-teal-300">
+              <Link href="#" className="hover:text-teal-300">
                 How it Works
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -76,19 +77,19 @@ const Footer = () => {
           </h6>
           <ul className="text-[#F3F3F3]">
             <li className="mb-1">
-              <a href="#" className="hover:text-teal-300">
+              <Link href="#" className="hover:text-teal-300">
                 Term & Conditions
-              </a>
+              </Link>
             </li>
             <li className="mb-1">
-              <a href="#" className="hover:text-teal-300">
+              <Link href="#" className="hover:text-teal-300">
                 Privacy Policy
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:text-teal-300">
+              <Link href="#" className="hover:text-teal-300">
                 Collaboration Policy
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -98,7 +99,7 @@ const Footer = () => {
         <h6 className="font-semibold text-[#EAEAEA] mb-2">OUR SOCIALS</h6>
         <div className="border-t border-gray-300 lg:mx-auto w-[90%] py-2 text-center"></div>
         <div className="flex lg:justify-center space-x-4 ">
-          <a href="#" className="text-gray-400 hover:text-teal-300">
+          <Link href="#" className="text-gray-400 hover:text-teal-300">
             <Image
               src="/icons/face.svg"
               alt="Suuave Logo"
@@ -106,8 +107,8 @@ const Footer = () => {
               height={24}
               className="mr-2"
             />
-          </a>
-          <a href="#" className="text-gray-400 hover:text-teal-300">
+          </Link>
+          <Link href="#" className="text-gray-400 hover:text-teal-300">
             <Image
               src="/icons/instagram.svg"
               alt="Instagram"
@@ -115,8 +116,8 @@ const Footer = () => {
               height={24}
               className="mr-2"
             />
-          </a>
-          <a href="#" className="text-gray-400 hover:text-teal-300">
+          </Link>
+          <Link href="#" className="text-gray-400 hover:text-teal-300">
             <Image
               src="/icons/twitter.svg"
               alt="Instagram"
@@ -124,7 +125,7 @@ const Footer = () => {
               height={24}
               className="mr-2"
             />
-          </a>
+          </Link>
         </div>
       </div>
     </footer>

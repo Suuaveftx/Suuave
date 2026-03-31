@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { X } from 'lucide-react';
 
 const AwardsCertification = ({
   setSelected,
@@ -8,17 +9,18 @@ const AwardsCertification = ({
   setFormData,
   uploadedAwardCertificate,
   previewAwardCertificate,
+  removeAwardCertificateItem,
 }) => {
   return (
     <div className='bg-[#FAFAFA] border border-[#DEDEDE] rounded-2xl p-3 md:p-6 w-full h-full'>
-      <h1 className='text-[#3A98BB] font-bold text-xl'>Awards/Certifications</h1>
+      <h1 className='text-[#3A98BB] font-bold text-[32px]'>Awards/Certifications</h1>
       <p className='text-[#767676] font-normal text-base mt-2'>
         Add any relevant awards or certifications.
       </p>
       <section className='space-y-10 mt-5'>
         {/*Name of Award/Certificate*/}
         <div className='w-full flex flex-col gap-2'>
-          <Lable htmlFor='nameofAwardCertificate' text='Name of Award/Certificate' />
+          <Lable htmlFor='nameofAwardCertificate' text='Name Of Award/Certificate' />
           <Input
             id='nameofAwardCertificate'
             placeholder='Eg Best Illustrator Award'
@@ -33,7 +35,7 @@ const AwardsCertification = ({
         </div>
         {/*Awarded/Issued by */}
         <div className='w-full flex flex-col gap-2'>
-          <Lable htmlFor='awardedIssuedBy' text='Awarded/Issued by' />
+          <Lable htmlFor='awardedIssuedBy' text='Awarded/Issued By' />
           <Input
             id='awardedIssuedBy'
             placeholder='Organization that issued/awarded '
@@ -52,32 +54,39 @@ const AwardsCertification = ({
             htmlFor='uploadCertificateAward'
             text='Upload Certificate/Award (Optional)'
           />
-          {previewAwardCertificate ? (
-            <Image
-              src={previewAwardCertificate}
-              alt='icon'
-              width={128}
-              height={128}
-              className='object-cover'
-            />
-          ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {previewAwardCertificate.map((src, index) => (
+              <div key={index} className="relative w-full h-32 rounded-lg overflow-hidden border border-[#D1D1D1]">
+                <Image src={src} alt={`award-${index}`} fill className="object-cover" />
+                <button
+                  type="button"
+                  onClick={() => removeAwardCertificateItem(index)}
+                  className="absolute top-1 right-1 bg-white/80 hover:bg-white rounded-full p-1 shadow-sm transition-colors"
+                >
+                  <X size={14} className="text-red-500" />
+                </button>
+              </div>
+            ))}
             <label
               htmlFor='uploadedAwardCertificate'
-              className='flex flex-col md:flex-row items-center cursor-pointer justify-center gap-3 w-full h-32 rounded-lg border border-[#D1D1D1]'
+              className='flex flex-col items-center cursor-pointer justify-center gap-1 w-full h-32 rounded-lg border border-dashed border-[#3A98BB] bg-[#F4FBFE]'
             >
-              <Image src='/svg/paper-clip.svg' alt='icon' width={24} height={24} />
-              <p className='text-[#767676] font-normal text-base'>Click to upload file</p>
+              <Image src='/svg/paper-clip.svg' alt='icon' width={20} height={20} />
+              <p className='text-[#3A98BB] font-medium text-xs text-center px-2'>
+                {previewAwardCertificate.length > 0 ? "Add more" : "Upload Certificate"}
+              </p>
               <input
                 id='uploadedAwardCertificate'
                 type='file'
                 accept='image/*'
+                multiple
                 onChange={uploadedAwardCertificate}
                 className='hidden'
               />
             </label>
-          )}
+          </div>
         </div>
-        <b className='text-[#222222] font-normal text-base'>DOC00263R</b>
+
 
         {/* submit button */}
         <div className='w-full px-10 md:px-0 justify-center flex md:justify-end items-center gap-5'>
@@ -108,6 +117,10 @@ const Input = ({ placeholder, id, value, onChange }) => {
   );
 };
 
-const Lable = ({ text, htmlFor }) => {
-  return <label htmlFor={htmlFor}>{text}</label>;
+const Lable = ({ text, htmlFor, required }) => {
+  return (
+    <label htmlFor={htmlFor} className="text-sm font-medium text-[#222222]">
+      {text}{required && <span className="text-red-500 ml-0.5">*</span>}
+    </label>
+  );
 };

@@ -50,7 +50,7 @@ const ProductDetails = ({ id }) => {
   const router = useRouter();
 
   const handleBack = () => {
-    router.back();
+    router.push("/fashion-designers");
   };
   // If invalid collection id
   if (!collection) {
@@ -102,17 +102,18 @@ const ProductDetails = ({ id }) => {
                 key={index}
                 href={url}
                 target="_blank"
-                className="text-[#767676] font-satoshi font-normal text-xs hover:underline cursor-pointer"
+                className="text-[#767676] font-satoshi font-normal text-xs hover:text-[#3A98BB] cursor-pointer transition-colors"
               >
                 {file}
               </Link>
             ))}
           </div>
-          {/* Price */}
-          <Header>Price</Header>
+          {/* Amount */}
+          <Header>Amount</Header>
           <Text>{details.price}</Text>
-          {/* Purchase Date */}
-          <Header>Purchase Date</Header>
+
+          {/* Purchased Date */}
+          <Header>Purchased Date</Header>
           <Text>{details.purchaseDate}</Text>
           {/* Artist */}
           <Header>About the Artist</Header>
@@ -203,7 +204,7 @@ const ProductDetails = ({ id }) => {
                     <h1 className=" font-bold text-base">Collection Files</h1>
                     <div className="mt-4 flex flex-col gap-2">
                       {details?.collectionFiles.map((file, index) => (
-                        <Link key={index} href={url} target="_blank" className="font-normal text-xs hover:underline cursor-pointer">
+                        <Link key={index} href={url} target="_blank" className="font-normal text-xs hover:text-[#3A98BB] cursor-pointer transition-colors">
                           {file}
                         </Link>
                       ))}
@@ -225,15 +226,15 @@ const ProductDetails = ({ id }) => {
                     </Link>
                   </div>
                   <div>
-                    {/* Price */}
-                    <h1 className=" font-bold text-base">Price</h1>
+                    {/* Amount */}
+                    <h1 className=" font-bold text-base">Amount</h1>
                     <p className="mt-4 font-satoshi font-normal text-xs text-[#767676]">
                       {details?.price}
                     </p>
                   </div>
                   <div>
-                    {/* Purchase Date */}
-                    <h1 className=" font-bold text-base">Purchase Date</h1>
+                    {/* Purchased Date */}
+                    <h1 className=" font-bold text-base">Purchased Date</h1>
                     <p className="mt-4 text-[#767676] font-satoshi font-normal text-xs">
                       {details?.purchaseDate}
                     </p>

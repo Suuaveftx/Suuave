@@ -61,7 +61,7 @@ const Notification = () => {
           <p className="text-[10px] text-white">{notificationMessage.length}</p>
         }
         showOutline={false}
-        className="h-4 w-4 hidden lg:flex bg-customDarkBlue"
+        className="h-4 w-4 bg-customDarkBlue flex"
         shape="circle"
       >
         <PopoverTrigger>
@@ -69,8 +69,8 @@ const Notification = () => {
             isIconOnly
             variant="bordered"
             radius="full"
-            className="text-[#1A1A1A] hidden lg:flex"
-            size="md"
+            className="text-[#1A1A1A]"
+            size="sm"
           >
             <FaBell className="w-4 h-4" />
           </Button>

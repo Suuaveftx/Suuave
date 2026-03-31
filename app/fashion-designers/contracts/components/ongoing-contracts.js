@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   MagnifyingGlassIcon,
   AdjustmentsVerticalIcon,
@@ -17,8 +18,13 @@ import {
   ModalContent,
   ModalFooter,
   useDisclosure,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
 } from '@heroui/react';
-import MessageModal from './MessageModal';
+import { Calendar } from 'lucide-react';
+
 import SubmitModal from '../../../../components/SubmitModal';
 import FilterDropdown from '../../../../components/FilterDropdown';
 
@@ -33,11 +39,6 @@ const OngoingContracts = ({
 }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
-    isOpen: isMessageOpen,
-    onOpen: onMessageOpen,
-    onOpenChange: onMessageOpenOpenChange
-  } = useDisclosure();
-  const {
     isOpen: isRateOpen,
     onOpen: onRateOpen,
     onOpenChange: onRateOpenChange
@@ -45,6 +46,20 @@ const OngoingContracts = ({
 
   const [showCongratulationsModal, setShowCongratulationsModal] = useState(false);
   const [currentContract, setCurrentContract] = useState(null);
+  const [openMenuContract, setOpenMenuContract] = useState(null);
+  const menuRef = useRef(null);
+  const menuButtonRefs = useRef({});
+  const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setOpenMenuContract(null);
+      }
+    };
+    document.addEventListener('pointerdown', handleClickOutside);
+    return () => document.removeEventListener('pointerdown', handleClickOutside);
+  }, []);
 
   /*  const filteredContracts = contracts.filter((contract) =>
     contract.title.toLowerCase().includes(search.toLowerCase())
@@ -155,27 +170,44 @@ const OngoingContracts = ({
               type='text'
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder='Search by job title'
+              placeholder='Search Project'
               startContent={<MagnifyingGlassIcon className='h-5 w-5 text-gray-400' />}
               className='flex-1 md:max-w-md md:flex-none'
               classNames={{
                 input: 'text-sm',
                 inputWrapper:
-                  'border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500',
+                  'border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500 pr-2',
               }}
-            />
-          </div>
-
-          <div className='flex items-center gap-3'>
-            <FilterDropdown
-              label='Select Date'
-              options={dateOptions}
-              selectedOption={dateFilter}
-              setSelectedOption={(val) => {
-                setDateFilter(val);
-                setCurrentPage(1);
-              }}
-              defaultLabel='Select Date'
+              endContent={
+                <Dropdown placement="bottom-end" classNames={{ content: 'min-w-[150px]' }}>
+                  <DropdownTrigger>
+                    <Button
+                      isIconOnly
+                      variant="light"
+                      size="sm"
+                      className="text-gray-400 hover:text-gray-600 min-w-8 w-8 h-8 rounded-full"
+                    >
+                      <Calendar size={18} />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu
+                    aria-label="Date Filter"
+                    onAction={(key) => {
+                      setDateFilter(key);
+                      setCurrentPage(1);
+                    }}
+                    selectedKeys={[dateFilter]}
+                    selectionMode="single"
+                  >
+                    {dateOptions.map((option) => (
+                      <DropdownItem key={option}>{option}</DropdownItem>
+                    ))}
+                    <DropdownItem key="" className="text-danger" color="danger">
+                      Reset Filter
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              }
             />
           </div>
         </div>
@@ -186,7 +218,8 @@ const OngoingContracts = ({
         {currentItems.map((contract, index) => (
           <Card
             key={contract.id || index}
-            className='bg-white border border-gray-200 hover:shadow-md transition-shadow w-full'
+            className='group bg-white border border-gray-200 hover:border-[#3A98BB]/40 hover:shadow-md transition-all w-full !overflow-visible'
+            classNames={{ base: 'overflow-visible' }}
             shadow='none'
           >
             <div
@@ -197,7 +230,7 @@ const OngoingContracts = ({
                 <div className='md:grid md:grid-cols-[1.5fr_1fr_auto] md:gap-x-8 md:items-center'>
                   <div className='flex flex-col items-start'>
                     <h3
-                      className='font-proximanova text-md w-full truncate mb-1'
+                      className='font-proximanova text-md w-full truncate mb-1 group-hover:text-[#3A98BB] transition-colors'
                     >
                       {contract.title}
                     </h3>
@@ -222,23 +255,22 @@ const OngoingContracts = ({
 
                   <div className='mt-2 md:mt-0 flex flex-col items-start text-sm font-proximanova text-gray-600'>
                     <div className='mb-1 flex items-center gap-2'>
-                      <span className='text-xs font-satoshi flex-shrink-0 w-16 text-gray-500'>Start Date:</span>
-                      <span className='whitespace-nowrap font-semibold'>{contract.startDate}</span>
+                      <span className='text-xs font-satoshi flex-shrink-0 w-16 text-gray-500 group-hover:text-[#3A98BB]/70 transition-colors'>Start Date:</span>
+                      <span className='whitespace-nowrap font-semibold group-hover:text-[#3A98BB] transition-colors'>{contract.startDate}</span>
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='text-xs font-satoshi flex-shrink-0 w-16 text-gray-500'>End Date:</span>
-                      <span className='whitespace-nowrap font-semibold'>{contract.endDate}</span>
+                      <span className='text-xs font-satoshi flex-shrink-0 w-16 text-gray-500 group-hover:text-[#3A98BB]/70 transition-colors'>End Date:</span>
+                      <span className='whitespace-nowrap font-semibold group-hover:text-[#3A98BB] transition-colors'>{contract.endDate}</span>
                     </div>
                   </div>
 
                   <div className='flex flex-col-reverse md:flex-row justify-end items-center gap-4 mt-4 md:mt-0'>
-                    <div className='hidden md:flex items-center gap-3'>
+                    <div className='hidden md:flex items-center gap-3' onClick={(e) => e.stopPropagation()}>
                       <Button
-                        className='border px-6 py-4 shadow-md bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full shrink-0'
+                        className='border px-6 py-4 shadow-md bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-medium rounded-full shrink-0'
                         size='sm'
                         radius='full'
-                        onClick={(e) => {
-                          e.stopPropagation();
+                        onPress={() => {
                           handleOpenApprovalModal(contract);
                         }}
                       >
@@ -249,10 +281,8 @@ const OngoingContracts = ({
                         size='sm'
                         radius='full'
                         variant='bordered'
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setCurrentContract(contract);
-                          onMessageOpen();
+                        onPress={() => {
+                          onMessageArtist(contract);
                         }}
                       >
                         Message Artist
@@ -261,18 +291,50 @@ const OngoingContracts = ({
 
                     <div className='absolute top-5 right-2 md:static flex items-center gap-1'>
                       <span className='text-sm font-proximanova hidden md:flex text-gray-500'>More</span>
-                      <Button
-                        isIconOnly
-                        variant='light'
-                        size='sm'
-                        className='bg-transparent border-0 rounded-lg'
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onMoreOptions(contract);
-                        }}
+                      {/* Desktop more options button */}
+                      <span onClick={(e) => e.stopPropagation()}>
+                        <Button
+                          isIconOnly
+                          variant='light'
+                          size='sm'
+                          className='hidden md:flex bg-transparent border-0 rounded-lg'
+                          onPress={() => {
+                            onMoreOptions(contract);
+                          }}
+                        >
+                          <EllipsisHorizontalIcon className='w-6 h-6 text-gray-400' />
+                        </Button>
+                      </span>
+
+                      {/* Mobile 3-dots dropdown */}
+                      <div
+                        className='md:hidden relative'
+                        ref={openMenuContract?.id === (contract.id || index) ? menuRef : null}
+                        onPointerDown={(e) => e.stopPropagation()}
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        <EllipsisHorizontalIcon className='w-6 h-6 text-gray-400' />
-                      </Button>
+                        <Button
+                          isIconOnly
+                          variant='light'
+                          size='sm'
+                          className='bg-transparent border-0 rounded-lg'
+                          ref={(el) => { menuButtonRefs.current[contract.id || index] = el; }}
+                          onPress={() => {
+                            const btnId = contract.id || index;
+                            const btnEl = menuButtonRefs.current[btnId];
+                            if (btnEl) {
+                              const rect = btnEl.getBoundingClientRect();
+                              setMenuPosition({
+                                top: rect.bottom + 4,
+                                right: window.innerWidth - rect.right,
+                              });
+                            }
+                            setOpenMenuContract(openMenuContract?.id === (contract.id || index) ? null : contract);
+                          }}
+                        >
+                          <EllipsisHorizontalIcon className='w-6 h-6 text-gray-400' />
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -281,6 +343,49 @@ const OngoingContracts = ({
           </Card>
         ))}
       </div>
+
+      {/* Portal dropdown — renders at document.body, immune to overflow:hidden */}
+      {openMenuContract !== null && typeof document !== 'undefined' && createPortal(
+        <div
+          ref={menuRef}
+          style={{
+            position: 'fixed',
+            top: menuPosition.top,
+            right: menuPosition.right,
+            zIndex: 9999,
+          }}
+          className='w-44 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden flex flex-col'
+          onPointerDown={(e) => e.stopPropagation()}
+        >
+          <button
+            className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium border-b border-gray-100'
+            onClick={(e) => {
+              e.stopPropagation();
+              const contract = openMenuContract;
+              setOpenMenuContract(null);
+              if (contract) {
+                handleOpenApprovalModal(contract);
+              }
+            }}
+          >
+            Approve Work
+          </button>
+          <button
+            className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium'
+            onClick={(e) => {
+              e.stopPropagation();
+              const contract = openMenuContract;
+              setOpenMenuContract(null);
+              if (contract) {
+                onMessageArtist(contract);
+              }
+            }}
+          >
+            Message Artist
+          </button>
+        </div>,
+        document.body
+      )}
 
       {/* Empty State */}
       {
@@ -330,7 +435,7 @@ const OngoingContracts = ({
                   Cancel
                 </Button>
                 <Button
-                  className='w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm'
+                  className='w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-medium rounded-full border-0 shadow-sm'
                   radius='full'
                   size='md'
                   variant='bordered'
@@ -391,7 +496,7 @@ const OngoingContracts = ({
               Your project has been successfully completed.
             </p>
             <Button
-              className='w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-proximanova text-md border-0 shadow-sm'
+              className='w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-proximanova text-md border-0 shadow-sm'
               size='lg'
               radius='full'
               variant='bordered'
@@ -443,12 +548,7 @@ const OngoingContracts = ({
           </div>
         )
       }
-      {/* Message Modal */}
-      <MessageModal
-        isOpen={isMessageOpen}
-        onOpenChange={onMessageOpenOpenChange}
-        artistName={currentContract?.artist?.name || 'Artist'}
-      />
+
       <SubmitModal
         isOpen={isRateOpen}
         onOpenChange={onRateOpenChange}

@@ -17,7 +17,7 @@ import {
     ModalContent,
     ModalBody,
 } from '@heroui/react';
-import { CreditCard, Info, Shield, CheckCircle } from 'lucide-react';
+import { CreditCard, Info, Shield, CheckCircle, ChevronLeft } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import FashionDesignerHeader from '../../../../_components/studio-page-components/FashionDesignerHeader';
 import Footer from '../../../../../about-page/components/Footer';
@@ -54,7 +54,23 @@ export default function RetainCheckout() {
         <div className='mx-auto bg-[#FAFAFA] min-h-screen'>
             <FashionDesignerHeader />
             <div className='max-w-6xl mx-auto px-4 lg:px-6' style={{ paddingTop: '40px', paddingBottom: '80px' }}>
-                <h1 className='text-[32px] font-black mb-10 text-black font-satoshi'>Checkout</h1>
+                <div className='flex items-center gap-1 md:gap-4 mb-10'>
+                    <Button
+                        isIconOnly
+                        variant='light'
+                        className='md:hidden -ml-3 text-black'
+                        onPress={() => {
+                            if (returnUrl) {
+                                router.push(decodeURIComponent(returnUrl));
+                            } else {
+                                router.push('/fashion-designers/contracts');
+                            }
+                        }}
+                    >
+                        <ChevronLeft size={24} />
+                    </Button>
+                    <h1 className='text-[32px] font-black text-black font-satoshi'>Checkout</h1>
+                </div>
 
                 <div className='grid grid-cols-1 lg:grid-cols-[1fr_0.45fr] gap-8 mt-6'>
                     {/* Left Section - Forms */}
@@ -214,7 +230,7 @@ export default function RetainCheckout() {
                                 </div>
 
                                 <Button
-                                    className='w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-bold rounded-full py-7 text-md shadow-sm border-none'
+                                    className='w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold rounded-full py-7 text-md shadow-sm border-none'
                                     onPress={handlePayment}
                                 >
                                     Make Payment
@@ -253,7 +269,7 @@ export default function RetainCheckout() {
                             </div>
 
                             <Button
-                                className='w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-bold rounded-full py-6 text-sm shadow-sm border-none'
+                                className='w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold rounded-full py-6 text-sm shadow-sm border-none'
                                 onPress={handleCloseSuccess}
                             >
                                 Done

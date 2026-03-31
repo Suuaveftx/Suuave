@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import CheckoutPage from "./component/checkout";
 
-function page() {
+function Page() {
   return (
     <Suspense fallback={<p>Loading...</p>}>
       <CheckoutPage />
@@ -9,4 +9,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

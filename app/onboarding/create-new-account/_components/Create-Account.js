@@ -107,7 +107,7 @@ const CreateAccount = () => {
       <form onSubmit={handleSubmit(onSubmit)} className='w-full mt-3 flex flex-col gap-5'>
         <div className='w-full flex items-center justify-between gap-10'>
           <label className='w-full  text-[#222222] text-base font-medium'>
-            First Name
+            First Name <span className='text-red-500 ml-1'>*</span>
             <input
               placeholder='First name'
               {...register('firstName', { required: 'Please enter your first name.' })}
@@ -120,7 +120,7 @@ const CreateAccount = () => {
             )}
           </label>
           <label className='w-full text-[#222222] text-base font-medium'>
-            Last Name
+            Last Name <span className='text-red-500 ml-1'>*</span>
             <input
               placeholder='Last name'
               {...register('lastName', { required: 'Please enter your last name.' })}
@@ -134,7 +134,7 @@ const CreateAccount = () => {
           </label>
         </div>
         <label className='w-full text-[#222222] text-base font-medium'>
-          Username
+          Username <span className='text-red-500 ml-1'>*</span>
           <input
             placeholder='ocean'
             {...register('userName', {

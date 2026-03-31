@@ -7,9 +7,9 @@ const Budgets = () => {
   return (
     <>
       {/* Mobile View */}
-      <div className='lg:hidden bg-[#FAFAFA] rounded-lg p-4'>
-        <h4 className='font-bold text-[18px] text-[#222222] mb-4'>Payment And Timeframe</h4>
-        <div className='flex flex-col gap-3'>
+      <div className='lg:hidden bg-[#FAFAFA] rounded-lg px-4 pt-4 pb-0'>
+        <h4 className='font-bold text-[18px] text-[#222222] mb-2'>Payment And Timeframe</h4>
+        <div className='flex flex-col gap-2'>
           <div className='flex items-center gap-2'>
             <HiOutlineCash className='w-5 h-5 text-[#767676]' />
             <span className='text-[#767676]'>Budget -</span>
@@ -17,7 +17,7 @@ const Budgets = () => {
           </div>
           <div className='flex items-center gap-2'>
             <FaRegClock className='w-5 h-5 text-[#767676]' />
-            <span className='text-[#767676]'>Duration -</span>
+            <span className='text-[#767676]'>Timeframe -</span>
             <span className='font-medium text-[#222222]'>2 Days</span>
           </div>
         </div>

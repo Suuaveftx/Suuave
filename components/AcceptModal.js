@@ -6,7 +6,6 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
   useDisclosure,
   Textarea,
 } from "@heroui/react";
@@ -21,14 +20,21 @@ const AcceptModal = ({ trigger }) => {
   return (
     <>
       {trigger ? (
-        React.cloneElement(trigger, { onPress: onOpen, onClick: onOpen })
+        React.cloneElement(trigger, {
+          onClick: (e) => {
+            if (trigger.props.onClick) trigger.props.onClick(e);
+            if (trigger.props.onPress) trigger.props.onPress(e);
+            onOpen();
+          }
+        })
       ) : (
-        <Button
-          className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] rounded-full"
-          onPress={onOpen}
+        <button
+          className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] rounded-full px-6 py-2 shadow-sm font-medium text-[#035A7A]"
+          onClick={onOpen}
+          type="button"
         >
           Accept Offer
-        </Button>
+        </button>
       )}
       <Modal
         isOpen={isOpen}
@@ -68,15 +74,16 @@ const AcceptModal = ({ trigger }) => {
                 </div>
               </ModalBody>
               <ModalFooter className="p-0 justify-end">
-                <Button
-                  onPress={() => {
+                <button
+                  onClick={() => {
                     onClose();
-                    router.push('/artist-page/my-contracts-old');
+                    router.push('/artist-page/my-contracts');
                   }}
-                  className="bg-[#CCE7F2] text-[#222222] rounded-full px-12 py-6 text-base font-medium hover:bg-[#B8DCE8] transition-colors"
+                  className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] rounded-full px-12 py-3 text-base font-medium hover:opacity-90 transition-opacity"
+                  type="button"
                 >
                   Accept
-                </Button>
+                </button>
               </ModalFooter>
             </>
           )}

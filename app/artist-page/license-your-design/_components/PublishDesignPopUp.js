@@ -52,7 +52,7 @@ const PublishDesignPopUp = ({ onOpenChange, isOpen }) => {
                   Post Another
                 </Button>
                 <Button
-                  className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] rounded-3xl text-[#035A7A] font-bold text-sm"
+                  className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] rounded-3xl text-[#035A7A] font-bold text-sm"
                   variant="light"
                   onPress={() => {
                     onClose();

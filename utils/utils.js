@@ -55,33 +55,33 @@ export function formatDateWithOrdinal(dateInput) {
 
 export const homePageCardData = [
   {
-    title: 'Secure Transaction',
-    text: 'We hold payments in escrow via our trusted payment gateway, releasing them only when all parties confirm satisfaction.',
+    title: 'Global Escrow Protection',
+    text: 'Our institutional-grade escrow system secures funds throughout the project lifecycle, ensuring capital is only settled upon verified delivery and mutual satisfaction.',
     image: '/dev-images/Secure.png', // Replace with actual image URL or path
   },
   {
-    title: 'Copyright Protection',
-    text: 'We prioritize fairness for all users and prevent unauthorized use of designs. ',
+    title: 'Digital Rights Management',
+    text: 'Every collaboration is backed by legally binding IP frameworks and smart-contract verification.',
     image: '/dev-images/copy.png',
   },
   {
-    title: 'User Verification',
-    text: 'We create a safe environment for users, fostering trust and encouraging genuine collaboration.',
+    title: 'Vetted Talent Marketplace',
+    text: 'Every professional on Suuave undergoes a rigorous multi-step verification process, ensuring that global brands connect to talents.',
     image: '/dev-images/user.png',
   },
   {
-    title: 'Streamlined Collaboration',
-    text: 'We facilitate efficient and productive partnerships with our messaging and product management features to improve the overall user experience.',
+    title: 'End-to-End Creative Management',
+    text: 'Our integrated project management and secure messaging suite replace fragmented workflows, reducing production lead times by centralizing the creative pipeline.',
     image: '/dev-images/streamed.png',
   },
   {
     title: 'Open Dispute Resolution',
-    text: 'We reduce the risk of disputes to maintain a positive and productive environment for everyone. ',
+    text: 'Our transparent resolution protocols and expert mediation ensure that project roadblocks are resolved swiftly, protecting the interests and investments of both parties.',
     image: '/dev-images/justice.png',
   },
   {
-    title: 'Community Development',
-    text: 'We empower our users and contribute to the development of the African fashion industry.',
+    title: 'COMMUNITY DEVELOPMENT',
+    text: 'By standardizing professional interactions, we enable local artistry to integrate seamlessly into the $1.5 trillion global apparel market.',
     image: '/dev-images/web.png',
   },
 ];
@@ -89,7 +89,7 @@ export const homePageCardData = [
 export const fashionSection = [
   {
     title: 'Register',
-    text: 'Join over 5000 other artists and sign up seamlessly.',
+    text: 'Join 5,000+ elite creators and build your professional global profile.',
     image: '/dev-images/register.png',
   },
   {
@@ -98,13 +98,13 @@ export const fashionSection = [
     image: '/dev-images/Apply.png',
   },
   {
-    title: 'Monetize Your Vision',
-    text: 'Upload your designs and earn income by licensing them to top fashion designers and brands.',
+    title: 'Monetise Your Vision',
+    text: "Turn your portfolio into a revenue engine. License your designs to the world's leading fashion houses.",
     image: '/dev-images/publish.png',
   },
   {
-    title: 'Get Paid',
-    text: 'Your payment is automatically processed after project completion and licensing.',
+    title: 'Secure Payouts',
+    text: 'Receive your earnings in your wallet and transfer to your local bank account. No need of chasing invoices or cross-border payment delays.',
     image: '/dev-images/Cash.png',
   },
 ];
@@ -122,7 +122,7 @@ export const fashionDsignRightSection = [
   },
   {
     title: 'Explore and License',
-    text: 'Discover stunning designs and elevate your brand with authentic African creativity.',
+    text: 'Elevate your brand with authenticated African creativity, protected by global-standard IP contracts.',
     btnText: 'Explore',
   },
 ];

@@ -23,7 +23,9 @@ const FashionCard = ({ isVisitor = false }) => {
 
   useEffect(() => {
     // Access localStorage in useEffect to avoid hydration issues
-    const role = isVisitor ? 'Fashion Brand' : localStorage.getItem('activeCategory');
+    let role = isVisitor ? 'brand' : localStorage.getItem('activeCategory');
+    if (role === 'Fashion Artist') role = 'artist';
+    if (role === 'Fashion Brand') role = 'brand';
     setUserRole(role);
   }, [isVisitor]);
 
@@ -198,7 +200,7 @@ const FashionCard = ({ isVisitor = false }) => {
                   </div>
 
                   {/* Three Dots Menu - Outside Link to avoid redirection on click */}
-                  {userRole === 'Fashion Artist' && (
+                  {userRole === 'artist' && (
                     <div className="absolute top-3 right-3 z-20">
                       <ThreeDotsDropdown
                         onEdit={() => handleEdit(item.id)}
@@ -247,7 +249,7 @@ const FashionCard = ({ isVisitor = false }) => {
                   </div>
 
                   {/* Delete Icon */}
-                  {userRole === 'Fashion Artist' && (
+                  {userRole === 'artist' && (
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -263,14 +265,14 @@ const FashionCard = ({ isVisitor = false }) => {
             </div>
 
             {/* Add More button - hidden on mobile */}
-            {userRole === 'Fashion Artist' && (
+            {userRole === 'artist' && (
               <div className='mt-6 flex justify-center'>
                 <AwardUploadModal onUpload={handleUploadAward} />
               </div>
             )}
 
             {/* VIEW MORE / VIEW LESS BUTTONS - Only for visitors */}
-            {userRole !== 'Fashion Artist' && (
+            {userRole !== 'artist' && (
               <div className="w-full flex justify-center mt-8 gap-4">
                 {visibleItems.awards < awardImages.length && (
                   <button
@@ -311,7 +313,7 @@ const FashionCard = ({ isVisitor = false }) => {
                     </div>
 
                     {/* Delete Icon */}
-                    {userRole === 'Fashion Artist' && (
+                    {userRole === 'artist' && (
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -333,14 +335,14 @@ const FashionCard = ({ isVisitor = false }) => {
             </div>
 
             {/* Upload modal trigger below */}
-            {userRole === 'Fashion Artist' && (
+            {userRole === 'artist' && (
               <div className='mt-6 flex justify-center'>
                 <UploadModal onUpload={handleUploadWork} />
               </div>
             )}
 
             {/* VIEW MORE / VIEW LESS BUTTONS - Only for visitors */}
-            {userRole !== 'Fashion Artist' && (
+            {userRole !== 'artist' && (
               <div className="w-full flex justify-center mt-8 gap-4">
                 {visibleItems.work < workSamples.length && (
                   <button

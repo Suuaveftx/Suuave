@@ -23,6 +23,8 @@ const BtnProposals = ({
   showSaveIcon = true,
   saveButtonStyle = {},
   containerClassName = "",
+  buttonWidth = "lg:w-48",
+  buttonWrapperClassName = "w-full lg:w-auto",
   handleSubmitProposal,
   handleViewProposal,
   handleWithdrawProposal,
@@ -36,17 +38,17 @@ const BtnProposals = ({
       <div
         className={`flex lg:flex-col lg:gap-6  justify-center items-center lg:bg-[#FAFAFA] bg-[#FFFFFF] px-4 py-4 lg:px-6 lg:py-8 lg:w-screen lg:max-w-[80%] w-screen max-w-[100%] border border-[#EAEAEA] lg:rounded-2xl ${containerClassName}`}
       >
-        <div>
+        <div className={buttonWrapperClassName}>
           <CustomButton
             text={sendText}
-            className="w-48 text-[#035A7A]"
+            className={`w-full ${buttonWidth} text-[#035A7A]`}
             onPress={proposalSubmitted ? handleViewProposal : handleSubmitProposal}
           />
         </div>
 
-        <div>
+        <div className={buttonWrapperClassName}>
           <CustomButton
-            className="w-48 text-[#767676] flex items-center justify-center gap-2"
+            className={`w-full ${buttonWidth} text-[#767676] flex items-center justify-center gap-2`}
             icon={null}
             text={saveText}
             onPress={proposalSubmitted ? handleWithdrawProposal : handleSave}

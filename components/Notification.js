@@ -3,8 +3,8 @@ import {
     Popover,
     PopoverTrigger,
     PopoverContent,
-    Button,
     Badge,
+    Button,
 } from "@heroui/react";
 import { FaBell } from "react-icons/fa";
 import NotificationMessage from "./NotificationMessage";
@@ -62,17 +62,18 @@ const Notification = () => {
                     <p className="text-[10px] text-white">{notificationMessage.length}</p>
                 }
                 showOutline={false}
-                className="h-4 w-4 bg-[#3A98BB]"
+                className="h-4 w-4 bg-[#035A7A] flex"
                 shape="circle"
             >
                 <PopoverTrigger>
                     <Button
                         isIconOnly
-                        variant="light"
+                        variant="bordered"
                         radius="full"
-                        disableRipple
+                        className="text-[#1A1A1A] w-8 h-8 min-w-8 sm:w-10 sm:h-10 sm:min-w-10"
+                        size="sm"
                     >
-                        <Image src='/dev-images/Bell.png' alt='Bell' width={24} height={24} className="w-6 h-6 sm:w-7 sm:h-7" />
+                        <FaBell className="w-4 h-4" />
                     </Button>
                 </PopoverTrigger>
             </Badge>

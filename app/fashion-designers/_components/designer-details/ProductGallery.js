@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@heroui/react';
+import { FaShareAlt, FaWhatsapp, FaTwitter, FaFacebook, FaLinkedin, FaCopy } from 'react-icons/fa';
 
 /**
  * ProductGallery Component
@@ -15,10 +17,18 @@ import { motion, AnimatePresence } from "framer-motion";
  * @param {string} props.title - Title of the product used for alt text in images.
  */
 
-const ProductGallery = ({ images, title, onOpenDetails }) => {
+const ProductGallery = ({ images, title, onOpenDetails, isBookmarked, onToggleSave }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [direction, setDirection] = useState(0);
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [showHint, setShowHint] = useState(true);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowHint(false);
+    }, 10000); // 10 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handlePrevious = (e) => {
     e?.stopPropagation();
@@ -34,19 +44,40 @@ const ProductGallery = ({ images, title, onOpenDetails }) => {
 
   const handleBookmark = (e) => {
     e.stopPropagation();
-    setIsBookmarked(!isBookmarked);
+    onToggleSave();
   };
 
-  const handleShare = (e) => {
-    e.stopPropagation();
-    if (navigator.share) {
-      navigator.share({
-        title: title,
-        url: window.location.href,
-      }).catch(console.error);
-    } else {
-      alert("Link copied to clipboard!");
-      navigator.clipboard.writeText(window.location.href);
+  const [copied, setCopied] = useState(false);
+
+  const handleSocialShare = (platform) => {
+    const url = window.location.href;
+    const text = "Check out this fashion design!";
+
+    let shareUrl = "";
+    switch (platform) {
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
+        break;
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+        break;
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        break;
+      case 'linkedin':
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+        break;
+      case 'copy':
+        navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        return;
+      default:
+        return;
+    }
+
+    if (shareUrl) {
+      window.open(shareUrl, '_blank', 'noopener,noreferrer');
     }
   };
 
@@ -102,7 +133,6 @@ const ProductGallery = ({ images, title, onOpenDetails }) => {
       {/* Main Display Area */}
       <div
         className="flex-1 relative bg-neutral-100 rounded-[32px] overflow-hidden aspect-[3/4] lg:aspect-auto cursor-pointer group"
-        onClick={handleNext}
       >
         {/* Navigation Arrows */}
         <button
@@ -120,16 +150,24 @@ const ProductGallery = ({ images, title, onOpenDetails }) => {
         </button>
 
         {/* Swipe up for details - Only on mobile/tablet */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpenDetails(selectedIndex);
-          }}
-          className="lg:hidden absolute bottom-12 left-1/2 -translate-x-1/2 z-20 bg-black/40 backdrop-blur-md px-5 py-2.5 rounded-xl flex items-center gap-2 text-white text-sm shadow-lg border border-white/20 active:scale-95 transition-transform"
-        >
-          <span className="font-medium">Swipe up for details</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6" /></svg>
-        </button>
+        <AnimatePresence>
+          {showHint && (
+            <motion.button
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              onTap={(e) => {
+                e.stopPropagation();
+                onOpenDetails(selectedIndex);
+              }}
+              whileTap={{ scale: 0.95 }}
+              className="lg:hidden absolute bottom-12 left-0 right-0 mx-auto w-fit z-[30] bg-black/40 backdrop-blur-md px-5 py-2.5 rounded-xl flex items-center gap-2 text-white text-sm shadow-lg border border-white/20 transition-all duration-200 pointer-events-auto"
+            >
+              <span className="font-medium">Swipe up for details</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6" /></svg>
+            </motion.button>
+          )}
+        </AnimatePresence>
 
         {/* Dot Pagination - Mobile Only */}
         <div className="lg:hidden absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
@@ -158,12 +196,44 @@ const ProductGallery = ({ images, title, onOpenDetails }) => {
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill={isBookmarked ? "#3A98BB" : "none"} stroke={isBookmarked ? "none" : "white"} strokeWidth="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" /></svg>
           </button>
-          <button
-            onClick={handleShare}
-            className="w-11 h-11 bg-black/60 backdrop-blur-md rounded-xl flex items-center justify-center p-0 border border-white/10"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg>
-          </button>
+          {/* Share Dropdown - Mobile */}
+          <div className="relative">
+            <Dropdown placement="bottom-end">
+              <DropdownTrigger>
+                <button
+                  onClick={(e) => e.stopPropagation()}
+                  className="w-11 h-11 bg-black/60 backdrop-blur-md rounded-xl flex items-center justify-center p-0 border border-white/10"
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg>
+                </button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Share options"
+                onAction={(key) => handleSocialShare(key)}
+              >
+                <DropdownItem key="whatsapp" startContent={<FaWhatsapp className="text-green-500" />}>
+                  WhatsApp
+                </DropdownItem>
+                <DropdownItem key="twitter" startContent={<FaTwitter className="text-blue-400" />}>
+                  X (Twitter)
+                </DropdownItem>
+                <DropdownItem key="facebook" startContent={<FaFacebook className="text-blue-700" />}>
+                  Facebook
+                </DropdownItem>
+                <DropdownItem key="linkedin" startContent={<FaLinkedin className="text-blue-800" />}>
+                  LinkedIn
+                </DropdownItem>
+                <DropdownItem key="copy" startContent={<FaCopy className="text-gray-500" />}>
+                  Copy Link
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            {copied && (
+              <span className="absolute -top-10 right-0 bg-black text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap z-30">
+                Copied!
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Main Image */}
@@ -179,15 +249,23 @@ const ProductGallery = ({ images, title, onOpenDetails }) => {
               x: { type: "spring", stiffness: 300, damping: 30 },
               opacity: { duration: 0.2 },
             }}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
+            drag
+            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
             dragElastic={1}
             onDragEnd={(e, { offset, velocity }) => {
-              const swipe = swipePower(offset.x, velocity.x);
-              if (swipe < -swipeConfidenceThreshold) {
-                handleNext();
-              } else if (swipe > swipeConfidenceThreshold) {
-                handlePrevious();
+              const swipeX = swipePower(offset.x, velocity.x);
+              const swipeY = swipePower(offset.y, velocity.y);
+
+              if (Math.abs(swipeX) > Math.abs(swipeY)) {
+                if (swipeX < -swipeConfidenceThreshold) {
+                  handleNext();
+                } else if (swipeX > swipeConfidenceThreshold) {
+                  handlePrevious();
+                }
+              } else {
+                if (swipeY < -swipeConfidenceThreshold) {
+                  onOpenDetails(selectedIndex);
+                }
               }
             }}
             className="absolute inset-0 z-0 overflow-hidden"

@@ -72,7 +72,7 @@ export const EditTitle = ({ setTitleValue, titleValue }) => {
                     </button>
                     <button
                       onClick={() => handleSave(onClose)}
-                      className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A] py-2 px-6 rounded-3xl"
+                      className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] py-2 px-6 rounded-3xl"
                     >
                       Save
                     </button>
@@ -106,7 +106,7 @@ export const EditAboutMe = ({ setAboutValue, aboutValue }) => {
   return (
     <>
       <button
-        className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] flex items-center gap-1 rounded-3xl drop-shadow-lg p-2 md:py-2 md:px-4"
+        className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] flex items-center gap-1 rounded-3xl drop-shadow-lg p-2 md:py-2 md:px-4"
         onClick={handleOpen}
       >
         <Image
@@ -151,7 +151,7 @@ export const EditAboutMe = ({ setAboutValue, aboutValue }) => {
                     </button>
                     <button
                       onClick={() => handleSave(onClose)}
-                      className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] text-[#035A7A] py-2 px-6 rounded-3xl"
+                      className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] py-2 px-6 rounded-3xl"
                     >
                       Save
                     </button>
@@ -180,7 +180,7 @@ export const EditAward = ({ handleAwardChange }) => {
       />
       <label
         htmlFor="upload-award"
-        className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] flex items-center gap-1 p-2 z-20 cursor-pointer rounded-full"
+        className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] flex items-center gap-1 p-2 z-20 cursor-pointer rounded-full"
       >
         <Image
           src="\profile\pencil.svg"
@@ -219,7 +219,7 @@ export const EditProfile = ({ handleFileChange, className }) => {
       />
       <label
         htmlFor="upload-photo"
-        className={`bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] p-2 z-20 cursor-pointer rounded-full absolute ${className}`}
+        className={`bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] p-2 z-20 cursor-pointer rounded-full absolute ${className}`}
       >
         <Image
           src="\profile\pencil.svg"

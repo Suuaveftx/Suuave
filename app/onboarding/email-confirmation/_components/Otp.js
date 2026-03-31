@@ -126,7 +126,7 @@ const Otp = ({ email }) => {
               className='object-contain object-left -ml-28 -mt-20'
             />
             <p className='font-bold text-xl text-[#F5F5F5]'>
-              {category === 'Fashion Brand'
+              {category === 'brand'
                 ? 'Collaborate with a pool of talented African fashion artists.'
                 : 'Monetize your creativity through global brand collaborations.'}
             </p>

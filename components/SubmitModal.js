@@ -1,8 +1,8 @@
+"use client";
 import {
   Modal,
   ModalContent,
   ModalBody,
-  Button,
   useDisclosure,
   Input,
   Textarea,
@@ -18,9 +18,10 @@ const SubmitModal = ({
   trigger,
   name = "Ciana",
   onSuccess,
+  onClose: externalOnClose,
   isOpen: externalIsOpen,
   onOpenChange: externalOnOpenChange,
-  redirectPath = "/artist-page/my-contracts-old"
+  redirectPath = "/artist-page/my-contracts"
 }) => {
   const internalDisclosure = useDisclosure();
 
@@ -43,14 +44,19 @@ const SubmitModal = ({
 
   const handleOk = () => {
     setShowSuccess(false);
+
+    // Close modal using all available methods
+    if (externalOnClose) externalOnClose();
     onOpenChange(false);
+
     if (onSuccess) {
       onSuccess();
     }
-    // Navigate after a short delay to ensure modals are closed in state
-    setTimeout(() => {
+
+    // Force redirect/refresh
+    if (typeof window !== "undefined") {
       router.push(redirectPath);
-    }, 100);
+    }
   };
 
   const isControlled = externalIsOpen !== undefined;
@@ -69,16 +75,17 @@ const SubmitModal = ({
           }
         })
       ) : !isControlled && (
-        <Button
-          className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] rounded-full"
-          onPress={onOpen}
+        <button
+          className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] rounded-full px-6 py-2 shadow-sm font-medium text-[#035A7A]"
+          onClick={onOpen}
+          type="button"
         >
           Submit
-        </Button>
+        </button>
       )}
       <Modal
         isOpen={isOpen}
-        placement="top-center"
+        placement="center"
         onOpenChange={(open) => {
           onOpenChange(open);
           if (!open) setShowSuccess(false);

@@ -24,7 +24,7 @@ export default function PendingDetailsPage({ params }) {
     contractType: 'Hire',
     role: 'Fashion Artist',
     budget: '₦200,000',
-    timeframe: '2 Days',
+    timeframe: '5 Days',
     status: 'Pending',
     attachedDocuments: [
       { name: 'DocTGFile', type: 'document' },
@@ -33,7 +33,7 @@ export default function PendingDetailsPage({ params }) {
     artist: {
       name: 'Tolu',
       username: 'tolu',
-      role: 'Fashion Brand',
+      role: 'Fashion Artist',
       location: 'Lagos, Nigeria',
       rating: 0.0,
       reviews: 0,
@@ -60,32 +60,15 @@ export default function PendingDetailsPage({ params }) {
 
   return (
     <>
-      <ContractHeader title='Contract Information' maxWidth='max-w-6xl' />
+      <ContractHeader title='' maxWidth='max-w-6xl' tab='pending' />
       <div className='max-w-6xl mx-auto px-2 md:px-0 pb-6 '>
-        {/* Alert */}
-        <div className='my-6'>
-          <Alert
-            hideIcon
-            color='primary'
-            variant='flat'
-            startContent={
-              <ExclamationTriangleIcon className='h-5 w-5 text-[#3A98BB] flex-shrink-0 mt-1' />
-            }
-            className='bg-transparent border-none text-[#3A98BB] my-2 px-0 items-start'
-          >
-            <div className='text-sm'>
-              <p className='font-semibold'>These contracts are yet to be accepted by Artists.</p>
-              <p>Artists have 5 days to accept offers, else, the contract will be canceled automatically.</p>
-            </div>
-          </Alert>
-        </div>
         <div className='grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-1'>
           {/* Left Column - Contract Details & Documents */}
           <div className='lg:col-span-2 space-y-2'>
             {/* Contract Details Card */}
             <Card className='bg-white border border-gray-200' shadow='none'>
               <CardBody className='p-6 pb-12'>
-                <div className='flex items-center justify-between mb-6 border-b pb-2'>
+                <div className='hidden md:flex items-center justify-between mb-6 border-b pb-2'>
                   <h2 className='md:text-2xl text-lg font-semibold text-gray-900'>
                     Contract Details
                   </h2>
@@ -110,7 +93,7 @@ export default function PendingDetailsPage({ params }) {
                       { label: 'Role', value: contractData.role },
                       { label: 'Budget', value: contractData.budget },
                       {
-                        label: 'Contract Timeframe',
+                        label: 'Timeframe',
                         value: contractData.timeframe,
                       },
                     ].map((item, index) => (
@@ -122,17 +105,22 @@ export default function PendingDetailsPage({ params }) {
                           className={`${item.label === 'Status' ? 'lg:hidden' : ''} ${item.label === 'Contract Number' ? 'lg:-mt-4' : ''
                             } md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
                         >
-                          {item.label} -
+                          {item.label} :
                         </span>
-                        <span
-                          className={`${item.label === 'Status'
-                            ? `${getStatusColor(contractData.status)} lg:hidden`
-                            : ''
-                            } ${item.label === 'Contract Number' ? 'lg:-mt-4' : ''
-                            } md:text-md text-sm font-proximanova`}
-                        >
-                          {item.value}
-                        </span>
+                        {item.label === 'Status' ? (
+                          <div className="flex flex-wrap items-center gap-2 lg:hidden">
+                            <span className="bg-[#F2F9FB] text-[#035A7A] px-3 py-1 rounded-full text-xs font-semibold capitalize">
+                              {item.value}
+                            </span>
+                          </div>
+                        ) : (
+                          <span
+                            className={`${item.label === 'Contract Number' ? 'lg:-mt-4' : ''
+                              } md:text-md text-sm font-proximanova`}
+                          >
+                            {item.value}
+                          </span>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -152,7 +140,7 @@ export default function PendingDetailsPage({ params }) {
             </Card>
 
             {/* Attached Documents Card */}
-            <Card className='bg-white ' shadow='none'>
+            <Card className='bg-white' shadow='none'>
               <CardBody className='p-6'>
                 <h2 className='md:text-2xl text-lg font-semibold md:mb-2 -mt-2'>
                   Attached Documents
@@ -177,21 +165,21 @@ export default function PendingDetailsPage({ params }) {
           </div>
 
           {/* Right Column - Artist Info & Actions */}
-          <div className='flex space-y-2 gap-2 flex-col-reverse lg:flex-col'>
+          <div className='flex gap-2 flex-col lg:flex-col'>
             {/* Action Buttons */}
-            <Card className='bg-white border border-gray-200 drop-shadow-md'>
-              <CardBody className='lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col'>
+            <Card className='bg-white border border-gray-200'>
+              <CardBody className='py-4 lg:py-4 px-6 lg:px-8 flex flex-row items-center justify-center gap-4 lg:flex-col lg:gap-3'>
                 <Button
-                  className='w-full py-5.5 bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-semibold text-sm rounded-3xl border-0 shadow-sm'
-                  size='lg'
+                  className='flex-1 w-full py-6 lg:py-2 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold text-sm rounded-3xl lg:rounded-2xl border-0'
+                  size='md'
                   onPress={onMessageOpen}
                 >
                   Message Artist
                 </Button>
                 <Button
                   variant='flat'
-                  className='w-full bg-[#EAEAEA] py-5  text-[#035A7A] font-semibold rounded-3xl text-sm  shadow-sm'
-                  size='lg'
+                  className='flex-1 w-full bg-[#EAEAEA] py-6 lg:py-2 text-[#035A7A] font-semibold rounded-3xl lg:rounded-2xl text-sm'
+                  size='md'
                   onPress={onCancelOpen}
                 >
                   Cancel
@@ -200,7 +188,7 @@ export default function PendingDetailsPage({ params }) {
             </Card>
 
             {/* Artist Information Card */}
-            <Card className='bg-white border font-satoshi border-gray-200 ' shadow='none'>
+            <Card className='bg-white border font-satoshi border-gray-200 mt-[-4px]' shadow='none'>
               <CardBody className=''>
                 <div className='text-center font-satoshi'>
                   <h3 className='text-2xl font-bold mb-6'>About the Artist</h3>

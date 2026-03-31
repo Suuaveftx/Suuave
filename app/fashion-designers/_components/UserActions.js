@@ -39,7 +39,7 @@ export function UserActions() {
       <Link href="/fashion-designers/post-project">
         {/* <Button
           className={` items-center justify-center gap-2 font-proximanova  rounded-full shadow-md font-semibold px-9 py-1 lg:flex hidden`}
-          style={{ background: "radial-gradient(circle, #CCE7F2, white)" }}
+          style={{ background: "radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)" }}
         >
           Post Project
         </Button> */}
@@ -48,7 +48,7 @@ export function UserActions() {
           style={{
             color: "#035A7A",
             background:
-              "radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)",
+              "radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)",
           }}
         >
           Post Project
@@ -57,18 +57,25 @@ export function UserActions() {
         {/* <CustomButton text="" className=" bg-[#CCE7F2]" /> */}
       </Link>
 
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-3 lg:gap-6">
         <Notification />
-        <Link href="/artist-page/messages">
-          <Button
-            isIconOnly
-            variant="bordered"
-            radius="full"
-            className="text-[#1A1A1A] hidden lg:flex"
-            size="md"
+        <Link href="/fashion-designers/messages">
+          <Badge
+            content={<p className="text-[10px] text-white">2</p>}
+            shape="circle"
+            showOutline={false}
+            className="h-4 w-4 bg-[#3A98BB] flex"
           >
-            <IoMail className="w-4 h-4" />
-          </Button>
+            <Button
+              isIconOnly
+              variant="bordered"
+              radius="full"
+              className="text-[#1A1A1A]"
+              size="sm"
+            >
+              <IoMail className="w-4 h-4" />
+            </Button>
+          </Badge>
         </Link>
 
         <Dropdown shouldBlockScroll={false}>
@@ -78,8 +85,9 @@ export function UserActions() {
                 src="https://i.pravatar.cc/150?img=8"
                 isBordered
                 color="success"
+                size="sm"
               />
-              <ChevronDown fill="currentColor" size={16} />
+              <ChevronDown fill="currentColor" size={14} />
             </button>
           </DropdownTrigger>
           <DropdownMenu aria-label="User actions">
@@ -91,15 +99,6 @@ export function UserActions() {
             >
               Profile
             </DropdownItem>
-            <DropdownItem
-              as={Link}
-              href="/artist-page/messages"
-              startContent={<Mail className="size-4" />}
-              key="messages"
-              className="lg:hidden flex"
-            >
-              Messages
-            </DropdownItem>
 
             <DropdownItem
               startContent={<ClipboardList className="size-4" />}
@@ -110,20 +109,20 @@ export function UserActions() {
               Transaction History
             </DropdownItem>
             <DropdownItem
-              startContent={<Bell className="size-4" />}
-              key="notifications"
+              startContent={<TbSettings className="size-4" />}
+              key="settings"
               as={Link}
               href="/fashion-designers/settings"
             >
-              Notification
+              Settings
             </DropdownItem>
             <DropdownItem
-              startContent={<Lock className="size-4" />}
-              key="security"
+              startContent={<HiOutlinePhone className="size-4" />}
+              key="help-support"
               as={Link}
-              href="/fashion-designers/settings"
+              href="#"
             >
-              Security
+              Help & Support
             </DropdownItem>
             <DropdownItem
               startContent={<TbLogout2 className="size-4" />}

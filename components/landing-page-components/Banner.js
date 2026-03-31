@@ -12,14 +12,13 @@ const Banner = () => {
       {/* Content */}
       <div className=" text-center text-white px-4 flex flex-col justify-center items-center">
         <h1 className="lg:text-[44px] text-[24px] font-medium mb-12 lg:w-[1100px] text-center">
-          The home of
-          <span className="italic font-thin"> African fashion artists</span> and
-          licensable stunning designs
+          The future of fashion is African.
+          <span className="italic font-thin"> Own a piece of It.</span>
         </h1>
         <CustomButton
-          text="Join Suuave"
+          text="Enter the Marketplace"
           href="/onboarding"
-          className="w-44 h-14 font-semibold text-lg"
+          className="w-fit px-8 h-14 font-semibold text-lg"
         />
       </div>
     </div>

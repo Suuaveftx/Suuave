@@ -32,7 +32,7 @@ const WelcomePage = ({ user }) => {
         <div className='flex flex-col w-full max-w-md bg-white border border-[#EAEAEA] shadow-sm rounded-xl sm:shadow-none sm:border-none px-6 pt-8 pb-10'>
           <h1 className='text-2xl font-bold leading-tight text-[#222222] mb-10'>
             Hi {displayName.charAt(0).toUpperCase() + displayName.slice(1).toLowerCase()},{' '}
-            <br /> To begin, let&apos;s take a moment to complete your profile set-up.
+            <br /> To begin, let&apos;s take a moment to complete your profile setup.
           </h1>
 
           <div className='space-y-0 text-[#555555]'>

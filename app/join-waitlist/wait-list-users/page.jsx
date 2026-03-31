@@ -1,6 +1,6 @@
 import WaitList from './_components/WaitList';
 
-function page() {
+function Page() {
   return (
     <div>
       <WaitList />
@@ -8,4 +8,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

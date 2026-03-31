@@ -45,8 +45,8 @@ export default function OngoingDetailsPage({ params }) {
     contractNumber: contractDetails.id,
     contractType: "Hire",
     role: "Fashion Artist",
-    budget: "₦200,000",
-    timeframe: "1 Day",
+    budget: contractDetails.budget || "₦200,000",
+    timeframe: contractDetails.timeframe || "1 Day",
     status: contractDetails.status || "Ongoing",
     isSubmitted: contractDetails.isSubmitted,
     isLate: contractDetails.isLate,
@@ -69,6 +69,8 @@ export default function OngoingDetailsPage({ params }) {
         return "text-[#2563EB] bg-[#E0F2FE]";
       case "completed":
         return "text-[#279711] bg-[#ECFDF5]";
+      case "waiting approval":
+        return "text-[#2563EB] bg-[#E0F2FE]";
       default:
         return "default";
     }
@@ -116,30 +118,15 @@ export default function OngoingDetailsPage({ params }) {
 
   return (
     <>
-      <ContractHeader title="Contract Information" maxWidth="max-w-6xl" />
+      <ContractHeader title="" maxWidth="max-w-6xl" tab="ongoing" />
       <div className="max-w-6xl mx-auto px-2 md:px-0 pb-6 ">
         <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-1">
           {/* Left Column - Contract Details & Documents */}
           <div className="lg:col-span-2 space-y-2">
-            {/* Submission Alert */}
-            {contractData.isSubmitted ? (
-              <Alert
-                hideIcon
-                color="primary"
-                variant="flat"
-                startContent={
-                  <ExclamationTriangleIcon className="h-5 w-5 text-[#3A98BB] flex-shrink-0" />
-                }
-                className="bg-[#FAFAFA] border-none text-[#3A98BB] max-w-[662px] font-medium items-center"
-                description="This project has be submitted as completed. Waiting for your approval."
-              />
-            ) : (
-              ""
-            )}
             {/* Contract Details Card */}
             <Card className="bg-white border border-gray-200" shadow="none">
               <CardBody className="p-6 pb-12">
-                <div className="flex items-center justify-between mb-6 border-b pb-2">
+                <div className="hidden md:flex items-center justify-between mb-6 border-b pb-2">
                   <h2 className="md:text-2xl text-lg font-semibold text-gray-900">
                     Contract Details
                   </h2>
@@ -167,7 +154,7 @@ export default function OngoingDetailsPage({ params }) {
                       { label: "Role", value: contractData.role },
                       { label: "Budget", value: contractData.budget },
                       {
-                        label: "Contract Timeframe",
+                        label: "Timeframe",
                         value: contractData.timeframe,
                       },
                     ].map((item, index) => (
@@ -180,29 +167,37 @@ export default function OngoingDetailsPage({ params }) {
                             } ${item.label === "Contract Number" ? "lg:-mt-4" : ""
                             }  md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
                         >
-                          {item.label} -
+                          {item.label} :
                         </span>
-                        <span
-                          className={`${item.label === "Status"
-                            ? `${getStatusColor(
-                              contractData.status
-                            )} lg:hidden`
-                            : ""
-                            } ${item.label === "Contract Number" ? "lg:-mt-4" : ""
-                            }  md:text-md text-sm font-proximanova`}
-                        >
-                          {item.value}
-                          {item.label === "Status" && contractData.isLate && (
-                            <span className="text-red-500 text-xs font-semibold ml-2">
-                              ({contractData.daysLate}d late)
+                        {item.label === "Status" ? (
+                          <div className="flex  items-center gap-2 lg:hidden">
+                            <span className="border border-[#D1D1D1] text-[#279711] px-3 py-1 rounded-full text-xs font-medium capitalize">
+                              Ongoing
                             </span>
-                          )}
-                          {item.label === "Status" && contractData.isExpiringSoon && (
-                            <span className="text-green-600 text-xs font-semibold ml-2">
-                              ({contractData.remainingDays}d left)
-                            </span>
-                          )}
-                        </span>
+                            {contractData.isSubmitted && (
+                              <span className="bg-[#E0F2FE] text-[#2563EB] px-3 py-1 rounded-full text-xs font-medium w-32">
+                                Waiting Approval
+                              </span>
+                            )}
+                            {contractData.isLate && (
+                              <span className="text-red-500 text-xs font-semibold">
+                                ({contractData.daysLate}d late)
+                              </span>
+                            )}
+                            {contractData.isExpiringSoon && (
+                              <span className="text-green-600 text-xs font-semibold">
+                                ({contractData.remainingDays}d left)
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          <span
+                            className={`${item.label === "Contract Number" ? "lg:-mt-4" : ""
+                              }  md:text-md text-sm font-proximanova`}
+                          >
+                            {item.value}
+                          </span>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -214,7 +209,7 @@ export default function OngoingDetailsPage({ params }) {
                         Ongoing
                       </span>
                       {contractData.isSubmitted && (
-                        <span className="bg-[#E0F2FE] text-[#2563EB] px-2 py-1 rounded text-xs font-medium">
+                        <span className="bg-[#E0F2FE] text-[#2563EB] px-3 py-1 rounded-full text-xs font-medium">
                           Waiting Approval
                         </span>
                       )}
@@ -261,12 +256,12 @@ export default function OngoingDetailsPage({ params }) {
           </div>
 
           {/* Right Column - Artist Info & Actions */}
-          <div className="flex space-y-2 gap-2 flex-col-reverse lg:flex-col">
+          <div className="flex gap-2 flex-col lg:flex-col">
             {/* Action Buttons */}
             <Card className="bg-white border border-gray-200 drop-shadow-md">
-              <CardBody className=" lg:py-6 px-12 lg:space-y-6 space-y-0 space-x-2 lg:space-x-0 flex flex-row items-center lg:flex-col">
+              <CardBody className="py-4 lg:py-6 px-6 md:px-12 flex flex-row items-center justify-center gap-4 lg:flex-col lg:gap-6">
                 <Button
-                  className="w-full bg-radial py-6 from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
+                  className="flex-1 w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] py-6 text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
                   size="lg"
                   radius="full"
                   onPress={onOpen}
@@ -277,7 +272,7 @@ export default function OngoingDetailsPage({ params }) {
                 {contractData.isSubmitted ? (
                   <Button
                     variant="bordered"
-                    className="w-full bg-transparent py-5 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl  shadow-sm"
+                    className="flex-1 w-full bg-transparent py-6 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl shadow-sm"
                     size="lg"
                     radius="full"
                     onPress={() => setShowRejectModal(true)}
@@ -287,7 +282,7 @@ export default function OngoingDetailsPage({ params }) {
                 ) : (
                   <Button
                     variant="bordered"
-                    className="w-full bg-transparent py-5 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl  shadow-sm"
+                    className="flex-1 w-full bg-transparent py-6 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl shadow-sm"
                     size="lg"
                     radius="full"
                   >
@@ -299,7 +294,7 @@ export default function OngoingDetailsPage({ params }) {
 
             {/* Artist Information Card */}
             <Card
-              className="bg-white border font-satoshi border-gray-200 "
+              className="bg-white border font-satoshi border-gray-200 mt-[-4px]"
               shadow="none"
             >
               <CardBody className="">
@@ -396,7 +391,7 @@ export default function OngoingDetailsPage({ params }) {
                   Cancel
                 </Button>
                 <Button
-                  className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
+                  className="w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
                   radius="full"
                   size="md"
                   variant="bordered"
@@ -484,7 +479,7 @@ export default function OngoingDetailsPage({ params }) {
 
             {/* Rate Ocean Button */}
             <Button
-              className="w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-proximanova text-md border-0 shadow-sm"
+              className="w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-proximanova text-md border-0 shadow-sm"
               size="lg"
               radius="full"
               variant="bordered"
@@ -604,7 +599,7 @@ export default function OngoingDetailsPage({ params }) {
             </p>
             <div className="flex justify-center items-center">
               <Button
-                className="max-w-[100px] px-12 bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A]"
+                className="max-w-[100px] px-12 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A]"
                 radius="full"
                 variant="flat"
                 onPress={() => setShowComplaintModal(false)}
