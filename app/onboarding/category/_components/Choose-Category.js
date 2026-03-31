@@ -99,9 +99,6 @@ const ChooseCategory = () => {
                 value='brand'
                 checked={activeCategory === 'brand'}
                 onChange={() => handleCategoryChange('brand')}
-                value='brand'
-                checked={activeCategory === 'brand'}
-                onChange={() => handleCategoryChange('brand')}
               />
             </div>
             <Image
