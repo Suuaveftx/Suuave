@@ -86,16 +86,6 @@ const WelcomePage = ({ user }) => {
             >
               Contine
             </Button>
-            {/* <Link
-              href={
-                category === 'Fashion Brand'
-                  ? '/fashion-designers/personal-details'
-                  : '/artist-page/personal-details'
-              }
-              className='w-full text-[#035A7A] font-semibold text-lg py-4 rounded-full text-center transition-all bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)] active:scale-95'
-            >
-              Continue
-            </Link> */}
           </div>
         </div>
       </div>
