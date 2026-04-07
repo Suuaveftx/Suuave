@@ -1,270 +1,269 @@
-"use client";
+'use client';
 
-import { Alert, Chip, Input, Tab, Tabs } from "@heroui/react";
-import React, { useState } from "react";
-import { IoSearchOutline } from "react-icons/io5";
-import FashionDesignersCard from "./_components/studio-page-components/FashionDesignersCard";
-import FloatingButton from "./_components/FloatingButton";
-import { useBookmarks } from "./_components/BookmarkContext";
+import { Alert, Chip, Input, Tab, Tabs } from '@heroui/react';
+import React, { useState } from 'react';
+import { IoSearchOutline } from 'react-icons/io5';
+import FashionDesignersCard from './_components/studio-page-components/FashionDesignersCard';
+import FloatingButton from './_components/FloatingButton';
+// import { useBookmarks } from "./_components/BookmarkContext";
 
 const Page = () => {
   const [isVisible, setIsVisible] = useState(true);
-  const { savedCardIds, toggleBookmark } = useBookmarks();
+  // const { savedCardIds, toggleBookmark } = useBookmarks();
 
   const cardsData = [
     {
-      id: "card-1",
+      id: 'card-1',
       user: {
-        id: "user-1",
-        userName: "Amira Bashir",
-        photo: "userImg",
-        handle: "@amirabash",
-        description: "Textile alchemist, silhouette enthusiast 👗✨",
+        id: 'user-1',
+        userName: 'Amira Bashir',
+        photo: 'userImg',
+        handle: '@amirabash',
+        description: 'Textile alchemist, silhouette enthusiast 👗✨',
         followers: 45800,
         following: 124,
       },
-      title: "Flowy linen sets for summer brunch elegance",
+      title: 'Flowy linen sets for summer brunch elegance',
       price: 128000,
-      images: ["/dev-images/fashionImg1.png"],
+      images: ['/dev-images/fashionImg1.png'],
     },
     {
-      id: "card-2",
+      id: 'card-2',
       user: {
-        id: "user-2",
-        userName: "Leo Tang",
-        photo: "userImg",
-        handle: "@leotang",
-        description: "Menswear visionary — structure meets soul 🧵 he/him",
+        id: 'user-2',
+        userName: 'Leo Tang',
+        photo: 'userImg',
+        handle: '@leotang',
+        description: 'Menswear visionary — structure meets soul 🧵 he/him',
         followers: 89200,
         following: 312,
       },
-      title: "Tailored modern suits inspired by Tokyo streetwear",
+      title: 'Tailored modern suits inspired by Tokyo streetwear',
       price: 265000,
       images: [
-        "/dev-images/fashionImg1.png",
-        "/dev-images/fashionImg2.png",
-        "/dev-images/fashionImg3.png",
+        '/dev-images/fashionImg1.png',
+        '/dev-images/fashionImg2.png',
+        '/dev-images/fashionImg3.png',
       ],
     },
     {
-      id: "card-3",
+      id: 'card-3',
       user: {
-        id: "user-3",
-        userName: "Tega Isama",
-        photo: "userImg",
-        handle: "@tega",
-        description: "Fashion designer, fabric whisperer ✂️ she/her ✨",
+        id: 'user-3',
+        userName: 'Tega Isama',
+        photo: 'userImg',
+        handle: '@tega',
+        description: 'Fashion designer, fabric whisperer ✂️ she/her ✨',
         followers: 97100,
         following: 7,
       },
-      title: "Experimental silhouettes with a minimalist heart",
+      title: 'Experimental silhouettes with a minimalist heart',
       price: 34034000,
-      images: ["/dev-images/fashionImg1.png"],
+      images: ['/dev-images/fashionImg1.png'],
     },
     {
-      id: "card-4",
+      id: 'card-4',
       user: {
-        id: "user-4",
-        userName: "Kai Nwosu",
-        photo: "userImg",
-        handle: "@kai_nwosu",
-        description: "Couture meets culture, Lagos born 🪡🌍",
+        id: 'user-4',
+        userName: 'Kai Nwosu',
+        photo: 'userImg',
+        handle: '@kai_nwosu',
+        description: 'Couture meets culture, Lagos born 🪡🌍',
         followers: 60200,
         following: 98,
       },
-      title: "Ankara-inspired gowns with futuristic detailing",
+      title: 'Ankara-inspired gowns with futuristic detailing',
       price: 487500,
       images: [
-        "/dev-images/fashionImg1.png",
-        "/dev-images/fashionImg2.png",
-        "/dev-images/fashionImg3.png",
+        '/dev-images/fashionImg1.png',
+        '/dev-images/fashionImg2.png',
+        '/dev-images/fashionImg3.png',
       ],
     },
     {
-      id: "card-5",
+      id: 'card-5',
       user: {
-        id: "user-5",
-        userName: "Yuna Lee",
-        photo: "userImg",
-        handle: "@yunalee.studio",
-        description: "Soft tailoring & fluid forms 🌸 she/her",
+        id: 'user-5',
+        userName: 'Yuna Lee',
+        photo: 'userImg',
+        handle: '@yunalee.studio',
+        description: 'Soft tailoring & fluid forms 🌸 she/her',
         followers: 120900,
         following: 43,
       },
-      title: "Spring drop: silk layers & modular design",
+      title: 'Spring drop: silk layers & modular design',
       price: 219900,
       images: [
-        "/dev-images/fashionImg1.png",
-        "/dev-images/fashionImg2.png",
-        "/dev-images/fashionImg3.png",
+        '/dev-images/fashionImg1.png',
+        '/dev-images/fashionImg2.png',
+        '/dev-images/fashionImg3.png',
       ],
     },
     {
-      id: "card-6",
+      id: 'card-6',
       user: {
-        id: "user-6",
-        userName: "Obadea Isama",
-        photo: "userImg",
-        handle: "@isama",
-        description: "Modern textures. Timeless cuts. ✂️ she/her ✨",
+        id: 'user-6',
+        userName: 'Obadea Isama',
+        photo: 'userImg',
+        handle: '@isama',
+        description: 'Modern textures. Timeless cuts. ✂️ she/her ✨',
         followers: 97100,
         following: 7,
       },
-      title: "Draped elegance with a bold color story",
+      title: 'Draped elegance with a bold color story',
       price: 187000,
       images: [
-        "/dev-images/fashionImg1.png",
-        "/dev-images/fashionImg2.png",
-        "/dev-images/fashionImg3.png",
+        '/dev-images/fashionImg1.png',
+        '/dev-images/fashionImg2.png',
+        '/dev-images/fashionImg3.png',
       ],
     },
     {
-      id: "card-7",
+      id: 'card-7',
       user: {
-        id: "user-7",
-        userName: "Nico Arora",
-        photo: "userImg",
-        handle: "@nico.designs",
-        description: "Eco-fashion crusader 🌱✂️ he/they",
+        id: 'user-7',
+        userName: 'Nico Arora',
+        photo: 'userImg',
+        handle: '@nico.designs',
+        description: 'Eco-fashion crusader 🌱✂️ he/they',
         followers: 42200,
         following: 214,
       },
-      title: "Recycled denim reinvented into high-street staples",
+      title: 'Recycled denim reinvented into high-street staples',
       price: 142300,
-      images: ["/dev-images/fashionImg1.png", "/dev-images/fashionImg2.png"],
+      images: ['/dev-images/fashionImg1.png', '/dev-images/fashionImg2.png'],
     },
     {
-      id: "card-8",
+      id: 'card-8',
       user: {
-        id: "user-8",
-        userName: "Zoé Marchand",
-        photo: "userImg",
-        handle: "@zoemarchand",
-        description: "Paris-based romanticism in ready-to-wear 🥀 she/her",
+        id: 'user-8',
+        userName: 'Zoé Marchand',
+        photo: 'userImg',
+        handle: '@zoemarchand',
+        description: 'Paris-based romanticism in ready-to-wear 🥀 she/her',
         followers: 110500,
         following: 89,
       },
-      title: "Sheer layers and lace — dreamy yet grounded",
+      title: 'Sheer layers and lace — dreamy yet grounded',
       price: 398000,
-      images: ["/dev-images/fashionImg1.png", "/dev-images/fashionImg3.png"],
+      images: ['/dev-images/fashionImg1.png', '/dev-images/fashionImg3.png'],
     },
     {
-      id: "card-9",
+      id: 'card-9',
       user: {
-        id: "user-9",
-        userName: "Luca Bianchi",
-        photo: "userImg",
-        handle: "@bianchi.studio",
-        description: "Geometry meets glamor. 🇮🇹🧷 he/him",
+        id: 'user-9',
+        userName: 'Luca Bianchi',
+        photo: 'userImg',
+        handle: '@bianchi.studio',
+        description: 'Geometry meets glamor. 🇮🇹🧷 he/him',
         followers: 88000,
         following: 51,
       },
-      title: "Architectural cuts blended with silk and shimmer",
+      title: 'Architectural cuts blended with silk and shimmer',
       price: 504500,
-      images: ["/dev-images/fashionImg1.png", "/dev-images/fashionImg2.png"],
+      images: ['/dev-images/fashionImg1.png', '/dev-images/fashionImg2.png'],
     },
     {
-      id: "card-10",
+      id: 'card-10',
       user: {
-        id: "user-10",
-        userName: "Nyah Okeke",
-        photo: "userImg",
-        handle: "@nyah.okeke",
-        description: "Bold prints, bolder stories 🎨 she/her",
+        id: 'user-10',
+        userName: 'Nyah Okeke',
+        photo: 'userImg',
+        handle: '@nyah.okeke',
+        description: 'Bold prints, bolder stories 🎨 she/her',
         followers: 75000,
         following: 60,
       },
-      title: "Statement pieces with Afro-urban narratives",
+      title: 'Statement pieces with Afro-urban narratives',
       price: 298700,
-      images: ["/dev-images/fashionImg2.png", "/dev-images/fashionImg3.png"],
+      images: ['/dev-images/fashionImg2.png', '/dev-images/fashionImg3.png'],
     },
     {
-      id: "card-11",
+      id: 'card-11',
       user: {
-        id: "user-11",
-        userName: "Nyah Okeke",
-        photo: "userImg",
-        handle: "@nyah.okeke",
-        description: "Bold prints, bolder stories 🎨 she/her",
+        id: 'user-11',
+        userName: 'Nyah Okeke',
+        photo: 'userImg',
+        handle: '@nyah.okeke',
+        description: 'Bold prints, bolder stories 🎨 she/her',
         followers: 75000,
         following: 60,
       },
-      title: "Statement pieces with Afro-urban narratives",
+      title: 'Statement pieces with Afro-urban narratives',
       price: 298700,
-      images: ["/dev-images/fashionImg2.png", "/dev-images/fashionImg3.png"],
+      images: ['/dev-images/fashionImg2.png', '/dev-images/fashionImg3.png'],
     },
   ];
 
   return (
-    <div className=" lg:px-14 px-4 pt-7 font-satoshi mb-48">
+    <div className=' lg:px-14 px-4 pt-7 font-satoshi mb-48'>
       <Alert
         // color="secondary"
         isVisible={isVisible}
         title={
-          <p className="font-normal">
-            You have{" "}
-            <span className="font-semibold text-[#73D9FF] cursor-pointer">
+          <p className='font-normal'>
+            You have{' '}
+            <span className='font-semibold text-[#73D9FF] cursor-pointer'>
               1 Project Submission
             </span>
           </p>
         }
-        variant="faded"
+        variant='faded'
         onClose={() => setIsVisible(false)}
         closeButtonProps={{
-          className: "place-self-center items-center",
+          className: 'place-self-center items-center',
         }}
         classNames={{
-          mainWrapper: " ",
-          closeButton: "relative top-1",
-          alertIcon: "fill-[#73D9FF]",
+          mainWrapper: ' ',
+          closeButton: 'relative top-1',
+          alertIcon: 'fill-[#73D9FF]',
         }}
-        className="border-[#73D9FF] bg-[#EBFAFF] font-satoshi"
+        className='border-[#73D9FF] bg-[#EBFAFF] font-satoshi'
       />
 
       <div
         style={{
           background: "url('/dev-images/fashionHeaderImg.png')",
-          backgroundSize: "cover", // Ensures the image covers the entire div
-          backgroundPosition: "center", // Centers the image
-          backgroundRepeat: "no-repeat", // Prevents repeating
+          backgroundSize: 'cover', // Ensures the image covers the entire div
+          backgroundPosition: 'center', // Centers the image
+          backgroundRepeat: 'no-repeat', // Prevents repeating
         }}
-        className="lg:h-[300px] h-[110px] w-full font-satoshi rounded-lg mt-10 text-white flex flex-col items-center justify-center"
+        className='lg:h-[300px] h-[110px] w-full font-satoshi rounded-lg mt-10 text-white flex flex-col items-center justify-center'
       >
-        <h2 className="lg:text-[52px] text-[18px] font-semibold lg:mb-9 mb-1 text-center w-full px-1 whitespace-nowrap">
+        <h2 className='lg:text-[52px] text-[18px] font-semibold lg:mb-9 mb-1 text-center w-full px-1 whitespace-nowrap'>
           Explore Hundreds of Creative Designs
         </h2>
-        <p className="lg:text-[22px] text-[12.29px] font-normal text-center w-full px-1 whitespace-nowrap">
+        <p className='lg:text-[22px] text-[12.29px] font-normal text-center w-full px-1 whitespace-nowrap'>
           Get licensing access for your brand and collections.
         </p>
       </div>
       <Input
-        startContent={<IoSearchOutline className="size-5" />}
-        placeholder="Search"
-        radius="full"
-        className="lg:w-[40%]  mt-10 w-full"
-        classNames={{ inputWrapper: "shadow-lg py-6" }}
-        variant="bordered"
+        startContent={<IoSearchOutline className='size-5' />}
+        placeholder='Search'
+        radius='full'
+        className='lg:w-[40%]  mt-10 w-full'
+        classNames={{ inputWrapper: 'shadow-lg py-6' }}
+        variant='bordered'
       />
 
       {/* taba */}
-      <div className="flex w-full flex-col mt-7">
+      <div className='flex w-full flex-col mt-7'>
         <Tabs
-          aria-label="Options"
+          aria-label='Options'
           classNames={{
-            tabList:
-              "gap-6 w-full relative rounded-none p-0 border-b border-divider",
-            cursor: "w-full bg-[#22d3ee]",
-            tab: "max-w-fit px-0 h-12",
-            tabContent: "group-data-[selected=true]:text-[#06b6d4]",
+            tabList: 'gap-6 w-full relative rounded-none p-0 border-b border-divider',
+            cursor: 'w-full bg-[#22d3ee]',
+            tab: 'max-w-fit px-0 h-12',
+            tabContent: 'group-data-[selected=true]:text-[#06b6d4]',
           }}
-          color="primary"
-          variant="underlined"
+          color='primary'
+          variant='underlined'
         >
           <Tab
-            key="recent"
-            title={<p className="flex items-center space-x-2">Recently</p>}
+            key='recent'
+            title={<p className='flex items-center space-x-2'>Recently</p>}
           >
-            <div className="grid grid-cols-2 gap-3 mt-6 lg:gap-6 lg:grid-cols-4  ">
+            <div className='grid grid-cols-2 gap-3 mt-6 lg:gap-6 lg:grid-cols-4  '>
               {cardsData.map((card, index) => (
                 <FashionDesignersCard
                   key={index}
@@ -275,36 +274,43 @@ const Page = () => {
                   productID={card?.id}
                   idx={index}
                   userData={card.user}
-                  isBookmarked={savedCardIds.includes(card.id)}
-                  onToggleSave={() => toggleBookmark(card.id)}
+                  // isBookmarked={savedCardIds.includes(card.id)}
+                  // onToggleSave={() => toggleBookmark(card.id)}
                 />
               ))}
             </div>
           </Tab>
 
           <Tab
-            key="saved"
+            key='saved'
             title={
-              <div className="flex items-center space-x-2">
-                <span>Saved ({savedCardIds.length})</span>
+              <div className='flex items-center space-x-2'>
+                {/* <span>Saved ({savedCardIds.length})</span> */}
+                <span>Saved</span>
               </div>
             }
           >
-            <div className="grid grid-cols-2 gap-3 mt-6 lg:gap-6 lg:grid-cols-4  ">
-              {cardsData.filter(card => savedCardIds.includes(card.id)).map((card, index) => (
-                <FashionDesignersCard
-                  key={index}
-                  images={card?.images}
-                  title={card?.title}
-                  price={card?.price}
-                  userName={card?.user.userName}
-                  productID={card?.id}
-                  idx={index}
-                  userData={card.user}
-                  isBookmarked={true}
-                  onToggleSave={() => toggleBookmark(card.id)}
-                />
-              ))}
+            <div className='grid grid-cols-2 gap-3 mt-6 lg:gap-6 lg:grid-cols-4  '>
+              {cardsData
+                // .filter((card) => savedCardIds.includes(card.id))
+                .filter(
+                  (card) =>
+                    card.id === 'card-1' || card.id === 'card-3' || card.id === 'card-5'
+                )
+                .map((card, index) => (
+                  <FashionDesignersCard
+                    key={index}
+                    images={card?.images}
+                    title={card?.title}
+                    price={card?.price}
+                    userName={card?.user.userName}
+                    productID={card?.id}
+                    idx={index}
+                    userData={card.user}
+                    isBookmarked={true}
+                    // onToggleSave={() => toggleBookmark(card.id)}
+                  />
+                ))}
             </div>
           </Tab>
         </Tabs>

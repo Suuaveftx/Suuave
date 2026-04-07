@@ -96,10 +96,18 @@ export const signInWithEmailAndPassword = async (email, password) => {
       },
       headers: await headers(),
     });
+    console.log('Sign-in result:', result);
     return { success: true, data: result };
   } catch (error) {
     if (error instanceof APIError) {
       console.log(error.message, error.status);
+      if (error.message?.toLowerCase().includes('email not verified')) {
+        return {
+          success: false,
+          error: 'email not verified', // 👈 use a clean identifier
+          status: error.status,
+        };
+      }
       return { success: false, error: error.message, status: error.status };
     }
     return { success: false, error: 'An unexpected error occurred' };
