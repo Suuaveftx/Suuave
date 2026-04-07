@@ -39,20 +39,29 @@ const Login = () => {
     try {
       setLoading(true);
       const result = await signInWithEmailAndPassword(data.email, data.password);
+      console.log('Login result:', result);
       if (result.success) {
         // Redirect or perform other actions upon successful login
         if (result.data.user.emailVerified) {
           redirectUser(result.data.user.role);
         } else {
-          router.push(`/onboarding/email-confirmation?email=${data.email}`);
+          router.push(
+            `/onboarding/email-confirmation?email=${encodeURIComponent(data.email)}`
+          );
         }
       } else {
         // Handle login failure (e.g., show error message to user)
-        addToast({
-          title: 'Login Failed',
-          description: `Login failed: ${result.error}`,
-          color: 'danger',
-        });
+        if (result.error === 'email not verified') {
+          router.push(
+            `/onboarding/email-confirmation?email=${encodeURIComponent(data.email)}`
+          );
+        } else {
+          addToast({
+            title: 'Login Failed',
+            description: `Login failed: ${result.error}`,
+            color: 'danger',
+          });
+        }
       }
     } catch (error) {
       console.log('Error during login:', error);

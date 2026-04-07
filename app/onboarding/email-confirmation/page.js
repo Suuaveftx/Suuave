@@ -12,7 +12,6 @@ const Page = () => {
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
   const { redirectUser } = useRoleRedirect();
-
   useEffect(() => {
     // 2. Only redirect if a user actually exists AND is already verified
     // If they aren't verified, stay here to show the OTP input
