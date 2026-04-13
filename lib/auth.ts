@@ -63,7 +63,7 @@ export const auth = betterAuth({
           // Send the OTP for sign in
         } else if (type === 'email-verification') {
           // Send the OTP for email verification
-          void resend.emails.send({
+          await resend.emails.send({
             from: `${process.env.RESEND_FROM_EMAIL}`,
             to: email,
             subject: 'Verify your email',
@@ -90,7 +90,7 @@ export const auth = betterAuth({
           });
         } else {
           // Send the OTP for password reset
-          void resend.emails.send({
+          await resend.emails.send({
             from: `${process.env.RESEND_FROM_EMAIL}`,
             to: email,
             subject: 'Reset password',
