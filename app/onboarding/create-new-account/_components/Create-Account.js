@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import { EyeIcon, EyeOff } from 'lucide-react';
 
 import { useAppStore } from '../../../../store';
-import { sendVerificationEmail, signUp } from '../../../actions/services';
+import { signUp } from '../../../actions/services';
 import { useRouter } from 'next/navigation';
 import { PROVIDERS } from '../../../../utils/constants';
 import { authClient } from '../../../../lib/auth-client';
@@ -49,20 +49,9 @@ const CreateAccount = () => {
         });
         return;
       }
-      // Handle success
-      // console.log('Signup successful:', result.data);
-      const verificationData = await sendVerificationEmail(
-        result.data.user.email,
-        'email-verification'
-      );
-      if (!verificationData.success) {
-        addToast({
-          title: 'Verification email failed',
-          description: verificationData.error || 'Failed to send verification email.',
-          color: 'secondary',
-        });
-        return;
-      }
+      // Handle success — better-auth automatically sends the OTP email via
+      // signUpEmail() when overrideDefaultEmailVerification: true, so no
+      // manual sendVerificationEmail() call is needed here.
       addToast({
         title: 'Signup successful',
         description: 'Signup successful. Please verify your email.',

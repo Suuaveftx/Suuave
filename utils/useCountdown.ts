@@ -138,7 +138,7 @@
 //   };
 // }
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface CountdownReturn {
   time: number;
@@ -152,50 +152,51 @@ interface CountdownReturn {
   resume: () => void;
 }
 
-const STORAGE_KEY = 'auth_otp_expiry';
+const DEFAULT_STORAGE_KEY = 'auth_otp_expiry';
 
-export function useCountdown(initialSeconds: number = 600): CountdownReturn {
+export function useCountdown(
+  initialSeconds: number = 600,
+  storageKey: string = DEFAULT_STORAGE_KEY
+): CountdownReturn {
   const [countDown, setCountdown] = useState(initialSeconds);
   const [isRunning, setIsRunning] = useState(true);
-  // Use a ref to trigger effect re-runs on reset
   const [resetToken, setResetToken] = useState(0);
 
   useEffect(() => {
     if (!isRunning) return;
 
-    // Initialize expiry if not set, or resume from existing one
-    let expiry = localStorage.getItem(STORAGE_KEY);
+    // Resume from existing expiry, or create a new one on first use
+    let expiry = localStorage.getItem(storageKey);
     if (!expiry) {
       expiry = (Date.now() + initialSeconds * 1000).toString();
-      localStorage.setItem(STORAGE_KEY, expiry);
+      localStorage.setItem(storageKey, expiry);
     }
 
-    // Set immediately so UI doesn't lag on first render
     const getRemaining = () =>
       Math.max(0, Math.floor((Number(expiry) - Date.now()) / 1000));
 
+    // Sync immediately so UI shows correct value without waiting 1 s
     setCountdown(getRemaining());
 
     const interval = setInterval(() => {
       const remaining = getRemaining();
       setCountdown(remaining);
-      if (remaining <= 0) {
-        clearInterval(interval);
-      }
+      if (remaining <= 0) clearInterval(interval);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isRunning, resetToken]); // clean, predictable dependencies
+  }, [isRunning, resetToken, storageKey]);
 
   const reset = useCallback(
     (newDuration: number = initialSeconds) => {
+      // Write a brand-new expiry so the refreshed page also picks it up
       const expiryTime = (Date.now() + newDuration * 1000).toString();
-      localStorage.setItem(STORAGE_KEY, expiryTime);
+      localStorage.setItem(storageKey, expiryTime);
       setCountdown(newDuration);
       setIsRunning(true);
-      setResetToken((t) => t + 1); // forces effect to re-run with new expiry
+      setResetToken((t) => t + 1);
     },
-    [initialSeconds]
+    [initialSeconds, storageKey]
   );
 
   const pause = useCallback(() => setIsRunning(false), []);

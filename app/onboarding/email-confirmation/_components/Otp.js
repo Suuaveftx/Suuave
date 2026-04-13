@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { addToast, Button, InputOtp } from '@heroui/react';
 import CustomButton from '../../../../components/CustomButton';
 import BackButton from '../../../../components/BackButton';
@@ -10,12 +10,20 @@ import { checkOtp, sendVerificationEmail, verifyEmail } from '../../../actions/s
 import { useRouter } from 'next/navigation';
 
 const Otp = ({ email }) => {
+  // Use an email-scoped key so:
+  // - each user's timer is isolated from others
+  // - the timer persists across page refreshes
+  // - a brand-new signup (no key yet) starts fresh
+  // - clicking Resend calls reset() which writes a new expiry under the same key
+  const storageKey = `otp_expiry_${email}`;
   const { displayTime, isFinished, reset } = useCountdown(
-    process.env.COUNTER_OTP_EXPIRATION || 300
+    Number(process.env.COUNTER_OTP_EXPIRATION) || 300,
+    storageKey
   );
 
   const [value, setValue] = React.useState('');
-  const [loading, setLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
   const [category, setCategory] = useState('');
   const {
     register,
@@ -26,20 +34,16 @@ const Otp = ({ email }) => {
 
   const onSubmit = async (data) => {
     console.log('OTP submitted:', data.otp);
-    // cehck if otp is valid
+    // check if otp is valid
     try {
-      setLoading(true);
+      setSubmitLoading(true);
       const checkResult = await checkOtp(email, 'email-verification', data.otp);
       if (checkResult.success) {
         console.log('OTP verified successfully:', checkResult.data);
         const verifiedEmail = await verifyEmail(email, data.otp);
         if (verifiedEmail.success) {
           console.log('Email verified successfully:', verifiedEmail.data);
-          // Redirect to intro to profile setup page
-          // router.push('/onboarding/intro-to-profile-setup');
           router.refresh();
-
-          // 2. Give it a tiny moment to ensure the cookie is processed before redirecting
           setTimeout(() => {
             router.push('/onboarding/intro-to-profile-setup');
           }, 100);
@@ -65,13 +69,13 @@ const Otp = ({ email }) => {
         color: 'secondary',
       });
     } finally {
-      setLoading(false);
+      setSubmitLoading(false);
     }
   };
 
   const resendOtp = async () => {
     try {
-      setLoading(true);
+      setResendLoading(true);
       const resendResult = await sendVerificationEmail(email, 'email-verification');
       if (resendResult.success) {
         reset();
@@ -94,7 +98,7 @@ const Otp = ({ email }) => {
         color: 'secondary',
       });
     } finally {
-      setLoading(false);
+      setResendLoading(false);
     }
   };
 
@@ -166,8 +170,8 @@ const Otp = ({ email }) => {
                 </p>
               )}
               <Button
-                isLoading={loading}
-                isDisabled={loading}
+                isLoading={submitLoading}
+                isDisabled={submitLoading}
                 type='submit'
                 className='w-72 text-[#035A7A] rounded-3xl cursor-pointer py-2 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)]'
               >
@@ -187,10 +191,12 @@ const Otp = ({ email }) => {
             <div className=' text-small w-full mt-4 flex justify-center text-default-500'>
               Didn’t receive code? &nbsp;
               <button
-                className='text-md cursor-pointer font-medium text-[#9FD2E5]'
+                type='button'
+                disabled={resendLoading}
+                className='text-md cursor-pointer font-medium text-[#9FD2E5] disabled:opacity-50'
                 onClick={resendOtp}
               >
-                Resend
+                {resendLoading ? 'Sending...' : 'Resend'}
               </button>
             </div>
           )}

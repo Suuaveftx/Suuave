@@ -68,9 +68,7 @@ export const auth = betterAuth({
             to: email,
             subject: 'Verify your email',
             html: `
-               <h1>Welcome to Suuave!</h1>
-
-              <p>We're excited to have you on board.</p>
+               <h1>Suuave Email Verification</h1>
 
               <p>Please verify your email address to complete your registration and set up your profile.</p>
 
