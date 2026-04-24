@@ -54,7 +54,7 @@ export const auth = betterAuth({
     },
   },
   baseURL: {
-    allowedHosts: ['localhost:3000', '*.vercel.app', 'your-production-domain.com'],
+    allowedHosts: ['localhost:3000', '*.vercel.app', 'https://www.suuave.com'],
     protocol: process.env.NODE_ENV === 'development' ? 'http' : 'https',
   },
   plugins: [
