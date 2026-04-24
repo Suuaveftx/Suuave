@@ -53,6 +53,10 @@ export const auth = betterAuth({
       clientSecret: (process.env.GOOGLE_CLIENT_SECRET as string) || 'placeholder',
     },
   },
+  baseURL: {
+    allowedHosts: ['localhost:3000', '*.vercel.app', 'your-production-domain.com'],
+    protocol: process.env.NODE_ENV === 'development' ? 'http' : 'https',
+  },
   plugins: [
     emailOTP({
       overrideDefaultEmailVerification: true,
