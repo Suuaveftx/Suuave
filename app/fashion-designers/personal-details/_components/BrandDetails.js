@@ -115,7 +115,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 errorMessage={errors.username?.message}
               />
             </div>
-            {/* Brand Category */}
+            {/* Brand Category*/}
             <div
               className='w-full flex flex-col gap-2'
               onMouseEnter={() => setHoveredField('Brand Category')}
