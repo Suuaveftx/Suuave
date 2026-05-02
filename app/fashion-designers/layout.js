@@ -3,7 +3,7 @@ import Footer from '../../components/landing-page-components/Footer';
 import { getServerSession } from '../../lib/get-session';
 import { requireAuth } from '../../lib/protected-routes';
 import { Roles } from '../../utils/enum';
-import FashionDesignerHeader from './_components/studio-page-components/FashionDesignerHeader';
+import LayoutWrapper from './_components/LayoutWrapper';
 
 export default async function Layout({ children }) {
   const session = await getServerSession();
@@ -15,10 +15,8 @@ export default async function Layout({ children }) {
   await requireAuth(Roles.brand);
 
   return (
-    <>
-      <FashionDesignerHeader />
-      <main className='font-satoshi pt-20  h-full'>{children}</main>
-      <Footer />
-    </>
+    <LayoutWrapper>
+      {children}
+    </LayoutWrapper>
   );
 }

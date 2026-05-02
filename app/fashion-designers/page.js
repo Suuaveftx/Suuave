@@ -1,10 +1,11 @@
 'use client';
 
-import { Alert, Chip, Input, Tab, Tabs } from '@heroui/react';
+import { Alert, Chip, Input, Tab, Tabs, Card, CardBody, Image } from '@heroui/react';
 import React, { useState } from 'react';
 import { IoSearchOutline } from 'react-icons/io5';
 import FashionDesignersCard from './_components/studio-page-components/FashionDesignersCard';
 import FloatingButton from './_components/FloatingButton';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 // import { useBookmarks } from "./_components/BookmarkContext";
 
 const Page = () => {
@@ -198,45 +199,57 @@ const Page = () => {
   return (
     <div className=' lg:px-14 px-4 pt-7 font-satoshi mb-48'>
       <Alert
-        // color="secondary"
         isVisible={isVisible}
+        icon={
+          <span className="flex items-center justify-center bg-transparent mr-2.5">
+            <ExclamationTriangleIcon className="size-[18px] md:size-5 text-[#3A98BB] fill-none stroke-current" strokeWidth={1.5} />
+          </span>
+        }
         title={
-          <p className='font-normal'>
+          <p className='font-normal text-gray-700 text-[13px] md:text-[14px] leading-tight m-0 flex items-center'>
             You have{' '}
-            <span className='font-semibold text-[#73D9FF] cursor-pointer'>
+            <span className='font-semibold text-[#3A98BB] cursor-pointer ml-1'>
               1 Project Submission
             </span>
           </p>
         }
-        variant='faded'
+        variant='bordered'
         onClose={() => setIsVisible(false)}
         closeButtonProps={{
-          className: 'place-self-center items-center',
+          className: 'place-self-center my-0',
+          size: "sm",
         }}
         classNames={{
-          mainWrapper: ' ',
-          closeButton: 'relative top-1',
-          alertIcon: 'fill-[#73D9FF]',
+          base: 'h-[38px] min-h-[38px] py-0 px-5 border-[#73D9FF] bg-[#EAF9FF] flex items-center',
+          mainWrapper: 'flex-row items-center h-full m-0 gap-3',
+          title: 'flex items-center m-0',
+          iconWrapper: 'mt-0 bg-transparent p-0 shadow-none min-w-0 w-auto mr-3',
+          closeButton: 'relative text-gray-500 hover:bg-transparent',
+          alertIcon: 'text-[#3A98BB]',
         }}
-        className='border-[#73D9FF] bg-[#EBFAFF] font-satoshi'
+        className='font-satoshi rounded-md'
       />
 
-      <div
-        style={{
-          background: "url('/dev-images/fashionHeaderImg.png')",
-          backgroundSize: 'cover', // Ensures the image covers the entire div
-          backgroundPosition: 'center', // Centers the image
-          backgroundRepeat: 'no-repeat', // Prevents repeating
-        }}
-        className='lg:h-[300px] h-[110px] w-full font-satoshi rounded-lg mt-10 text-white flex flex-col items-center justify-center'
+      <Card
+        className='w-full mt-10 border-none relative overflow-hidden'
+        shadow='sm'
+        radius='lg'
       >
-        <h2 className='lg:text-[52px] text-[18px] font-semibold lg:mb-9 mb-1 text-center w-full px-1 whitespace-nowrap'>
-          Explore Hundreds of Creative Designs
-        </h2>
-        <p className='lg:text-[22px] text-[12.29px] font-normal text-center w-full px-1 whitespace-nowrap'>
-          Get licensing access for your brand and collections.
-        </p>
-      </div>
+        <Image
+          removeWrapper
+          src='/dev-images/fashionHeaderImg.png'
+          alt='Fashion Header background'
+          className='absolute z-0 inset-0 w-full h-full object-cover object-center'
+        />
+        <CardBody className='relative z-10 lg:h-[180px] h-[120px] flex flex-col items-center justify-center text-white p-0'>
+          <h2 className='lg:text-[40px] text-[18px] font-semibold lg:mb-2 mb-1 text-center w-full px-4 tracking-wide z-10 lg:whitespace-nowrap'>
+            Explore Hundreds of Creative Designs
+          </h2>
+          <p className='lg:text-[18px] text-[13px] font-light text-center w-full px-4 z-10 lg:whitespace-nowrap'>
+            Get licensing access for your brand and collections.
+          </p>
+        </CardBody>
+      </Card>
       <Input
         startContent={<IoSearchOutline className='size-5' />}
         placeholder='Search'

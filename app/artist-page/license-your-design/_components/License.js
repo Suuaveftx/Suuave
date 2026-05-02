@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Input, Textarea, Select, Checkbox, SelectItem } from '@heroui/react';
+import { Input, Textarea, Select, Checkbox, SelectItem, Button, Switch } from '@heroui/react';
 import { CiImageOn } from 'react-icons/ci';
 import { ChevronLeft } from 'lucide-react';
 import CustomButton from '../../../../components/CustomButton';
@@ -10,12 +10,22 @@ import { color } from 'framer-motion';
 import { useDisclosure } from '@heroui/react';
 import PublishDesignPopUp from './PublishDesignPopUp';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { useAppStore } from '../../../../store/index';
+import { CiFileOn } from 'react-icons/ci';
 
 const License = () => {
   const router = useRouter();
   const [errors, setErrors] = React.useState({});
   const [images, setImages] = useState([]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { 
+    vaultFile, setVaultFile, 
+    commercialRights, setCommercialRights,
+    limitedUsageLicense, setLimitedUsageLicense,
+    confirmMasterFiles, setConfirmMasterFiles,
+    confirmWatermarking, setConfirmWatermarking,
+    confirmOwnership, setConfirmOwnership
+  } = useAppStore();
   const searchParams = useSearchParams();
 
   // Get initial values from URL params
@@ -27,6 +37,14 @@ const License = () => {
   const handleSubmitPublish = () => {
     onOpen();
   };
+
+  const handleVaultUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setVaultFile(file);
+    }
+  };
+
   const handleUpload = (e) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files);
@@ -357,12 +375,11 @@ const License = () => {
             </div>
           </div>
 
-          {/* Upload Your Designs */}
+          {/* 1. Public Preview Gallery */}
           <div className='flex flex-col gap-2'>
-            <h3 className='text-lg font-semibold'>Upload Your Designs<span className='text-red-500 ml-0.5'>*</span></h3>
+            <h3 className='text-lg font-bold text-[#222222]'>Public-Preview Gallery<span className='text-red-500 ml-0.5'>*</span></h3>
             <p className='text-sm'>
-              Uploading different views (e.g., front, back, and side views) helps attract
-              potential clients faster.
+              Upload public facing images.
             </p>
 
             {/* Hidden File Input */}
@@ -444,6 +461,94 @@ const License = () => {
                 )}
               </div>
             </div>
+            {/* Term Note */}
+            <p className='text-xs text-[#767676] mt-2'>
+              <span className='font-bold text-[#E73131]'>Term Note:</span> Only upload public facing images (sketches,photos). To prevent unapproved use, prioritize watermaking. We provide a separate, private field for secure master file delivery.
+            </p>
+          </div>
+
+          {/* 2. SECURE SOURCE FILES (THE VAULT) */}
+          <div className='flex flex-col gap-2'>
+            <div className='bg-[#FFF9EA] border border-[#EBC351] rounded-xl p-6'>
+              <div className='flex items-center gap-2 mb-4'>
+                <h3 className='text-lg font-bold text-[#222222] uppercase tracking-wide'>
+                  SECURE SOURCE FILES (THE VAULT)
+                </h3>
+                <span className='text-2xl'>🔒</span>
+              </div>
+
+              <input
+                type='file'
+                accept='.zip,.ai,.eps,.psd,.pdf'
+                className='hidden'
+                id='vault-upload'
+                onChange={handleVaultUpload}
+              />
+
+              <Button
+                as='label'
+                htmlFor='vault-upload'
+                className='!bg-[#CCE7F2] text-[#035A7A] w-full h-16 rounded-full flex items-center justify-center gap-3 cursor-pointer hover:opacity-90 transition-all'
+              >
+                <CiFileOn className='text-2xl' />
+                <span className='text-lg font-bold'>
+                  {vaultFile ? vaultFile.name : 'Upload ZIP/Vector File'}
+                </span>
+              </Button>
+
+              <div className='mt-4 text-[#222222] font-semibold text-xs leading-relaxed'>
+                <p>
+                  <span className='font-bold uppercase tracking-tight text-[10px]'>NOT PUBLICLY DISPLAYED.</span> Released only after escrow payment.
+                </p>
+                <p className='mt-1 opacity-70'>
+                  (Accepted formats: .zip, .ai, .eps, .psd, .pdf, Max 500MB)
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. COMMERCIAL RIGHTS */}
+          <div className='flex flex-col gap-2'>
+            <div className='bg-[#EAF9FF] border border-[#CCE7F2] rounded-xl p-6'>
+              <h3 className='text-lg font-bold text-[#222222] uppercase tracking-wide mb-4'>
+                COMMERCIAL RIGHTS
+              </h3>
+
+              <div className='flex items-center gap-4'>
+                <Switch
+                  isSelected={commercialRights}
+                  onValueChange={setCommercialRights}
+                  classNames={{
+                    wrapper: 'h-10 w-24 bg-[#D1D1D1] group-data-[selected=true]:bg-[#CCE7F2]',
+                    thumb: 'h-8 w-8 bg-[#035A7A]',
+                  }}
+                  startContent={<div className='font-bold text-xs'>ON</div>}
+                  endContent={<div className='font-bold text-xs'>OFF</div>}
+                />
+                <div className='flex flex-col'>
+                  <span className='font-bold text-base text-[#222222]'>Include Commercial Rights?</span>
+                  <span className='text-xs text-[#767676] font-medium'>(Allows brand to use for mass production and global ads)</span>
+                </div>
+              </div>
+
+              {/* Limited Usage License Field */}
+              <div className='mt-6 flex flex-col gap-2'>
+                <label className={`text-sm font-bold ${commercialRights ? 'opacity-30' : 'text-[#222222]'}`}>
+                  Limited Usage License
+                </label>
+                <Textarea
+                  placeholder='Define your Limited Usage License terms (e.g. 12-month non-exclusive rights for internal mood boards, digital presentations, and unpaid social media features only. No physical production or paid advertising permitted.)'
+                  value={limitedUsageLicense}
+                  onValueChange={setLimitedUsageLicense}
+                  isDisabled={commercialRights}
+                  classNames={{
+                    input: 'text-sm placeholder:text-[#BABABA]',
+                    inputWrapper: 'bg-white border-[#D1D1D1] rounded-lg'
+                  }}
+                  minRows={3}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Asking Price */}
@@ -458,16 +563,41 @@ const License = () => {
 
 
 
-          {/* Confirmation Checkbox */}
-          <div className='flex items-start gap-2'>
-            <Checkbox />
-            <p className='text-sm'>
-              By publishing, you confirm you have the necessary rights and permission to
-              the ownership of this design.{' '}
-              <Link href='#' className='text-blue-600 underline'>
-                Learn More
-              </Link>
-            </p>
+          {/* Confirmation Checkboxes */}
+          <div className='flex flex-col gap-4'>
+            <div className='flex items-start gap-2'>
+              <Checkbox 
+                isSelected={confirmMasterFiles}
+                onValueChange={setConfirmMasterFiles}
+              />
+              <p className='text-sm font-medium text-[#222222]'>
+                I confirm that the files in &quot;The Vault&quot; are original master files matching the public previews.
+              </p>
+            </div>
+            
+            <div className='flex items-start gap-2'>
+              <Checkbox 
+                isSelected={confirmWatermarking}
+                onValueChange={setConfirmWatermarking}
+              />
+              <p className='text-sm font-medium text-[#222222]'>
+                I acknowledge that the &quot;Public Preview Gallery&quot; is for display only and uploaded at my own risk (I am responsible for watermarking).
+              </p>
+            </div>
+
+            <div className='flex items-start gap-2'>
+              <Checkbox 
+                isSelected={confirmOwnership}
+                onValueChange={setConfirmOwnership}
+              />
+              <p className='text-sm font-medium text-[#222222]'>
+                By publishing, you confirm you have the necessary rights and permission to
+                the ownership of this design.{' '}
+                <Link href='#' className='text-blue-600 underline font-normal'>
+                  Learn More
+                </Link>
+              </p>
+            </div>
           </div>
           <div className='flex flex-row gap-4 w-full justify-between lg:justify-start'>
             <CustomButton

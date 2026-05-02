@@ -2,15 +2,18 @@
 import React from "react";
 import Image from "next/image";
 import { Camera } from "lucide-react";
+import { useFormContext } from "react-hook-form";
 
 const Profile = ({
   setSelected,
-  formData,
   selected,
   className,
   handleImageChange,
   preview,
+  hoveredField,
 }) => {
+  const { watch } = useFormContext();
+  const formData = watch();
 
   return (
     <div
@@ -56,35 +59,34 @@ const Profile = ({
         </button>
         {selected === "PersonalDetail" && (
           <ul className="font-normal text-sm space-y-3 p-3">
-            <List activeState={formData.fullName} text="Full Name" />
-            <List activeState={formData.username} text="Username" />
+            <List activeState={formData.fullName} text="Full Name" isHovered={hoveredField === "Full Name"} />
+            <List activeState={formData.username} text="Username" isHovered={hoveredField === "Username"} />
 
-            <List activeState={formData.email} text=" Email Address" />
+            <List activeState={formData.email} text=" Email Address" isHovered={hoveredField === "Email Address"} />
 
             <List
               activeState={formData.nationality?.size > 0}
               text="Nationality"
+              isHovered={hoveredField === "Nationality"}
             />
 
             <List
               activeState={formData.phoneNumber}
               text="Phone Number"
+              isHovered={hoveredField === "Phone Number"}
             />
 
-            <List activeState={formData.currentCity} text="Current City" />
+            <List activeState={formData.currentCity} text="Current City" isHovered={hoveredField === "Current City"} />
 
-            <List activeState={formData.language?.size > 0} text="Language" />
+            <List activeState={formData.language?.size > 0} text="Language" isHovered={hoveredField === "Language"} />
 
             <List
-              activeState={
-                formData.day?.size > 0 ||
-                formData.month?.size > 0 ||
-                formData.year?.size > 0
-              }
+              activeState={!!formData.dob}
               text=" Date of Birth"
+              isHovered={hoveredField === "Date of Birth"}
             />
 
-            <List activeState={formData.about} text="About Yourself" />
+            <List activeState={formData.about} text="About Yourself" isHovered={hoveredField === "About Yourself"} />
           </ul>
         )}
       </section>
@@ -98,13 +100,13 @@ const Profile = ({
         </button>
         {selected === "ProfessionalInformation" && (
           <ul className="font-normal text-sm space-y-3 p-3">
-            <List activeState={formData.skill} text="Skills" />
+            <List activeState={formData.skill} text="Skills" isHovered={hoveredField === "Skills"} />
             {/* <List
               activeState={formData.companyName}
               text="Website (Optional)"
             /> */}
-            <List activeState={formData.portfolioLink} text="Portfolio" />
-            <List activeState={formData.availability} text="Availability" />
+            <List activeState={formData.portfolioLink} text="Portfolio" isHovered={hoveredField === "Portfolio"} />
+            <List activeState={formData.availability} text="Availability" isHovered={hoveredField === "Availability"} />
           </ul>
         )}
       </div>
@@ -137,13 +139,13 @@ const Profile = ({
 
 export default Profile;
 
-const List = ({ text, activeState }) => {
+const List = ({ text, activeState, isHovered }) => {
   return (
     <li
-      className={`${activeState
+      className={`${activeState || isHovered
         ? "border-[#3A98BB] transition-colors duration-300"
         : "border-[#D1D1D1]"
-        } border-l-2  p-1 text-[#767676] font-normal text-base`}
+        } border-l-2  p-1 ${isHovered ? "text-[#3A98BB] font-bold" : "text-[#767676]"} font-normal text-base`}
     >
       {text}
     </li>
