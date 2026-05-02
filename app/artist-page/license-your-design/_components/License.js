@@ -571,7 +571,7 @@ const License = () => {
                 onValueChange={setConfirmMasterFiles}
               />
               <p className='text-sm font-medium text-[#222222]'>
-                I confirm that the files in 'The Vault' are original master files matching the public previews.
+                I confirm that the files in &quot;The Vault&quot; are original master files matching the public previews.
               </p>
             </div>
             
@@ -581,7 +581,7 @@ const License = () => {
                 onValueChange={setConfirmWatermarking}
               />
               <p className='text-sm font-medium text-[#222222]'>
-                I acknowledge that the 'Public Preview Gallery' is for display only and uploaded at my own risk (I am responsible for watermarking).
+                I acknowledge that the &quot;Public Preview Gallery&quot; is for display only and uploaded at my own risk (I am responsible for watermarking).
               </p>
             </div>
 

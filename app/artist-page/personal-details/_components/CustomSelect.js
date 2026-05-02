@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 import { Select, SelectItem } from "@heroui/react";
 import React from "react";
 

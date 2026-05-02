@@ -1,4 +1,5 @@
-// import Tabs from "../../../components/Tabs";
+"use client";
+/* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
