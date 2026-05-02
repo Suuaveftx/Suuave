@@ -14,6 +14,11 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerBody,
+  DrawerFooter,
 } from '@heroui/react';
 import React, { useState } from 'react';
 import {
@@ -37,7 +42,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence, useDragControls } from 'framer-motion';
-// import { useBookmarks } from "../_components/BookmarkContext";
+import { useAppStore } from '../../../store/index';
 
 const ProductDetails = ({ params }) => {
   // const { id } = params; // Extract 'id' from the params object
@@ -67,10 +72,15 @@ const ProductDetails = ({ params }) => {
   };
 
   const [isLicensed, setIsLicensed] = useState(false);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  // const { toggleBookmark, isBookmarked, refreshBookmarks } = useBookmarks();
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { 
+    toggleBookmark, 
+    isBookmarked,
+    isMobileDetailsDrawerOpen,
+    setMobileDetailsDrawerOpen,
+    activeGalleryImageIndex,
+    setActiveGalleryImageIndex
+  } = useAppStore();
   const dragControls = useDragControls();
 
   const router = useRouter();
@@ -78,19 +88,14 @@ const ProductDetails = ({ params }) => {
   const resolvedParams = React.use(params);
   const id = resolvedParams.id;
 
-  // const isSaved = isBookmarked(id);
-
-  // useEffect(() => {
-  //   refreshBookmarks();
-  // }, [refreshBookmarks]);
+  const handleSave = () => {
+    toggleBookmark(id);
+  };
 
   const handleGetLicense = () => {
     router.push(`/checkout-page?id=${id}`);
   };
 
-  // const handleSave = () => {
-  //   toggleBookmark(id);
-  // };
 
   const handleSocialShare = (platform) => {
     const url = window.location.href;
@@ -148,11 +153,11 @@ const ProductDetails = ({ params }) => {
           <ProductGallery
             images={product.images}
             title={product.title}
-            // isBookmarked={isBookmarked(String(id || "").trim())}
+            isBookmarked={isBookmarked(id)}
             onToggleSave={handleSave}
             onOpenDetails={(index) => {
-              setCurrentImageIndex(index);
-              setIsSheetOpen(true);
+              setActiveGalleryImageIndex(index);
+              setMobileDetailsDrawerOpen(true);
             }}
           />
 
@@ -222,11 +227,11 @@ const ProductDetails = ({ params }) => {
                   radius='full'
                   onPress={handleSave}
                 >
-                  {/* {isBookmarked(String(id || '').trim()) ? (
+                  {isBookmarked(id) ? (
                     <IoBookmark className='size-5 fill-[#3A98BB] text-[#3A98BB]' />
                   ) : (
                     <IoBookmarkOutline className='size-5 text-gray-400' />
-                  )} */}
+                  )}
                 </Button>
               </div>
             </div>
@@ -298,10 +303,10 @@ const ProductDetails = ({ params }) => {
 
                 <Button
                   variant='bordered'
-                  className={`rounded-full w-[70%] text-md h-12 px-9 py-1 shadow-md font-semibold flex items-center justify-center gap-2 ${isBookmarked(String(id || '').trim()) ? 'bg-[#3A98BB] text-white border-[#3A98BB]' : 'text-[#035A7A]'}`}
+                  className={`rounded-full w-[70%] text-md h-12 px-9 py-1 shadow-md font-semibold flex items-center justify-center gap-2 ${isBookmarked(id) ? 'bg-[#3A98BB] text-white border-[#3A98BB]' : 'text-[#035A7A]'}`}
                   onPress={handleSave}
                 >
-                  {isBookmarked(String(id || '').trim()) ? 'Saved' : 'Save'}
+                  {isBookmarked(id) ? 'Saved' : 'Save'}
                 </Button>
               </CardBody>
             )}
@@ -415,14 +420,14 @@ const ProductDetails = ({ params }) => {
 
       {/* Mobile Bottom Sheet Overlay */}
       <AnimatePresence>
-        {isSheetOpen && (
+        {isMobileDetailsDrawerOpen && (
           <>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsSheetOpen(false)}
-              className='lg:hidden fixed inset-0 bg-black/40 z-[50]'
+              onClick={() => setMobileDetailsDrawerOpen(false)}
+              className='lg:hidden fixed inset-0 bg-transparent z-[50]'
             />
             <motion.div
               initial={{ y: '100%' }}
@@ -435,32 +440,23 @@ const ProductDetails = ({ params }) => {
               dragConstraints={{ top: 0 }}
               dragElastic={0.7}
               onDragEnd={(_, info) => {
-                if (info.offset.y > 150 || info.velocity.y > 500) {
-                  setIsSheetOpen(false);
+                if (info.offset.y > 50 || info.velocity.y > 200) {
+                  setMobileDetailsDrawerOpen(false);
                 }
               }}
-              className='lg:hidden fixed bottom-0 left-0 right-0 bg-white rounded-t-[40px] z-[60] h-[92vh] flex flex-col shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.3)] border-t border-neutral-100'
+              className='lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md rounded-t-[40px] z-[60] h-auto max-h-[65vh] flex flex-col shadow-[0_-20px_50px_-15px_rgba(0,0,0,0.4)] border-t border-neutral-100/50'
             >
               {/* Drag Handle Area - Tactile and larger */}
               <div
-                className='w-full pt-6 pb-4 cursor-grab active:cursor-grabbing flex-shrink-0'
+                className='w-full pt-5 pb-5 cursor-grab active:cursor-grabbing flex-shrink-0'
                 onPointerDown={(e) => dragControls.start(e)}
+                style={{ touchAction: 'none' }}
               >
-                <div className='w-20 h-1.5 bg-neutral-300 rounded-full mx-auto' />
+                <div className='w-16 h-1.5 bg-neutral-300 rounded-full mx-auto' />
               </div>
 
               {/* Scrollable Content Wrapper */}
               <div className='flex-1 overflow-y-auto overflow-x-hidden overscroll-contain px-6 pb-48 scroll-smooth custom-scrollbar'>
-                {/* Preview Image in Sheet - Adjusted for iPhone screen heights */}
-                <div className='relative w-[70vw] aspect-[3/4] mx-auto mb-10 rounded-[40px] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] border-[8px] border-white z-[70] bg-white flex items-center justify-center transition-transform hover:scale-[1.02]'>
-                  <Image
-                    src={product.images[currentImageIndex]}
-                    alt='Preview'
-                    fill
-                    className='object-cover object-top'
-                  />
-                </div>
-
                 <h1 className='text-xl font-bold leading-tight mt-2 text-center'>
                   {product.title}
                 </h1>

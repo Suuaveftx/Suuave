@@ -5,6 +5,9 @@ import PersonalDetail from "./_components/PersonalDetail";
 import PersonalInformation from "./_components/PersonalInformation";
 import AwardsCertification from "./_components/AwardsCertification";
 import Profile from "./_components/Profile";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { personalDetailsSchema } from "@/utils/validations";
 
 export default function Page() {
   const [selected, setSelected] = useState("PersonalDetail");
@@ -45,37 +48,45 @@ export default function Page() {
     setPreviewAwardCertificate((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Personal details state
+  const [hoveredField, setHoveredField] = useState(null);
 
-  const [formData, setFormData] = useState({
-    fullName: "",
-    username: "",
-    email: "",
-    nationality: new Set([]),
-    phoneCode: new Set([]),
-    phoneNumber: "",
-    currentCity: "",
-    language: new Set([]),
-    day: new Set([]),
-    month: new Set([]),
-    year: new Set([]),
-    about: "",
-    skill: "",
-    companyName: "",
-    portfolioLink: "",
-    uploadedPortfolio: "",
-    availability: false,
-    nameofAwardCertificate: "",
-    awardedIssuedBy: "",
-    uploadCertificateAward: "",
-
+  // Personal details form
+  const methods = useForm({
+    resolver: zodResolver(personalDetailsSchema),
+    defaultValues: {
+      fullName: "",
+      username: "",
+      email: "",
+      nationality: new Set([]),
+      phoneCode: new Set([]),
+      phoneNumber: "",
+      currentCity: "",
+      language: new Set([]),
+      day: new Set([]),
+      month: new Set([]),
+      year: new Set([]),
+      about: "",
+      skill: "",
+      companyName: "",
+      portfolioLink: "",
+      uploadedPortfolio: "",
+      availability: false,
+      awards: [{ name: "", issuedBy: "", previews: [] }],
+    },
+    mode: "onChange"
   });
+
+  const { watch, setValue } = methods;
+  const formData = watch();
+  const setFormData = (updates) => {
+    Object.entries(updates).forEach(([key, value]) => {
+      setValue(key, value);
+    });
+  };
   return (
     <>
-      <h1 className=" border-b-2 md:mx-10 border-[#EAEAEA] py-3 font-bold text-2xl text-[#222222] px-5 md:px-0 hidden md:block">
-        Profile Setting
-      </h1>
-      <div className="flex flex-col md:flex-row px-5 md:px-10">
+    <FormProvider {...methods}>
+      <div className="flex flex-col md:flex-row px-5 md:px-10 mt-10 md:mt-10">
         {/* profile view and button switch */}
 
         <Profile
@@ -86,6 +97,7 @@ export default function Page() {
           className="hidden md:flex"
           preview={preview}
           handleImageChange={handleImageChange}
+          hoveredField={hoveredField}
         />
 
         {/* Conditionally show content */}
@@ -99,11 +111,13 @@ export default function Page() {
               className="flex md:hidden"
               preview={preview}
               handleImageChange={handleImageChange}
+              hoveredField={hoveredField}
             />
             <PersonalDetail
               setSelected={setSelected}
               formData={formData}
               setFormData={setFormData}
+              setHoveredField={setHoveredField}
             />
           </>
         )}
@@ -116,22 +130,20 @@ export default function Page() {
             uploadedPortfolio={uploadedPortfolio}
             previewPortfolio={previewPortfolio}
             removePortfolioItem={removePortfolioItem}
+            setHoveredField={setHoveredField}
           />
         )}
 
         {selected === "Awards/Certifications" && (
           <AwardsCertification
             setSelected={setSelected}
-            formData={formData}
-            setFormData={setFormData}
-            uploadedAwardCertificate={uploadedAwardCertificate}
-            previewAwardCertificate={previewAwardCertificate}
-            removeAwardCertificateItem={removeAwardCertificateItem}
+            setHoveredField={setHoveredField}
           />
         )}
 
 
       </div>
+    </FormProvider>
     </>
   );
 }

@@ -24,7 +24,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang='en'>
-      <body className={`font-proximanova`}>
+      <body className={`font-proximanova`} suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>

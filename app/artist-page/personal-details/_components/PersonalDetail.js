@@ -1,36 +1,15 @@
 "use client";
-"use client";
-import React from "react";
-import { Select, SelectItem } from "@heroui/react";
+import React, { forwardRef } from "react";
+import { DatePicker, Button } from "@heroui/react";
+import { parseDate } from "@internationalized/date";
 import CustomSelect from "./CustomSelect";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
+import { africanDialCodes as numCode, africanCountries as nationality } from "../../../../utils/countryData";
+import { useFormContext, Controller } from "react-hook-form";
 
 
-const dayOptions = Array.from({ length: 31 }, (_, i) => ({
-  key: String(i + 1),
-  label: String(i + 1),
-}));
 
-const monthOptions = [
-  { key: "1", label: "January" },
-  { key: "2", label: "February" },
-  { key: "3", label: "March" },
-  { key: "4", label: "April" },
-  { key: "5", label: "May" },
-  { key: "6", label: "June" },
-  { key: "7", label: "July" },
-  { key: "8", label: "August" },
-  { key: "9", label: "September" },
-  { key: "10", label: "October" },
-  { key: "11", label: "November" },
-  { key: "12", label: "December" },
-];
-
-const yearOptions = Array.from({ length: 80 }, (_, i) => {
-  const year = new Date().getFullYear() - i;
-  return { key: String(year), label: String(year) };
-});
 
 const numberCode = [
   { key: "cat", label: "Cat" },
@@ -38,16 +17,6 @@ const numberCode = [
   { key: "elephant", label: "Elephant" },
 ];
 
-const nationality = [
-  { key: "Nigeria", label: "Nigeria" },
-  { key: "Ghana", label: "Ghana" },
-  { key: "Togo", label: "Togo" },
-];
-const numCode = [
-  { key: "+124", label: "+124" },
-  { key: "+09", label: "+09" },
-  { key: "+99", label: "+99" },
-];
 const language = [
   { key: "English", label: "English" },
   { key: "Spanish", label: "Spanish" },
@@ -55,89 +24,135 @@ const language = [
 
 
 
-const PersonalDetail = ({ setSelected, formData, setFormData }) => {
+const PersonalDetail = ({ setSelected, setHoveredField }) => {
+  const {
+    control,
+    register,
+    trigger,
+    formState: { errors },
+    watch,
+  } = useFormContext();
+
+  const formData = watch();
+
+  const handleContinue = async () => {
+    const isValid = await trigger(["fullName", "email", "phoneCode", "phoneNumber", "language", "about", "nationality", "currentCity", "day", "month", "year"]);
+    if (isValid) {
+      setSelected("ProfessionalInformation");
+    }
+  };
+
   return (
-    <div className="w-full h-full bg-white md:bg-[#FAFAFA] border border-[#EAEAEA] md:border-[#DEDEDE] p-6 md:p-6 rounded-2xl shadow-sm md:shadow-none">
+    <div className="w-full bg-white md:bg-[#FAFAFA] border border-[#EAEAEA] md:border-[#DEDEDE] p-6 md:p-6 rounded-2xl shadow-sm md:shadow-none pb-8">
       <h1 className="text-[#3A98BB] font-bold text-[32px] mb-1">Personal Details</h1>
       <p className="text-[#767676] font-normal text-sm mb-8">
         Fill in the following information carefully
       </p>
       <section className="flex flex-col md:grid md:grid-cols-2 gap-6 md:gap-10">
         {/* Enter Full Name */}
-        <div className="w-full flex flex-col gap-2">
+        <div
+          className="w-full flex flex-col gap-2"
+          onMouseEnter={() => setHoveredField("Full Name")}
+          onMouseLeave={() => setHoveredField(null)}
+        >
           <Lable htmlFor="fullName" text="Full Name" required />
           <Input
             id="fullName"
             placeholder="Chinedu Ozulu"
-            value={formData.fullName}
-            onChange={(e) =>
-              setFormData({ ...formData, fullName: e.target.value })
-            }
+            {...register("fullName")}
           />
+          {errors.fullName && <p className="text-red-500 text-xs">{errors.fullName.message}</p>}
         </div>
         {/* Email Address */}
-        <div className="w-full flex flex-col gap-2">
+        <div
+          className="w-full flex flex-col gap-2"
+          onMouseEnter={() => setHoveredField(" Email Address")}
+          onMouseLeave={() => setHoveredField(null)}
+        >
           <Lable htmlFor="emailAddress" text="Email Address" required />
           <div className="relative">
             <Input
-              id="emailAddress"
+              id="email"
               placeholder="czysdgv@gmail.com"
-              value={formData.email}
               readOnly
               className="bg-[#F1F1F1] border-none text-[#767676]"
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
+              {...register("email")}
             />
           </div>
+          {errors.email && <p className="text-red-500 text-xs">{errors.email.message}</p>}
         </div>
         {/*Phone Number */}
-        <div className="w-full flex flex-col gap-2">
+        <div
+          className="w-full flex flex-col gap-2"
+          onMouseEnter={() => setHoveredField("Phone Number")}
+          onMouseLeave={() => setHoveredField(null)}
+        >
           <Lable htmlFor="phoneCode" text="Phone Number" required />
           <div className="flex items-center gap-3">
-            <div className="w-[35%]">
-              <CustomSelect
-                formData={formData}
-                setFormData={setFormData}
-                value={formData.phoneCode}
-                data={numCode}
-                className="w-full"
-                htmlFor="number"
+            <div className="w-[130px] shrink-0">
+              <Controller
+                name="phoneCode"
+                control={control}
+                render={({ field }) => (
+                  <CustomSelect
+                    value={field.value}
+                    onChange={field.onChange}
+                    data={numCode}
+                    className="w-full"
+                    htmlFor="phoneCode"
+                  />
+                )}
               />
             </div>
             <Input
-              id="number"
+              id="phoneNumber"
+              className="flex-1"
               placeholder="0000000000"
-              value={formData.phoneNumber}
-              onChange={(e) =>
-                setFormData({ ...formData, phoneNumber: e.target.value })
-              }
+              {...register("phoneNumber")}
             />
           </div>
+          {(errors.phoneCode || errors.phoneNumber) && (
+            <p className="text-red-500 text-xs">
+              {errors.phoneCode?.message || errors.phoneNumber?.message}
+            </p>
+          )}
         </div>
         {/*Language */}
-        <div className="w-full flex flex-col gap-2">
-          <Lable htmlFor="Language" text="Language" required />
-          <CustomSelect
-            formData={formData}
-            setFormData={setFormData}
-            value={formData.language}
-            data={language}
-            className="w-full"
-            htmlFor="language"
+        <div
+          className="w-full flex flex-col gap-2"
+          onMouseEnter={() => setHoveredField("Language")}
+          onMouseLeave={() => setHoveredField(null)}
+        >
+          <Lable htmlFor="language" text="Language" required />
+          <Controller
+            name="language"
+            control={control}
+            render={({ field }) => (
+              <CustomSelect
+                value={field.value}
+                onChange={field.onChange}
+                data={language}
+                className="w-full"
+                htmlFor="language"
+              />
+            )}
           />
+          {errors.language && <p className="text-red-500 text-xs">{errors.language.message}</p>}
         </div>
         {/* textarea */}
-        <div className="w-full flex flex-col gap-2">
+        <div
+          className="w-full flex flex-col gap-2"
+          onMouseEnter={() => setHoveredField("About Yourself")}
+          onMouseLeave={() => setHoveredField(null)}
+        >
           <Lable htmlFor="about" text="Describe Yourself" required />
           <textarea
-            name="about"
             id="about"
             placeholder="Write About Your Design Style"
             className="w-full border border-[#D1D1D1] text-[#222222] placeholder:text-[#ADADAD] font-normal text-sm py-2 px-3 rounded-lg outline-none focus:border-[#3A98BB] bg-transparent h-32 resize-none"
-            value={formData.about}
-            onChange={(e) => setFormData({ ...formData, about: e.target.value })}
+            {...register("about")}
           />
+          {errors.about && <p className="text-red-500 text-xs">{errors.about.message}</p>}
         </div>
         {/* Company Name */}
         <div className="w-full flex flex-col gap-2">
@@ -145,78 +160,108 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
           <Input
             id="companyName"
             placeholder="Enter Company Name"
-            value={formData.companyName}
-            onChange={(e) =>
-              setFormData({ ...formData, companyName: e.target.value })
-            }
+            {...register("companyName")}
           />
+          {errors.companyName && <p className="text-red-500 text-xs">{errors.companyName.message}</p>}
         </div>
         {/*Nationality */}
-        <div className="w-full flex flex-col gap-2">
+        <div
+          className="w-full flex flex-col gap-2"
+          onMouseEnter={() => setHoveredField("Nationality")}
+          onMouseLeave={() => setHoveredField(null)}
+        >
           <Lable htmlFor="nationality" text="Nationality" required />
-          <CustomSelect
-            formData={formData}
-            setFormData={setFormData}
-            value={formData.nationality}
-            data={nationality}
-            className="w-full"
-            htmlFor="nationality"
+          <Controller
+            name="nationality"
+            control={control}
+            render={({ field }) => (
+              <CustomSelect
+                value={field.value}
+                onChange={field.onChange}
+                data={nationality}
+                className="max-w-[280px]"
+                htmlFor="nationality"
+              />
+          )}
           />
+          {errors.nationality && <p className="text-red-500 text-xs">{errors.nationality.message}</p>}
         </div>
         {/*Current City*/}
-        <div className="w-full flex flex-col gap-2">
+        <div
+          className="w-full flex flex-col gap-2"
+          onMouseEnter={() => setHoveredField("Current City")}
+          onMouseLeave={() => setHoveredField(null)}
+        >
           <Lable htmlFor="currentCity" text="Current City" required />
-          <div className="relative">
+          <div className="relative max-w-[280px]">
             <Input
               id="currentCity"
-              placeholder="Select"
-              value={formData.currentCity}
-              onChange={(e) =>
-                setFormData({ ...formData, currentCity: e.target.value })
-              }
+              placeholder="Lagos"
+              className="w-full"
+              {...register("currentCity")}
             />
             <ChevronDown size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#767676] md:hidden pointer-events-none" />
           </div>
+          {errors.currentCity && <p className="text-red-500 text-xs">{errors.currentCity.message}</p>}
         </div>
         {/*Date of Birth*/}
-        <div className="w-full flex flex-col gap-2">
+        <div
+          className="w-full flex flex-col gap-2"
+          onMouseEnter={() => setHoveredField(" Date of Birth")}
+          onMouseLeave={() => setHoveredField(null)}
+        >
           <Lable htmlFor="dateofBirth" text="Date Of Birth" required />
-          <div className="grid grid-cols-3 gap-3">
-            <CustomSelect
-              formData={formData}
-              setFormData={setFormData}
-              value={formData.day}
-              data={dayOptions}
-              className="w-full"
-              htmlFor="day"
-            />
-            <CustomSelect
-              formData={formData}
-              setFormData={setFormData}
-              value={formData.month}
-              data={monthOptions}
-              className="w-full"
-              htmlFor="month"
-            />
-            <CustomSelect
-              formData={formData}
-              setFormData={setFormData}
-              value={formData.year}
-              data={yearOptions}
-              className="w-full"
-              htmlFor="year"
-            />
-          </div>
+          <Controller
+            name="dob"
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                id="dateofBirth"
+                aria-label="Date of Birth"
+                value={
+                  field.value
+                    ? (() => { try { return parseDate(field.value); } catch { return null; } })()
+                    : null
+                }
+                onChange={(date) =>
+                  field.onChange(date ? date.toString() : '')
+                }
+                showMonthAndYearPickers
+                popoverProps={{ placement: 'top-start', shouldFlip: false }}
+                classNames={{
+                  base: 'max-w-[280px]',
+                  inputWrapper: [
+                    'w-full border border-[#D1D1D1] rounded-lg bg-transparent px-2 py-1',
+                    'hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+                    'shadow-none',
+                  ],
+                  input: 'text-[#222222] placeholder:text-[#ADADAD] font-normal text-sm',
+                }}
+                calendarProps={{
+                  classNames: {
+                    base: 'shadow-lg rounded-xl border border-[#D1D1D1]',
+                    title: 'text-[#035A7A] font-semibold',
+                    cellButton: [
+                      'data-[selected=true]:bg-[#CCE7F2] data-[selected=true]:text-[#035A7A]',
+                      'data-[today=true]:border data-[today=true]:border-[#3A98BB]',
+                      'hover:bg-[#EAF9FF] rounded-lg',
+                    ],
+                  },
+                }}
+              />
+            )}
+          />
+          {errors.dob && <p className="text-red-500 text-xs">{errors.dob.message}</p>}
         </div>
       </section>
 
-      <div className="w-full flex justify-center md:justify-end mt-12">
-        <button
-          onClick={() => setSelected("ProfessionalInformation")}
-          className="w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] cursor-pointer px-12 py-3.5 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)] active:scale-95 transition-all"
+      <div className="w-full flex flex-col md:flex-row items-center justify-center md:justify-end gap-3 mt-12">
+        <Button
+          onPress={handleContinue}
+          className="w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]"
         >
-          Next
-        </button>
+          Continue
+        </Button>
       </div>
     </div>
   );
@@ -224,18 +269,22 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
 
 export default PersonalDetail;
 
-const Input = ({ placeholder, id, value, onChange, className, readOnly }) => {
+const Input = forwardRef(({ placeholder, id, name, onChange, onBlur, className, readOnly }, ref) => {
   return (
     <input
-      onChange={onChange}
-      value={value}
       id={id}
+      name={name}
+      ref={ref}
+      onChange={onChange}
+      onBlur={onBlur}
       placeholder={placeholder}
       readOnly={readOnly}
       className={`w-full border border-[#D1D1D1] text-[#222222] placeholder:text-[#ADADAD] font-normal text-sm py-2 px-3 rounded-lg outline-none focus:border-[#3A98BB] bg-transparent ${className}`}
     />
   );
-};
+});
+
+Input.displayName = "Input";
 
 const Lable = ({ text, htmlFor, required }) => {
   return (

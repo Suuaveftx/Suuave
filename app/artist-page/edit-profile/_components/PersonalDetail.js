@@ -5,6 +5,7 @@ import CustomSelect from "./CustomSelect";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { dialCodes as numCode } from "../../../../utils/countryData";
 
 const dayOptions = Array.from({ length: 31 }, (_, i) => ({
   key: String(i + 1),
@@ -41,11 +42,6 @@ const nationality = [
   { key: "Nigeria", label: "Nigeria" },
   { key: "Ghana", label: "Ghana" },
   { key: "Togo", label: "Togo" },
-];
-const numCode = [
-  { key: "+124", label: "+124" },
-  { key: "+09", label: "+09" },
-  { key: "+99", label: "+99" },
 ];
 const language = [
   { key: "English", label: "English" },
@@ -91,7 +87,7 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
         <div className="w-full flex flex-col gap-2">
           <Lable htmlFor="phoneCode" text="Phone Number" />
           <div className="flex items-center gap-3">
-            <div className="w-[35%]">
+            <div className="w-[130px] shrink-0">
               <CustomSelect
                 formData={formData}
                 setFormData={setFormData}
@@ -103,6 +99,7 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
             </div>
             <Input
               id="number"
+              className="flex-1"
               placeholder="0000000000"
               value={formData.phoneNumber}
               onChange={(e) =>
