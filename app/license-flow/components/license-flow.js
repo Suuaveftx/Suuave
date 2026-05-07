@@ -4,7 +4,7 @@ import { Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { useAppStore } from "../../../store";
+import { useAppStore } from "@/store";
 
 export default function LicenseFlow({ productId }) {
   const router = useRouter();

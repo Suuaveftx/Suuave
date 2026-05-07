@@ -9,7 +9,7 @@ import UploadModal from "../../profile-for-artist/_components/UploadModal";
 
 
 
-import { useAppStore } from "../../../../store";
+import { useAppStore } from "@/store";
 
 const FashionCard = () => {
   const [activeTab, setActiveTab] = useState("reviews");

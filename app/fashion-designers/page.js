@@ -6,7 +6,7 @@ import { IoSearchOutline } from 'react-icons/io5';
 import FashionDesignersCard from './_components/studio-page-components/FashionDesignersCard';
 import FloatingButton from './_components/FloatingButton';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
-import { useAppStore } from '../store';
+import { useAppStore } from '@/store';
 
 const Page = () => {
   const [isVisible, setIsVisible] = useState(true);

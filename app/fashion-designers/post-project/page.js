@@ -15,7 +15,7 @@ import { ArrowLeft, Paperclip, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState, useEffect, Suspense } from "react";
 
-import { useAppStore } from "../../../store";
+import { useAppStore } from "@/store";
 
 const PageContent = () => {
   const router = useRouter();

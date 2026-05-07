@@ -32,7 +32,7 @@ import ProductGallery from '../_components/designer-details/ProductGallery';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence, useDragControls } from 'framer-motion';
-import { useAppStore } from '../../../store/index';
+import { useAppStore } from '@/store';
 
 const ProductDetails = ({ params }) => {
   const product = {

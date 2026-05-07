@@ -10,7 +10,7 @@ import { color } from 'framer-motion';
 import { useDisclosure } from '@heroui/react';
 import PublishDesignPopUp from './PublishDesignPopUp';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useAppStore } from '../../../../store/index';
+import { useAppStore } from '@/store';
 import { CiFileOn } from 'react-icons/ci';
 
 const License = () => {

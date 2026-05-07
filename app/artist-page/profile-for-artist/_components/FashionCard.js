@@ -11,7 +11,7 @@ import UploadModal from './UploadModal';
 import Link from 'next/link';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
-import { useAppStore } from '../../../../store';
+import { useAppStore } from '@/store';
 
 const FashionCard = ({ isVisitor = false }) => {
   const [activeTab, setActiveTab] = useState('design');

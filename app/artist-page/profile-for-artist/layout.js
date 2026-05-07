@@ -5,7 +5,7 @@ import Navbars from "../../../components/ArtistNavbar";
 import FashionDesignerHeader from "../../fashion-designers/_components/studio-page-components/FashionDesignerHeader";
 import { useEffect, useState } from "react";
 
-import { useAppStore } from "../../../store";
+import { useAppStore } from "@/store";
 
 export default function Layout({ children }) {
   const { activeCategory } = useAppStore();

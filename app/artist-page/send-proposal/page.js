@@ -8,7 +8,7 @@ import ProposalPopUp from './_components/ProposalPopUp';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useDisclosure } from '@heroui/react';
 
-import { useAppStore } from '../../../store';
+import { useAppStore } from '@/store';
 
 const SendProposalPageContent = () => {
   const router = useRouter();

@@ -8,7 +8,7 @@ import ProposalPopUpMobile from './ProposalPopUpMobile';
 import ProposalPopUp from './ProposalPopUp';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useAppStore } from '../../../../store';
+import { useAppStore } from '@/store';
 
 const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobId, isEditMode, handleCancelEdit }) => {
   const router = useRouter();

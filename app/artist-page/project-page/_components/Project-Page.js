@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaRegBookmark, FaBookmark, FaShareAlt, FaWhatsapp, FaTwitter, FaFacebook, FaLinkedin, FaCopy } from 'react-icons/fa';
 import { FiPlus, FiMinus } from 'react-icons/fi';
-import { useAppStore } from '../../../../store';
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@heroui/react';
+import { useAppStore } from '@/store';
 
 const ProjectPage = () => {
   const [activeTab, setActiveTab] = useState('recent');

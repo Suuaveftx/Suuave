@@ -28,7 +28,7 @@ import Link from 'next/link';
 import FashionDesignerHeader from '../../fashion-designers/_components/studio-page-components/FashionDesignerHeader';
 import Footer from '../../about-page/components/Footer';
 
-import { useAppStore } from '../../../store';
+import { useAppStore } from '@/store';
 
 export const CheckoutPage = () => {
   const [selectedCountry, setSelectedCountry] = useState('Nigeria');

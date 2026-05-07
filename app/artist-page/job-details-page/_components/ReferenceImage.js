@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Paperclip } from "lucide-react";
-import { useAppStore } from "../../../../store";
+import { useAppStore } from "@/store";
 
 const ReferenceImage = ({ jobId }) => {
     const [hasReference, setHasReference] = React.useState(false);

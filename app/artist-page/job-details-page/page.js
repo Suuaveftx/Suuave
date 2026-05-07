@@ -13,7 +13,7 @@ import DeleteConfirmationModal from '../../fashion-designers/my-projects/compone
 import { useDisclosure } from '@heroui/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useAppStore } from '../../../store';
+import { useAppStore } from '@/store';
 
 const JobDetailsPageContent = () => {
   const router = useRouter();

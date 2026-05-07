@@ -24,25 +24,21 @@ const CustomSelect = ({
   errorMessage,
   placement = "bottom-start",
 }) => {
-  const validKeys = new Set(data.map((d) => String(d.key)));
-
-  // Normalize value to an array for HeroUI Select's selectedKeys
-  // HeroUI expects a Set or 'all', but internally it often works better with a normalized array 
-  // if we're doing manual filtering or transformation.
   const selectedKeys = React.useMemo(() => {
+    const vKeys = new Set(data.map((d) => String(d.key)));
     if (!value) return [];
     // If value is already a Set, convert to array of strings
     if (value instanceof Set) {
       return Array.from(value)
         .map((k) => String(k))
-        .filter((k) => validKeys.has(k));
+        .filter((k) => vKeys.has(k));
     }
     // If it's a string, wrap in array
     if (typeof value === 'string') {
-      return validKeys.has(value) ? [value] : [];
+      return vKeys.has(value) ? [value] : [];
     }
     return [];
-  }, [value, validKeys]);
+  }, [value, data]);
 
   const handleSelectionChange = (keys) => {
     // HeroUI returns a Set of keys. We pass this directly back to onChange.

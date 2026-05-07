@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { EyeIcon, EyeOff } from 'lucide-react';
 
-import { useAppStore } from '../../../../store';
+import { useAppStore } from '@/store';
 import { sendVerificationEmail, signUp } from '../../../actions/services';
 import { useRouter } from 'next/navigation';
 import { PROVIDERS } from '../../../../utils/constants';

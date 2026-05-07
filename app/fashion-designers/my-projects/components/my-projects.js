@@ -28,7 +28,7 @@ import { useRouter } from 'next/navigation';
 import ProposalsModal from './ProposalsModal';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
-import { useAppStore } from '../../../../store';
+import { useAppStore } from '@/store';
 
 const MyProjects = () => {
   const router = useRouter();
