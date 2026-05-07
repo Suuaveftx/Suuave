@@ -1,9 +1,10 @@
 'use client';
 import React from 'react';
-import { DatePicker, Input as HeroInput, Textarea, Button } from '@heroui/react';
+import { DatePicker, Input as HeroInput, Textarea } from '@heroui/react';
 import { parseDate } from '@internationalized/date';
-import CustomSelect from './CustomSelect';
-import Link from 'next/link';
+import FormLabel from '@/components/ui/FormLabel';
+import CustomSelect from '@/components/ui/CustomSelect';
+import PhoneInputCustom from '@/components/ui/PhoneInputCustom';
 import { ChevronLeft } from 'lucide-react';
 import { useFormContext, Controller } from 'react-hook-form';
 
@@ -28,6 +29,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
     register,
     control,
     trigger,
+    setValue,
     formState: { errors },
   } = useFormContext();
 
@@ -44,10 +46,10 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
   };
 
   return (
-    <div className='w-full h-full bg-[#FAFAFA] border-1-[#DEDEDE] p-3 md:p-6 rounded-2xl'>
+    <div className='w-full h-full bg-[#FAFAFA] border border-[#DEDEDE] p-3 md:p-6 rounded-2xl'>
       {step > 1 && (
         <button
-          className='flex items-center text-[#3A98BB] mb-4 hover:opacity-80 transition-opacity'
+          className='flex items-center text-[#3A98BB] mb-4 hover:opacity-80 transition-opacity focus:outline-none'
           onClick={() => setStep(step - 1)}
         >
           <ChevronLeft size={24} />
@@ -70,12 +72,15 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Full Name')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <Lable htmlFor='fullName' text='Full Name' required />
+              <FormLabel htmlFor='fullName' text='Full Name' required />
               <HeroInput
                 id='fullName'
                 placeholder='Enter Full Name'
                 variant="bordered"
-                classNames={{ inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', input: 'text-[#878787]' }}
+                classNames={{ 
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
+                  input: 'text-[#878787]' 
+                }}
                 {...register("fullName")}
                 isInvalid={!!errors.fullName}
                 errorMessage={errors.fullName?.message}
@@ -87,12 +92,15 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Business Name')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <Lable htmlFor='businessName' text='Business Name' required />
+              <FormLabel htmlFor='businessName' text='Business Name' required />
               <HeroInput
                 id='businessName'
                 placeholder='Suuave Fashion Ltd.'
                 variant="bordered"
-                classNames={{ inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', input: 'text-[#878787]' }}
+                classNames={{ 
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
+                  input: 'text-[#878787]' 
+                }}
                 {...register("businessName")}
                 isInvalid={!!errors.businessName}
                 errorMessage={errors.businessName?.message}
@@ -104,12 +112,15 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Username')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <Lable htmlFor='username' text='Username' required />
+              <FormLabel htmlFor='username' text='Username' required />
               <HeroInput
                 id='username'
                 placeholder='@ocean'
                 variant="bordered"
-                classNames={{ inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', input: 'text-[#878787]' }}
+                classNames={{ 
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
+                  input: 'text-[#878787]' 
+                }}
                 {...register("username")}
                 isInvalid={!!errors.username}
                 errorMessage={errors.username?.message}
@@ -121,21 +132,21 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Brand Category')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <Lable htmlFor='brandCategory' text='Brand Category' required />
+              <FormLabel htmlFor='brandCategory' text='Brand Category' required />
               <Controller
                 name="brandCategory"
                 control={control}
                 render={({ field }) => (
                   <CustomSelect
+                    id="brandCategory"
                     value={field.value}
                     onChange={field.onChange}
                     data={brandCategoryOptions}
-                    className='w-full'
-                    htmlFor='brandCategory'
+                    isInvalid={!!errors.brandCategory}
+                    errorMessage={errors.brandCategory?.message}
                   />
                 )}
               />
-              {errors.brandCategory && <p className="text-red-500 text-xs">{errors.brandCategory.message}</p>}
             </div>
             {/* Email Address */}
             <div
@@ -143,12 +154,15 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Email Address')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <Lable htmlFor='emailAddress' text='Email Address' required />
+              <FormLabel htmlFor='emailAddress' text='Email Address' required />
               <HeroInput
                 id='emailAddress'
-                placeholder='@czysdgv@gmail.com'
+                placeholder='czysdgv@gmail.com'
                 variant="bordered"
-                classNames={{ inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', input: 'text-[#878787]' }}
+                classNames={{ 
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
+                  input: 'text-[#878787]' 
+                }}
                 {...register("email")}
                 isInvalid={!!errors.email}
                 errorMessage={errors.email?.message}
@@ -160,12 +174,15 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Position')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <Lable htmlFor='role' text='Position' required />
+              <FormLabel htmlFor='role' text='Position' required />
               <HeroInput
                 id='role'
                 placeholder='Creative Director'
                 variant="bordered"
-                classNames={{ inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', input: 'text-[#878787]' }}
+                classNames={{ 
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
+                  input: 'text-[#878787]' 
+                }}
                 {...register("role")}
                 isInvalid={!!errors.role}
                 errorMessage={errors.role?.message}
@@ -176,7 +193,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
           <div className='w-full flex justify-center md:justify-end mt-10'>
             <button
               onClick={handleContinue}
-              className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 mt-4 text-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] w-full md:w-auto font-proximanova'
+              className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 mt-4 text-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] w-full md:w-auto font-semibold shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
             >
               Continue
             </button>
@@ -193,21 +210,22 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Nationality')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <Lable htmlFor='nationality' text='Nationality' />
+              <FormLabel htmlFor='nationality' text='Nationality' />
               <Controller
                 name="nationality"
                 control={control}
                 render={({ field }) => (
                   <CustomSelect
+                    id="nationality"
                     value={field.value}
                     onChange={field.onChange}
                     data={nationalityList}
                     className='max-w-[280px]'
-                    htmlFor='nationality'
+                    isInvalid={!!errors.nationality}
+                    errorMessage={errors.nationality?.message}
                   />
                 )}
               />
-              {errors.nationality && <p className="text-red-500 text-xs">{errors.nationality.message}</p>}
             </div>
             {/*Phone Number */}
             <div
@@ -215,32 +233,26 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Phone Number')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <Lable htmlFor='phoneCode' text='Phone Number' />
-              <div className='flex items-center gap-3'>
-                <Controller
-                  name="phoneCode"
-                  control={control}
-                  render={({ field }) => (
-                    <CustomSelect
-                      value={field.value}
-                      onChange={field.onChange}
-                      data={numCodeList}
-                      className='w-[130px] shrink-0'
-                      htmlFor='phoneCode'
-                    />
-                  )}
-                />
-                <HeroInput
-                  id='number'
-                  className='flex-1'
-                  placeholder='814256763'
-                  variant="bordered"
-                  classNames={{ inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', input: 'text-[#878787]' }}
-                  {...register("phoneNumber")}
-                  isInvalid={!!errors.phoneNumber}
-                  errorMessage={errors.phoneNumber?.message}
-                />
-              </div>
+              <FormLabel htmlFor='phoneNumber' text='Phone Number' />
+              <Controller
+                name="phoneNumber"
+                control={control}
+                render={({ field }) => (
+                  <PhoneInputCustom
+                    id="phoneNumber"
+                    value={field.value}
+                    onChange={(val, data) => {
+                      field.onChange(val);
+                      // Maintain backward compatibility with phoneCode Set
+                      if (data?.dialCode) {
+                        setValue("phoneCode", new Set([`+${data.dialCode}`]));
+                      }
+                    }}
+                    onBlur={field.onBlur}
+                    error={errors.phoneNumber?.message || errors.phoneCode?.message}
+                  />
+                )}
+              />
             </div>
             {/*Current City*/}
             <div
@@ -248,12 +260,15 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Current City')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <Lable htmlFor='currentCity' text='Current City' />
+              <FormLabel htmlFor='currentCity' text='Current City' />
               <HeroInput
                 id='currentCity'
                 placeholder='Lagos'
                 variant="bordered"
-                classNames={{ inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', input: 'text-[#878787]' }}
+                classNames={{ 
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
+                  input: 'text-[#878787]' 
+                }}
                 {...register("currentCity")}
                 isInvalid={!!errors.currentCity}
                 errorMessage={errors.currentCity?.message}
@@ -265,21 +280,22 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Language')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <Lable htmlFor='language' text='Language' />
+              <FormLabel htmlFor='language' text='Language' />
               <Controller
                 name="language"
                 control={control}
                 render={({ field }) => (
                   <CustomSelect
+                    id="language"
                     value={field.value}
                     onChange={field.onChange}
                     data={languageOptions}
                     className='max-w-[280px]'
-                    htmlFor='language'
+                    isInvalid={!!errors.language}
+                    errorMessage={errors.language?.message}
                   />
                 )}
               />
-              {errors.language && <p className="text-red-500 text-xs">{errors.language.message}</p>}
             </div>
             {/*Date of Birth*/}
             <div
@@ -287,13 +303,13 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Date of Birth')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <Lable htmlFor='dateofBirth' text='Date Of Birth' />
+              <FormLabel htmlFor='dob' text='Date Of Birth' />
               <Controller
                 name="dob"
                 control={control}
                 render={({ field }) => (
                   <DatePicker
-                    id='dateofBirth'
+                    id='dob'
                     aria-label='Date of Birth'
                     value={
                       field.value
@@ -304,7 +320,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                       field.onChange(date ? date.toString() : '')
                     }
                     showMonthAndYearPickers
-                    popoverProps={{ placement: 'top-start', shouldFlip: false }}
+                    popoverProps={{ placement: 'bottom-start', shouldFlip: false }}
                     classNames={{
                       base: 'max-w-[280px]',
                       inputWrapper: [
@@ -331,7 +347,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                   />
                 )}
               />
-              {errors.dob && <p className="text-red-500 text-xs">{errors.dob.message}</p>}
+              {errors.dob && <p className="text-danger text-xs">{errors.dob.message}</p>}
             </div>
           </section>
 
@@ -341,7 +357,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
             onMouseEnter={() => setHoveredField('About Yourself')}
             onMouseLeave={() => setHoveredField(null)}
           >
-            <Lable htmlFor='about' text='Describe Yourself' />
+            <FormLabel htmlFor='about' text='Describe Yourself' />
             <Controller
               name="about"
               control={control}
@@ -350,7 +366,10 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                   id='about'
                   placeholder='Tell Us About Yourself, Your Relevant Skills and Professional Experience.'
                   variant="bordered"
-                  classNames={{ inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', input: 'text-[#878787]' }}
+                  classNames={{ 
+                    inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
+                    input: 'text-[#878787]' 
+                  }}
                   minRows={4}
                   {...field}
                   isInvalid={!!errors.about}
@@ -361,19 +380,19 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
           </section>
 
           <div className='w-full flex flex-col md:flex-row justify-center md:justify-end mt-10 gap-4'>
-            <Link
+            <a
               href={submitHref}
-              className='text-center cursor-pointer px-6 py-2 mt-4 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold'
+              className='flex items-center justify-center cursor-pointer px-6 py-2 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold hover:bg-[#EAF9FF] transition-colors'
             >
               Skip
-            </Link>
-            <Link
+            </a>
+            <a
               href={submitHref}
               onClick={handleSubmitClick}
-              className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 mt-4 text-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] w-full md:w-auto font-proximanova'
+              className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 text-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] w-full md:w-auto font-semibold shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
             >
               Submit
-            </Link>
+            </a>
           </div>
         </>
       )}
@@ -383,10 +402,3 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
 
 export default BrandDetails;
 
-const Lable = ({ text, htmlFor, required }) => {
-  return (
-    <label htmlFor={htmlFor} className="text-sm font-medium text-[#222222]">
-      {text}{required && <span className="text-red-500 ml-0.5">*</span>}
-    </label>
-  );
-};

@@ -9,16 +9,10 @@ import {
   PopoverTrigger,
   Chip,
   Avatar,
-  Alert,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerBody,
-  DrawerFooter,
 } from '@heroui/react';
 import React, { useState } from 'react';
 import {
@@ -34,19 +28,13 @@ import { SvgCautionIcon } from '../../../utils/SvgIcons';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 import { TiLocation } from 'react-icons/ti';
-import { Info, ArrowLeft } from 'lucide-react';
-import LicenseModal from '../_components/licenseModal';
 import ProductGallery from '../_components/designer-details/ProductGallery';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion, AnimatePresence, useDragControls } from 'framer-motion';
 import { useAppStore } from '../../../store/index';
 
 const ProductDetails = ({ params }) => {
-  // const { id } = params; // Extract 'id' from the params object
-
   const product = {
     title: 'Modern Fashion Attire Illustration',
     price: '$35,000.00',
@@ -71,22 +59,26 @@ const ProductDetails = ({ params }) => {
     },
   };
 
-  const [isLicensed, setIsLicensed] = useState(false);
   const [copied, setCopied] = useState(false);
   const { 
     toggleBookmark, 
-    isBookmarked,
+    savedCardIds,
     isMobileDetailsDrawerOpen,
     setMobileDetailsDrawerOpen,
     activeGalleryImageIndex,
-    setActiveGalleryImageIndex
+    setActiveGalleryImageIndex,
+    licenses
   } = useAppStore();
+  
   const dragControls = useDragControls();
-
   const router = useRouter();
+  
   // unwrap params
   const resolvedParams = React.use(params);
   const id = resolvedParams.id;
+
+  const isLicensed = !!licenses[id];
+  const isBookmarked = savedCardIds.includes(id);
 
   const handleSave = () => {
     toggleBookmark(id);
@@ -95,7 +87,6 @@ const ProductDetails = ({ params }) => {
   const handleGetLicense = () => {
     router.push(`/checkout-page?id=${id}`);
   };
-
 
   const handleSocialShare = (platform) => {
     const url = window.location.href;
@@ -129,20 +120,8 @@ const ProductDetails = ({ params }) => {
     }
   };
 
-  useEffect(() => {
-    const storedLicenses = localStorage.getItem('licenses');
-    if (storedLicenses) {
-      const licenses = JSON.parse(storedLicenses);
-      if (licenses[id]) {
-        setIsLicensed(true);
-      }
-    }
-  }, [id]);
-
-  //handle download
   const handleDownload = () => {
     console.log('Download started');
-    // later you can add actual download logic here
   };
 
   return (
@@ -153,7 +132,7 @@ const ProductDetails = ({ params }) => {
           <ProductGallery
             images={product.images}
             title={product.title}
-            isBookmarked={isBookmarked(id)}
+            isBookmarked={isBookmarked}
             onToggleSave={handleSave}
             onOpenDetails={(index) => {
               setActiveGalleryImageIndex(index);
@@ -227,7 +206,7 @@ const ProductDetails = ({ params }) => {
                   radius='full'
                   onPress={handleSave}
                 >
-                  {isBookmarked(id) ? (
+                  {isBookmarked ? (
                     <IoBookmark className='size-5 fill-[#3A98BB] text-[#3A98BB]' />
                   ) : (
                     <IoBookmarkOutline className='size-5 text-gray-400' />
@@ -303,10 +282,10 @@ const ProductDetails = ({ params }) => {
 
                 <Button
                   variant='bordered'
-                  className={`rounded-full w-[70%] text-md h-12 px-9 py-1 shadow-md font-semibold flex items-center justify-center gap-2 ${isBookmarked(id) ? 'bg-[#3A98BB] text-white border-[#3A98BB]' : 'text-[#035A7A]'}`}
+                  className={`rounded-full w-[70%] text-md h-12 px-9 py-1 shadow-md font-semibold flex items-center justify-center gap-2 ${isBookmarked ? 'bg-[#3A98BB] text-white border-[#3A98BB]' : 'text-[#035A7A]'}`}
                   onPress={handleSave}
                 >
-                  {isBookmarked(id) ? 'Saved' : 'Save'}
+                  {isBookmarked ? 'Saved' : 'Save'}
                 </Button>
               </CardBody>
             )}

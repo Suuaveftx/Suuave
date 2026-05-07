@@ -8,6 +8,8 @@ import ProposalPopUp from './_components/ProposalPopUp';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useDisclosure } from '@heroui/react';
 
+import { useAppStore } from '../../../store';
+
 const SendProposalPageContent = () => {
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -15,15 +17,15 @@ const SendProposalPageContent = () => {
   const isEditMode = searchParams.get('edit') === 'true';
   const jobId = searchParams.get('id');
 
+  const { addProposal } = useAppStore();
+
   const handleSubmitProposal = () => {
-    // Save to localStorage and open modal
-    if (jobId) {
-      const activeProposals = JSON.parse(localStorage.getItem('activeProposals') || '{}');
-      activeProposals[jobId] = true;
-      localStorage.setItem('activeProposals', JSON.stringify(activeProposals));
-    } else {
-      localStorage.setItem('proposalActive', 'true');
-    }
+    // Save to Zustand and open modal
+    const proposalData = {
+      timestamp: new Date().toISOString(),
+    };
+
+    addProposal(jobId || 'default', proposalData);
     onOpen();
   };
 

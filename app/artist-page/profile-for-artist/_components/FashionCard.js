@@ -11,6 +11,8 @@ import UploadModal from './UploadModal';
 import Link from 'next/link';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
+import { useAppStore } from '../../../../store';
+
 const FashionCard = ({ isVisitor = false }) => {
   const [activeTab, setActiveTab] = useState('design');
   const [showAll, setShowAll] = useState(false);
@@ -21,13 +23,14 @@ const FashionCard = ({ isVisitor = false }) => {
   const [userRole, setUserRole] = useState(null);
   const router = useRouter();
 
+  const { activeCategory } = useAppStore();
+
   useEffect(() => {
-    // Access localStorage in useEffect to avoid hydration issues
-    let role = isVisitor ? 'brand' : localStorage.getItem('activeCategory');
+    let role = isVisitor ? 'brand' : activeCategory;
     if (role === 'Fashion Artist') role = 'artist';
     if (role === 'Fashion Brand') role = 'brand';
     setUserRole(role);
-  }, [isVisitor]);
+  }, [isVisitor, activeCategory]);
 
   const tabs = [
     { id: 'design', label: 'Design Collections' },

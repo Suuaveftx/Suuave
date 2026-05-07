@@ -44,9 +44,11 @@ const Profile = ({
         </div>
         <div className="flex flex-col items-center md:items-start w-full">
           <b className="font-bold text-xl text-[#222222]">
-            Chinedu Ozulu
+            {formData.fullName || "Your Name"}
           </b>
-          <small className="font-normal text-sm text-[#767676]">@ocean</small>
+          <small className="font-normal text-sm text-[#767676]">
+            {formData.username ? `@${formData.username.replace(/^@/, '')}` : "@username"}
+          </small>
         </div>
       </div>
       {/* Personal Detail toggle */}

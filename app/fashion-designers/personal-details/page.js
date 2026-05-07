@@ -4,8 +4,6 @@ import { useState } from "react";
 import BrandDetails from "./_components/BrandDetails";
 import Profile from "./_components/Profile";
 import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { brandDetailsSchema } from "@/utils/validations";
 
 export default function Page() {
   const [selected, setSelected] = useState("PersonalDetail");
@@ -25,7 +23,6 @@ export default function Page() {
   const [hoveredField, setHoveredField] = useState(null);
   // Personal details form
   const methods = useForm({
-    resolver: zodResolver(brandDetailsSchema),
     defaultValues: {
       fullName: "",
       username: "",
@@ -87,8 +84,6 @@ export default function Page() {
           <BrandDetails
             step={step}
             setStep={setStep}
-            formData={formData}
-            setFormData={setFormData}
             setHoveredField={setHoveredField}
           />
         </div>

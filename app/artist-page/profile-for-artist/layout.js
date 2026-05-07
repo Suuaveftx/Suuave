@@ -5,15 +5,18 @@ import Navbars from "../../../components/ArtistNavbar";
 import FashionDesignerHeader from "../../fashion-designers/_components/studio-page-components/FashionDesignerHeader";
 import { useEffect, useState } from "react";
 
+import { useAppStore } from "../../../store";
+
 export default function Layout({ children }) {
+  const { activeCategory } = useAppStore();
   const [role, setRole] = useState(null);
 
   useEffect(() => {
-    let activeCategory = localStorage.getItem("activeCategory");
-    if (activeCategory === "Fashion Artist") activeCategory = "artist";
-    if (activeCategory === "Fashion Brand") activeCategory = "brand";
-    setRole(activeCategory);
-  }, []);
+    let category = activeCategory;
+    if (category === "Fashion Artist") category = "artist";
+    if (category === "Fashion Brand") category = "brand";
+    setRole(category);
+  }, [activeCategory]);
 
   return (
     <HeroUIProvider>

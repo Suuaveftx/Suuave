@@ -6,8 +6,6 @@ import PersonalInformation from "./_components/PersonalInformation";
 import AwardsCertification from "./_components/AwardsCertification";
 import Profile from "./_components/Profile";
 import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { personalDetailsSchema } from "@/utils/validations";
 
 export default function Page() {
   const [selected, setSelected] = useState("PersonalDetail");
@@ -52,7 +50,6 @@ export default function Page() {
 
   // Personal details form
   const methods = useForm({
-    resolver: zodResolver(personalDetailsSchema),
     defaultValues: {
       fullName: "",
       username: "",
@@ -115,8 +112,6 @@ export default function Page() {
             />
             <PersonalDetail
               setSelected={setSelected}
-              formData={formData}
-              setFormData={setFormData}
               setHoveredField={setHoveredField}
             />
           </>

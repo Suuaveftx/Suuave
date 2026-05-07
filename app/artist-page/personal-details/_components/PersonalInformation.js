@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import React, { forwardRef } from "react";
-import { Switch, Button } from "@heroui/react";
+import React from "react";
+import { Switch, Button, Input as HeroInput } from "@heroui/react";
 import { X, ChevronLeft } from "lucide-react";
-
+import FormLabel from "@/components/ui/FormLabel";
 import { useFormContext } from "react-hook-form";
 
 const PersonalInformation = ({
@@ -47,13 +47,19 @@ const PersonalInformation = ({
           onMouseEnter={() => setHoveredField("Skills")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <Lable htmlFor="skills" text="Skills" required />
-          <Input
+          <FormLabel htmlFor="skills" text="Skills" required />
+          <HeroInput
             id="skills"
             placeholder="Eg Illustrator"
+            variant="bordered"
+            classNames={{ 
+              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
+              input: 'text-[#878787] text-base' 
+            }}
             {...register("skill")}
+            isInvalid={!!errors.skill}
+            errorMessage={errors.skill?.message}
           />
-          {errors.skill && <p className="text-red-500 text-xs">{errors.skill.message}</p>}
         </div>
         {/*Portfolio link*/}
         <div
@@ -61,13 +67,19 @@ const PersonalInformation = ({
           onMouseEnter={() => setHoveredField("Portfolio")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <Lable htmlFor="portfolioLink" text="Link to Your Portfolio, Website, or Social Media Page" required />
-          <Input
+          <FormLabel htmlFor="portfolioLink" text="Link to Your Portfolio, Website, or Social Media Page" required />
+          <HeroInput
             id="portfolioLink"
             placeholder="Enter portfolio link"
+            variant="bordered"
+            classNames={{ 
+              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
+              input: 'text-[#878787] text-base' 
+            }}
             {...register("portfolioLink")}
+            isInvalid={!!errors.portfolioLink}
+            errorMessage={errors.portfolioLink?.message}
           />
-          {errors.portfolioLink && <p className="text-red-500 text-xs">{errors.portfolioLink.message}</p>}
         </div>
         {/*Work Samples (formerly Portfolio)*/}
         <div
@@ -75,7 +87,7 @@ const PersonalInformation = ({
           onMouseEnter={() => setHoveredField("Portfolio")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <Lable htmlFor="uploadedPortfolio" text="Work Samples" required />
+          <FormLabel htmlFor="uploadedPortfolio" text="Work Samples" required />
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {previewPortfolio.map((src, index) => (
               <div key={index} className="relative w-full h-32 rounded-lg overflow-hidden border border-[#D1D1D1]">
@@ -117,7 +129,7 @@ const PersonalInformation = ({
       <div className="w-full flex flex-col md:flex-row items-center justify-center md:justify-end gap-3 mt-12">
         <Button
           onPress={() => setSelected("Awards/Certifications")}
-          className="w-full md:w-auto bg-transparent border border-[#3A98BB] text-[#3A98BB] font-semibold rounded-[40px] px-12 py-3.5 hover:bg-[#EAF9FF] transition-colors"
+          className="w-full md:w-auto bg-transparent border border-[#3A98BB] text-[#3A98BB] font-semibold rounded-[40px] px-12 py-3.5 hover:bg-[#EAF9FF] transition-colors shadow-none"
         >
           Skip
         </Button>
@@ -133,27 +145,3 @@ const PersonalInformation = ({
 };
 
 export default PersonalInformation;
-
-const Input = forwardRef(({ placeholder, id, name, onChange, onBlur }, ref) => {
-  return (
-    <input
-      id={id}
-      name={name}
-      ref={ref}
-      onChange={onChange}
-      onBlur={onBlur}
-      placeholder={placeholder}
-      className="w-full border border-[#D1D1D1] text-[#878787] font-normal text-base py-2 px-2 rounded-lg outline-[#3A98BB] bg-transparent "
-    />
-  );
-});
-
-Input.displayName = "Input";
-
-const Lable = ({ text, htmlFor, required }) => {
-  return (
-    <label htmlFor={htmlFor} className="text-sm font-medium text-[#222222]">
-      {text}{required && <span className="text-red-500 ml-0.5">*</span>}
-    </label>
-  );
-};

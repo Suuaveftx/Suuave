@@ -1,22 +1,18 @@
-import { redirect } from 'next/navigation';
+'use client';
+
 import Footer from '../../components/landing-page-components/Footer';
-import { getServerSession } from '../../lib/get-session';
-import { requireAuth } from '../../lib/protected-routes';
-import { Roles } from '../../utils/enum';
-import LayoutWrapper from './_components/LayoutWrapper';
+import FashionDesignerHeader from './_components/studio-page-components/FashionDesignerHeader';
+import { usePathname } from 'next/navigation';
 
-export default async function Layout({ children }) {
-  const session = await getServerSession();
-  const user = session?.user;
-
-  if (!user) {
-    redirect('/auth/login');
-  }
-  await requireAuth(Roles.brand);
+export default function Layout({ children }) {
+  const pathname = usePathname();
+  const isPersonalDetails = pathname === '/fashion-designers/personal-details';
 
   return (
-    <LayoutWrapper>
-      {children}
-    </LayoutWrapper>
+    <div className='mx-auto  bg-[#DBDBDB]/30'>
+      {!isPersonalDetails && <FashionDesignerHeader />}
+      <main className='font-satoshi'>{children}</main>
+      {!isPersonalDetails && <Footer />}
+    </div>
   );
 }

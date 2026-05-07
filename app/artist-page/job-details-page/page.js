@@ -13,6 +13,8 @@ import DeleteConfirmationModal from '../../fashion-designers/my-projects/compone
 import { useDisclosure } from '@heroui/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { useAppStore } from '../../../store';
+
 const JobDetailsPageContent = () => {
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -22,42 +24,17 @@ const JobDetailsPageContent = () => {
     onOpenChange: onWithdrawModalOpenChange
   } = useDisclosure();
 
-  const [proposalSubmitted, setProposalSubmitted] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
   const searchParams = useSearchParams();
   const jobId = searchParams.get('id');
 
-  // Check localStorage on mount or when jobId changes
-  useEffect(() => {
-    if (jobId) {
-      const activeProposals = JSON.parse(localStorage.getItem('activeProposals') || '{}');
-      setProposalSubmitted(!!activeProposals[jobId]);
+  const { savedJobs, toggleSaveJob, activeProposals, clearProposals } = useAppStore();
 
-      const savedJobs = JSON.parse(localStorage.getItem('savedJobs') || '{}');
-      setIsSaved(!!savedJobs[jobId]);
-    } else {
-      // Fallback for direct access without ID (optional)
-      const isProposalActive = localStorage.getItem('proposalActive');
-      if (isProposalActive === 'true') {
-        setProposalSubmitted(true);
-      }
-    }
-  }, [jobId]);
+  const proposalSubmitted = !!activeProposals[jobId] || (jobId === null && useAppStore.getState().proposalActive);
+  const isSaved = savedJobs.includes(jobId);
 
   const handleBookmark = () => {
     if (!jobId) return;
-
-    const savedJobs = JSON.parse(localStorage.getItem('savedJobs') || '{}');
-    const newSavedStatus = !isSaved;
-
-    if (newSavedStatus) {
-      savedJobs[jobId] = true;
-    } else {
-      delete savedJobs[jobId];
-    }
-
-    localStorage.setItem('savedJobs', JSON.stringify(savedJobs));
-    setIsSaved(newSavedStatus);
+    toggleSaveJob(jobId);
   };
 
   const handleSubmitProposal = () => {
@@ -67,13 +44,16 @@ const JobDetailsPageContent = () => {
 
   const confirmWithdrawProposal = () => {
     if (jobId) {
-      const activeProposals = JSON.parse(localStorage.getItem('activeProposals') || '{}');
-      delete activeProposals[jobId];
-      localStorage.setItem('activeProposals', JSON.stringify(activeProposals));
-      setProposalSubmitted(false);
+      // In a real app we'd have a removeProposal(jobId)
+      // For now let's just clear or mock removal if possible
+      // Since proposalSlice doesn't have removeProposal yet, I'll add it or just use set directly
+      useAppStore.setState((state) => {
+        const newProposals = { ...state.activeProposals };
+        delete newProposals[jobId];
+        return { activeProposals: newProposals };
+      });
     } else {
-      localStorage.removeItem('proposalActive');
-      setProposalSubmitted(false);
+      useAppStore.setState({ proposalActive: false });
     }
   };
 

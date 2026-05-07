@@ -6,11 +6,11 @@ import { IoSearchOutline } from 'react-icons/io5';
 import FashionDesignersCard from './_components/studio-page-components/FashionDesignersCard';
 import FloatingButton from './_components/FloatingButton';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
-// import { useBookmarks } from "./_components/BookmarkContext";
+import { useAppStore } from '../store';
 
 const Page = () => {
   const [isVisible, setIsVisible] = useState(true);
-  // const { savedCardIds, toggleBookmark } = useBookmarks();
+  const { savedCardIds, toggleBookmark } = useAppStore();
 
   const cardsData = [
     {
@@ -287,8 +287,8 @@ const Page = () => {
                   productID={card?.id}
                   idx={index}
                   userData={card.user}
-                  // isBookmarked={savedCardIds.includes(card.id)}
-                  // onToggleSave={() => toggleBookmark(card.id)}
+                  isBookmarked={savedCardIds.includes(card.id)}
+                  onToggleSave={() => toggleBookmark(card.id)}
                 />
               ))}
             </div>
@@ -298,18 +298,13 @@ const Page = () => {
             key='saved'
             title={
               <div className='flex items-center space-x-2'>
-                {/* <span>Saved ({savedCardIds.length})</span> */}
-                <span>Saved</span>
+                <span>Saved ({savedCardIds.length})</span>
               </div>
             }
           >
             <div className='grid grid-cols-2 gap-3 mt-6 lg:gap-6 lg:grid-cols-4  '>
               {cardsData
-                // .filter((card) => savedCardIds.includes(card.id))
-                .filter(
-                  (card) =>
-                    card.id === 'card-1' || card.id === 'card-3' || card.id === 'card-5'
-                )
+                .filter((card) => savedCardIds.includes(card.id))
                 .map((card, index) => (
                   <FashionDesignersCard
                     key={index}
@@ -321,7 +316,7 @@ const Page = () => {
                     idx={index}
                     userData={card.user}
                     isBookmarked={true}
-                    // onToggleSave={() => toggleBookmark(card.id)}
+                    onToggleSave={() => toggleBookmark(card.id)}
                   />
                 ))}
             </div>

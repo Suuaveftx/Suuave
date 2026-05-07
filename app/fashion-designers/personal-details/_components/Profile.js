@@ -45,9 +45,11 @@ const Profile = ({
         </div>
         <div className="flex flex-col items-center md:items-start gap-1">
           <h2 className="font-bold text-2xl text-[#222222] tracking-tight">
-            Chinedu Ozulu
+            {formData.fullName || "Your Name"}
           </h2>
-          <p className="font-medium text-[#767676] text-sm md:ml-1">@ocean</p>
+          <p className="font-medium text-[#767676] text-sm md:ml-1">
+            {formData.username ? `@${formData.username.replace(/^@/, '')}` : "@username"}
+          </p>
         </div>
       </div>
       {/* Brand Fundamentals Section (Step 1) */}
