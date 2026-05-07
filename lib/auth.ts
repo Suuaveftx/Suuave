@@ -53,6 +53,10 @@ export const auth = betterAuth({
       clientSecret: (process.env.GOOGLE_CLIENT_SECRET as string) || 'placeholder',
     },
   },
+  baseURL: {
+    allowedHosts: ['localhost:3000', '*.vercel.app', 'https://www.suuave.com'],
+    protocol: process.env.NODE_ENV === 'development' ? 'http' : 'https',
+  },
   plugins: [
     emailOTP({
       overrideDefaultEmailVerification: true,
@@ -63,14 +67,12 @@ export const auth = betterAuth({
           // Send the OTP for sign in
         } else if (type === 'email-verification') {
           // Send the OTP for email verification
-          void resend.emails.send({
+          await resend.emails.send({
             from: `${process.env.RESEND_FROM_EMAIL}`,
             to: email,
             subject: 'Verify your email',
             html: `
-               <h1>Welcome to Suuave!</h1>
-
-              <p>We're excited to have you on board.</p>
+               <h1>Suuave Email Verification</h1>
 
               <p>Please verify your email address to complete your registration and set up your profile.</p>
 
@@ -92,7 +94,7 @@ export const auth = betterAuth({
           });
         } else {
           // Send the OTP for password reset
-          void resend.emails.send({
+          await resend.emails.send({
             from: `${process.env.RESEND_FROM_EMAIL}`,
             to: email,
             subject: 'Reset password',
