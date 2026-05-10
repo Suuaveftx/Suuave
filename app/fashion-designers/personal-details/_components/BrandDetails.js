@@ -5,10 +5,12 @@ import { parseDate } from '@internationalized/date';
 import FormLabel from '@/components/ui/FormLabel';
 import CustomSelect from '@/components/ui/CustomSelect';
 import PhoneInputCustom from '@/components/ui/PhoneInputCustom';
-import { ChevronLeft } from 'lucide-react';
+import { CountrySelect } from "react-country-state-city";
 import { useFormContext, Controller } from 'react-hook-form';
+import LanguageSelectCustom from '@/components/ui/LanguageSelectCustom';
+import { ChevronLeft } from 'lucide-react';
 
-import { countries as nationalityList, dialCodes as numCodeList } from '../../../../utils/countryData';
+import { dialCodes as numCodeList } from '../../../../utils/countryData';
 
 const brandCategoryOptions = [
   { key: 'Independent Brand / Designer', label: 'Independent Brand / Designer', description: 'Best for solo creators and boutique labels' },
@@ -33,6 +35,8 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
     formState: { errors },
   } = useFormContext();
 
+  const [countryid, setCountryid] = React.useState(0);
+
   const handleContinue = async () => {
     const isValid = await trigger(["fullName", "businessName", "username", "brandCategory", "email", "role"]);
     if (isValid) setStep(2);
@@ -49,14 +53,14 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
     <div className='w-full h-full bg-[#FAFAFA] border border-[#DEDEDE] p-3 md:p-6 rounded-2xl'>
       {step > 1 && (
         <button
-          className='flex items-center text-[#3A98BB] mb-4 hover:opacity-80 transition-opacity focus:outline-none'
+          className='flex items-center text-[#848484] mb-4 hover:opacity-80 transition-opacity focus:outline-none'
           onClick={() => setStep(step - 1)}
         >
           <ChevronLeft size={24} />
           <span className='ml-1 font-medium'>Back</span>
         </button>
       )}
-      <h1 className='text-[#3A98BB] font-bold text-2xl md:text-[32px]'>
+      <h1 className='text-[#222222] font-bold text-2xl md:text-[32px]'>
         {step === 1 ? 'Brand Fundamentals' : 'Personal Details'}
       </h1>
       <p className='text-[#767676] font-normal text-base mt-2'>
@@ -79,7 +83,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 variant="bordered"
                 classNames={{ 
                   inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                  input: 'text-[#878787]' 
+                  input: 'text-black' 
                 }}
                 {...register("fullName")}
                 isInvalid={!!errors.fullName}
@@ -99,7 +103,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 variant="bordered"
                 classNames={{ 
                   inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                  input: 'text-[#878787]' 
+                  input: 'text-black' 
                 }}
                 {...register("businessName")}
                 isInvalid={!!errors.businessName}
@@ -119,7 +123,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 variant="bordered"
                 classNames={{ 
                   inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                  input: 'text-[#878787]' 
+                  input: 'text-black' 
                 }}
                 {...register("username")}
                 isInvalid={!!errors.username}
@@ -161,7 +165,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 variant="bordered"
                 classNames={{ 
                   inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                  input: 'text-[#878787]' 
+                  input: 'text-black' 
                 }}
                 {...register("email")}
                 isInvalid={!!errors.email}
@@ -181,7 +185,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 variant="bordered"
                 classNames={{ 
                   inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                  input: 'text-[#878787]' 
+                  input: 'text-black' 
                 }}
                 {...register("role")}
                 isInvalid={!!errors.role}
@@ -215,15 +219,15 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 name="nationality"
                 control={control}
                 render={({ field }) => (
-                  <CustomSelect
-                    id="nationality"
-                    value={field.value}
-                    onChange={field.onChange}
-                    data={nationalityList}
-                    className='max-w-[280px]'
-                    isInvalid={!!errors.nationality}
-                    errorMessage={errors.nationality?.message}
-                  />
+                  <div className="max-w-[280px] suuave-location-select">
+                    <CountrySelect
+                      onChange={(e) => {
+                        setCountryid(e.id);
+                        field.onChange(new Set([e.name]));
+                      }}
+                      placeHolder="Search Country"
+                    />
+                  </div>
                 )}
               />
             </div>
@@ -261,17 +265,24 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseLeave={() => setHoveredField(null)}
             >
               <FormLabel htmlFor='currentCity' text='Current City' />
-              <HeroInput
-                id='currentCity'
-                placeholder='Lagos'
-                variant="bordered"
-                classNames={{ 
-                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                  input: 'text-[#878787]' 
-                }}
-                {...register("currentCity")}
-                isInvalid={!!errors.currentCity}
-                errorMessage={errors.currentCity?.message}
+              <Controller
+                name="currentCity"
+                control={control}
+                render={({ field }) => (
+                  <HeroInput
+                    id="currentCity"
+                    placeholder="Enter City"
+                    variant="bordered"
+                    className="max-w-[280px]"
+                    classNames={{ 
+                      inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
+                      input: 'text-black' 
+                    }}
+                    {...field}
+                    isInvalid={!!errors.currentCity}
+                    errorMessage={errors.currentCity?.message}
+                  />
+                )}
               />
             </div>
             {/*Language */}
@@ -285,14 +296,10 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 name="language"
                 control={control}
                 render={({ field }) => (
-                  <CustomSelect
-                    id="language"
+                  <LanguageSelectCustom
                     value={field.value}
                     onChange={field.onChange}
-                    data={languageOptions}
-                    className='max-w-[280px]'
-                    isInvalid={!!errors.language}
-                    errorMessage={errors.language?.message}
+                    error={errors.language?.message}
                   />
                 )}
               />
@@ -328,7 +335,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                         'hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
                         'shadow-none',
                       ],
-                      input: 'text-[#222222] font-normal text-base',
+                      input: 'text-black font-normal text-base',
                       segment: 'data-[placeholder=true]:text-transparent',
                       calendarContent: 'font-proximanova',
                     }}
@@ -368,7 +375,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                   variant="bordered"
                   classNames={{ 
                     inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                    input: 'text-[#878787]' 
+                    input: 'text-black' 
                   }}
                   minRows={4}
                   {...field}
@@ -379,20 +386,28 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
             />
           </section>
 
-          <div className='w-full flex flex-col md:flex-row justify-center md:justify-end mt-10 gap-4'>
-            <a
-              href={submitHref}
+          <div className='w-full flex flex-col md:flex-row justify-between items-center mt-10 gap-4'>
+            <button
+              onClick={() => setStep(1)}
               className='flex items-center justify-center cursor-pointer px-6 py-2 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold hover:bg-[#EAF9FF] transition-colors'
             >
-              Skip
-            </a>
-            <a
-              href={submitHref}
-              onClick={handleSubmitClick}
-              className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 text-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] w-full md:w-auto font-semibold shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
-            >
-              Submit
-            </a>
+              Previous
+            </button>
+            <div className='flex flex-col md:flex-row justify-center md:justify-end gap-4 w-full md:w-auto'>
+              <a
+                href={submitHref}
+                className='flex items-center justify-center cursor-pointer px-6 py-2 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold hover:bg-[#EAF9FF] transition-colors'
+              >
+                Skip
+              </a>
+              <a
+                href={submitHref}
+                onClick={handleSubmitClick}
+                className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 text-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] w-full md:w-auto font-semibold shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
+              >
+                Submit
+              </a>
+            </div>
           </div>
         </>
       )}

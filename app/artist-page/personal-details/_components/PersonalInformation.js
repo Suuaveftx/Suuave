@@ -13,6 +13,7 @@ const PersonalInformation = ({
   previewPortfolio,
   removePortfolioItem,
   setHoveredField,
+  setStep,
 }) => {
   const {
     register,
@@ -28,15 +29,8 @@ const PersonalInformation = ({
   };
   return (
     <div className="bg-[#FAFAFA] border border-[#DEDEDE] rounded-2xl p-3 md:p-6 w-full h-full">
-      {/* Mobile back arrow */}
-      <button
-        className="flex items-center text-[#3A98BB] mb-3"
-        onClick={() => setSelected("PersonalDetail")}
-      >
-        <ChevronLeft size={20} />
-      </button>
-
-      <h1 className="text-[#3A98BB] font-bold text-2xl md:text-[32px]">Professional Information</h1>
+      {/* Header */}
+      <h1 className="text-[#222222] font-bold text-2xl md:text-[32px]">Professional Information</h1>
       <p className="text-[#767676] font-normal text-base mt-2">
         Add any relevant information
       </p>
@@ -54,7 +48,7 @@ const PersonalInformation = ({
             variant="bordered"
             classNames={{ 
               inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-              input: 'text-[#878787] text-base' 
+              input: 'text-black text-base' 
             }}
             {...register("skill")}
             isInvalid={!!errors.skill}
@@ -74,7 +68,7 @@ const PersonalInformation = ({
             variant="bordered"
             classNames={{ 
               inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-              input: 'text-[#878787] text-base' 
+              input: 'text-black text-base' 
             }}
             {...register("portfolioLink")}
             isInvalid={!!errors.portfolioLink}
@@ -126,19 +120,30 @@ const PersonalInformation = ({
           </div>
         </div>
       </section>
-      <div className="w-full flex flex-col md:flex-row items-center justify-center md:justify-end gap-3 mt-12">
-        <Button
-          onPress={() => setSelected("Awards/Certifications")}
-          className="w-full md:w-auto bg-transparent border border-[#3A98BB] text-[#3A98BB] font-semibold rounded-[40px] px-12 py-3.5 hover:bg-[#EAF9FF] transition-colors shadow-none"
+      <div className="w-full flex flex-col md:flex-row items-center justify-between mt-12 gap-4">
+        <button
+          onClick={() => {
+            setSelected("PersonalDetail");
+            setStep(2);
+          }}
+          className='flex items-center justify-center cursor-pointer px-6 py-2 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold hover:bg-[#EAF9FF] transition-colors'
         >
-          Skip
-        </Button>
-        <Button
-          onPress={handleContinue}
-          className="w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]"
-        >
-          Continue
-        </Button>
+          Previous
+        </button>
+        <div className='flex flex-col md:flex-row items-center gap-3 w-full md:w-auto'>
+          <Button
+            onPress={() => setSelected("Awards/Certifications")}
+            className="w-full md:w-auto bg-transparent border border-[#3A98BB] text-[#3A98BB] font-semibold rounded-[40px] px-12 py-3.5 hover:bg-[#EAF9FF] transition-colors shadow-none"
+          >
+            Skip
+          </Button>
+          <Button
+            onPress={handleContinue}
+            className="w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]"
+          >
+            Continue
+          </Button>
+        </div>
       </div>
     </div>
   );

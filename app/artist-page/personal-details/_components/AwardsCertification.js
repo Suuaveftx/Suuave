@@ -10,26 +10,34 @@ import FormLabel from '@/components/ui/FormLabel';
 
 const AwardsCertification = ({ setSelected, setHoveredField }) => {
   const router = useRouter();
-  const { control, register, trigger } = useFormContext();
+  const { control, register, trigger, setValue, getValues, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "awards"
   });
 
+  const watchedAwards = watch("awards");
+
   const handleFileChange = (index, e) => {
     const files = Array.from(e.target.files || []);
     if (files.length > 0) {
       const newPreviews = files.map((f) => URL.createObjectURL(f));
-      // In a real implementation, you would update the form state here
-      // For now, we'll follow the existing pattern
+      const currentPreviews = getValues(`awards.${index}.previews`) || [];
+      setValue(`awards.${index}.previews`, [...currentPreviews, ...newPreviews], { shouldValidate: true });
     }
+  };
+
+  const removeImage = (awardIndex, imageIndex) => {
+    const currentPreviews = getValues(`awards.${awardIndex}.previews`) || [];
+    const updatedPreviews = currentPreviews.filter((_, i) => i !== imageIndex);
+    setValue(`awards.${awardIndex}.previews`, updatedPreviews, { shouldValidate: true });
   };
 
   return (
     <div className='bg-[#FAFAFA] border border-[#DEDEDE] rounded-2xl p-3 md:p-6 w-full h-full'>
       {/* Mobile back arrow */}
       <button
-        className='flex items-center text-[#3A98BB] mb-3'
+        className='flex items-center text-[#848484] mb-4 hover:opacity-80 transition-opacity focus:outline-none'
         onClick={() => setSelected('ProfessionalInformation')}
       >
         <ChevronLeft size={20} />
@@ -38,7 +46,7 @@ const AwardsCertification = ({ setSelected, setHoveredField }) => {
       {/* Header row: title + Add button */}
       <div className='flex items-start justify-between gap-3 flex-wrap'>
         <div>
-          <h1 className='text-[#3A98BB] font-bold text-2xl md:text-[32px] leading-tight'>
+          <h1 className='text-[#222222] font-bold text-2xl md:text-[32px] leading-tight'>
             Awards/Certifications
           </h1>
           <p className='text-[#767676] font-normal text-base mt-1'>
@@ -85,7 +93,7 @@ const AwardsCertification = ({ setSelected, setHoveredField }) => {
                 variant="bordered"
                 classNames={{ 
                   inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                  input: 'text-[#878787] text-base' 
+                  input: 'text-black text-base' 
                 }}
                 {...register(`awards.${index}.name`)}
               />
@@ -104,7 +112,7 @@ const AwardsCertification = ({ setSelected, setHoveredField }) => {
                 variant="bordered"
                 classNames={{ 
                   inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                  input: 'text-[#878787] text-base' 
+                  input: 'text-black text-base' 
                 }}
                 {...register(`awards.${index}.issuedBy`)}
               />
@@ -121,20 +129,20 @@ const AwardsCertification = ({ setSelected, setHoveredField }) => {
                 text='Upload Certificate/Award (Optional)'
               />
               <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-                {field.previews?.map((src, pi) => (
-                  <div
-                    key={pi}
-                    className='relative w-full h-32 rounded-lg overflow-hidden border border-[#D1D1D1]'
-                  >
-                    <Image src={src} alt={`award-${index}-${pi}`} fill className='object-cover' />
-                    <button
-                      type='button'
-                      onClick={() => {}}
-                      className='absolute top-1 right-1 bg-white/80 hover:bg-white rounded-full p-1 shadow-sm transition-colors'
+                {watchedAwards[index]?.previews?.map((src, pi) => (
+                    <div
+                      key={pi}
+                      className='relative w-full h-32 rounded-lg overflow-hidden border border-[#D1D1D1]'
                     >
-                      <X size={14} className='text-red-500' />
-                    </button>
-                  </div>
+                      <Image src={src} alt={`award-${index}-${pi}`} fill className='object-cover' />
+                      <button
+                        type='button'
+                        onClick={() => removeImage(index, pi)}
+                        className='absolute top-1 right-1 bg-white/80 hover:bg-white rounded-full p-1 shadow-sm transition-colors'
+                      >
+                        <X size={14} className='text-red-500' />
+                      </button>
+                    </div>
                 ))}
                 <label
                   htmlFor={`cert-${index}`}
@@ -159,23 +167,30 @@ const AwardsCertification = ({ setSelected, setHoveredField }) => {
         ))}
 
         {/* Action buttons */}
-        <div className='w-full flex flex-col md:flex-row items-center justify-center md:justify-end gap-3 mt-12'>
-          <Button
-            as={Link}
-            href='/artist-page/project-page'
-            className='w-full md:w-auto bg-transparent border border-[#3A98BB] text-[#3A98BB] font-semibold rounded-[40px] px-12 py-3.5 hover:bg-[#EAF9FF] transition-colors shadow-none'
+        <div className='w-full flex flex-col md:flex-row items-center justify-between mt-12 gap-4'>
+          <button
+            onClick={() => setSelected('ProfessionalInformation')}
+            className='flex items-center justify-center cursor-pointer px-6 py-2 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold hover:bg-[#EAF9FF] transition-colors'
           >
-            Skip
-          </Button>
-          <Button
-            onPress={async () => {
-              const isValid = await trigger("awards");
-              if (isValid) router.push('/artist-page/project-page');
-            }}
-            className='w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
-          >
-            Submit
-          </Button>
+            Previous
+          </button>
+          <div className='flex flex-col md:flex-row items-center gap-3 w-full md:w-auto'>
+            <Button
+              onPress={() => router.push('/artist-page/project-page')}
+              className='w-full md:w-auto bg-transparent border border-[#3A98BB] text-[#3A98BB] font-semibold rounded-[40px] px-12 py-3.5 hover:bg-[#EAF9FF] transition-colors shadow-none'
+            >
+              Skip
+            </Button>
+            <Button
+              onPress={async () => {
+                const isValid = await trigger("awards");
+                if (isValid) router.push('/artist-page/project-page');
+              }}
+              className='w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
+            >
+              Submit
+            </Button>
+          </div>
         </div>
       </section>
     </div>

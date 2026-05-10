@@ -5,8 +5,9 @@ import { parseDate } from "@internationalized/date";
 import FormLabel from "@/components/ui/FormLabel";
 import CustomSelect from "@/components/ui/CustomSelect";
 import PhoneInputCustom from "@/components/ui/PhoneInputCustom";
-import { africanDialCodes as numCode, africanCountries as nationality } from "../../../../utils/countryData";
 import { useFormContext, Controller } from "react-hook-form";
+import LanguageSelectCustom from '@/components/ui/LanguageSelectCustom';
+import CountrySelectCustom from '@/components/ui/CountrySelectCustom';
 
 const languageOptions = [
   { key: "English", label: "English" },
@@ -23,6 +24,7 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
     formState: { errors },
   } = useFormContext();
 
+
   const handleContinue = async () => {
     const isValid = await trigger(["fullName", "email", "phoneCode", "phoneNumber", "language", "about", "nationality", "currentCity", "day", "month", "year"]);
     if (isValid) {
@@ -31,8 +33,8 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
   };
 
   return (
-    <div className="w-full bg-white md:bg-[#FAFAFA] border border-[#EAEAEA] md:border-[#DEDEDE] p-6 md:p-6 rounded-2xl shadow-sm md:shadow-none pb-8">
-      <h1 className="text-[#3A98BB] font-bold text-[32px] mb-1">Personal Details</h1>
+    <div className="w-full bg-[#FAFAFA] border border-[#DEDEDE] p-6 md:p-6 rounded-2xl pb-8">
+      <h1 className="text-[#222222] font-bold text-[32px] mb-1">Personal Details</h1>
       <p className="text-[#767676] font-normal text-sm mb-8">
         Fill in the following information carefully
       </p>
@@ -48,9 +50,9 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
             id="fullName"
             placeholder="Chinedu Ozulu"
             variant="bordered"
-            classNames={{ 
-              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-              input: 'text-[#222222] text-sm' 
+            classNames={{
+              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+              input: 'text-black text-sm'
             }}
             {...register("fullName")}
             isInvalid={!!errors.fullName}
@@ -69,9 +71,9 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
             placeholder="czysdgv@gmail.com"
             variant="bordered"
             readOnly
-            classNames={{ 
-              inputWrapper: 'bg-[#F1F1F1] border-none', 
-              input: 'text-[#767676] text-sm' 
+            classNames={{
+              inputWrapper: 'bg-[#F1F1F1] border-none',
+              input: 'text-[#767676] text-sm'
             }}
             {...register("email")}
             isInvalid={!!errors.email}
@@ -116,13 +118,10 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
             name="language"
             control={control}
             render={({ field }) => (
-              <CustomSelect
-                id="language"
+              <LanguageSelectCustom
                 value={field.value}
                 onChange={field.onChange}
-                data={languageOptions}
-                isInvalid={!!errors.language}
-                errorMessage={errors.language?.message}
+                error={errors.language?.message}
               />
             )}
           />
@@ -139,9 +138,9 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
             placeholder="Write About Your Design Style"
             variant="bordered"
             minRows={4}
-            classNames={{ 
-              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-              input: 'text-[#222222] text-sm' 
+            classNames={{
+              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+              input: 'text-black text-sm'
             }}
             {...register("about")}
             isInvalid={!!errors.about}
@@ -155,9 +154,9 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
             id="companyName"
             placeholder="Enter Company Name"
             variant="bordered"
-            classNames={{ 
-              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-              input: 'text-[#222222] text-sm' 
+            classNames={{
+              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+              input: 'text-black text-sm'
             }}
             {...register("companyName")}
             isInvalid={!!errors.companyName}
@@ -175,15 +174,13 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
             name="nationality"
             control={control}
             render={({ field }) => (
-              <CustomSelect
-                id="nationality"
-                value={field.value}
-                onChange={field.onChange}
-                data={nationality}
-                className="max-w-[280px]"
-                isInvalid={!!errors.nationality}
-                errorMessage={errors.nationality?.message}
-              />
+              <div className="max-w-[280px]">
+                <CountrySelectCustom
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={errors.nationality?.message}
+                />
+              </div>
             )}
           />
         </div>
@@ -194,18 +191,24 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           onMouseLeave={() => setHoveredField(null)}
         >
           <FormLabel htmlFor="currentCity" text="Current City" required />
-          <HeroInput
-            id="currentCity"
-            placeholder="Lagos"
-            variant="bordered"
-            className="max-w-[280px]"
-            classNames={{ 
-              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-              input: 'text-[#222222] text-sm' 
-            }}
-            {...register("currentCity")}
-            isInvalid={!!errors.currentCity}
-            errorMessage={errors.currentCity?.message}
+          <Controller
+            name="currentCity"
+            control={control}
+            render={({ field }) => (
+              <HeroInput
+                id="currentCity"
+                placeholder="Lagos"
+                variant="bordered"
+                className="max-w-[280px]"
+                classNames={{
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+                  input: 'text-black text-sm'
+                }}
+                {...field}
+                isInvalid={!!errors.currentCity}
+                errorMessage={errors.currentCity?.message}
+              />
+            )}
           />
         </div>
         {/*Date of Birth*/}
@@ -239,7 +242,7 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
                     'hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
                     'shadow-none',
                   ],
-                  input: 'text-[#222222] font-normal text-sm',
+                  input: 'text-black font-normal text-sm',
                 }}
                 calendarProps={{
                   classNames: {
@@ -260,12 +263,6 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
       </section>
 
       <div className="w-full flex flex-col md:flex-row items-center justify-center md:justify-end gap-3 mt-12">
-        <Button
-          onPress={() => setSelected("ProfessionalInformation")}
-          className="w-full md:w-auto bg-transparent border border-[#3A98BB] text-[#3A98BB] font-semibold rounded-[40px] px-12 py-3.5 hover:bg-[#EAF9FF] transition-colors shadow-none"
-        >
-          Skip
-        </Button>
         <Button
           onPress={handleContinue}
           className="w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]"

@@ -64,7 +64,7 @@ export default function Page() {
     <>
     <FormProvider {...methods}>
 
-      <div className="flex flex-col md:flex-row px-5 md:px-10 mt-5 md:mt-0">
+      <div className="flex flex-col md:flex-row px-5 md:px-10 mt-5 md:mt-14">
         {/* sidebar */}
         <Profile
           setSelected={setSelected}
@@ -80,7 +80,7 @@ export default function Page() {
         />
 
         {/* Form content */}
-        <div className="flex-1">
+        <div className="flex-1 md:mt-6">
           <BrandDetails
             step={step}
             setStep={setStep}

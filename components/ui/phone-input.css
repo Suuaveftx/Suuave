@@ -15,7 +15,7 @@
   border: 1px solid #D1D1D1 !important;
   border-radius: 8px !important;
   font-size: 16px !important;
-  color: #878787 !important;
+  color: #000000 !important;
   padding-left: 58px !important;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -66,12 +66,12 @@
 }
 
 .suuave-phone-input.react-tel-input .suuave-phone-input-button .selected-flag .arrow {
-  border-top-color: #878787 !important;
+  border-top-color: #000000 !important;
   left: 28px !important;
 }
 
 .suuave-phone-input.react-tel-input .suuave-phone-input-button .selected-flag .arrow.up {
-  border-bottom-color: #878787 !important;
+  border-bottom-color: #000000 !important;
 }
 
 /* Dropdown styling */
@@ -111,5 +111,5 @@
 }
 
 .suuave-phone-input-dropdown.country-list .country .dial-code {
-  color: #878787 !important;
+  color: #000000 !important;
 }

@@ -66,14 +66,14 @@ const CustomSelect = ({
         }}
         classNames={{
           trigger: [
-            "font-normal text-base text-[#878787] border border-[#D1D1D1] outline-0 rounded-[8px] py-2",
+            "font-normal text-base text-black border border-[#D1D1D1] outline-0 rounded-[8px] py-2",
             "hover:border-[#3A98BB]",
             "data-[focus=true]:!border-[#3A98BB] data-[focus=true]:!ring-[#3A98BB]",
             "data-[invalid=true]:border-danger data-[invalid=true]:text-danger",
           ].join(" "),
-          value: "!text-[#878787]",
-          placeholder: "text-[#878787]",
-          innerWrapper: "!text-[#878787]",
+          value: "!text-black",
+          placeholder: "text-black",
+          innerWrapper: "!text-black",
           listboxWrapper: "max-h-[300px] overflow-y-auto visible-scrollbar",
         }}
         scrollShadowProps={{
@@ -100,7 +100,7 @@ const CustomSelect = ({
         {data.map((item) => (
           <SelectItem
             key={item.key}
-            className="text-[#878787] data-[selected=true]:!text-[#878787]"
+            className="text-black data-[selected=true]:!text-black"
             textValue={item.label}
             description={item.description}
             startContent={
@@ -113,7 +113,7 @@ const CustomSelect = ({
               ) : null
             }
           >
-            <span className={item.description ? "font-bold text-[#222222]" : ""}>
+            <span className={item.description ? "font-bold text-black" : ""}>
               {item.label}
             </span>
           </SelectItem>

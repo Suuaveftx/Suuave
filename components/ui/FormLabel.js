@@ -5,7 +5,7 @@ const FormLabel = ({ text, htmlFor, required, className = '' }) => {
   return (
     <label 
       htmlFor={htmlFor} 
-      className={`text-sm font-medium text-[#222222] ${className}`}
+      className={`text-sm font-medium text-black ${className}`}
     >
       {text}
       {required && <span className="text-red-500 ml-0.5">*</span>}

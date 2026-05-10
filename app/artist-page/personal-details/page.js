@@ -46,6 +46,7 @@ export default function Page() {
     setPreviewAwardCertificate((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const [step, setStep] = useState(1);
   const [hoveredField, setHoveredField] = useState(null);
 
   // Personal details form
@@ -82,63 +83,67 @@ export default function Page() {
   };
   return (
     <>
-    <FormProvider {...methods}>
-      <div className="flex flex-col md:flex-row px-5 md:px-10 mt-10 md:mt-10">
-        {/* profile view and button switch */}
+      <FormProvider {...methods}>
+      <div className="min-h-screen bg-[#DBDBDB]/30">
+        <div className="flex flex-col md:flex-row px-5 md:px-10 mt-5 md:mt-14 md:gap-32">
+          {/* profile view and button switch */}
 
-        <Profile
-          setSelected={setSelected}
-          formData={formData}
-          setFormData={setFormData}
-          selected={selected}
-          className="hidden md:flex"
-          preview={preview}
-          handleImageChange={handleImageChange}
-          hoveredField={hoveredField}
-        />
-
-        {/* Conditionally show content */}
-        {selected === "PersonalDetail" && (
-          <>
-            <Profile
-              setSelected={setSelected}
-              formData={formData}
-              setFormData={setFormData}
-              selected={selected}
-              className="flex md:hidden"
-              preview={preview}
-              handleImageChange={handleImageChange}
-              hoveredField={hoveredField}
-            />
-            <PersonalDetail
-              setSelected={setSelected}
-              setHoveredField={setHoveredField}
-            />
-          </>
-        )}
-
-        {selected === "ProfessionalInformation" && (
-          <PersonalInformation
+          <Profile
             setSelected={setSelected}
             formData={formData}
             setFormData={setFormData}
-            uploadedPortfolio={uploadedPortfolio}
-            previewPortfolio={previewPortfolio}
-            removePortfolioItem={removePortfolioItem}
-            setHoveredField={setHoveredField}
+            selected={selected}
+            step={step}
+            setStep={setStep}
+            className="hidden md:flex"
+            preview={preview}
+            handleImageChange={handleImageChange}
+            hoveredField={hoveredField}
           />
-        )}
 
-        {selected === "Awards/Certifications" && (
-          <AwardsCertification
-            setSelected={setSelected}
-            setHoveredField={setHoveredField}
-          />
-        )}
+          {/* Conditionally show content */}
+          <div className="flex-1 mt-5 md:mt-6">
+              {selected === "PersonalDetail" && (
+                <>
+                  <Profile
+                    setSelected={setSelected}
+                    formData={formData}
+                    setFormData={setFormData}
+                    selected={selected}
+                    className="flex md:hidden"
+                    preview={preview}
+                    handleImageChange={handleImageChange}
+                    hoveredField={hoveredField}
+                  />
+                  <PersonalDetail
+                    setSelected={setSelected}
+                    setHoveredField={setHoveredField}
+                  />
+                </>
+              )}
 
+              {selected === "ProfessionalInformation" && (
+                <PersonalInformation
+                  setSelected={setSelected}
+                  formData={formData}
+                  setFormData={setFormData}
+                  uploadedPortfolio={uploadedPortfolio}
+                  previewPortfolio={previewPortfolio}
+                  removePortfolioItem={removePortfolioItem}
+                  setHoveredField={setHoveredField}
+                />
+              )}
 
-      </div>
-    </FormProvider>
+              {selected === "Awards/Certifications" && (
+                <AwardsCertification
+                  setSelected={setSelected}
+                  setHoveredField={setHoveredField}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      </FormProvider>
     </>
   );
 }
