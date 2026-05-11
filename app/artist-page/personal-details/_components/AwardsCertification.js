@@ -1,20 +1,26 @@
-"use client";
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, ChevronLeft, Plus } from 'lucide-react';
-import { Button, Input as HeroInput } from '@heroui/react';
+import { Button, Input as HeroInput, Skeleton } from '@heroui/react';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import FormLabel from '@/components/ui/FormLabel';
+import Image from 'next/image';
 
 const AwardsCertification = ({ setSelected, setHoveredField }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const { control, register, trigger, setValue, getValues, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "awards"
   });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const watchedAwards = watch("awards");
 
@@ -53,14 +59,16 @@ const AwardsCertification = ({ setSelected, setHoveredField }) => {
             Add any relevant awards or certifications.
           </p>
         </div>
-        <button
-          type="button"
-          onClick={() => append({ name: '', issuedBy: '', previews: [] })}
-          className='flex items-center gap-1 border border-[#3A98BB] text-[#3A98BB] rounded-full px-4 py-2 text-sm font-semibold hover:bg-[#EAF9FF] transition-colors mt-1'
-        >
-          <Plus size={16} />
-          Add
-        </button>
+        <Skeleton isLoaded={!isLoading} className="rounded-full">
+          <button
+            type="button"
+            onClick={() => append({ name: '', issuedBy: '', previews: [] })}
+            className='flex items-center gap-1 border border-[#3A98BB] text-[#3A98BB] rounded-full px-4 py-2 text-sm font-semibold hover:bg-[#EAF9FF] transition-colors mt-1'
+          >
+            <Plus size={16} />
+            Add
+          </button>
+        </Skeleton>
       </div>
 
       <section className='space-y-6 mt-5'>
@@ -86,17 +94,19 @@ const AwardsCertification = ({ setSelected, setHoveredField }) => {
               onMouseEnter={() => setHoveredField('Name')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor={`awardName-${index}`} text='Name Of Award/Certificate' />
-              <HeroInput
-                id={`awardName-${index}`}
-                placeholder='Eg Best Illustrator Award'
-                variant="bordered"
-                classNames={{ 
-                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                  input: 'text-black text-base' 
-                }}
-                {...register(`awards.${index}.name`)}
-              />
+              <Skeleton isLoaded={!isLoading} className="rounded-lg">
+                <FormLabel htmlFor={`awardName-${index}`} text='Name Of Award/Certificate' />
+                <HeroInput
+                  id={`awardName-${index}`}
+                  placeholder='Eg Best Illustrator Award'
+                  variant="bordered"
+                  classNames={{ 
+                    inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
+                    input: 'text-black text-base' 
+                  }}
+                  {...register(`awards.${index}.name`)}
+                />
+              </Skeleton>
             </div>
 
             {/* Awarded/Issued by */}
@@ -105,17 +115,19 @@ const AwardsCertification = ({ setSelected, setHoveredField }) => {
               onMouseEnter={() => setHoveredField('Issued/Awarded by')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor={`issuedBy-${index}`} text='Awarded/Issued By' />
-              <HeroInput
-                id={`issuedBy-${index}`}
-                placeholder='Organization that issued/awarded'
-                variant="bordered"
-                classNames={{ 
-                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                  input: 'text-black text-base' 
-                }}
-                {...register(`awards.${index}.issuedBy`)}
-              />
+              <Skeleton isLoaded={!isLoading} className="rounded-lg">
+                <FormLabel htmlFor={`issuedBy-${index}`} text='Awarded/Issued By' />
+                <HeroInput
+                  id={`issuedBy-${index}`}
+                  placeholder='Organization that issued/awarded'
+                  variant="bordered"
+                  classNames={{ 
+                    inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
+                    input: 'text-black text-base' 
+                  }}
+                  {...register(`awards.${index}.issuedBy`)}
+                />
+              </Skeleton>
             </div>
 
             {/* Upload Certificate/Award */}
@@ -124,72 +136,80 @@ const AwardsCertification = ({ setSelected, setHoveredField }) => {
               onMouseEnter={() => setHoveredField(' Upload Certificate/Award')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel
-                htmlFor={`cert-${index}`}
-                text='Upload Certificate/Award (Optional)'
-              />
-              <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-                {watchedAwards[index]?.previews?.map((src, pi) => (
-                    <div
-                      key={pi}
-                      className='relative w-full h-32 rounded-lg overflow-hidden border border-[#D1D1D1]'
-                    >
-                      <Image src={src} alt={`award-${index}-${pi}`} fill className='object-cover' />
-                      <button
-                        type='button'
-                        onClick={() => removeImage(index, pi)}
-                        className='absolute top-1 right-1 bg-white/80 hover:bg-white rounded-full p-1 shadow-sm transition-colors'
-                      >
-                        <X size={14} className='text-red-500' />
-                      </button>
-                    </div>
-                ))}
-                <label
+              <Skeleton isLoaded={!isLoading} className="rounded-lg">
+                <FormLabel
                   htmlFor={`cert-${index}`}
-                  className='flex flex-col items-center cursor-pointer justify-center gap-1 w-full h-32 rounded-lg border border-dashed border-[#3A98BB] bg-[#F4FBFE]'
-                >
-                  <Image src='/svg/paper-clip.svg' alt='icon' width={20} height={20} />
-                  <p className='text-[#3A98BB] font-medium text-xs text-center px-2'>
-                    {(field.previews?.length || 0) > 0 ? 'Add more' : 'Upload Certificate'}
-                  </p>
-                  <input
-                    id={`cert-${index}`}
-                    type='file'
-                    accept='image/*'
-                    multiple
-                    onChange={(e) => handleFileChange(index, e)}
-                    className='hidden'
-                  />
-                </label>
-              </div>
+                  text='Upload Certificate/Award (Optional)'
+                />
+                <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+                  {watchedAwards[index]?.previews?.map((src, pi) => (
+                      <div
+                        key={pi}
+                        className='relative w-full h-32 rounded-lg overflow-hidden border border-[#D1D1D1]'
+                      >
+                        <Image src={src} alt={`award-${index}-${pi}`} fill className='object-cover' />
+                        <button
+                          type='button'
+                          onClick={() => removeImage(index, pi)}
+                          className='absolute top-1 right-1 bg-white/80 hover:bg-white rounded-full p-1 shadow-sm transition-colors'
+                        >
+                          <X size={14} className='text-red-500' />
+                        </button>
+                      </div>
+                  ))}
+                  <label
+                    htmlFor={`cert-${index}`}
+                    className='flex flex-col items-center cursor-pointer justify-center gap-1 w-full h-32 rounded-lg border border-dashed border-[#3A98BB] bg-[#F4FBFE]'
+                  >
+                    <Image src='/svg/paper-clip.svg' alt='icon' width={20} height={20} />
+                    <p className='text-[#3A98BB] font-medium text-xs text-center px-2'>
+                      {(field.previews?.length || 0) > 0 ? 'Add more' : 'Upload Certificate'}
+                    </p>
+                    <input
+                      id={`cert-${index}`}
+                      type='file'
+                      accept='image/*'
+                      multiple
+                      onChange={(e) => handleFileChange(index, e)}
+                      className='hidden'
+                    />
+                  </label>
+                </div>
+              </Skeleton>
             </div>
           </div>
         ))}
 
         {/* Action buttons */}
         <div className='w-full flex flex-col md:flex-row items-center justify-between mt-12 gap-4'>
-          <button
-            onClick={() => setSelected('ProfessionalInformation')}
-            className='flex items-center justify-center cursor-pointer px-6 py-2 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold hover:bg-[#EAF9FF] transition-colors'
-          >
-            Previous
-          </button>
+          <Skeleton isLoaded={!isLoading} className="rounded-full">
+            <button
+              onClick={() => setSelected('ProfessionalInformation')}
+              className='flex items-center justify-center cursor-pointer px-6 py-2 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold hover:bg-[#EAF9FF] transition-colors'
+            >
+              Previous
+            </button>
+          </Skeleton>
           <div className='flex flex-col md:flex-row items-center gap-3 w-full md:w-auto'>
-            <Button
-              onPress={() => router.push('/artist-page/project-page')}
-              className='w-full md:w-auto bg-transparent border border-[#3A98BB] text-[#3A98BB] font-semibold rounded-[40px] px-12 py-3.5 hover:bg-[#EAF9FF] transition-colors shadow-none'
-            >
-              Skip
-            </Button>
-            <Button
-              onPress={async () => {
-                const isValid = await trigger("awards");
-                if (isValid) router.push('/artist-page/project-page');
-              }}
-              className='w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
-            >
-              Submit
-            </Button>
+            <Skeleton isLoaded={!isLoading} className="rounded-full">
+              <Button
+                onPress={() => router.push('/artist-page/project-page')}
+                className='w-full md:w-auto bg-transparent border border-[#3A98BB] text-[#3A98BB] font-semibold rounded-[40px] px-12 py-3.5 hover:bg-[#EAF9FF] transition-colors shadow-none'
+              >
+                Skip
+              </Button>
+            </Skeleton>
+            <Skeleton isLoaded={!isLoading} className="rounded-full">
+              <Button
+                onPress={async () => {
+                  const isValid = await trigger("awards");
+                  if (isValid) router.push('/artist-page/project-page');
+                }}
+                className='w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
+              >
+                Submit
+              </Button>
+            </Skeleton>
           </div>
         </div>
       </section>

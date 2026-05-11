@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useState } from "react";
 import PersonalDetail from "./_components/PersonalDetail";
 import PersonalInformation from "./_components/PersonalInformation";
@@ -10,40 +9,13 @@ import { useForm, FormProvider } from "react-hook-form";
 export default function Page() {
   const [selected, setSelected] = useState("PersonalDetail");
   const [preview, setPreview] = useState("/dev-images/profile.png");
-  const [previewPortfolio, setPreviewPortfolio] = useState([]);
-  const [previewAwardCertificate, setPreviewAwardCertificate] = useState([]);
 
   // image preview handler
-
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       setPreview(URL.createObjectURL(file));
     }
-  };
-
-  const uploadedPortfolio = (e) => {
-    const files = Array.from(e.target.files || []);
-    if (files.length > 0) {
-      const newPreviews = files.map((file) => URL.createObjectURL(file));
-      setPreviewPortfolio((prev) => [...prev, ...newPreviews]);
-    }
-  };
-
-  const removePortfolioItem = (index) => {
-    setPreviewPortfolio((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const uploadedAwardCertificate = (e) => {
-    const files = Array.from(e.target.files || []);
-    if (files.length > 0) {
-      const newPreviews = files.map((file) => URL.createObjectURL(file));
-      setPreviewAwardCertificate((prev) => [...prev, ...newPreviews]);
-    }
-  };
-
-  const removeAwardCertificateItem = (index) => {
-    setPreviewAwardCertificate((prev) => prev.filter((_, i) => i !== index));
   };
 
   const [step, setStep] = useState(1);
@@ -67,7 +39,6 @@ export default function Page() {
       skill: "",
       companyName: "",
       portfolioLink: "",
-      uploadedPortfolio: "",
       availability: false,
       awards: [{ name: "", issuedBy: "", previews: [] }],
     },
@@ -84,25 +55,25 @@ export default function Page() {
   return (
     <>
       <FormProvider {...methods}>
-      <div className="min-h-screen bg-[#DBDBDB]/30">
-        <div className="flex flex-col md:flex-row px-5 md:px-10 mt-5 md:mt-14 md:gap-32">
-          {/* profile view and button switch */}
+        <div className="min-h-screen bg-[#DBDBDB]/30">
+          <div className="flex flex-col md:flex-row px-5 md:px-10 mt-5 md:mt-14 md:gap-32">
+            {/* profile view and button switch */}
 
-          <Profile
-            setSelected={setSelected}
-            formData={formData}
-            setFormData={setFormData}
-            selected={selected}
-            step={step}
-            setStep={setStep}
-            className="hidden md:flex"
-            preview={preview}
-            handleImageChange={handleImageChange}
-            hoveredField={hoveredField}
-          />
+            <Profile
+              setSelected={setSelected}
+              formData={formData}
+              setFormData={setFormData}
+              selected={selected}
+              step={step}
+              setStep={setStep}
+              className="hidden md:flex"
+              preview={preview}
+              handleImageChange={handleImageChange}
+              hoveredField={hoveredField}
+            />
 
-          {/* Conditionally show content */}
-          <div className="flex-1 mt-5 md:mt-6">
+            {/* Conditionally show content */}
+            <div className="flex-1 mt-5 md:mt-6">
               {selected === "PersonalDetail" && (
                 <>
                   <Profile
@@ -125,12 +96,8 @@ export default function Page() {
               {selected === "ProfessionalInformation" && (
                 <PersonalInformation
                   setSelected={setSelected}
-                  formData={formData}
-                  setFormData={setFormData}
-                  uploadedPortfolio={uploadedPortfolio}
-                  previewPortfolio={previewPortfolio}
-                  removePortfolioItem={removePortfolioItem}
                   setHoveredField={setHoveredField}
+                  setStep={setStep}
                 />
               )}
 

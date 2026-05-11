@@ -3,6 +3,7 @@ import React from "react";
 import { Camera } from "lucide-react";
 import { Avatar } from "@heroui/react";
 import { useFormContext } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 const Profile = ({
   setSelected,
@@ -14,6 +15,7 @@ const Profile = ({
   step,
   setStep,
 }) => {
+  const router = useRouter();
   const { watch } = useFormContext();
   const formData = watch();
 
@@ -89,7 +91,6 @@ const Profile = ({
         {selected === "ProfessionalInformation" && (
           <ul className="font-normal text-sm space-y-3 p-3">
             <List activeState={formData.skill} text="Skills" isHovered={hoveredField === "Skills"} />
-            <List activeState={formData.portfolioLink} text="Portfolio" isHovered={hoveredField === "Portfolio"} />
             <List activeState={formData.availability} text="Availability" isHovered={hoveredField === "Availability"} />
           </ul>
         )}
@@ -111,6 +112,7 @@ const Profile = ({
           </ul>
         )}
       </section>
+
     </div>
   );
 };

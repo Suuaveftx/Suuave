@@ -1,55 +1,50 @@
 'use client';
 import {
-  Image,
   Link,
   Navbar,
-  NavbarBrand,
   NavbarContent,
-  NavbarMenu,
-  NavbarMenuItem,
+  NavbarItem,
   NavbarMenuToggle,
-  Avatar,
-  Button,
-  Badge,
+  NavbarMenuItem,
+  NavbarMenu,
+  NavbarBrand,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Avatar,
 } from '@heroui/react';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { ChevronDown } from '../utils/SvgIcons';
+import CustomButton from './CustomButton';
+import {
+  ChevronDown,
+  Bell,
+  CreditCard,
+  Mail,
+  Lock,
+  User as UserIcon,
+  Settings,
+  HelpCircle,
+} from 'lucide-react';
 import { LuCircleUser } from 'react-icons/lu';
-import { TbSettings, TbLogout2 } from 'react-icons/tb';
-import { HelpCircle, CreditCard } from 'lucide-react';
-import { IoMail } from 'react-icons/io5';
+import { TbLogout2 } from 'react-icons/tb';
+import Image from 'next/image';
 import Notification from './Notification';
 import { signOut } from '../app/actions/services';
 
 const ArtistNavbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.classList.add('menu-open');
-    } else {
-      document.body.classList.remove('menu-open');
-    }
-  }, [isMenuOpen]);
-
+  const [textStyle, setTextStyle] = useState('text-black');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-
-  const handleLogout = async () => {
-    await signOut();
-  };
 
   const isActive = (path) => {
     if (path === '/artist-page/project-page') {
       return pathname === path || pathname.startsWith('/artist-page/job-details-page');
     }
-    if (path === '/artist-page/my-contracts') {
+    if (path === '/artist-page/my-contracts-old') {
       return (
         pathname === path ||
         pathname.startsWith('/artist-page/ongoing-contract-information') ||
@@ -67,53 +62,57 @@ const ArtistNavbar = () => {
     return pathname === path;
   };
 
-  const navLinks = [
+  const menuItems = [
     { label: 'Jobs', href: '/artist-page/project-page' },
     { label: 'My Proposals', href: '/artist-page/my-proposals' },
-    { label: 'My Contracts', href: '/artist-page/my-contracts' },
+    { label: 'My Contracts', href: '/artist-page/my-contracts-old' },
   ];
 
   const mobileMenuItems = [
     { label: 'Jobs', href: '/artist-page/project-page' },
     { label: 'My Proposals', href: '/artist-page/my-proposals' },
-    { label: 'My Contracts', href: '/artist-page/my-contracts' },
+    { label: 'My Contracts', href: '/artist-page/my-contracts-old' },
   ];
+  const handleLogout = async () => {
+    await signOut();
+    router.push('/auth/login');
+  };
 
   return (
     <Navbar
+      isMenuOpen={isMenuOpen}
       shouldHideOnScroll={false}
-      maxWidth='full'
-      className='fixed top-0 h-[80px] border-b bg-[#CCE7F2] z-[999]'
-      classNames={{ wrapper: 'pl-0 pr-4 lg:px-14' }}
+      position='static'
+      disableScrollHandler
+      className='w-full bg-[#EAF9FF] items-center font-satoshi border-b border-gray-200 flex-nowrap h-[80px]'
+      classNames={{ wrapper: 'max-w-[1700px] h-full px-6 sm:px-10 mx-auto' }}
       onMenuOpenChange={setIsMenuOpen}
     >
       {/* LOGO */}
-      <NavbarBrand className='sm:justify-start justify-start max-w-fit'>
-        <Link href='/artist-page'>
-          {/* Mobile Logo */}
-          <Image
-            disableAnimation
-            src='/dev-images/logomobile.png'
-            alt='Suaave'
-            className='w-[140px] h-[140px] object-contain object-left lg:hidden -ml-6'
-          />
-          {/* Desktop Logo */}
-          <Image
-            disableAnimation
-            src='/dev-images/SuuaveTxt.png'
-            alt='Suaave'
-            className='w-32 max-h-10 object-contain hidden lg:block'
-          />
-        </Link>
+      <NavbarBrand>
+        <div className='flex items-center gap-3'>
+          <Link
+            href='/artist-page'
+            className='sm:border-l sm:border-[#8E8E8E]/30 sm:pl-3'
+          >
+            <Image
+              src='/dev-images/logocombo.png'
+              alt='Logo'
+              className='w-32 sm:w-40 h-auto object-contain'
+              width={140}
+              height={40}
+            />
+          </Link>
+        </div>
       </NavbarBrand>
 
-      {/* DESKTOP NAV LINKS */}
-      <NavbarContent className='hidden sm:flex gap-9 font-medium h-full' justify='center'>
-        {navLinks.map((item, index) => (
-          <div key={index} className='flex items-center h-full'>
+      {/* MENU */}
+      <NavbarContent className='hidden sm:flex gap-9 font-bold h-full' justify='center'>
+        {menuItems.map((item, index) => (
+          <NavbarItem key={index} className='h-full flex items-center'>
             <Link
               href={item.href}
-              className='text-[#1A1A1A] hover:text-[#B0B0B0] text-[15px] transition-colors relative flex items-center h-full'
+              className={`${textStyle} transition duration-300 relative flex items-center h-full`}
             >
               <motion.div
                 animate={isActive(item.href) ? 'hovered' : 'initial'}
@@ -127,119 +126,113 @@ const ArtistNavbar = () => {
                     hovered: { scaleX: 1 },
                   }}
                   transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  className='absolute bottom-[20px] left-0 w-full h-[2px] bg-[#3A98BB] origin-left'
+                  className='absolute bottom-[20px] left-0 w-full h-[2px] bg-[#222222] origin-left'
                 />
               </motion.div>
             </Link>
-          </div>
+          </NavbarItem>
         ))}
       </NavbarContent>
 
-      {/* RIGHT SIDE ACTIONS */}
-      <NavbarContent justify='end' className='gap-3 lg:gap-6'>
-        {/* License Your Designs - desktop only */}
-        <div className='hidden lg:flex'>
-          <Link href='/artist-page/license-your-design'>
-            <Button
-              className='rounded-full px-9 py-2 shadow-md font-proximanova font-semibold items-center justify-center gap-2 border border-neutral-400'
-              style={{
-                color: '#035A7A',
-                background: 'radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)',
-              }}
-            >
-              License Your Designs
-            </Button>
+      <NavbarContent justify='end' className='gap-3 sm:gap-6'>
+        <NavbarItem className='hidden lg:flex'>
+          <CustomButton
+            text='License Your Designs'
+            href={'/artist-page/license-your-design'}
+          />
+        </NavbarItem>
+
+        <NavbarItem className='flex'>
+          <Notification />
+        </NavbarItem>
+
+        <NavbarItem className='flex'>
+          <Link href='/artist-page/messages'>
+            <Image
+              src='/dev-images/Messages.png'
+              alt='Messages'
+              width={28}
+              height={28}
+              className='w-6 h-6 sm:w-7 sm:h-7'
+            />
           </Link>
-        </div>
+        </NavbarItem>
 
-        {/* Notification */}
-        <Notification />
+        {/* PROFILE DROPDOWN / AVATAR */}
+        <NavbarItem className='flex'>
+          <Dropdown shouldBlockScroll={false}>
+            <DropdownTrigger>
+              <button className='flex items-center gap-2 outline-none bg-transparent border-none cursor-pointer p-0'>
+                <Avatar
+                  src='/dev-images/Avatar.png'
+                  className='w-10 h-10 rounded-full border border-gray-200'
+                />
+                <ChevronDown className='hidden sm:block w-4 h-4 text-gray-600' />
+              </button>
+            </DropdownTrigger>
+            <DropdownMenu aria-label='User actions' className='w-[200px]'>
+              <DropdownItem
+                startContent={<LuCircleUser className='size-4' />}
+                key='profile'
+                as={Link}
+                href='/artist-page/profile-for-artist'
+              >
+                Profile
+              </DropdownItem>
+              <DropdownItem
+                startContent={<CreditCard className='size-4' />}
+                key='wallet'
+                as={Link}
+                href='/artist-page/wallet'
+              >
+                Wallet
+              </DropdownItem>
+              <DropdownItem
+                startContent={<Settings className='size-4' />}
+                key='settings'
+                as={Link}
+                href='/artist-page/settings'
+              >
+                Settings
+              </DropdownItem>
+              <DropdownItem
+                startContent={<HelpCircle className='size-4' />}
+                key='help'
+                as={Link}
+                href='/artist-page/help'
+              >
+                Help and support
+              </DropdownItem>
+              <DropdownItem
+                startContent={<TbLogout2 className='size-4' />}
+                key='logout'
+                className='text-danger'
+                color='danger'
+                onPress={handleLogout}
+              >
+                Logout
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </NavbarItem>
 
-        {/* Messages */}
-        <Link href='/artist-page/messages'>
-          <Badge
-            content={<p className='text-[10px] text-white'>2</p>}
-            shape='circle'
-            showOutline={false}
-            className='h-4 w-4 bg-[#3A98BB] flex'
-          >
-            <Button
-              isIconOnly
-              variant='bordered'
-              radius='full'
-              className='text-[#1A1A1A] w-8 h-8 min-w-8 sm:w-10 sm:h-10 sm:min-w-10'
-              size='sm'
-            >
-              <IoMail className='w-4 h-4' />
-            </Button>
-          </Badge>
-        </Link>
-
-        {/* Avatar Dropdown */}
-        <Dropdown shouldBlockScroll={false}>
-          <DropdownTrigger>
-            <button className='flex items-center gap-2 outline-none bg-transparent border-none cursor-pointer p-0'>
-              <Avatar
-                src='/dev-images/Avatar.png'
-                className='w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-200'
-                size='sm'
-              />
-              <ChevronDown fill='currentColor' size={14} />
-            </button>
-          </DropdownTrigger>
-          <DropdownMenu aria-label='User actions'>
-            <DropdownItem
-              startContent={<LuCircleUser className='size-4' />}
-              key='profile'
-              onPress={() => router.push('/artist-page/profile-for-artist')}
-            >
-              Profile
-            </DropdownItem>
-            <DropdownItem
-              startContent={<CreditCard className='size-4' />}
-              key='wallet'
-              onPress={() => router.push('/artist-page/wallet')}
-            >
-              Wallet
-            </DropdownItem>
-            <DropdownItem
-              startContent={<TbSettings className='size-4' />}
-              key='settings'
-              onPress={() => router.push('/artist-page/settings')}
-            >
-              Settings
-            </DropdownItem>
-            <DropdownItem
-              startContent={<HelpCircle className='size-4' />}
-              key='help'
-              onPress={() => router.push('/artist-page/help')}
-            >
-              Help & Support
-            </DropdownItem>
-            <DropdownItem
-              startContent={<TbLogout2 className='size-4' />}
-              key='logout'
-              className='text-danger'
-              color='danger'
-              onPress={handleLogout}
-            >
-              Logout
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-
-        {/* Hamburger Toggle (mobile only, after avatar) */}
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-          className='lg:hidden text-black font-bold text-lg size-6'
-        />
+        <NavbarItem className='sm:hidden'>
+          <NavbarMenuToggle
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            className='flex items-center justify-center border border-gray-200 rounded-full p-2 h-10 w-10 text-gray-600 bg-white z-50'
+          />
+        </NavbarItem>
       </NavbarContent>
 
       {/* MOBILE MENU */}
-      <NavbarMenu className='bg-[#CCE7F2] pt-8'>
+      <NavbarMenu>
         {mobileMenuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item.label}-${index}`} className='py-3'>
-            <Link className='w-full' color='foreground' href={item.href} size='lg'>
+          <NavbarMenuItem key={index}>
+            <Link
+              className='w-full text-black transition duration-300'
+              href={item.href}
+              size='lg'
+            >
               {item.label}
             </Link>
           </NavbarMenuItem>
