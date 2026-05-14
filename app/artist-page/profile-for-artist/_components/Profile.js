@@ -12,20 +12,17 @@ import EditOccupationModal from './EditOccupationModal';
 
 
 
-import { useAppStore } from '@/store';
-
 const ProfileArtist = ({ isVisitor = false }) => {
   const fullText = `Sorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex.`;
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [aboutValue, setAboutValue] = useState(fullText);
+  const [titleValue, setTitleValue] = useState("Fashion Artist | 3D Illustrator");
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [previewProfileUrl, setPreviewProfileUrl] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
-
-  const { activeCategory, artistOccupation, setArtistOccupation } = useAppStore();
 
   const handleRetainArtist = () => {
     const returnPath = encodeURIComponent('/artist-page/profile-for-artist');
@@ -33,12 +30,17 @@ const ProfileArtist = ({ isVisitor = false }) => {
   };
 
   useEffect(() => {
-    let role = isVisitor ? 'brand' : activeCategory;
+    // Access localStorage in useEffect to avoid hydration issues
+    let role = isVisitor ? 'brand' : localStorage.getItem('activeCategory');
     if (role === 'Fashion Artist') role = 'artist';
     if (role === 'Fashion Brand') role = 'brand';
 
+    const savedOccupation = localStorage.getItem('artist_occupation');
+    if (savedOccupation) {
+      setTitleValue(savedOccupation);
+    }
     setUserRole(role);
-  }, [isVisitor, activeCategory]);
+  }, [isVisitor]);
 
   // File handler
   const handleFileChange = (e) => {
@@ -54,7 +56,8 @@ const ProfileArtist = ({ isVisitor = false }) => {
   };
 
   const handleSaveOccupation = (newOccupation) => {
-    setArtistOccupation(newOccupation);
+    setTitleValue(newOccupation);
+    localStorage.setItem('artist_occupation', newOccupation);
   };
 
   return (
@@ -104,7 +107,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
           <div className="flex flex-col items-center gap-2 w-full">
             <div className="flex items-center gap-2">
               <p className="text-[#222222] text-[16px] font-medium">
-                {userRole === 'brand' ? 'Designer/Brand' : artistOccupation}
+                {userRole === 'brand' ? 'Designer/Brand' : titleValue}
               </p>
               {!isVisitor && (
                 <button onClick={() => setIsModalOpen(true)} className="text-[#3A98BB] hover:opacity-75 transition-opacity">
@@ -204,7 +207,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
       <EditOccupationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        initialValue={artistOccupation}
+        initialValue={titleValue}
         onSave={handleSaveOccupation}
       />
     </div >

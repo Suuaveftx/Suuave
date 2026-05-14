@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Button, Input as HeroInput, Skeleton } from "@heroui/react";
+import { Button, Input as HeroInput } from "@heroui/react";
 import FormLabel from "@/components/ui/FormLabel";
 import { useFormContext } from "react-hook-form";
 
@@ -10,19 +10,11 @@ const PersonalInformation = ({
   setHoveredField,
   setStep,
 }) => {
-  const [isLoading, setIsLoading] = useState(true);
   const {
     register,
     trigger,
     formState: { errors },
   } = useFormContext();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleContinue = async () => {
     const isValid = await trigger(["skill", "portfolioLink"]);
@@ -44,21 +36,19 @@ const PersonalInformation = ({
           onMouseEnter={() => setHoveredField("Skills")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <Skeleton isLoaded={!isLoading} className="rounded-lg">
-            <FormLabel htmlFor="skills" text="Skills" required />
-            <HeroInput
-              id="skills"
-              placeholder="Eg Illustrator"
-              variant="bordered"
-              classNames={{
-                inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                input: 'text-black text-base'
-              }}
-              {...register("skill")}
-              isInvalid={!!errors.skill}
-              errorMessage={errors.skill?.message}
-            />
-          </Skeleton>
+          <FormLabel htmlFor="skills" text="Skills" required />
+          <HeroInput
+            id="skills"
+            placeholder="Eg Illustrator"
+            variant="bordered"
+            classNames={{
+              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+              input: 'text-black text-base'
+            }}
+            {...register("skill", { required: "Skills are required" })}
+            isInvalid={!!errors.skill}
+            errorMessage={errors.skill?.message}
+          />
         </div>
         {/*Portfolio link*/}
         <div
@@ -66,26 +56,29 @@ const PersonalInformation = ({
           onMouseEnter={() => setHoveredField("Portfolio")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <Skeleton isLoaded={!isLoading} className="rounded-lg">
-            <FormLabel htmlFor="portfolioLink" text="Link to Your Portfolio, Website, or Social Media Page" required />
-            <HeroInput
-              id="portfolioLink"
-              placeholder="Enter portfolio link"
-              variant="bordered"
-              classNames={{
-                inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                input: 'text-black text-base'
-              }}
-              {...register("portfolioLink")}
-              isInvalid={!!errors.portfolioLink}
-              errorMessage={errors.portfolioLink?.message}
-            />
-          </Skeleton>
+          <FormLabel htmlFor="portfolioLink" text="Link to Your Portfolio, Website, or Social Media Page" required />
+          <HeroInput
+            id="portfolioLink"
+            placeholder="Enter portfolio link"
+            variant="bordered"
+            classNames={{
+              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+              input: 'text-black text-base'
+            }}
+            {...register("portfolioLink", { 
+              required: "Portfolio link is required",
+              pattern: {
+                value: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/,
+                message: "Invalid URL"
+              }
+            })}
+            isInvalid={!!errors.portfolioLink}
+            errorMessage={errors.portfolioLink?.message}
+          />
         </div>
 
       </section>
       <div className="w-full flex flex-col md:flex-row items-center justify-between mt-12 gap-4">
-        <Skeleton isLoaded={!isLoading} className="rounded-full">
           <button
             onClick={() => {
               setSelected("PersonalDetail");
@@ -95,24 +88,19 @@ const PersonalInformation = ({
           >
             Previous
           </button>
-        </Skeleton>
         <div className='flex flex-col md:flex-row items-center gap-3 w-full md:w-auto'>
-          <Skeleton isLoaded={!isLoading} className="rounded-full">
             <Button
               onPress={() => setSelected("Awards/Certifications")}
               className="w-full md:w-auto bg-transparent border border-[#3A98BB] text-[#3A98BB] font-semibold rounded-[40px] px-12 py-3.5 hover:bg-[#EAF9FF] transition-colors shadow-none"
             >
               Skip
             </Button>
-          </Skeleton>
-          <Skeleton isLoaded={!isLoading} className="rounded-full">
-            <Button
-              onPress={handleContinue}
-              className="w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]"
-            >
-              Continue
-            </Button>
-          </Skeleton>
+          <Button
+            onPress={handleContinue}
+            className="w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]"
+          >
+            Continue
+          </Button>
         </div>
       </div>
     </div>

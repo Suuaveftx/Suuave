@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { DatePicker, Input as HeroInput, Textarea, Button, Skeleton } from "@heroui/react";
+import { DatePicker, Input as HeroInput, Textarea, Button } from "@heroui/react";
 import { parseDate } from "@internationalized/date";
 import FormLabel from "@/components/ui/FormLabel";
 import CustomSelect from "@/components/ui/CustomSelect";
@@ -16,7 +16,6 @@ const languageOptions = [
 ];
 
 const PersonalDetail = ({ setSelected, setHoveredField }) => {
-  const [isLoading, setIsLoading] = useState(true);
   const {
     control,
     register,
@@ -25,15 +24,8 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
     formState: { errors },
   } = useFormContext();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
   const handleContinue = async () => {
-    const isValid = await trigger(["fullName", "email", "phoneCode", "phoneNumber", "language", "about", "nationality", "currentCity", "day", "month", "year"]);
+    const isValid = await trigger(["fullName", "email", "phoneNumber", "language", "about", "nationality", "currentCity", "dob"]);
     if (isValid) {
       setSelected("ProfessionalInformation");
     }
@@ -52,21 +44,19 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           onMouseEnter={() => setHoveredField("Full Name")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <Skeleton isLoaded={!isLoading} className="rounded-lg">
-            <FormLabel htmlFor="fullName" text="Full Name" required />
-            <HeroInput
-              id="fullName"
-              placeholder="Chinedu Ozulu"
-              variant="bordered"
-              classNames={{
-                inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                input: 'text-black text-sm'
-              }}
-              {...register("fullName")}
-              isInvalid={!!errors.fullName}
-              errorMessage={errors.fullName?.message}
-            />
-          </Skeleton>
+          <FormLabel htmlFor="fullName" text="Full Name" required />
+          <HeroInput
+            id="fullName"
+            placeholder="Chinedu Ozulu"
+            variant="bordered"
+            classNames={{
+              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+              input: 'text-black text-sm'
+            }}
+            {...register("fullName", { required: "Full name is required" })}
+            isInvalid={!!errors.fullName}
+            errorMessage={errors.fullName?.message}
+          />
         </div>
         {/* Email Address */}
         <div
@@ -74,22 +64,26 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           onMouseEnter={() => setHoveredField(" Email Address")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <Skeleton isLoaded={!isLoading} className="rounded-lg">
-            <FormLabel htmlFor="emailAddress" text="Email Address" required />
-            <HeroInput
-              id="email"
-              placeholder="czysdgv@gmail.com"
-              variant="bordered"
-              readOnly
-              classNames={{
-                inputWrapper: 'bg-[#F1F1F1] border-none',
-                input: 'text-[#767676] text-sm'
-              }}
-              {...register("email")}
-              isInvalid={!!errors.email}
-              errorMessage={errors.email?.message}
-            />
-          </Skeleton>
+          <FormLabel htmlFor="emailAddress" text="Email Address" required />
+          <HeroInput
+            id="email"
+            placeholder="czysdgv@gmail.com"
+            variant="bordered"
+            readOnly
+            classNames={{
+              inputWrapper: 'bg-[#F1F1F1] border-none',
+              input: 'text-[#767676] text-sm'
+            }}
+            {...register("email", { 
+              required: "Email is required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Invalid email address"
+              }
+            })}
+            isInvalid={!!errors.email}
+            errorMessage={errors.email?.message}
+          />
         </div>
         {/*Phone Number */}
         <div
@@ -97,28 +91,27 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           onMouseEnter={() => setHoveredField("Phone Number")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <Skeleton isLoaded={!isLoading} className="rounded-lg">
-            <FormLabel htmlFor="phoneNumber" text="Phone Number" required />
-            <Controller
-              name="phoneNumber"
-              control={control}
-              render={({ field }) => (
-                <PhoneInputCustom
-                  id="phoneNumber"
-                  value={field.value}
-                  onChange={(val, data) => {
-                    field.onChange(val);
-                    // Maintain backward compatibility with phoneCode Set
-                    if (data?.dialCode) {
-                      setValue("phoneCode", new Set([`+${data.dialCode}`]));
-                    }
-                  }}
-                  onBlur={field.onBlur}
-                  error={errors.phoneNumber?.message || errors.phoneCode?.message}
-                />
-              )}
-            />
-          </Skeleton>
+          <FormLabel htmlFor="phoneNumber" text="Phone Number" required />
+          <Controller
+            name="phoneNumber"
+            control={control}
+            rules={{ required: "Phone number is required" }}
+            render={({ field }) => (
+              <PhoneInputCustom
+                id="phoneNumber"
+                value={field.value}
+                onChange={(val, data) => {
+                  field.onChange(val);
+                  // Maintain backward compatibility with phoneCode Set
+                  if (data?.dialCode) {
+                    setValue("phoneCode", new Set([`+${data.dialCode}`]));
+                  }
+                }}
+                onBlur={field.onBlur}
+                error={errors.phoneNumber?.message || errors.phoneCode?.message}
+              />
+            )}
+          />
         </div>
         {/*Language */}
         <div
@@ -126,20 +119,19 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           onMouseEnter={() => setHoveredField("Language")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <Skeleton isLoaded={!isLoading} className="rounded-lg">
-            <FormLabel htmlFor="language" text="Language" required />
-            <Controller
-              name="language"
-              control={control}
-              render={({ field }) => (
-                <LanguageSelectCustom
-                  value={field.value}
-                  onChange={field.onChange}
-                  error={errors.language?.message}
-                />
-              )}
-            />
-          </Skeleton>
+          <FormLabel htmlFor="language" text="Language" required />
+          <Controller
+            name="language"
+            control={control}
+            rules={{ required: "Language is required" }}
+            render={({ field }) => (
+              <LanguageSelectCustom
+                value={field.value}
+                onChange={field.onChange}
+                error={errors.language?.message}
+              />
+            )}
+          />
         </div>
         {/* textarea */}
         <div
@@ -147,40 +139,36 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           onMouseEnter={() => setHoveredField("About Yourself")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <Skeleton isLoaded={!isLoading} className="rounded-lg">
-            <FormLabel htmlFor="about" text="Describe Yourself" required />
-            <Textarea
-              id="about"
-              placeholder="Write About Your Design Style"
-              variant="bordered"
-              minRows={4}
-              classNames={{
-                inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                input: 'text-black text-sm'
-              }}
-              {...register("about")}
-              isInvalid={!!errors.about}
-              errorMessage={errors.about?.message}
-            />
-          </Skeleton>
+          <FormLabel htmlFor="about" text="Describe Yourself" required />
+          <Textarea
+            id="about"
+            placeholder="Write About Your Design Style"
+            variant="bordered"
+            minRows={4}
+            classNames={{
+              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+              input: 'text-black text-sm'
+            }}
+            {...register("about", { required: "Description is required" })}
+            isInvalid={!!errors.about}
+            errorMessage={errors.about?.message}
+          />
         </div>
         {/* Company Name */}
         <div className="w-full flex flex-col gap-2">
-          <Skeleton isLoaded={!isLoading} className="rounded-lg">
-            <FormLabel htmlFor="companyName" text="Company/Brand Name (Optional)" />
-            <HeroInput
-              id="companyName"
-              placeholder="Enter Company Name"
-              variant="bordered"
-              classNames={{
-                inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                input: 'text-black text-sm'
-              }}
-              {...register("companyName")}
-              isInvalid={!!errors.companyName}
-              errorMessage={errors.companyName?.message}
-            />
-          </Skeleton>
+          <FormLabel htmlFor="companyName" text="Company/Brand Name (Optional)" />
+          <HeroInput
+            id="companyName"
+            placeholder="Enter Company Name"
+            variant="bordered"
+            classNames={{
+              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+              input: 'text-black text-sm'
+            }}
+            {...register("companyName")}
+            isInvalid={!!errors.companyName}
+            errorMessage={errors.companyName?.message}
+          />
         </div>
         {/*Nationality */}
         <div
@@ -188,22 +176,24 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           onMouseEnter={() => setHoveredField("Nationality")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <Skeleton isLoaded={!isLoading} className="rounded-lg">
-            <FormLabel htmlFor="nationality" text="Nationality" required />
-            <Controller
-              name="nationality"
-              control={control}
-              render={({ field }) => (
-                <div className="max-w-[280px]">
-                  <CountrySelectCustom
-                    value={field.value}
-                    onChange={field.onChange}
-                    error={errors.nationality?.message}
-                  />
-                </div>
-              )}
-            />
-          </Skeleton>
+          <FormLabel htmlFor="nationality" text="Nationality" required />
+          <Controller
+            name="nationality"
+            control={control}
+            rules={{ 
+              required: "Nationality is required",
+              validate: (val) => (val instanceof Set ? val.size > 0 : !!val) || "Nationality is required"
+            }}
+            render={({ field }) => (
+              <div className="max-w-[280px]">
+                <CountrySelectCustom
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={errors.nationality?.message}
+                />
+              </div>
+            )}
+          />
         </div>
         {/*Current City*/}
         <div
@@ -211,28 +201,27 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           onMouseEnter={() => setHoveredField("Current City")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <Skeleton isLoaded={!isLoading} className="rounded-lg">
-            <FormLabel htmlFor="currentCity" text="Current City" required />
-            <Controller
-              name="currentCity"
-              control={control}
-              render={({ field }) => (
-                <HeroInput
-                  id="currentCity"
-                  placeholder="Lagos"
-                  variant="bordered"
-                  className="max-w-[280px]"
-                  classNames={{
-                    inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                    input: 'text-black text-sm'
-                  }}
-                  {...field}
-                  isInvalid={!!errors.currentCity}
-                  errorMessage={errors.currentCity?.message}
-                />
-              )}
-            />
-          </Skeleton>
+          <FormLabel htmlFor="currentCity" text="Current City" required />
+          <Controller
+            name="currentCity"
+            control={control}
+            rules={{ required: "Current city is required" }}
+            render={({ field }) => (
+              <HeroInput
+                id="currentCity"
+                placeholder="Lagos"
+                variant="bordered"
+                className="max-w-[280px]"
+                classNames={{
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+                  input: 'text-black text-sm'
+                }}
+                {...field}
+                isInvalid={!!errors.currentCity}
+                errorMessage={errors.currentCity?.message}
+              />
+            )}
+          />
         </div>
         {/*Date of Birth*/}
         <div
@@ -240,62 +229,62 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           onMouseEnter={() => setHoveredField(" Date of Birth")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <Skeleton isLoaded={!isLoading} className="rounded-lg">
-            <FormLabel htmlFor="dob" text="Date Of Birth" required />
-            <Controller
-              name="dob"
-              control={control}
-              render={({ field }) => (
-                <DatePicker
-                  id="dateofBirth"
-                  aria-label="Date of Birth"
-                  value={
-                    field.value
-                      ? (() => { try { return parseDate(field.value); } catch { return null; } })()
-                      : null
-                  }
-                  onChange={(date) =>
-                    field.onChange(date ? date.toString() : '')
-                  }
-                  showMonthAndYearPickers
-                  popoverProps={{ placement: 'bottom-start', shouldFlip: false }}
-                  classNames={{
-                    base: 'max-w-[280px]',
-                    inputWrapper: [
-                      'w-full border border-[#D1D1D1] rounded-lg bg-transparent px-2 py-1',
-                      'hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                      'shadow-none',
+          <FormLabel htmlFor="dob" text="Date Of Birth" required />
+          <Controller
+            name="dob"
+            control={control}
+            rules={{ required: "Date of birth is required" }}
+            render={({ field }) => (
+              <DatePicker
+                id="dateofBirth"
+                aria-label="Date of Birth"
+                variant="bordered"
+                isInvalid={!!errors.dob}
+                errorMessage={errors.dob?.message}
+                value={
+                  field.value
+                    ? (() => { try { return parseDate(field.value); } catch { return null; } })()
+                    : null
+                }
+                onChange={(date) =>
+                  field.onChange(date ? date.toString() : '')
+                }
+                showMonthAndYearPickers
+                popoverProps={{ placement: 'bottom-start', shouldFlip: false }}
+                classNames={{
+                  base: 'max-w-[280px]',
+                  inputWrapper: [
+                    'w-full border rounded-lg bg-transparent px-2 py-1',
+                    errors.dob ? 'border-danger' : 'border-[#D1D1D1]',
+                    'hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+                    'shadow-none',
+                  ],
+                  input: 'text-black font-normal text-sm',
+                }}
+                calendarProps={{
+                  classNames: {
+                    base: 'shadow-lg rounded-xl border border-[#D1D1D1]',
+                    title: 'text-[#035A7A] font-semibold',
+                    cellButton: [
+                      'data-[selected=true]:bg-[#CCE7F2] data-[selected=true]:text-[#035A7A]',
+                      'data-[today=true]:border data-[today=true]:border-[#3A98BB]',
+                      'hover:bg-[#EAF9FF] rounded-lg',
                     ],
-                    input: 'text-black font-normal text-sm',
-                  }}
-                  calendarProps={{
-                    classNames: {
-                      base: 'shadow-lg rounded-xl border border-[#D1D1D1]',
-                      title: 'text-[#035A7A] font-semibold',
-                      cellButton: [
-                        'data-[selected=true]:bg-[#CCE7F2] data-[selected=true]:text-[#035A7A]',
-                        'data-[today=true]:border data-[today=true]:border-[#3A98BB]',
-                        'hover:bg-[#EAF9FF] rounded-lg',
-                      ],
-                    },
-                  }}
-                />
-              )}
-            />
-          </Skeleton>
-          {errors.dob && <p className="text-danger text-xs">{errors.dob.message}</p>}
+                  },
+                }}
+              />
+            )}
+          />
         </div>
       </section>
 
       <div className="w-full flex flex-col md:flex-row items-center justify-center md:justify-end gap-3 mt-12">
-        <Skeleton isLoaded={!isLoading} className="rounded-full">
           <Button
             onPress={handleContinue}
             className="w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]"
           >
             Continue
           </Button>
-        </Skeleton>
       </div>
     </div>
   );

@@ -9,9 +9,11 @@ export default function Layout({ children }) {
   const isPersonalDetails = pathname === '/fashion-designers/personal-details';
 
   return (
-    <div className='mx-auto  bg-[#DBDBDB]/30'>
+    <div className='mx-auto bg-[#DBDBDB]/30 min-h-screen'>
       {!isPersonalDetails && <FashionDesignerHeader />}
-      <main className='font-satoshi'>{children}</main>
+      <main className={`font-satoshi ${!isPersonalDetails ? 'pt-[80px]' : ''}`}>
+        {children}
+      </main>
       {!isPersonalDetails && <Footer />}
     </div>
   );

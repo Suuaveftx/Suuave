@@ -85,8 +85,8 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Full Name')}
               onMouseLeave={() => setHoveredField(null)}
             >
+              <FormLabel htmlFor='fullName' text='Full Name' required />
               <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <FormLabel htmlFor='fullName' text='Full Name' required />
                 <HeroInput
                   id='fullName'
                   placeholder='Enter Full Name'
@@ -107,8 +107,8 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Business Name')}
               onMouseLeave={() => setHoveredField(null)}
             >
+              <FormLabel htmlFor='businessName' text='Business Name' required />
               <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <FormLabel htmlFor='businessName' text='Business Name' required />
                 <HeroInput
                   id='businessName'
                   placeholder='Suuave Fashion Ltd.'
@@ -129,8 +129,8 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Username')}
               onMouseLeave={() => setHoveredField(null)}
             >
+              <FormLabel htmlFor='username' text='Username' required />
               <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <FormLabel htmlFor='username' text='Username' required />
                 <HeroInput
                   id='username'
                   placeholder='@ocean'
@@ -151,8 +151,8 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Brand Category')}
               onMouseLeave={() => setHoveredField(null)}
             >
+              <FormLabel htmlFor='brandCategory' text='Brand Category' required />
               <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <FormLabel htmlFor='brandCategory' text='Brand Category' required />
                 <Controller
                   name="brandCategory"
                   control={control}
@@ -175,8 +175,8 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Email Address')}
               onMouseLeave={() => setHoveredField(null)}
             >
+              <FormLabel htmlFor='emailAddress' text='Email Address' required />
               <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <FormLabel htmlFor='emailAddress' text='Email Address' required />
                 <HeroInput
                   id='emailAddress'
                   placeholder='czysdgv@gmail.com'
@@ -197,8 +197,8 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Position')}
               onMouseLeave={() => setHoveredField(null)}
             >
+              <FormLabel htmlFor='role' text='Position' required />
               <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <FormLabel htmlFor='role' text='Position' required />
                 <HeroInput
                   id='role'
                   placeholder='Creative Director'
@@ -237,8 +237,8 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Nationality')}
               onMouseLeave={() => setHoveredField(null)}
             >
+              <FormLabel htmlFor='nationality' text='Nationality' />
               <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <FormLabel htmlFor='nationality' text='Nationality' />
                 <Controller
                   name="nationality"
                   control={control}
@@ -262,8 +262,8 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Phone Number')}
               onMouseLeave={() => setHoveredField(null)}
             >
+              <FormLabel htmlFor='phoneNumber' text='Phone Number' />
               <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <FormLabel htmlFor='phoneNumber' text='Phone Number' />
                 <Controller
                   name="phoneNumber"
                   control={control}
@@ -291,8 +291,8 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Current City')}
               onMouseLeave={() => setHoveredField(null)}
             >
+              <FormLabel htmlFor='currentCity' text='Current City' />
               <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <FormLabel htmlFor='currentCity' text='Current City' />
                 <Controller
                   name="currentCity"
                   control={control}
@@ -320,8 +320,8 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Language')}
               onMouseLeave={() => setHoveredField(null)}
             >
+              <FormLabel htmlFor='language' text='Language' />
               <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <FormLabel htmlFor='language' text='Language' />
                 <Controller
                   name="language"
                   control={control}
@@ -341,8 +341,8 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Date of Birth')}
               onMouseLeave={() => setHoveredField(null)}
             >
+              <FormLabel htmlFor='dob' text='Date Of Birth' />
               <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <FormLabel htmlFor='dob' text='Date Of Birth' />
                 <Controller
                   name="dob"
                   control={control}
@@ -397,8 +397,8 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
             onMouseEnter={() => setHoveredField('About Yourself')}
             onMouseLeave={() => setHoveredField(null)}
           >
+            <FormLabel htmlFor='about' text='Describe Yourself' />
             <Skeleton isLoaded={!isLoading} className="rounded-lg">
-              <FormLabel htmlFor='about' text='Describe Yourself' />
               <Controller
                 name="about"
                 control={control}
@@ -430,7 +430,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 Previous
               </button>
             </Skeleton>
-            <div className='flex flex-col md:flex-row justify-center md:justify-end gap-4 w-full md:w-auto'>
+            <div className='flex flex-col md:flex-row justify-center md:justify-end items-center gap-4 w-full md:w-auto'>
               <Skeleton isLoaded={!isLoading} className="rounded-full">
                 <a
                   href={submitHref}
@@ -443,7 +443,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 <a
                   href={submitHref}
                   onClick={handleSubmitClick}
-                  className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 text-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] w-full md:w-auto font-semibold shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
+                  className='flex items-center justify-center text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 text-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] w-full md:w-auto font-semibold shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
                 >
                   Submit
                 </a>
