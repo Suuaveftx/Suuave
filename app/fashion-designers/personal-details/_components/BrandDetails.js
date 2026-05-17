@@ -1,16 +1,18 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { DatePicker, Input as HeroInput, Textarea, Skeleton } from '@heroui/react';
+import { DatePicker, Input as HeroInput, Textarea } from '@heroui/react';
 import { parseDate } from '@internationalized/date';
 import FormLabel from '@/components/ui/FormLabel';
 import CustomSelect from '@/components/ui/CustomSelect';
 import PhoneInputCustom from '@/components/ui/PhoneInputCustom';
-import { CountrySelect } from "react-country-state-city";
+import { CountrySelect, StateSelect } from "react-country-state-city";
 import { useFormContext, Controller } from 'react-hook-form';
 import LanguageSelectCustom from '@/components/ui/LanguageSelectCustom';
 import { ChevronLeft } from 'lucide-react';
 
 import { dialCodes as numCodeList } from '../../../../utils/countryData';
+
+const NIGERIA_DEFAULT = { id: 161, name: "Nigeria", iso2: "NG" };
 
 const brandCategoryOptions = [
   { key: 'Independent Brand / Designer', label: 'Independent Brand / Designer', description: 'Best for solo creators and boutique labels' },
@@ -27,7 +29,6 @@ const languageOptions = [
 ];
 
 const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-designers' }) => {
-  const [isLoading, setIsLoading] = useState(true);
   const {
     register,
     control,
@@ -36,16 +37,12 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
     formState: { errors },
   } = useFormContext();
 
-  const [countryid, setCountryid] = React.useState(0);
+  const [countryid, setCountryid] = React.useState(161);
+  const [stateid, setStateid] = React.useState(0);
 
-  useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [step]);
 
+
+  
   const handleContinue = async () => {
     const isValid = await trigger(["fullName", "businessName", "username", "brandCategory", "email", "role"]);
     if (isValid) setStep(2);
@@ -86,7 +83,6 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseLeave={() => setHoveredField(null)}
             >
               <FormLabel htmlFor='fullName' text='Full Name' required />
-              <Skeleton isLoaded={!isLoading} className="rounded-lg">
                 <HeroInput
                   id='fullName'
                   placeholder='Enter Full Name'
@@ -95,11 +91,10 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                     inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
                     input: 'text-black' 
                   }}
-                  {...register("fullName")}
+                  {...register("fullName", { required: "Full name is required" })}
                   isInvalid={!!errors.fullName}
                   errorMessage={errors.fullName?.message}
                 />
-              </Skeleton>
             </div>
             {/* Business Name */}
             <div
@@ -108,7 +103,6 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseLeave={() => setHoveredField(null)}
             >
               <FormLabel htmlFor='businessName' text='Business Name' required />
-              <Skeleton isLoaded={!isLoading} className="rounded-lg">
                 <HeroInput
                   id='businessName'
                   placeholder='Suuave Fashion Ltd.'
@@ -117,11 +111,10 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                     inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
                     input: 'text-black' 
                   }}
-                  {...register("businessName")}
+                  {...register("businessName", { required: "Business name is required" })}
                   isInvalid={!!errors.businessName}
                   errorMessage={errors.businessName?.message}
                 />
-              </Skeleton>
             </div>
             {/* Username */}
             <div
@@ -130,7 +123,6 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseLeave={() => setHoveredField(null)}
             >
               <FormLabel htmlFor='username' text='Username' required />
-              <Skeleton isLoaded={!isLoading} className="rounded-lg">
                 <HeroInput
                   id='username'
                   placeholder='@ocean'
@@ -139,11 +131,10 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                     inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
                     input: 'text-black' 
                   }}
-                  {...register("username")}
+                  {...register("username", { required: "Username is required" })}
                   isInvalid={!!errors.username}
                   errorMessage={errors.username?.message}
                 />
-              </Skeleton>
             </div>
             {/* Brand Category*/}
             <div
@@ -152,11 +143,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseLeave={() => setHoveredField(null)}
             >
               <FormLabel htmlFor='brandCategory' text='Brand Category' required />
-              <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <Controller
-                  name="brandCategory"
-                  control={control}
-                  render={({ field }) => (
+                <Controller name="brandCategory" control={control} rules={{ required: "Brand category is required" }} render={({ field }) => (
                     <CustomSelect
                       id="brandCategory"
                       value={field.value}
@@ -167,7 +154,6 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                     />
                   )}
                 />
-              </Skeleton>
             </div>
             {/* Email Address */}
             <div
@@ -176,7 +162,6 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseLeave={() => setHoveredField(null)}
             >
               <FormLabel htmlFor='emailAddress' text='Email Address' required />
-              <Skeleton isLoaded={!isLoading} className="rounded-lg">
                 <HeroInput
                   id='emailAddress'
                   placeholder='czysdgv@gmail.com'
@@ -185,11 +170,10 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                     inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
                     input: 'text-black' 
                   }}
-                  {...register("email")}
+                  {...register("email", { required: "Email is required", pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Invalid email address" } })}
                   isInvalid={!!errors.email}
                   errorMessage={errors.email?.message}
                 />
-              </Skeleton>
             </div>
             {/* Position */}
             <div
@@ -198,7 +182,6 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseLeave={() => setHoveredField(null)}
             >
               <FormLabel htmlFor='role' text='Position' required />
-              <Skeleton isLoaded={!isLoading} className="rounded-lg">
                 <HeroInput
                   id='role'
                   placeholder='Creative Director'
@@ -207,23 +190,20 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                     inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
                     input: 'text-black' 
                   }}
-                  {...register("role")}
+                  {...register("role", { required: "Position is required" })}
                   isInvalid={!!errors.role}
                   errorMessage={errors.role?.message}
                 />
-              </Skeleton>
             </div>
           </section>
 
           <div className='w-full flex justify-center md:justify-end mt-10'>
-            <Skeleton isLoaded={!isLoading} className="rounded-full">
               <button
                 onClick={handleContinue}
                 className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 mt-4 text-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] w-full md:w-auto font-semibold shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
               >
                 Continue
               </button>
-            </Skeleton>
           </div>
         </>
       )}
@@ -233,20 +213,20 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
           <section className='grid md:grid-cols-2 mt-7 gap-10'>
             {/*Nationality */}
             <div
-              className='w-full flex flex-col gap-2'
+              className="w-full flex flex-col gap-2"
+              style={{ position: "relative", zIndex: 50 }}
               onMouseEnter={() => setHoveredField('Nationality')}
               onMouseLeave={() => setHoveredField(null)}
             >
               <FormLabel htmlFor='nationality' text='Nationality' />
-              <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <Controller
-                  name="nationality"
-                  control={control}
-                  render={({ field }) => (
+                <Controller name="nationality" control={control} rules={{ required: "Nationality is required", validate: (val) => (val instanceof Set ? val.size > 0 : !!val) || "Nationality is required" }} render={({ field }) => (
                     <div className="max-w-[280px] suuave-location-select">
                       <CountrySelect
+                        defaultValue={NIGERIA_DEFAULT}
                         onChange={(e) => {
                           setCountryid(e.id);
+                          setStateid(0);
+                          setValue("currentCity", "");
                           field.onChange(new Set([e.name]));
                         }}
                         placeHolder="Search Country"
@@ -254,20 +234,17 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                     </div>
                   )}
                 />
-              </Skeleton>
+                {errors.nationality && <p className="text-danger text-xs mt-1">{errors.nationality.message}</p>}
             </div>
             {/*Phone Number */}
             <div
-              className='w-full flex flex-col gap-2'
+              className="w-full flex flex-col gap-2"
+              style={{ position: "relative", zIndex: 45 }}
               onMouseEnter={() => setHoveredField('Phone Number')}
               onMouseLeave={() => setHoveredField(null)}
             >
               <FormLabel htmlFor='phoneNumber' text='Phone Number' />
-              <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <Controller
-                  name="phoneNumber"
-                  control={control}
-                  render={({ field }) => (
+                <Controller name="phoneNumber" control={control} rules={{ required: "Phone number is required" }} render={({ field }) => (
                     <PhoneInputCustom
                       id="phoneNumber"
                       value={field.value}
@@ -283,36 +260,30 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                     />
                   )}
                 />
-              </Skeleton>
             </div>
             {/*Current City*/}
             <div
-              className='w-full flex flex-col gap-2'
+              className="w-full flex flex-col gap-2"
+              style={{ position: "relative", zIndex: 40 }}
               onMouseEnter={() => setHoveredField('Current City')}
               onMouseLeave={() => setHoveredField(null)}
             >
               <FormLabel htmlFor='currentCity' text='Current City' />
-              <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <Controller
-                  name="currentCity"
-                  control={control}
-                  render={({ field }) => (
-                    <HeroInput
-                      id="currentCity"
-                      placeholder="Enter City"
-                      variant="bordered"
-                      className="max-w-[280px]"
-                      classNames={{ 
-                        inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                        input: 'text-black' 
-                      }}
-                      {...field}
-                      isInvalid={!!errors.currentCity}
-                      errorMessage={errors.currentCity?.message}
-                    />
+                <Controller name="currentCity" control={control} rules={{ required: "Current city is required" }} render={({ field }) => (
+                    <div className="max-w-[280px] suuave-location-select">
+                      <StateSelect
+                        countryid={countryid}
+                        value={stateid}
+                        onChange={(e) => {
+                          setStateid(e.id);
+                          field.onChange(e.name);
+                        }}
+                        placeHolder="Select City"
+                      />
+                    </div>
                   )}
                 />
-              </Skeleton>
+                {errors.currentCity && <p className="text-danger text-xs mt-1">{errors.currentCity.message}</p>}
             </div>
             {/*Language */}
             <div
@@ -321,11 +292,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseLeave={() => setHoveredField(null)}
             >
               <FormLabel htmlFor='language' text='Language' />
-              <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <Controller
-                  name="language"
-                  control={control}
-                  render={({ field }) => (
+                <Controller name="language" control={control} rules={{ required: "Language is required" }} render={({ field }) => (
                     <LanguageSelectCustom
                       value={field.value}
                       onChange={field.onChange}
@@ -333,7 +300,6 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                     />
                   )}
                 />
-              </Skeleton>
             </div>
             {/*Date of Birth*/}
             <div
@@ -342,11 +308,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseLeave={() => setHoveredField(null)}
             >
               <FormLabel htmlFor='dob' text='Date Of Birth' />
-              <Skeleton isLoaded={!isLoading} className="rounded-lg">
-                <Controller
-                  name="dob"
-                  control={control}
-                  render={({ field }) => (
+                <Controller name="dob" control={control} rules={{ required: "Date of birth is required" }} render={({ field }) => (
                     <DatePicker
                       id='dob'
                       aria-label='Date of Birth'
@@ -386,7 +348,6 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                     />
                   )}
                 />
-              </Skeleton>
               {errors.dob && <p className="text-danger text-xs">{errors.dob.message}</p>}
             </div>
           </section>
@@ -398,11 +359,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
             onMouseLeave={() => setHoveredField(null)}
           >
             <FormLabel htmlFor='about' text='Describe Yourself' />
-            <Skeleton isLoaded={!isLoading} className="rounded-lg">
-              <Controller
-                name="about"
-                control={control}
-                render={({ field }) => (
+              <Controller name="about" control={control} rules={{ required: "Description is required" }} render={({ field }) => (
                   <Textarea
                     id='about'
                     placeholder='Tell Us About Yourself, Your Relevant Skills and Professional Experience.'
@@ -418,28 +375,22 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                   />
                 )}
               />
-            </Skeleton>
           </section>
 
           <div className='w-full flex flex-col md:flex-row justify-between items-center mt-10 gap-4'>
-            <Skeleton isLoaded={!isLoading} className="rounded-full">
               <button
                 onClick={() => setStep(1)}
                 className='flex items-center justify-center cursor-pointer px-6 py-2 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold hover:bg-[#EAF9FF] transition-colors'
               >
                 Previous
               </button>
-            </Skeleton>
             <div className='flex flex-col md:flex-row justify-center md:justify-end items-center gap-4 w-full md:w-auto'>
-              <Skeleton isLoaded={!isLoading} className="rounded-full">
                 <a
                   href={submitHref}
                   className='flex items-center justify-center cursor-pointer px-6 py-2 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold hover:bg-[#EAF9FF] transition-colors'
                 >
                   Skip
                 </a>
-              </Skeleton>
-              <Skeleton isLoaded={!isLoading} className="rounded-full">
                 <a
                   href={submitHref}
                   onClick={handleSubmitClick}
@@ -447,7 +398,6 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 >
                   Submit
                 </a>
-              </Skeleton>
             </div>
           </div>
         </>

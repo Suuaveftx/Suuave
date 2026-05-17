@@ -27,7 +27,7 @@ export default function Page() {
       fullName: "",
       username: "",
       email: "",
-      nationality: new Set([]),
+      nationality: new Set(["Nigeria"]),
       phoneCode: new Set([]),
       phoneNumber: "",
       currentCity: "",

@@ -7,13 +7,15 @@ import CustomSelect from "@/components/ui/CustomSelect";
 import PhoneInputCustom from "@/components/ui/PhoneInputCustom";
 import { useFormContext, Controller } from "react-hook-form";
 import LanguageSelectCustom from '@/components/ui/LanguageSelectCustom';
-import CountrySelectCustom from '@/components/ui/CountrySelectCustom';
+import { CountrySelect, StateSelect } from "react-country-state-city";
 
 const languageOptions = [
   { key: "English", label: "English" },
   { key: "Spanish", label: "Spanish" },
   { key: "French", label: "French" },
 ];
+
+const NIGERIA_DEFAULT = { id: 161, name: "Nigeria", iso2: "NG" };
 
 const PersonalDetail = ({ setSelected, setHoveredField }) => {
   const {
@@ -24,6 +26,10 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
     formState: { errors },
   } = useFormContext();
 
+  const [countryid, setCountryid] = useState(161);
+  const [stateid, setStateid] = useState(0);
+
+  
   const handleContinue = async () => {
     const isValid = await trigger(["fullName", "email", "phoneNumber", "language", "about", "nationality", "currentCity", "dob"]);
     if (isValid) {
@@ -69,10 +75,9 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
             id="email"
             placeholder="czysdgv@gmail.com"
             variant="bordered"
-            readOnly
             classNames={{
-              inputWrapper: 'bg-[#F1F1F1] border-none',
-              input: 'text-[#767676] text-sm'
+              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+              input: 'text-black text-sm'
             }}
             {...register("email", { 
               required: "Email is required",
@@ -88,8 +93,9 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
         {/*Phone Number */}
         <div
           className="w-full flex flex-col gap-2"
-          onMouseEnter={() => setHoveredField("Phone Number")}
-          onMouseLeave={() => setHoveredField(null)}
+              style={{ position: "relative", zIndex: 45 }}
+              onMouseEnter={() => setHoveredField('Phone Number')}
+              onMouseLeave={() => setHoveredField(null)}
         >
           <FormLabel htmlFor="phoneNumber" text="Phone Number" required />
           <Controller
@@ -173,8 +179,9 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
         {/*Nationality */}
         <div
           className="w-full flex flex-col gap-2"
-          onMouseEnter={() => setHoveredField("Nationality")}
-          onMouseLeave={() => setHoveredField(null)}
+              style={{ position: "relative", zIndex: 50 }}
+              onMouseEnter={() => setHoveredField('Nationality')}
+              onMouseLeave={() => setHoveredField(null)}
         >
           <FormLabel htmlFor="nationality" text="Nationality" required />
           <Controller
@@ -185,21 +192,28 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
               validate: (val) => (val instanceof Set ? val.size > 0 : !!val) || "Nationality is required"
             }}
             render={({ field }) => (
-              <div className="max-w-[280px]">
-                <CountrySelectCustom
-                  value={field.value}
-                  onChange={field.onChange}
-                  error={errors.nationality?.message}
+              <div className="max-w-[280px] suuave-location-select">
+                <CountrySelect
+                        defaultValue={NIGERIA_DEFAULT}
+                  onChange={(e) => {
+                    setCountryid(e.id);
+                    setStateid(0);
+                    field.onChange(new Set([e.name]));
+                    setValue("currentCity", "");
+                  }}
+                  placeHolder="Select Nationality"
                 />
               </div>
             )}
           />
+          {errors.nationality && <p className="text-danger text-xs">{errors.nationality.message}</p>}
         </div>
         {/*Current City*/}
         <div
           className="w-full flex flex-col gap-2"
-          onMouseEnter={() => setHoveredField("Current City")}
-          onMouseLeave={() => setHoveredField(null)}
+              style={{ position: "relative", zIndex: 40 }}
+              onMouseEnter={() => setHoveredField('Current City')}
+              onMouseLeave={() => setHoveredField(null)}
         >
           <FormLabel htmlFor="currentCity" text="Current City" required />
           <Controller
@@ -207,21 +221,20 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
             control={control}
             rules={{ required: "Current city is required" }}
             render={({ field }) => (
-              <HeroInput
-                id="currentCity"
-                placeholder="Lagos"
-                variant="bordered"
-                className="max-w-[280px]"
-                classNames={{
-                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                  input: 'text-black text-sm'
-                }}
-                {...field}
-                isInvalid={!!errors.currentCity}
-                errorMessage={errors.currentCity?.message}
-              />
+              <div className="max-w-[280px] suuave-location-select">
+                <StateSelect
+                  countryid={countryid}
+                  value={stateid}
+                  onChange={(e) => {
+                    setStateid(e.id);
+                    field.onChange(e.name);
+                  }}
+                  placeHolder="Select City"
+                />
+              </div>
             )}
           />
+          {errors.currentCity && <p className="text-danger text-xs">{errors.currentCity.message}</p>}
         </div>
         {/*Date of Birth*/}
         <div
