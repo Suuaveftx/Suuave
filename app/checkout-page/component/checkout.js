@@ -28,10 +28,14 @@ import Link from 'next/link';
 import FashionDesignerHeader from '../../fashion-designers/_components/studio-page-components/FashionDesignerHeader';
 import Footer from '../../about-page/components/Footer';
 
+import { useAppStore } from '@/store';
+
 export const CheckoutPage = () => {
   const [selectedCountry, setSelectedCountry] = useState('Nigeria');
   const [paymentMethod, setPaymentMethod] = useState('credit');
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+  const { addLicense } = useAppStore();
 
   const countries = [
     { value: 'Nigeria', label: 'Nigeria' },
@@ -46,11 +50,8 @@ export const CheckoutPage = () => {
 
   const handleBackToHome = () => {
     setIsSuccessModalOpen(false);
-    // Save license info
-    const storedLicenses = localStorage.getItem('licenses');
-    const licenses = storedLicenses ? JSON.parse(storedLicenses) : {};
-    licenses[id] = true;
-    localStorage.setItem('licenses', JSON.stringify(licenses));
+    // Save license info using Zustand store
+    addLicense(id);
 
     // Redirect back to product details page
     router.push(`/fashion-designers/${id}`);

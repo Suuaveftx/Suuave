@@ -29,6 +29,7 @@ export function UserActions() {
 
   const handleLogout = async () => {
     await signOut();
+    router.push('/auth/login');
   };
   return (
     <div className='flex items-center gap-6 font-satoshi'>

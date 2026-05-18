@@ -9,17 +9,21 @@ import UploadModal from "../../profile-for-artist/_components/UploadModal";
 
 
 
+import { useAppStore } from "@/store";
+
 const FashionCard = () => {
   const [activeTab, setActiveTab] = useState("reviews");
   const [showAll, setShowAll] = useState(false);
   const [userRole, setUserRole] = useState(null);
 
+  const { activeCategory } = useAppStore();
+
   useEffect(() => {
-    let role = localStorage.getItem('activeCategory');
+    let role = activeCategory;
     if (role === 'Fashion Artist') role = 'artist';
     if (role === 'Fashion Brand') role = 'brand';
     setUserRole(role);
-  }, []);
+  }, [activeCategory]);
 
 
   const tabs = [

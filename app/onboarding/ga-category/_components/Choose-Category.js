@@ -7,7 +7,7 @@ import CustomButton from '../../../../components/CustomButton';
 import { Alert, addToast } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import { getActiveCategory } from '../../../../utils/utils';
-import { useAppStore } from '../../../../store';
+import { useAppStore } from '@/store';
 import { authClient } from '../../../../lib/auth-client';
 // import { Roles } from '@suuaveftx/prisma-shared';
 

@@ -5,27 +5,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaRegBookmark, FaBookmark, FaShareAlt, FaWhatsapp, FaTwitter, FaFacebook, FaLinkedin, FaCopy } from 'react-icons/fa';
 import { FiPlus, FiMinus } from 'react-icons/fi';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@heroui/react';
+import { useAppStore } from '@/store';
 
 const ProjectPage = () => {
   const [activeTab, setActiveTab] = useState('recent');
   const [loading, setLoading] = useState(true);
   const [showLicence, setShowLicence] = useState(false);
-  const [activeProposals, setActiveProposals] = useState({});
-  const [savedJobs, setSavedJobs] = useState({});
   const [copiedId, setCopiedId] = useState(null);
+
+  const { savedJobs, toggleSaveJob, activeProposals } = useAppStore();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1500);
-
-    // Load active proposals
-    const storedProposals = JSON.parse(localStorage.getItem('activeProposals') || '{}');
-    setActiveProposals(storedProposals);
-
-    // Load saved jobs
-    const storedSavedJobs = JSON.parse(localStorage.getItem('savedJobs') || '{}');
-    setSavedJobs(storedSavedJobs);
 
     return () => clearTimeout(timer);
   }, []);
@@ -35,15 +28,7 @@ const ProjectPage = () => {
     e.preventDefault();
     e.stopPropagation();
 
-    const newSavedJobs = { ...savedJobs };
-    if (newSavedJobs[jobId]) {
-      delete newSavedJobs[jobId];
-    } else {
-      newSavedJobs[jobId] = true;
-    }
-
-    setSavedJobs(newSavedJobs);
-    localStorage.setItem('savedJobs', JSON.stringify(newSavedJobs));
+    toggleSaveJob(jobId);
   };
 
   const handleSocialShare = (platform, jobId) => {
@@ -103,7 +88,7 @@ const ProjectPage = () => {
           Recently
         </div>
         <div className={tabClasses('saved')} onClick={() => setActiveTab('saved')}>
-          Saved ({Object.keys(savedJobs).length})
+          Saved ({savedJobs.length})
         </div>
       </div>
 
@@ -130,7 +115,7 @@ const ProjectPage = () => {
           : [...Array(6)].map((_, index) => {
             const jobId = `job-${index}`;
             const isApplied = activeProposals[jobId];
-            const isSaved = savedJobs[jobId];
+            const isSaved = savedJobs.includes(jobId);
 
             // If on 'saved' tab and not saved, don't show
             if (activeTab === 'saved' && !isSaved) return null;

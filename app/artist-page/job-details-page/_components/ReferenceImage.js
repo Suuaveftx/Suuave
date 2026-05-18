@@ -1,14 +1,17 @@
 "use client";
 import React from "react";
 import { Paperclip } from "lucide-react";
+import { useAppStore } from "@/store";
 
 const ReferenceImage = ({ jobId }) => {
     const [hasReference, setHasReference] = React.useState(false);
     const [attachments, setAttachments] = React.useState([]);
 
+    const { projects } = useAppStore();
+
     React.useEffect(() => {
-        // Check if a project was posted and if it has a reference image
-        const postedProject = JSON.parse(localStorage.getItem('postedProject') || 'null');
+        // Get the most recently posted project
+        const postedProject = projects.length > 0 ? projects[projects.length - 1] : null;
 
         // Always show for job-0, using posted data if available, otherwise default
         if (jobId === 'job-0') {
@@ -26,7 +29,7 @@ const ReferenceImage = ({ jobId }) => {
         } else {
             setHasReference(false);
         }
-    }, [jobId]);
+    }, [jobId, projects]);
 
     if (!hasReference) return null;
 

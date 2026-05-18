@@ -6,22 +6,22 @@ import {
   Button,
   Form,
   Input,
-  NumberInput,
   Select,
   SelectItem,
   Textarea,
 } from "@heroui/react";
 import React from "react";
-import { GoPaperclip } from "react-icons/go";
 import { ArrowLeft, Paperclip, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState, useEffect, Suspense } from "react";
+
+import { useAppStore } from "@/store";
 
 const PageContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isEditMode = searchParams?.get('edit') === 'true';
-  console.log("PostProject - isEditMode:", isEditMode);
+  const { addProject, updateProject, editProject, clearEditProject } = useAppStore();
 
   const [action, setAction] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -35,180 +35,43 @@ const PageContent = () => {
     projectTimeframe: ""
   });
 
+  const [designValue, setDesignValue] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
   const classes = { label: "font-bold " };
 
   const fashionDesignerSkills = [
-    // ... existing skills ...
-    {
-      label: "Sketching",
-      key: "sketching",
-      description: "Creating detailed drawings of fashion concepts and designs",
-    },
-    {
-      label: "Pattern Making",
-      key: "pattern-making",
-      description:
-        "The process of creating patterns for garments, including measurements and fabric considerations",
-    },
-    {
-      label: "Sewing",
-      key: "sewing",
-      description:
-        "The technique of stitching fabric together to create garments and prototypes",
-    },
-    {
-      label: "Textile Knowledge",
-      key: "textile-knowledge",
-      description:
-        "Understanding different fabrics, fibers, and their uses in fashion design",
-    },
-    {
-      label: "Fashion Illustration",
-      key: "fashion-illustration",
-      description:
-        "Creating artistic representations of fashion designs, often using different mediums and techniques",
-    },
-    {
-      label: "CAD (Computer-Aided Design)",
-      key: "cad",
-      description:
-        "Using software to create digital fashion designs and patterns, such as Adobe Illustrator or CLO 3D",
-    },
-    {
-      label: "Trend Analysis",
-      key: "trend-analysis",
-      description:
-        "Researching and predicting fashion trends to stay ahead of market demands",
-    },
-    {
-      label: "Color Theory",
-      key: "color-theory",
-      description:
-        "Understanding how colors interact and how to choose complementary color schemes for designs",
-    },
-    {
-      label: "Fabric Manipulation",
-      key: "fabric-manipulation",
-      description:
-        "The technique of altering fabrics through pleating, draping, or other methods to create unique textures and looks",
-    },
-    {
-      label: "Fit and Construction",
-      key: "fit-construction",
-      description:
-        "Ensuring garments fit well and are constructed according to design specifications and quality standards",
-    },
-    {
-      label: "Sustainability",
-      key: "sustainability",
-      description:
-        "Incorporating eco-friendly materials and ethical practices into fashion design and production",
-    },
-    {
-      label: "Fashion Marketing",
-      key: "fashion-marketing",
-      description:
-        "Promoting fashion designs and understanding how to market products to the right audience",
-    },
-    {
-      label: "Fashion Photography",
-      key: "fashion-photography",
-      description:
-        "The ability to capture fashion pieces through photography for promotion and editorial use",
-    },
-    {
-      label: "Brand Development",
-      key: "brand-development",
-      description:
-        "Creating and maintaining a fashion brand identity and unique design aesthetic",
-    },
+    { label: "Sketching", key: "sketching", description: "Creating detailed drawings of fashion concepts and designs" },
+    { label: "Pattern Making", key: "pattern-making", description: "The process of creating patterns for garments" },
+    { label: "Sewing", key: "sewing", description: "The technique of stitching fabric together" },
+    { label: "Textile Knowledge", key: "textile-knowledge", description: "Understanding different fabrics" },
+    { label: "Fashion Illustration", key: "fashion-illustration", description: "Creating artistic representations of fashion designs" },
+    { label: "CAD (Computer-Aided Design)", key: "cad", description: "Using software to create digital fashion designs" },
+    { label: "Trend Analysis", key: "trend-analysis", description: "Researching and predicting fashion trends" },
+    { label: "Color Theory", key: "color-theory", description: "Understanding how colors interact" },
+    { label: "Fabric Manipulation", key: "fabric-manipulation", description: "The technique of altering fabrics" },
+    { label: "Fit and Construction", key: "fit-construction", description: "Ensuring garments fit well" },
+    { label: "Sustainability", key: "sustainability", description: "Incorporating eco-friendly materials" },
+    { label: "Fashion Marketing", key: "fashion-marketing", description: "Promoting fashion designs" },
+    { label: "Fashion Photography", key: "fashion-photography", description: "Capturing fashion pieces through photography" },
+    { label: "Brand Development", key: "brand-development", description: "Creating and maintaining a fashion brand identity" },
   ];
 
   const designStyles = [
-    {
-      label: "Haute Couture",
-      key: "haute-couture",
-      description:
-        "Exclusive, custom-fitted fashion design that is handmade from start to finish with high-quality materials.",
-    },
-    {
-      label: "Ready-to-Wear (Prêt-à-Porter)",
-      key: "ready-to-wear",
-      description:
-        "Fashion clothing produced in standard sizes and sold through retail, blending creativity with accessibility.",
-    },
-    {
-      label: "Streetwear",
-      key: "streetwear",
-      description:
-        "Casual and trendy clothing style inspired by skateboarding, hip-hop, and youth culture.",
-    },
-    {
-      label: "Bohemian (Boho)",
-      key: "bohemian",
-      description:
-        "A relaxed, artistic style featuring flowy fabrics, earthy tones, and ethnic or vintage-inspired elements.",
-    },
-    {
-      label: "Minimalist",
-      key: "minimalist",
-      description:
-        "Simple and clean designs with a focus on neutral colors, streamlined silhouettes, and functionality.",
-    },
-    {
-      label: "Avant-Garde",
-      key: "avant-garde",
-      description:
-        "Experimental and innovative style that challenges traditional fashion rules with bold and artistic designs.",
-    },
-    {
-      label: "Classic",
-      key: "classic",
-      description:
-        "Timeless, elegant, and refined designs that emphasize quality and sophistication over trends.",
-    },
-    {
-      label: "Vintage",
-      key: "vintage",
-      description:
-        "Fashion inspired by past decades, often incorporating retro elements into modern outfits.",
-    },
-    {
-      label: "Athleisure",
-      key: "athleisure",
-      description:
-        "A blend of athletic and casual wear designed for both exercise and everyday use.",
-    },
-    {
-      label: "Glamorous",
-      key: "glamorous",
-      description:
-        "Luxurious and eye-catching designs often featuring sequins, bold cuts, and striking details.",
-    },
-    {
-      label: "Preppy",
-      key: "preppy",
-      description:
-        "A neat, polished style influenced by Ivy League fashion, featuring blazers, polos, and structured pieces.",
-    },
-    {
-      label: "Grunge",
-      key: "grunge",
-      description:
-        "A rugged, edgy style inspired by 90s music culture, often featuring ripped jeans, flannel, and layered looks.",
-    },
-    {
-      label: "Eclectic",
-      key: "eclectic",
-      description:
-        "A mix-and-match style that combines different patterns, textures, and influences to create a unique look.",
-    },
-    {
-      label: "Romantic",
-      key: "romantic",
-      description:
-        "Soft, feminine designs featuring lace, ruffles, pastel colors, and delicate fabrics.",
-    },
+    { label: "Haute Couture", key: "haute-couture" },
+    { label: "Ready-to-Wear", key: "ready-to-wear" },
+    { label: "Streetwear", key: "streetwear" },
+    { label: "Bohemian", key: "bohemian" },
+    { label: "Minimalist", key: "minimalist" },
+    { label: "Avant-Garde", key: "avant-garde" },
+    { label: "Classic", key: "classic" },
+    { label: "Vintage", key: "vintage" },
+    { label: "Athleisure", key: "athleisure" },
+    { label: "Glamorous", key: "glamorous" },
+    { label: "Preppy", key: "preppy" },
+    { label: "Grunge", key: "grunge" },
+    { label: "Eclectic", key: "eclectic" },
+    { label: "Romantic", key: "romantic" },
   ];
 
   const projectTimeframe = [
@@ -217,25 +80,18 @@ const PageContent = () => {
     { label: "3 Days", key: "3days" },
   ];
 
-  const [designValue, setDesignValue] = React.useState("");
-  const [showSuggestions, setShowSuggestions] = React.useState(false);
-
   useEffect(() => {
-    if (isEditMode) {
-      const storedProject = localStorage.getItem('editProject');
-      if (storedProject) {
-        const project = JSON.parse(storedProject);
-        setFormData({
-          projectTitle: project.title || "",
-          projectDetails: project.description || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.", // Using dummy desc if not present
-          fashionDesignerSkills: project.skills || "",
-          designStyles: project.style || "",
-          projectTimeframe: project.timeframe || ""
-        });
-        setDesignValue(project.style || "");
-      }
+    if (isEditMode && editProject) {
+      setFormData({
+        projectTitle: editProject.title || "",
+        projectDetails: editProject.description || "",
+        fashionDesignerSkills: editProject.skills || "",
+        designStyles: editProject.style || "",
+        projectTimeframe: editProject.timeframe || ""
+      });
+      setDesignValue(editProject.style || "");
     }
-  }, [isEditMode]);
+  }, [isEditMode, editProject]);
 
   const handleStyleSelection = (style) => {
     setDesignValue(style);
@@ -268,6 +124,7 @@ const PageContent = () => {
       designStyles: "",
       projectTimeframe: ""
     });
+    if (isEditMode) clearEditProject();
   };
 
   return (
@@ -278,7 +135,10 @@ const PageContent = () => {
           variant="light"
           radius="full"
           className="md:hidden text-black -ml-2"
-          onPress={() => router.push('/fashion-designers/my-projects')}
+          onPress={() => {
+            if (isEditMode) clearEditProject();
+            router.push('/fashion-designers/my-projects');
+          }}
         >
           <ArrowLeft size={24} />
         </Button>
@@ -289,19 +149,21 @@ const PageContent = () => {
         onReset={onReset}
         onSubmit={(e) => {
           e.preventDefault();
-          let data = Object.fromEntries(new FormData(e.currentTarget));
+          
+          const dataToSave = {
+            title: formData.projectTitle,
+            description: formData.projectDetails,
+            skills: formData.fashionDesignerSkills,
+            style: designValue,
+            timeframe: formData.projectTimeframe,
+            referenceFiles: selectedFiles.map(f => f.name)
+          };
 
-          const dataToSave = { ...data };
-          dataToSave.referenceFiles = selectedFiles.map(f => f.name);
-          dataToSave.designStyles = designValue;
-
-          if (isEditMode) {
-            console.log("Updating project:", dataToSave);
-            // In a real app, you'd send a PUT/PATCH request here
-            localStorage.removeItem('editProject');
+          if (isEditMode && editProject) {
+            updateProject(editProject.id, dataToSave);
+            clearEditProject();
           } else {
-            localStorage.setItem('postedProject', JSON.stringify(dataToSave));
-            console.log("Posting project:", dataToSave);
+            addProject(dataToSave);
           }
           router.push('/fashion-designers/my-projects');
         }}

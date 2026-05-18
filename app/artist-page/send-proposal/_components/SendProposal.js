@@ -8,10 +8,14 @@ import ProposalPopUpMobile from './ProposalPopUpMobile';
 import ProposalPopUp from './ProposalPopUp';
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { useAppStore } from '@/store';
+
 const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobId, isEditMode, handleCancelEdit }) => {
   const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
   const searchParams = useSearchParams();
+
+  const { addProposal } = useAppStore();
 
   // Get initial values from URL or defaults
   const initialCoverLetter = searchParams.get('coverLetter') || '';
@@ -23,14 +27,16 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
 
   // ✅ Handle sending proposal
   const handleSendProposal = () => {
-    // Save to local storage
-    if (jobId) {
-      const activeProposals = JSON.parse(localStorage.getItem('activeProposals') || '{}');
-      activeProposals[jobId] = true;
-      localStorage.setItem('activeProposals', JSON.stringify(activeProposals));
-    } else {
-      localStorage.setItem('proposalActive', 'true');
-    }
+    // Save to Zustand store
+    const proposalData = {
+      coverLetter: initialCoverLetter,
+      price: initialPrice,
+      duration: selected,
+      timestamp: new Date().toISOString(),
+    };
+
+    addProposal(jobId || 'default', proposalData);
+
     console.log('Proposal sent ✅');
 
     // Redirect to active proposal page

@@ -28,121 +28,13 @@ import { useRouter } from 'next/navigation';
 import ProposalsModal from './ProposalsModal';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
+import { useAppStore } from '@/store';
+
 const MyProjects = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
-  const [projects, setProjects] = useState([
-    {
-      id: 1,
-      title: 'Modern Fashion Attire Illustration Classic .....',
-      date: '25-06-2024',
-      status: 'Active',
-      proposals: 3,
-      replies: 0,
-      hired: 0,
-    },
-    {
-      id: 2,
-      title: 'Modern Fashion Attire Illustration Classic....',
-      date: '25-06-2024',
-      status: 'Active',
-      proposals: 3,
-      replies: 0,
-      hired: 0,
-    },
-    {
-      id: 3,
-      title: 'Modern Fashion Attire Illustration Classic....',
-      date: '25-06-2024',
-      status: 'Active',
-      proposals: 3,
-      replies: 0,
-      hired: 0,
-    },
-    {
-      id: 4,
-      title: 'Modern Fashion Attire Illustration Classic....',
-      date: '25-06-2024',
-      status: 'Active',
-      proposals: 3,
-      replies: 0,
-      hired: 0,
-    },
-    {
-      id: 5,
-      title: 'Modern Fashion Attire Illustration Classic....',
-      date: '25-06-2024',
-      status: 'Active',
-      proposals: 3,
-      replies: 0,
-      hired: 0,
-    },
-    {
-      id: 6,
-      title: 'Second Project Example Fashion Classic....',
-      date: '26-06-2024',
-      status: 'Completed',
-      proposals: 10,
-      replies: 4,
-      hired: 1,
-    },
-    {
-      id: 7,
-      title: 'Third Project Example Fashion Classic....',
-      date: '27-06-2024',
-      status: 'Active',
-      proposals: 5,
-      replies: 1,
-      hired: 0,
-    },
-    {
-      id: 8,
-      title: 'Fourth Project Example Fashion Classic....',
-      date: '28-06-2024',
-      status: 'On Hold',
-      proposals: 2,
-      replies: 0,
-      hired: 0,
-    },
-    {
-      id: 9,
-      title: 'Fifth Project Example Fashion Classic....',
-      date: '29-06-2024',
-      status: 'Active',
-      proposals: 8,
-      replies: 3,
-      hired: 2,
-    },
-    {
-      id: 10,
-      title: 'Sixth Project Example Fashion Classic....',
-      date: '30-06-2024',
-      status: 'Active',
-      proposals: 6,
-      replies: 2,
-      hired: 0,
-    },
-    {
-      id: 11,
-      title: 'Seventh Project Example Fashion Classic....',
-      date: '01-07-2024',
-      status: 'Completed',
-      proposals: 12,
-      replies: 5,
-      hired: 3,
-    },
-    {
-      id: 12,
-      title: 'Eighth Project Example Fashion Classic....',
-      date: '02-07-2024',
-      status: 'Active',
-      proposals: 9,
-      replies: 4,
-      hired: 1,
-    },
-  ]);
+  const { projects, deleteProject, setEditProject } = useAppStore();
 
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 5;
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -170,8 +62,13 @@ const MyProjects = () => {
 
   const handleEditProject = (project) => {
     console.log("Navigating to edit project:", project);
-    localStorage.setItem('editProject', JSON.stringify(project));
+    setEditProject(project);
     router.push('/fashion-designers/post-project?edit=true');
+  };
+
+  const handleDeleteProject = (id) => {
+    deleteProject(id);
+    onDeleteOpenChange(false);
   };
 
   const openDeleteModal = (e, project) => {

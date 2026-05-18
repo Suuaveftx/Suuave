@@ -5,13 +5,20 @@ import CustomNavbar from '../../components/Navbar';
 import Footer from '../../components/landing-page-components/Footer';
 import { useRoleRedirect } from '../../hooks/useRoleRedirect';
 import { authClient } from '../../lib/auth-client';
+import { useEffect } from 'react';
 
 export default function Layout({ children }) {
   const { data: session } = authClient.useSession();
   const { redirectUser } = useRoleRedirect();
 
+  useEffect(() => {
+    if (session) {
+      redirectUser(session.user.role);
+    }
+  }, [session, redirectUser]);
+
   if (session) {
-    return redirectUser(session.user.role);
+    return null;
   }
   return (
     <HeroUIProvider>

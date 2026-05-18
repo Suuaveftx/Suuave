@@ -129,9 +129,9 @@ const FashionDesignersCard = ({
   };
 
   return (
-    <Card className='px-0 hover:shadow-xl overflow-hidden bg-white shadow-md border-none' shadow='none'>
-      <CardBody className='overflow-hidden p-0'>
-        <div className='block relative'>
+    <Card className='px-0 hover:shadow-xl overflow-hidden bg-white shadow-md border-none h-[308px] w-full flex flex-col' shadow='none'>
+      <CardBody className='overflow-hidden p-0 h-[200px] relative flex-none'>
+        <div className='block relative w-full h-full'>
           <Button
             isIconOnly
             className='absolute right-4 top-4 z-20 bg-white shadow-md border-none hover:bg-white/90'
@@ -147,22 +147,21 @@ const FashionDesignersCard = ({
               <IoBookmarkOutline size={20} className='text-gray-600' />
             )}
           </Button>
-          <Link href={`/fashion-designers/${productID}`} className='block'>
-            <div className='overflow-hidden'>
-              <div className='slider-container'>
-                <Slider {...sliderSettings}>
+          <Link href={`/fashion-designers/${productID}`} className='block w-full h-full'>
+            <div className='overflow-hidden w-full h-full'>
+              <div className='slider-container w-full h-full'>
+                <Slider {...sliderSettings} className='w-full h-full min-h-0 [&_.slick-list]:h-full [&_.slick-track]:h-full'>
                   {images?.map((image, index) => (
-                    <div
-                      key={index}
-                      className='relative h-80 flex items-center justify-center'
-                    >
-                      <Image
-                        src={image}
-                        alt={`${title} - Image ${index + 1}`}
-                        className='object-cover object-top'
-                        fill
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
+                    <div key={index} className='outline-none block w-full h-[200px]'>
+                      <div className='relative w-full h-[200px] overflow-hidden bg-gray-50 block'>
+                        <Image
+                          src={image}
+                          alt={`${title} - Image ${index + 1}`}
+                          className='object-cover object-top'
+                          fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
                     </div>
                   ))}
                 </Slider>
@@ -172,7 +171,7 @@ const FashionDesignersCard = ({
         </div>
       </CardBody>
 
-      <CardFooter className='flex flex-col items-start w-full p-4 pt-4'>
+      <CardFooter className='flex flex-col items-start w-full p-4 pt-4 h-[108px] flex-none'>
         <div className='flex flex-col gap-1.5 w-full'>
           <p className='line-clamp-1 font-medium text-[15px] text-gray-800 '>
             {title}

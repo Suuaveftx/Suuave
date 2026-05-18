@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { resetPassword, signOut } from '../../../actions/services';
 import { addToast, Button } from '@heroui/react';
-import { useAppStore } from '../../../../store';
+import { useAppStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { authClient } from '../../../../lib/auth-client';
 
