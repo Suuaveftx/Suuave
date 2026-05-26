@@ -343,7 +343,8 @@ body.menu-open [class*="NavbarMenu"] {
   color: black !important;
   background-color: transparent !important;
   outline: none !important;
-  min-width: 0 !important; /* Prevent flex shrink issues */
+  min-width: 0 !important;
+  /* Prevent flex shrink issues */
 }
 
 /* Style the dropdown menu (the list container) */
@@ -356,15 +357,13 @@ body.menu-open [class*="NavbarMenu"] {
   border-radius: 12px !important;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
   border: 1px solid #EAEAEA !important;
-  background-color: white !important; /* Force solid white background */
+  background-color: white !important;
+  /* Force solid white background */
   max-height: 250px !important;
   overflow-y: auto !important;
   margin-top: 5px !important;
   padding: 8px 0 !important;
   z-index: 10000 !important;
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
 }
 
 /* Style each dropdown item */
@@ -396,5 +395,3 @@ body.menu-open [class*="NavbarMenu"] {
   height: 36px !important;
   font-size: 14px !important;
 }
-
-

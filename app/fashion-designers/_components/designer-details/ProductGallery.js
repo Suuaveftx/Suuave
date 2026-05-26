@@ -98,7 +98,7 @@ const ProductGallery = ({ images, title, onOpenDetails, isBookmarked, onToggleSa
   };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-4 bg-white rounded-3xl overflow-hidden p-3 lg:p-4 h-auto lg:h-[680px]">
+    <div className="flex flex-col lg:flex-row gap-4 bg-white rounded-3xl overflow-hidden p-0 lg:p-4 h-auto lg:h-[680px]">
       {/* Thumbnail Navigation - Left side on desktop */}
       <div className="hidden lg:flex flex-col gap-3 overflow-y-auto pr-2 custom-scrollbar">
         {images.map((image, index) => (
@@ -126,20 +126,8 @@ const ProductGallery = ({ images, title, onOpenDetails, isBookmarked, onToggleSa
 
       {/* Main Display Area */}
       <motion.div
-        animate={{
-          scale: isMobileDetailsDrawerOpen ? 0.88 : 1,
-          borderRadius: isMobileDetailsDrawerOpen ? "40px" : "32px",
-          y: isMobileDetailsDrawerOpen ? -5 : 0
-        }}
-        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="flex-1 relative bg-neutral-100 rounded-[32px] overflow-hidden aspect-[3/4] lg:aspect-auto cursor-pointer group origin-top shadow-xl transition-shadow"
+        className="flex-1 relative bg-neutral-100 lg:rounded-[32px] overflow-hidden aspect-[3/4] lg:aspect-auto cursor-pointer group origin-top shadow-xl transition-shadow"
       >
-        {/* Dimmer overlay for when sheet opens */}
-        <motion.div 
-          animate={{ opacity: isMobileDetailsDrawerOpen ? 0.4 : 0 }}
-          transition={{ duration: 0.2 }}
-          className="absolute inset-0 bg-black z-[40] pointer-events-none"
-        />
 
         {/* Navigation Arrows */}
         <button
@@ -159,23 +147,6 @@ const ProductGallery = ({ images, title, onOpenDetails, isBookmarked, onToggleSa
         {/* Bottom dark gradient for UI pop on mobile */}
         <div className="lg:hidden absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 pointer-events-none" />
 
-        {/* Swipe up for details - Only on mobile/tablet */}
-        <AnimatePresence>
-            <motion.button
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              onTap={(e) => {
-                e.stopPropagation();
-                onOpenDetails(selectedIndex);
-              }}
-              whileTap={{ scale: 0.95 }}
-              className="lg:hidden absolute bottom-12 left-0 right-0 mx-auto w-fit z-[30] bg-neutral-900/40 backdrop-blur-sm px-4 py-2 rounded-lg flex items-center gap-2 text-white text-[13px] font-normal tracking-wide shadow-[0_4px_20px_rgba(0,0,0,0.5)] border border-white/10 transition-all duration-200 pointer-events-auto"
-            >
-              <span>Swipe up for details</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-            </motion.button>
-        </AnimatePresence>
 
         {/* Dot Pagination - Mobile Only */}
         <div className="lg:hidden absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
@@ -204,9 +175,9 @@ const ProductGallery = ({ images, title, onOpenDetails, isBookmarked, onToggleSa
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill={isBookmarked ? "#3A98BB" : "none"} stroke={isBookmarked ? "none" : "white"} strokeWidth="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" /></svg>
           </button>
-          
+
           <div className="w-[60%] h-[1px] bg-white/10" />
-          
+
           {/* Share Dropdown - Mobile */}
           <div className="relative">
             <Dropdown placement="top-end" className="z-[100]">

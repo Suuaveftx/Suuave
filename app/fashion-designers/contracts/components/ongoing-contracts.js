@@ -47,6 +47,7 @@ const OngoingContracts = ({
   const [showCongratulationsModal, setShowCongratulationsModal] = useState(false);
   const [currentContract, setCurrentContract] = useState(null);
   const [openMenuContract, setOpenMenuContract] = useState(null);
+  const [showExtensionModal, setShowExtensionModal] = useState(false);
   const menuRef = useRef(null);
   const menuButtonRefs = useRef({});
   const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
@@ -292,19 +293,28 @@ const OngoingContracts = ({
                     <div className='absolute top-5 right-2 md:static flex items-center gap-1'>
                       <span className='text-sm font-proximanova hidden md:flex text-gray-500'>More</span>
                       {/* Desktop more options button */}
-                      <span onClick={(e) => e.stopPropagation()}>
-                        <Button
-                          isIconOnly
-                          variant='light'
-                          size='sm'
-                          className='hidden md:flex bg-transparent border-0 rounded-lg'
-                          onPress={() => {
-                            onMoreOptions(contract);
-                          }}
-                        >
-                          <EllipsisHorizontalIcon className='w-6 h-6 text-gray-400' />
-                        </Button>
-                      </span>
+                      <div className='hidden md:flex' onClick={(e) => e.stopPropagation()}>
+                        <Dropdown placement="bottom-end">
+                          <DropdownTrigger>
+                            <Button
+                              isIconOnly
+                              variant='light'
+                              size='sm'
+                              className='bg-transparent border-0 rounded-lg'
+                            >
+                              <EllipsisHorizontalIcon className='w-6 h-6 text-gray-400' />
+                            </Button>
+                          </DropdownTrigger>
+                          <DropdownMenu aria-label="More Options">
+                            <DropdownItem key="request_extension" className="text-sm font-medium text-[#222222]" onPress={() => { setCurrentContract(contract); setShowExtensionModal(true); }}>
+                              Request Extension
+                            </DropdownItem>
+                            <DropdownItem key="report" className="text-sm font-medium text-[#222222]">
+                              Report
+                            </DropdownItem>
+                          </DropdownMenu>
+                        </Dropdown>
+                      </div>
 
                       {/* Mobile 3-dots dropdown */}
                       <div
@@ -371,7 +381,7 @@ const OngoingContracts = ({
             Approve Work
           </button>
           <button
-            className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium'
+            className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium border-b border-gray-100'
             onClick={(e) => {
               e.stopPropagation();
               const contract = openMenuContract;
@@ -382,6 +392,29 @@ const OngoingContracts = ({
             }}
           >
             Message Artist
+          </button>
+          <button
+            className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium border-b border-gray-100'
+            onClick={(e) => {
+              e.stopPropagation();
+              const contract = openMenuContract;
+              setOpenMenuContract(null);
+              if (contract) {
+                setCurrentContract(contract);
+                setShowExtensionModal(true);
+              }
+            }}
+          >
+            Request Extension
+          </button>
+          <button
+            className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium'
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpenMenuContract(null);
+            }}
+          >
+            Report
           </button>
         </div>,
         document.body
@@ -505,6 +538,101 @@ const OngoingContracts = ({
               Rate {currentContract?.artist.name}
             </Button>
           </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      {/* Request Extension Modal */}
+      <Modal
+        isOpen={showExtensionModal}
+        onOpenChange={setShowExtensionModal}
+        classNames={{
+          base: 'bg-white w-[90vw] max-w-md p-0',
+          backdrop: 'bg-black/50',
+          closeButton: 'top-3 right-3 text-gray-400 hover:text-gray-600',
+        }}
+        size='md'
+        backdrop='blur'
+        placement='center'
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody className="py-5 px-6">
+                <div className="text-center mb-4">
+                  <h2 className="text-xl font-bold text-[#E68A1D] mb-1 font-satoshi">Request Extension</h2>
+                  <p className="text-xs text-gray-600 font-satoshi">Extend the contract deadline by days.</p>
+                </div>
+
+                <div className="space-y-3">
+                  {/* Current Deadline */}
+                  <div>
+                    <label className="text-xs font-bold text-[#222222] mb-1 block">Current Deadline</label>
+                    <div className="bg-[#F5F5F5] border-0 rounded-lg px-4 py-2 text-xs text-gray-500 w-3/5 font-satoshi">
+                      {currentContract?.endDate || "20th April, 2026."}
+                    </div>
+                  </div>
+
+                  {/* New Deadline */}
+                  <div>
+                    <label className="text-xs font-bold text-[#222222] mb-1 block">New Deadline</label>
+                    <div className="relative w-3/5">
+                      <Input
+                        type="date"
+                        placeholder="DD/MM/YY"
+                        classNames={{
+                          input: "text-xs font-satoshi text-gray-600",
+                          inputWrapper: "bg-white border border-[#E5E5E5] hover:border-gray-400 focus-within:border-[#3A98BB] shadow-sm rounded-lg h-9 min-h-9",
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Reason */}
+                  <div>
+                    <label className="text-xs font-bold text-[#222222] mb-1 block">Reason</label>
+                    <textarea
+                      placeholder=""
+                      className="w-full min-h-[70px] bg-white border border-[#E5E5E5] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#3A98BB] p-3 text-sm font-satoshi resize-none shadow-sm"
+                    />
+                  </div>
+
+                  {/* Additional Payment */}
+                  <div>
+                    <label className="text-xs font-bold text-[#222222] mb-1 block">Additional Payment</label>
+                    <div className="w-2/5">
+                      <Input
+                        type="number"
+                        placeholder="0.00"
+                        classNames={{
+                          input: "text-xs font-satoshi text-gray-600",
+                          inputWrapper: "bg-white border border-[#E5E5E5] hover:border-gray-400 shadow-sm rounded-lg h-9 min-h-9",
+                        }}
+                      />
+                      <p className="text-[10px] text-gray-400 mt-1 font-satoshi">(Commission: 10%)</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 mt-5">
+                  <Button
+                    className="flex-1 bg-[#EBEBEB] text-[#555555] font-semibold rounded-full border-0 h-10"
+                    onPress={onClose}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full border-0 h-10 shadow-sm"
+                    onPress={() => {
+                      console.log('Extension requested!');
+                      onClose();
+                    }}
+                  >
+                    Send Request
+                  </Button>
+                </div>
+              </ModalBody>
+            </>
+          )}
         </ModalContent>
       </Modal>
 

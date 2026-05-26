@@ -14,6 +14,7 @@ const Footer = () => {
             alt="logocombo"
             width={262}
             height={76}
+            style={{ height: "auto" }}
           />
           <p className="text-sm font-thin w-[77%]">
             At Suuave, we connect African fashion artists with designers

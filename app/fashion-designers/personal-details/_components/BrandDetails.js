@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { DatePicker, Input as HeroInput, Textarea } from '@heroui/react';
 import { parseDate } from '@internationalized/date';
-import FormLabel from '@/components/ui/FormLabel';
+// import FormLabel from '@/components/ui/FormLabel';
 import CustomSelect from '@/components/ui/CustomSelect';
 import PhoneInputCustom from '@/components/ui/PhoneInputCustom';
 import { CountrySelect, StateSelect } from "react-country-state-city";
@@ -28,7 +28,7 @@ const languageOptions = [
   { key: "Arabic", label: "Arabic" },
 ];
 
-const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-designers' }) => {
+const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-designers', isEdit = false }) => {
   const {
     register,
     control,
@@ -40,9 +40,6 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
   const [countryid, setCountryid] = React.useState(161);
   const [stateid, setStateid] = React.useState(0);
 
-
-
-  
   const handleContinue = async () => {
     const isValid = await trigger(["fullName", "businessName", "username", "brandCategory", "email", "role"]);
     if (isValid) setStep(2);
@@ -75,66 +72,75 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
 
       {step === 1 && (
         <>
-          <section className='grid md:grid-cols-2 mt-7 gap-10'>
+          <section className='grid md:grid-cols-2 mt-12 gap-10'>
             {/* Enter Full Name */}
             <div
-              className='w-full flex flex-col gap-2'
+              className='w-full flex flex-col gap-1'
               onMouseEnter={() => setHoveredField('Full Name')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor='fullName' text='Full Name' required />
-                <HeroInput
-                  id='fullName'
-                  placeholder='Enter Full Name'
-                  variant="bordered"
-                  classNames={{ 
-                    inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                    input: 'text-black' 
-                  }}
-                  {...register("fullName", { required: "Full name is required" })}
-                  isInvalid={!!errors.fullName}
-                  errorMessage={errors.fullName?.message}
-                />
+              <HeroInput
+                id='fullName'
+                label="Full Name"
+                labelPlacement="outside"
+                placeholder='Enter Full Name'
+                variant="bordered"
+                isRequired
+                classNames={{
+                  label: "font-medium text-black text-sm",
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+                  input: 'text-black'
+                }}
+                {...register("fullName", { required: "Full name is required" })}
+                isInvalid={!!errors.fullName}
+                errorMessage={errors.fullName?.message}
+              />
             </div>
             {/* Business Name */}
             <div
-              className='w-full flex flex-col gap-2'
+              className='w-full flex flex-col gap-1'
               onMouseEnter={() => setHoveredField('Business Name')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor='businessName' text='Business Name' required />
-                <HeroInput
-                  id='businessName'
-                  placeholder='Suuave Fashion Ltd.'
-                  variant="bordered"
-                  classNames={{ 
-                    inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                    input: 'text-black' 
-                  }}
-                  {...register("businessName", { required: "Business name is required" })}
-                  isInvalid={!!errors.businessName}
-                  errorMessage={errors.businessName?.message}
-                />
+              <HeroInput
+                id='businessName'
+                label="Business Name"
+                labelPlacement="outside"
+                placeholder='Suuave Fashion Ltd.'
+                variant="bordered"
+                isRequired
+                classNames={{
+                  label: "font-medium text-black text-sm",
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+                  input: 'text-black'
+                }}
+                {...register("businessName", { required: "Business name is required" })}
+                isInvalid={!!errors.businessName}
+                errorMessage={errors.businessName?.message}
+              />
             </div>
             {/* Username */}
             <div
-              className='w-full flex flex-col gap-2'
+              className='w-full flex flex-col gap-1'
               onMouseEnter={() => setHoveredField('Username')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor='username' text='Username' required />
-                <HeroInput
-                  id='username'
-                  placeholder='@ocean'
-                  variant="bordered"
-                  classNames={{ 
-                    inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                    input: 'text-black' 
-                  }}
-                  {...register("username", { required: "Username is required" })}
-                  isInvalid={!!errors.username}
-                  errorMessage={errors.username?.message}
-                />
+              <HeroInput
+                id='username'
+                label="Username"
+                labelPlacement="outside"
+                placeholder='@ocean'
+                variant="bordered"
+                isRequired
+                classNames={{
+                  label: "font-medium text-black text-sm",
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+                  input: 'text-black'
+                }}
+                {...register("username", { required: "Username is required" })}
+                isInvalid={!!errors.username}
+                errorMessage={errors.username?.message}
+              />
             </div>
             {/* Brand Category*/}
             <div
@@ -142,212 +148,223 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
               onMouseEnter={() => setHoveredField('Brand Category')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor='brandCategory' text='Brand Category' required />
-                <Controller name="brandCategory" control={control} rules={{ required: "Brand category is required" }} render={({ field }) => (
-                    <CustomSelect
-                      id="brandCategory"
-                      value={field.value}
-                      onChange={field.onChange}
-                      data={brandCategoryOptions}
-                      isInvalid={!!errors.brandCategory}
-                      errorMessage={errors.brandCategory?.message}
-                    />
-                  )}
+              <Controller name="brandCategory" control={control} rules={{ required: "Brand category is required" }} render={({ field }) => (
+                <CustomSelect
+                  id="brandCategory"
+                  label="Brand Category"
+                  labelPlacement="outside"
+                  value={field.value}
+                  onChange={field.onChange}
+                  data={brandCategoryOptions}
+                  isInvalid={!!errors.brandCategory}
+                  errorMessage={errors.brandCategory?.message}
                 />
+              )}
+              />
             </div>
             {/* Email Address */}
             <div
-              className='w-full flex flex-col gap-2'
+              className='w-full flex flex-col gap-1'
               onMouseEnter={() => setHoveredField('Email Address')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor='emailAddress' text='Email Address' required />
-                <HeroInput
-                  id='emailAddress'
-                  placeholder='czysdgv@gmail.com'
-                  variant="bordered"
-                  classNames={{ 
-                    inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                    input: 'text-black' 
-                  }}
-                  {...register("email", { required: "Email is required", pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Invalid email address" } })}
-                  isInvalid={!!errors.email}
-                  errorMessage={errors.email?.message}
-                />
+              <HeroInput
+                id='emailAddress'
+                label="Email Address"
+                labelPlacement="outside"
+                placeholder='czysdgv@gmail.com'
+                variant="bordered"
+                isRequired
+                classNames={{
+                  label: "font-medium text-black text-sm",
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+                  input: 'text-black'
+                }}
+                {...register("email", { required: "Email is required", pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Invalid email address" } })}
+                isInvalid={!!errors.email}
+                errorMessage={errors.email?.message}
+              />
             </div>
             {/* Position */}
             <div
-              className='w-full flex flex-col gap-2'
+              className='w-full flex flex-col gap-1'
               onMouseEnter={() => setHoveredField('Position')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor='role' text='Position' required />
-                <HeroInput
-                  id='role'
-                  placeholder='Creative Director'
-                  variant="bordered"
-                  classNames={{ 
-                    inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                    input: 'text-black' 
-                  }}
-                  {...register("role", { required: "Position is required" })}
-                  isInvalid={!!errors.role}
-                  errorMessage={errors.role?.message}
-                />
+              <HeroInput
+                id='role'
+                label="Position"
+                labelPlacement="outside"
+                placeholder='Creative Director'
+                variant="bordered"
+                isRequired
+                classNames={{
+                  label: "font-medium text-black text-sm",
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+                  input: 'text-black'
+                }}
+                {...register("role", { required: "Position is required" })}
+                isInvalid={!!errors.role}
+                errorMessage={errors.role?.message}
+              />
             </div>
           </section>
 
           <div className='w-full flex justify-center md:justify-end mt-10'>
-              <button
-                onClick={handleContinue}
-                className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 mt-4 text-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] w-full md:w-auto font-semibold shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
-              >
-                Continue
-              </button>
+            <button
+              onClick={handleContinue}
+              className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 mt-4 text-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] w-full md:w-auto font-semibold shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
+            >
+              Continue
+            </button>
           </div>
         </>
       )}
 
       {step === 2 && (
         <>
-          <section className='grid md:grid-cols-2 mt-7 gap-10'>
+          <section className='grid md:grid-cols-2 mt-12 gap-10'>
             {/*Nationality */}
             <div
-              className="w-full flex flex-col gap-2"
-              style={{ position: "relative", zIndex: 50 }}
+              className="w-full flex flex-col gap-1"
+              style={{ position: "relative", zIndex: 30 }}
               onMouseEnter={() => setHoveredField('Nationality')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor='nationality' text='Nationality' />
-                <Controller name="nationality" control={control} rules={{ required: "Nationality is required", validate: (val) => (val instanceof Set ? val.size > 0 : !!val) || "Nationality is required" }} render={({ field }) => (
-                    <div className="max-w-[280px] suuave-location-select">
-                      <CountrySelect
-                        defaultValue={NIGERIA_DEFAULT}
-                        onChange={(e) => {
-                          setCountryid(e.id);
-                          setStateid(0);
-                          setValue("currentCity", "");
-                          field.onChange(new Set([e.name]));
-                        }}
-                        placeHolder="Search Country"
-                      />
-                    </div>
-                  )}
-                />
-                {errors.nationality && <p className="text-danger text-xs mt-1">{errors.nationality.message}</p>}
+              <span className="font-medium text-black text-sm mb-1">Nationality <span className="text-red-500">*</span></span>
+              <Controller name="nationality" control={control} rules={{ required: "Nationality is required", validate: (val) => (val instanceof Set ? val.size > 0 : !!val) || "Nationality is required" }} render={({ field }) => (
+                <div className="max-w-[280px] suuave-location-select">
+                  <CountrySelect
+                    defaultValue={NIGERIA_DEFAULT}
+                    onChange={(e) => {
+                      setCountryid(e.id);
+                      setStateid(0);
+                      setValue("currentCity", "");
+                      field.onChange(new Set([e.name]));
+                    }}
+                    placeHolder="Search Country"
+                  />
+                </div>
+              )}
+              />
+              {errors.nationality && <p className="text-danger text-xs mt-1">{errors.nationality.message}</p>}
             </div>
             {/*Phone Number */}
             <div
-              className="w-full flex flex-col gap-2"
-              style={{ position: "relative", zIndex: 45 }}
+              className="w-full flex flex-col gap-1"
+              style={{ position: "relative", zIndex: 29 }}
               onMouseEnter={() => setHoveredField('Phone Number')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor='phoneNumber' text='Phone Number' />
-                <Controller name="phoneNumber" control={control} rules={{ required: "Phone number is required" }} render={({ field }) => (
-                    <PhoneInputCustom
-                      id="phoneNumber"
-                      value={field.value}
-                      onChange={(val, data) => {
-                        field.onChange(val);
-                        // Maintain backward compatibility with phoneCode Set
-                        if (data?.dialCode) {
-                          setValue("phoneCode", new Set([`+${data.dialCode}`]));
-                        }
-                      }}
-                      onBlur={field.onBlur}
-                      error={errors.phoneNumber?.message || errors.phoneCode?.message}
-                    />
-                  )}
+              <span className="font-medium text-black text-sm mb-1">Phone Number <span className="text-red-500">*</span></span>
+              <Controller name="phoneNumber" control={control} rules={{ required: "Phone number is required" }} render={({ field }) => (
+                <PhoneInputCustom
+                  id="phoneNumber"
+                  value={field.value}
+                  onChange={(val, data) => {
+                    field.onChange(val);
+                    // Maintain backward compatibility with phoneCode Set
+                    if (data?.dialCode) {
+                      setValue("phoneCode", new Set([`+${data.dialCode}`]));
+                    }
+                  }}
+                  onBlur={field.onBlur}
+                  error={errors.phoneNumber?.message || errors.phoneCode?.message}
                 />
+              )}
+              />
             </div>
             {/*Current City*/}
             <div
-              className="w-full flex flex-col gap-2"
-              style={{ position: "relative", zIndex: 40 }}
+              className="w-full flex flex-col gap-1"
+              style={{ position: "relative", zIndex: 28 }}
               onMouseEnter={() => setHoveredField('Current City')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor='currentCity' text='Current City' />
-                <Controller name="currentCity" control={control} rules={{ required: "Current city is required" }} render={({ field }) => (
-                    <div className="max-w-[280px] suuave-location-select">
-                      <StateSelect
-                        countryid={countryid}
-                        value={stateid}
-                        onChange={(e) => {
-                          setStateid(e.id);
-                          field.onChange(e.name);
-                        }}
-                        placeHolder="Select City"
-                      />
-                    </div>
-                  )}
-                />
-                {errors.currentCity && <p className="text-danger text-xs mt-1">{errors.currentCity.message}</p>}
+              <span className="font-medium text-black text-sm mb-1">Current City <span className="text-red-500">*</span></span>
+              <Controller name="currentCity" control={control} rules={{ required: "Current city is required" }} render={({ field }) => (
+                <div className="max-w-[280px] suuave-location-select">
+                  <StateSelect
+                    countryid={countryid}
+                    value={stateid}
+                    onChange={(e) => {
+                      setStateid(e.id);
+                      field.onChange(e.name);
+                    }}
+                    placeHolder="Select City"
+                  />
+                </div>
+              )}
+              />
+              {errors.currentCity && <p className="text-danger text-xs mt-1">{errors.currentCity.message}</p>}
             </div>
             {/*Language */}
             <div
-              className='w-full flex flex-col gap-2'
+              className='w-full flex flex-col gap-1'
               onMouseEnter={() => setHoveredField('Language')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor='language' text='Language' />
-                <Controller name="language" control={control} rules={{ required: "Language is required" }} render={({ field }) => (
-                    <LanguageSelectCustom
-                      value={field.value}
-                      onChange={field.onChange}
-                      error={errors.language?.message}
-                    />
-                  )}
+              <Controller name="language" control={control} rules={{ required: "Language is required" }} render={({ field }) => (
+                <LanguageSelectCustom
+                  label="Language"
+                  labelPlacement="outside"
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={errors.language?.message}
                 />
+              )}
+              />
             </div>
             {/*Date of Birth*/}
             <div
-              className='w-full flex flex-col gap-2'
+              className='w-full flex flex-col gap-1'
               onMouseEnter={() => setHoveredField('Date of Birth')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor='dob' text='Date Of Birth' />
-                <Controller name="dob" control={control} rules={{ required: "Date of birth is required" }} render={({ field }) => (
-                    <DatePicker
-                      id='dob'
-                      aria-label='Date of Birth'
-                      value={
-                        field.value
-                          ? (() => { try { return parseDate(field.value); } catch { return null; } })()
-                          : null
-                      }
-                      onChange={(date) =>
-                        field.onChange(date ? date.toString() : '')
-                      }
-                      showMonthAndYearPickers
-                      popoverProps={{ placement: 'bottom-start', shouldFlip: false }}
-                      classNames={{
-                        base: 'max-w-[280px]',
-                        inputWrapper: [
-                          'w-full border border-[#D1D1D1] rounded-lg bg-transparent px-2 py-1',
-                          'hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                          'shadow-none',
-                        ],
-                        input: 'text-black font-normal text-base',
-                        segment: 'data-[placeholder=true]:text-transparent',
-                        calendarContent: 'font-proximanova',
-                      }}
-                      calendarProps={{
-                        classNames: {
-                          base: 'shadow-lg rounded-xl border border-[#D1D1D1]',
-                          headerWrapper: 'bg-white',
-                          title: 'text-[#035A7A] font-semibold',
-                          cellButton: [
-                            'data-[selected=true]:bg-[#CCE7F2] data-[selected=true]:text-[#035A7A]',
-                            'data-[today=true]:border data-[today=true]:border-[#3A98BB]',
-                            'hover:bg-[#EAF9FF] rounded-lg',
-                          ],
-                        },
-                      }}
-                    />
-                  )}
+              <Controller name="dob" control={control} rules={{ required: "Date of birth is required" }} render={({ field }) => (
+                <DatePicker
+                  id='dob'
+                  label="Date of birth"
+                  labelPlacement="outside"
+                  aria-label='Date of birth'
+                  isRequired
+                  value={
+                    field.value
+                      ? (() => { try { return parseDate(field.value); } catch { return null; } })()
+                      : null
+                  }
+                  onChange={(date) =>
+                    field.onChange(date ? date.toString() : '')
+                  }
+                  showMonthAndYearPickers
+                  popoverProps={{ placement: 'bottom-start', shouldFlip: false }}
+                  classNames={{
+                    base: 'max-w-[280px]',
+                    label: "font-medium text-black text-sm",
+                    inputWrapper: [
+                      'w-full border border-[#D1D1D1] rounded-lg bg-transparent px-2 py-1',
+                      'hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+                      'shadow-none',
+                    ],
+                    input: 'text-black font-normal text-base',
+                    segment: 'data-[placeholder=true]:text-transparent',
+                    calendarContent: 'font-proximanova',
+                  }}
+                  calendarProps={{
+                    classNames: {
+                      base: 'shadow-lg rounded-xl border border-[#D1D1D1]',
+                      headerWrapper: 'bg-white',
+                      title: 'text-[#035A7A] font-semibold',
+                      cellButton: [
+                        'data-[selected=true]:bg-[#CCE7F2] data-[selected=true]:text-[#035A7A]',
+                        'data-[today=true]:border data-[today=true]:border-[#3A98BB]',
+                        'hover:bg-[#EAF9FF] rounded-lg',
+                      ],
+                    },
+                  }}
                 />
+              )}
+              />
               {errors.dob && <p className="text-danger text-xs">{errors.dob.message}</p>}
             </div>
           </section>
@@ -358,46 +375,54 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
             onMouseEnter={() => setHoveredField('About Yourself')}
             onMouseLeave={() => setHoveredField(null)}
           >
-            <FormLabel htmlFor='about' text='Describe Yourself' />
-              <Controller name="about" control={control} rules={{ required: "Description is required" }} render={({ field }) => (
-                  <Textarea
-                    id='about'
-                    placeholder='Tell Us About Yourself, Your Relevant Skills and Professional Experience.'
-                    variant="bordered"
-                    classNames={{ 
-                      inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]', 
-                      input: 'text-black' 
-                    }}
-                    minRows={4}
-                    {...field}
-                    isInvalid={!!errors.about}
-                    errorMessage={errors.about?.message}
-                  />
-                )}
+            <Controller name="about" control={control} rules={{ required: "Description is required" }} render={({ field }) => (
+              <Textarea
+                id='about'
+                label="Describe Yourself"
+                labelPlacement="outside"
+                isRequired
+                placeholder='Tell Us About Yourself, Your Relevant Skills and Professional Experience.'
+                variant="bordered"
+                classNames={{
+                  label: "font-medium text-black text-sm",
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+                  input: 'text-black'
+                }}
+                minRows={4}
+                {...field}
+                isInvalid={!!errors.about}
+                errorMessage={errors.about?.message}
               />
+            )}
+            />
           </section>
 
           <div className='w-full flex flex-col md:flex-row justify-between items-center mt-10 gap-4'>
-              <button
-                onClick={() => setStep(1)}
-                className='flex items-center justify-center cursor-pointer px-6 py-2 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold hover:bg-[#EAF9FF] transition-colors'
-              >
-                Previous
-              </button>
+            <button
+              onClick={() => setStep(1)}
+              className='flex items-center justify-center cursor-pointer px-6 py-2 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold hover:bg-[#EAF9FF] transition-colors'
+            >
+              Previous
+            </button>
             <div className='flex flex-col md:flex-row justify-center md:justify-end items-center gap-4 w-full md:w-auto'>
+              {!isEdit && (
                 <a
                   href={submitHref}
                   className='flex items-center justify-center cursor-pointer px-6 py-2 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold hover:bg-[#EAF9FF] transition-colors'
                 >
                   Skip
                 </a>
-                <a
-                  href={submitHref}
-                  onClick={handleSubmitClick}
-                  className='flex items-center justify-center text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 text-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] w-full md:w-auto font-semibold shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
-                >
-                  Submit
-                </a>
+              )}
+              <a
+                href={submitHref}
+                onClick={handleSubmitClick}
+                className={`flex items-center justify-center rounded-3xl cursor-pointer px-6 py-2 text-center w-full md:w-auto font-semibold transition-all ${isEdit
+                  ? 'border border-[#3A98BB] text-[#3A98BB] hover:bg-[#EAF9FF]'
+                  : 'text-[#035A7A] bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
+                  }`}
+              >
+                {isEdit ? 'Update' : 'Submit'}
+              </a>
             </div>
           </div>
         </>

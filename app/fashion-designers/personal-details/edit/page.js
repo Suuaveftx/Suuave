@@ -72,7 +72,7 @@ export default function Page() {
           <h1 className="text-xl font-bold text-gray-900 font-satoshi">Personal Information</h1>
         </div>
 
-        <div className="flex flex-col md:flex-row px-5 md:px-10">
+        <div className="flex flex-col md:flex-row px-5 md:px-10 pt-4 md:pt-24">
           <Profile
             setSelected={setSelected}
             formData={formData}
@@ -89,6 +89,7 @@ export default function Page() {
               step={step}
               setStep={setStep}
               setHoveredField={setHoveredField}
+              isEdit={true}
               submitHref="/fashion-designers/profile"
             />
           </div>

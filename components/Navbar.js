@@ -35,7 +35,7 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
   return (
     <Navbar
       shouldHideOnScroll
-      className={`w-full ${bgColor} items-center justify-between lg:px-4 px-0 font-satoshi ${textStyle} z-[999]`}
+      className={`w-full ${bgColor} items-center justify-between lg:px-4 px-0 font-satoshi ${textStyle} z-40`}
       classNames={{ wrapper: "max-w-[1700px] mx-auto pl-0 pr-4 lg:px-14" }}
       onMenuOpenChange={setIsMenuOpen}
     >

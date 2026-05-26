@@ -50,7 +50,7 @@ const ProductDetails = ({ id }) => {
   const router = useRouter();
 
   const handleBack = () => {
-    router.push("/fashion-designers");
+    router.back();
   };
   // If invalid collection id
   if (!collection) {
@@ -94,13 +94,14 @@ const ProductDetails = ({ id }) => {
             tradition and contemporary style. The design features a flowing,
             triple-layered
           </p>
-          {/* Collection Files */}
-          <Header>Collection Files</Header>
+          {/* Collection Files -> Source Files */}
+          <Header>Source Files</Header>
           <div className=" border-b-1 border-divider mt-4 pb-6 px-4 flex flex-col gap-2">
             {details.collectionFiles.map((file, index) => (
               <Link
                 key={index}
                 href={url}
+                download={file}
                 target="_blank"
                 className="text-[#767676] font-satoshi font-normal text-xs hover:text-[#3A98BB] cursor-pointer transition-colors"
               >
@@ -112,21 +113,25 @@ const ProductDetails = ({ id }) => {
           <Header>Amount</Header>
           <Text>{details.price}</Text>
 
+          {/* Type */}
+          <Header>Type</Header>
+          <Text>Exclusive</Text>
+
           {/* Purchased Date */}
           <Header>Purchased Date</Header>
           <Text>{details.purchaseDate}</Text>
           {/* Artist */}
           <Header>About the Artist</Header>
-          <Link href="/artist-page/profile-vistor-view" className="flex items-center gap-2 border-b-1 border-divider mt-4 pb-6 px-4 cursor-pointer">
+          <Link href="/artist-page/profile-vistor-view" className="flex mt-4 items-center gap-2 border-b-1 border-divider pb-6 px-4 cursor-pointer">
             <Image
               src={details?.artist?.image}
               alt="image"
-              width={30}
-              height={30}
+              width={24}
+              height={24}
             />
-            <p className="text-[#3A98BB] font-satoshi font-normal text-xs ">
+            <span className="text-[#3A98BB] font-satoshi font-normal text-xs leading-none">
               @{details?.artist?.username || "ocean"}
-            </p>
+            </span>
           </Link>
         </div>
       </div>
@@ -198,46 +203,65 @@ const ProductDetails = ({ id }) => {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <div className="w-full flex items-start justify-between text-[#222222]">
-                  <div className="space-y-1">
-                    {/* Collection Files */}
-                    <h1 className=" font-bold text-base">Collection Files</h1>
-                    <div className="mt-4 flex flex-col gap-2">
+                <div className="w-full grid grid-cols-5 gap-4 items-start text-[#222222]">
+                  <div className="space-y-4">
+                    {/* Collection Files -> Source Files */}
+                    <h1 className=" font-bold text-base">Source Files</h1>
+                    <div className="flex flex-col gap-2 min-h-[24px] justify-center">
                       {details?.collectionFiles.map((file, index) => (
-                        <Link key={index} href={url} target="_blank" className="font-normal text-xs hover:text-[#3A98BB] cursor-pointer transition-colors">
+                        <Link key={index} href={url} download={file} target="_blank" className="font-normal text-xs hover:text-[#3A98BB] cursor-pointer transition-colors leading-none">
                           {file}
                         </Link>
                       ))}
                     </div>
                   </div>
-                  <div>
+
+                  <div className="space-y-4">
                     {/* Artist */}
                     <h1 className=" font-bold text-base">About the Artist</h1>
-                    <Link href="/artist-page/profile-vistor-view" className="flex mt-4 items-center gap-2 cursor-pointer">
-                      <Image
-                        src={details?.artist?.image}
-                        alt="image"
-                        width={30}
-                        height={30}
-                      />
-                      <p className=" font-satoshi font-bold text-xs text-[#3A98BB]">
-                        @{details?.artist?.username || "ocean"}
-                      </p>
-                    </Link>
+                    <div className="min-h-[24px] flex items-center">
+                      <Link href="/artist-page/profile-vistor-view" className="flex items-center gap-2 cursor-pointer">
+                        <Image
+                          src={details?.artist?.image}
+                          alt="image"
+                          width={24}
+                          height={24}
+                        />
+                        <span className=" font-satoshi font-bold text-xs text-[#3A98BB] leading-none">
+                          @{details?.artist?.username || "ocean"}
+                        </span>
+                      </Link>
+                    </div>
                   </div>
-                  <div>
+
+                  <div className="space-y-4">
                     {/* Amount */}
                     <h1 className=" font-bold text-base">Amount</h1>
-                    <p className="mt-4 font-satoshi font-normal text-xs text-[#767676]">
-                      {details?.price}
-                    </p>
+                    <div className="min-h-[24px] flex items-center">
+                      <p className="font-satoshi font-normal text-xs text-[#767676] leading-none">
+                        {details?.price}
+                      </p>
+                    </div>
                   </div>
-                  <div>
+
+                  <div className="space-y-4">
+                    {/* Type */}
+                    <h1 className=" font-bold text-base">Type</h1>
+                    <div className="min-h-[24px] flex items-center">
+                      <p className="font-satoshi font-normal text-xs text-[#767676] leading-none">
+                        Exclusive
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
                     {/* Purchased Date */}
                     <h1 className=" font-bold text-base">Purchased Date</h1>
-                    <p className="mt-4 text-[#767676] font-satoshi font-normal text-xs">
-                      {details?.purchaseDate}
-                    </p>
+                    <div className="min-h-[24px] flex items-center">
+                      <p className="text-[#767676] font-satoshi font-normal text-xs leading-none">
+                        {details?.purchaseDate}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </ModalFooter>

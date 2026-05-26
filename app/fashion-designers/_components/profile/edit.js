@@ -110,7 +110,7 @@ export const EditAboutMe = ({ setAboutValue, aboutValue }) => {
         onClick={handleOpen}
       >
         <Image
-          src="\profile\pencil.svg"
+          src="/profile/pencil.svg"
           alt="icon"
           width={20}
           height={20}
@@ -183,14 +183,14 @@ export const EditAward = ({ handleAwardChange }) => {
         className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] flex items-center gap-1 p-2 z-20 cursor-pointer rounded-full"
       >
         <Image
-          src="\profile\pencil.svg"
+          src="/profile/pencil.svg"
           alt="icon"
           width={20}
           height={20}
           className=" md:hidden"
         />
         <Image
-          src="\profile\plus.svg"
+          src="/profile/plus.svg"
           alt="icon"
           width={20}
           height={20}
@@ -222,7 +222,7 @@ export const EditProfile = ({ handleFileChange, className }) => {
         className={`bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] p-2 z-20 cursor-pointer rounded-full absolute ${className}`}
       >
         <Image
-          src="\profile\pencil.svg"
+          src="/profile/pencil.svg"
           alt="icon"
           width={20}
           height={20}

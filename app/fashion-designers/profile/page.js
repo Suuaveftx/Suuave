@@ -96,16 +96,11 @@ const Page = () => {
       {/* Header */}
 
       {/* User details  */}
-      <div className="mt-3 bg-white flex relative flex-col md:py-5 md:bg-[#F9F9F9] md:px-5 md:rounded-t-lg  md:justify-between md:mt-20 md:flex-row md:items-start md:gap-4 items-center p-4 text-[#222222] font-satoshi">
-        {/* Mobile Edit Button - Top Right of Card */}
-        <Link href="/fashion-designers/personal-details/edit" className="md:hidden absolute top-4 right-4 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] flex items-center justify-center rounded-3xl drop-shadow-lg px-4 py-1.5 z-10">
-          <span className="font-satoshi font-bold text-sm text-[#035A7A]">
-            Edit
-          </span>
-        </Link>
+      <div className="mt-3 bg-white flex relative flex-col md:py-5 md:bg-[#F9F9F9] md:px-5 md:rounded-t-lg  md:justify-between md:mt-4 md:flex-row md:items-start md:gap-4 items-center p-4 text-[#222222] font-satoshi">
+
         <div className="w-full flex flex-col items-center md:flex-row md:items-start md:gap-3">
-          <div className="flex flex-col items-end w-20 h-20 rounded-full md:w-28 md:h-28">
-            {/* <EditProfile handleFileChange={handleFileChange} /> */}
+          <div className="relative flex flex-col items-end w-20 h-20 flex-shrink-0 aspect-square rounded-full md:w-28 md:h-28">
+            <EditProfile handleFileChange={handleFileChange} className="top-0 -right-2" />
 
             {/* Image Preview */}
             {previewProfileUrl ? (
@@ -157,11 +152,7 @@ const Page = () => {
             </div>
           </div>
         </div>
-        <Link href="/fashion-designers/personal-details/edit" className="hidden md:flex bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] items-center justify-center rounded-3xl drop-shadow-lg px-4 py-1.5">
-          <span className="font-satoshi font-bold text-sm text-[#035A7A]">
-            Edit
-          </span>
-        </Link>
+
       </div>
       {/* Total jobs and earn */}
       <section className="flex justify-between md:px-5 bg-white md:rounded-b-lg md:py-5  md:bg-[#F9F9F9] md:mt-0 md:justify-start md:gap-10 mt-5 p-4 border-y-2 md:border-t-2 border-[#EAEAEA] font-satoshi">
@@ -184,7 +175,7 @@ const Page = () => {
       <section className="p-4 bg-white font-satoshi md:bg-[#F9F9F9] md:mt-10 md:py-5 md:px-5 md:rounded-t-lg ">
         <div className="flex items-start justify-between">
           <h1 className="font-bold text-base md:text-xl md:mb-8">About Me</h1>{" "}
-          {/* <EditAboutMe setAboutValue={setAboutValue} aboutValue={aboutValue} /> */}
+          <EditAboutMe setAboutValue={setAboutValue} aboutValue={aboutValue} />
         </div>
         <span className="font-normal tracking-wide text-sm md:text-base text-[#222222]  mt-2">
           {displayedText}

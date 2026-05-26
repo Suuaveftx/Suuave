@@ -18,10 +18,12 @@ export const languages = [
   { code: 'SW', name: 'Swahili', flag: 'https://flagcdn.com/w40/ke.png' },
 ];
 
-const LanguageSelectCustom = ({ value, onChange, placeholder = "Select Language", error }) => {
+const LanguageSelectCustom = ({ value, onChange, placeholder = "Select Language", error, label, labelPlacement = "outside" }) => {
   return (
     <Autocomplete
-      aria-label={placeholder}
+      label={label}
+      labelPlacement={labelPlacement}
+      aria-label={label || placeholder}
       placeholder={placeholder}
       variant="bordered"
       defaultItems={languages}
@@ -30,16 +32,11 @@ const LanguageSelectCustom = ({ value, onChange, placeholder = "Select Language"
       isInvalid={!!error}
       errorMessage={error}
       className="max-w-[280px]"
-      popoverProps={{
-        placement: "bottom",
-        showArrow: false,
-        offset: 5,
-        shouldFlip: false,
-      }}
       classNames={{
         base: "w-full",
         listbox: "bg-white",
         popoverContent: "bg-white border border-[#EAEAEA] shadow-xl rounded-xl",
+        label: "font-medium text-black text-sm",
       }}
       inputProps={{
         classNames: {
@@ -49,8 +46,8 @@ const LanguageSelectCustom = ({ value, onChange, placeholder = "Select Language"
       }}
     >
       {(item) => (
-        <AutocompleteItem 
-          key={item.name} 
+        <AutocompleteItem
+          key={item.name}
           textValue={item.name}
           className="hover:bg-[#EAF9FF] transition-colors"
         >

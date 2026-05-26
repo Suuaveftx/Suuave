@@ -35,7 +35,7 @@ const FashionDesignerHeader = () => {
     <Navbar
       shouldHideOnScroll={false}
       maxWidth='full'
-      className='fixed top-0 h-[80px] border-b bg-[#CCE7F2] z-[999]'
+      className='fixed top-0 h-[80px] border-b bg-[#CCE7F2] z-50'
       classNames={{ wrapper: 'pl-0 pr-4 lg:px-14' }}
       onMenuOpenChange={setIsMenuOpen}
     >

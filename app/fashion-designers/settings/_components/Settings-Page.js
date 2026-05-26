@@ -1,26 +1,39 @@
 'use client';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Sidebar_MenuCard from './Sidebar-MenuCard';
 import NotificationSettings from './Notification-Settings';
 import SecuritySettings from './Security-Settings';
+import AccountSettings from './Account-Settings';
 
 import {
   Bell as LucideBell,
   Lock as LucideLock,
-  HelpCircle as LucideHelpCircle,
-  Phone as LucidePhone,
   CircleUserRound as LucideCircleUserRound,
+  UserCog as LucideUserCog,
   ChevronLeft,
 } from 'lucide-react';
 
 const settingsMenu = [
+  { id: 'profile', label: 'Profile Settings', icon: LucideCircleUserRound },
   { id: 'notifications', label: 'Notifications', icon: LucideBell },
   { id: 'security', label: 'Security', icon: LucideLock },
+  { id: 'account', label: 'Account', icon: LucideUserCog },
 ];
 
 const SettingsPage = () => {
+  const router = useRouter();
   const [activeItem, setActiveItem] = useState('notifications');
   const [showSidebar, setShowSidebar] = useState(true); // for mobile
+
+  const handleSetItem = (id) => {
+    if (id === 'profile') {
+      router.push('/fashion-designers/personal-details/edit');
+    } else {
+      setActiveItem(id);
+      setShowSidebar(false);
+    }
+  };
 
   const renderActiveComponent = () => {
     switch (activeItem) {
@@ -29,7 +42,7 @@ const SettingsPage = () => {
       case 'security':
         return <SecuritySettings />;
       case 'account':
-        return <div>Account Settings Content</div>;
+        return <AccountSettings />;
       default:
         return <div>Select a setting.</div>;
     }
@@ -44,7 +57,7 @@ const SettingsPage = () => {
           <Sidebar_MenuCard
             menuItems={settingsMenu}
             activeItem={activeItem}
-            setActiveItem={setActiveItem}
+            setActiveItem={handleSetItem}
           />
         </div>
 
@@ -60,11 +73,7 @@ const SettingsPage = () => {
           <Sidebar_MenuCard
             menuItems={settingsMenu}
             activeItem={activeItem}
-            setActiveItem={(id) => {
-              setActiveItem(id);
-              // hide sidebar for any selected setting
-              setShowSidebar(false);
-            }}
+            setActiveItem={handleSetItem}
           />
         ) : (
           <div className='w-full p-4'>
@@ -75,7 +84,13 @@ const SettingsPage = () => {
             >
               <ChevronLeft className='w-5 h-5 mr-1' />
               <span className='text-[20px]'>
-                {activeItem === 'notifications' ? 'Notifications' : 'Security'}
+                {activeItem === 'profile'
+                  ? 'Profile Settings'
+                  : activeItem === 'notifications'
+                    ? 'Notifications'
+                    : activeItem === 'security'
+                      ? 'Security'
+                      : 'Account'}
               </span>
             </button>
 

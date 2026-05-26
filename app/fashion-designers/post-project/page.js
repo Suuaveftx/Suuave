@@ -1,8 +1,6 @@
 "use client";
 
 import {
-  Autocomplete,
-  AutocompleteItem,
   Button,
   Form,
   Input,
@@ -14,6 +12,7 @@ import React from "react";
 import { ArrowLeft, Paperclip, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState, useEffect, Suspense } from "react";
+import { useForm, Controller } from "react-hook-form";
 
 import { useAppStore } from "@/store";
 
@@ -27,34 +26,42 @@ const PageContent = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const fileInputRef = useRef(null);
 
-  const [formData, setFormData] = useState({
-    projectTitle: "",
-    projectDetails: "",
-    fashionDesignerSkills: "",
-    designStyles: "",
-    projectTimeframe: ""
+  const [previewAwardUrl, setPreviewAwardUrl] = useState(null);
+
+  const { control, handleSubmit, setValue, watch, reset } = useForm({
+    defaultValues: {
+      projectTitle: "",
+      projectDetails: "",
+      fashionDesignerSkills: [],
+      designStyles: [],
+      projectTimeframe: ""
+    }
   });
 
-  const [designValue, setDesignValue] = useState("");
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const formData = watch();
+
+  const [currentDesignInput, setCurrentDesignInput] = useState("");
+  const [designSuggestion, setDesignSuggestion] = useState("");
+  const [skillSuggestion, setSkillSuggestion] = useState("");
+  const [currentSkillInput, setCurrentSkillInput] = useState("");
 
   const classes = { label: "font-bold " };
 
   const fashionDesignerSkills = [
-    { label: "Sketching", key: "sketching", description: "Creating detailed drawings of fashion concepts and designs" },
-    { label: "Pattern Making", key: "pattern-making", description: "The process of creating patterns for garments" },
-    { label: "Sewing", key: "sewing", description: "The technique of stitching fabric together" },
-    { label: "Textile Knowledge", key: "textile-knowledge", description: "Understanding different fabrics" },
-    { label: "Fashion Illustration", key: "fashion-illustration", description: "Creating artistic representations of fashion designs" },
-    { label: "CAD (Computer-Aided Design)", key: "cad", description: "Using software to create digital fashion designs" },
-    { label: "Trend Analysis", key: "trend-analysis", description: "Researching and predicting fashion trends" },
-    { label: "Color Theory", key: "color-theory", description: "Understanding how colors interact" },
-    { label: "Fabric Manipulation", key: "fabric-manipulation", description: "The technique of altering fabrics" },
-    { label: "Fit and Construction", key: "fit-construction", description: "Ensuring garments fit well" },
-    { label: "Sustainability", key: "sustainability", description: "Incorporating eco-friendly materials" },
-    { label: "Fashion Marketing", key: "fashion-marketing", description: "Promoting fashion designs" },
-    { label: "Fashion Photography", key: "fashion-photography", description: "Capturing fashion pieces through photography" },
-    { label: "Brand Development", key: "brand-development", description: "Creating and maintaining a fashion brand identity" },
+    { id: 1, label: "Sketching", key: "sketching", description: "Creating detailed drawings of fashion concepts and designs" },
+    { id: 2, label: "Pattern Making", key: "pattern-making", description: "The process of creating patterns for garments" },
+    { id: 3, label: "Sewing", key: "sewing", description: "The technique of stitching fabric together" },
+    { id: 4, label: "Textile Knowledge", key: "textile-knowledge", description: "Understanding different fabrics" },
+    { id: 5, label: "Fashion Illustration", key: "fashion-illustration", description: "Creating artistic representations of fashion designs" },
+    { id: 6, label: "CAD (Computer-Aided Design)", key: "cad", description: "Using software to create digital fashion designs" },
+    { id: 7, label: "Trend Analysis", key: "trend-analysis", description: "Researching and predicting fashion trends" },
+    { id: 8, label: "Color Theory", key: "color-theory", description: "Understanding how colors interact" },
+    { id: 9, label: "Fabric Manipulation", key: "fabric-manipulation", description: "The technique of altering fabrics" },
+    { id: 10, label: "Fit and Construction", key: "fit-construction", description: "Ensuring garments fit well" },
+    { id: 11, label: "Sustainability", key: "sustainability", description: "Incorporating eco-friendly materials" },
+    { id: 12, label: "Fashion Marketing", key: "fashion-marketing", description: "Promoting fashion designs" },
+    { id: 13, label: "Fashion Photography", key: "fashion-photography", description: "Capturing fashion pieces through photography" },
+    { id: 14, label: "Brand Development", key: "brand-development", description: "Creating and maintaining a fashion brand identity" },
   ];
 
   const designStyles = [
@@ -82,21 +89,27 @@ const PageContent = () => {
 
   useEffect(() => {
     if (isEditMode && editProject) {
-      setFormData({
+      let parsedSkills = [];
+      if (Array.isArray(editProject.skills)) {
+        parsedSkills = editProject.skills;
+      } else if (typeof editProject.skills === 'string' && editProject.skills.length > 0) {
+        parsedSkills = editProject.skills.split(',').map(s => s.trim());
+      }
+      let parsedStyles = [];
+      if (Array.isArray(editProject.style)) {
+        parsedStyles = editProject.style;
+      } else if (typeof editProject.style === 'string' && editProject.style.length > 0) {
+        parsedStyles = editProject.style.split(',').map(s => s.trim());
+      }
+      reset({
         projectTitle: editProject.title || "",
         projectDetails: editProject.description || "",
-        fashionDesignerSkills: editProject.skills || "",
-        designStyles: editProject.style || "",
+        fashionDesignerSkills: parsedSkills,
+        designStyles: parsedStyles,
         projectTimeframe: editProject.timeframe || ""
       });
-      setDesignValue(editProject.style || "");
     }
-  }, [isEditMode, editProject]);
-
-  const handleStyleSelection = (style) => {
-    setDesignValue(style);
-    setShowSuggestions(false);
-  };
+  }, [isEditMode, editProject, reset]);
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -114,17 +127,38 @@ const PageContent = () => {
 
   const onReset = () => {
     setAction("reset");
-    setDesignValue("");
-    setShowSuggestions(false);
+    setDesignSuggestion("");
+    setCurrentDesignInput("");
+    setSkillSuggestion("");
+    setCurrentSkillInput("");
     setSelectedFiles([]);
-    setFormData({
+    reset({
       projectTitle: "",
       projectDetails: "",
-      fashionDesignerSkills: "",
-      designStyles: "",
+      fashionDesignerSkills: [],
+      designStyles: [],
       projectTimeframe: ""
     });
     if (isEditMode) clearEditProject();
+  };
+
+  const onSubmit = (data) => {
+    const dataToSave = {
+      title: data.projectTitle,
+      description: data.projectDetails,
+      skills: data.fashionDesignerSkills,
+      style: data.designStyles,
+      timeframe: data.projectTimeframe,
+      referenceFiles: selectedFiles.map(f => f.name)
+    };
+
+    if (isEditMode && editProject) {
+      updateProject(editProject.id, dataToSave);
+      clearEditProject();
+    } else {
+      addProject(dataToSave);
+    }
+    router.push('/fashion-designers/my-projects');
   };
 
   return (
@@ -147,62 +181,54 @@ const PageContent = () => {
       <Form
         className="w-full gap-7 bg-white border-2 border-gray-200 rounded-md p-7 "
         onReset={onReset}
-        onSubmit={(e) => {
-          e.preventDefault();
-          
-          const dataToSave = {
-            title: formData.projectTitle,
-            description: formData.projectDetails,
-            skills: formData.fashionDesignerSkills,
-            style: designValue,
-            timeframe: formData.projectTimeframe,
-            referenceFiles: selectedFiles.map(f => f.name)
-          };
-
-          if (isEditMode && editProject) {
-            updateProject(editProject.id, dataToSave);
-            clearEditProject();
-          } else {
-            addProject(dataToSave);
-          }
-          router.push('/fashion-designers/my-projects');
-        }}
+        onSubmit={handleSubmit(onSubmit)}
       >
-        <Input
-          errorMessage="Please enter a title"
-          label={
-            <span>
-              Project Title <span className="text-red-500">*</span>
-            </span>
-          }
-          variant="bordered"
-          radius="sm"
+        <Controller
           name="projectTitle"
-          value={formData.projectTitle}
-          onValueChange={(val) => setFormData(prev => ({ ...prev, projectTitle: val }))}
-          placeholder="Type the title of the project"
-          labelPlacement="outside"
-          type="text"
-          classNames={classes}
+          control={control}
+          rules={{ required: "Please enter a title" }}
+          render={({ field, fieldState }) => (
+            <Input
+              {...field}
+              errorMessage={fieldState.error?.message}
+              isInvalid={!!fieldState.error}
+              label={
+                <span>
+                  Project Title <span className="text-red-500">*</span>
+                </span>
+              }
+              variant="bordered"
+              radius="sm"
+              placeholder="Type the title of the project"
+              labelPlacement="outside"
+              type="text"
+              classNames={classes}
+            />
+          )}
         />
-        <Textarea
-          labelPlacement="outside"
-          classNames={classes}
+        <Controller
           name="projectDetails"
-          radius="sm"
-          isClearable
-          variant="bordered"
-          errorMessage="Please enter a description "
-          value={formData.projectDetails}
-          onValueChange={(val) => setFormData(prev => ({ ...prev, projectDetails: val }))}
-          className=""
-          minRows={7}
-          label={
-            <span>
-              Project Description <span className="text-red-500">*</span>
-            </span>
-          }
-          placeholder="Describe the project details"
+          control={control}
+          rules={{ required: "Please enter a description" }}
+          render={({ field, fieldState }) => (
+            <Textarea
+              {...field}
+              labelPlacement="outside"
+              classNames={classes}
+              radius="sm"
+              isClearable
+              variant="bordered"
+              errorMessage={fieldState.error?.message}
+              isInvalid={!!fieldState.error}
+              minRows={7}
+              label={
+                <span>
+                  Project Description <span className="text-red-500">*</span>
+                </span>
+              }
+              placeholder="Describe the project details"
+            />
+          )}
         />
 
         <div className="flex flex-col gap-3">
@@ -247,103 +273,194 @@ const PageContent = () => {
             </div>
           </div>
         </div>
-        <Autocomplete
-          allowsCustomValue
-          radius="sm"
-          className="font-bold"
-          labelPlacement="outside"
-          name="fashionDesignerSkills"
-          defaultItems={fashionDesignerSkills}
-          label={
-            <span>
-              Skills Required <span className="text-red-500">*</span>
-            </span>
-          }
-          value={formData.fashionDesignerSkills}
-          onValueChange={(val) => setFormData(prev => ({ ...prev, fashionDesignerSkills: val }))}
-          variant="bordered"
-          placeholder="Select from the options provided or type when necessary"
-        >
-          {(item) => (
-            <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>
+        <div className="flex flex-col gap-2 relative w-full">
+          <label className="text-sm font-bold text-[#222222]">
+            Skills Required <span className="text-red-500">*</span>
+          </label>
+
+          <div className="relative w-full">
+            <input
+              type="text"
+              name="currentSkillInput"
+              value={currentSkillInput}
+              placeholder={formData.fashionDesignerSkills.length === 0 ? "Type a skill and press Enter..." : "Add another skill..."}
+              className="w-full border-1 border-[#d1d1d1] rounded-lg px-3 py-2 text-base focus:outline-none focus:border-[#3A98BB] relative z-10 bg-transparent font-sans"
+              onChange={(e) => {
+                const val = e.target.value;
+                setCurrentSkillInput(val);
+                if (val.length > 0) {
+                  const match = fashionDesignerSkills.find(skill =>
+                    skill.label.toLowerCase().startsWith(val.toLowerCase())
+                  );
+                  if (match) {
+                    setSkillSuggestion(val + match.label.slice(val.length));
+                  } else {
+                    setSkillSuggestion("");
+                  }
+                } else {
+                  setSkillSuggestion("");
+                }
+              }}
+              onKeyDown={(e) => {
+                if ((e.key === "Tab" || e.key === "ArrowRight") && skillSuggestion) {
+                  e.preventDefault();
+                  if (!formData.fashionDesignerSkills.includes(skillSuggestion)) {
+                    setValue("fashionDesignerSkills", [...formData.fashionDesignerSkills, skillSuggestion]);
+                  }
+                  setCurrentSkillInput("");
+                  setSkillSuggestion("");
+                } else if (e.key === "Enter") {
+                  e.preventDefault();
+                  const skillToAdd = skillSuggestion || currentSkillInput.trim();
+                  if (skillToAdd && !formData.fashionDesignerSkills.includes(skillToAdd)) {
+                    setValue("fashionDesignerSkills", [...formData.fashionDesignerSkills, skillToAdd]);
+                  }
+                  setCurrentSkillInput("");
+                  setSkillSuggestion("");
+                }
+              }}
+              onBlur={() => {
+                if (currentSkillInput.trim() && !formData.fashionDesignerSkills.includes(currentSkillInput.trim())) {
+                  setValue("fashionDesignerSkills", [...formData.fashionDesignerSkills, currentSkillInput.trim()]);
+                }
+                setCurrentSkillInput("");
+                setSkillSuggestion("");
+              }}
+            />
+            {skillSuggestion && currentSkillInput && skillSuggestion.toLowerCase().startsWith(currentSkillInput.toLowerCase()) && (
+              <div
+                className="absolute inset-0 px-3 py-2 text-base pointer-events-none flex items-center z-0 whitespace-pre overflow-hidden font-sans"
+              >
+                <span className="text-transparent">{currentSkillInput}</span>
+                <span className="text-gray-400">{skillSuggestion.slice(currentSkillInput.length)}</span>
+              </div>
+            )}
+          </div>
+
+          {formData.fashionDesignerSkills.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {formData.fashionDesignerSkills.map((skill, index) => (
+                <div key={index} className="flex items-center gap-1 bg-[#F3F4F6] text-[#222222] px-3 py-1.5 rounded-lg text-sm border border-[#EAEAEA]">
+                  <span>{skill}</span>
+                  <button
+                    type="button"
+                    onClick={() => setValue("fashionDesignerSkills", formData.fashionDesignerSkills.filter((_, i) => i !== index))}
+                    className="text-gray-400 hover:text-red-500 transition-colors ml-1"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
           )}
-        </Autocomplete>
+        </div>
 
         <div className="flex flex-col gap-2 relative w-full">
           <label htmlFor="design-style-input" className="text-sm font-bold text-[#222222]">
             Design Style <span className="text-red-500">*</span>
           </label>
-          <input
-            id="design-style-input"
-            type="text"
-            name="designStyles"
-            value={designValue}
-            placeholder="Enter category of your design, E.g Casual, etc."
-            className="border-1 border-[#d1d1d1] rounded-lg px-3 py-2 text-base focus:outline-none focus:border-[#3A98BB]"
-            onChange={(e) => {
-              setDesignValue(e.target.value);
-              setFormData(prev => ({ ...prev, designStyles: e.target.value }));
-              setShowSuggestions(true);
-            }}
-            onFocus={() => {
-              if (designValue) setShowSuggestions(true);
-            }}
-            onBlur={() => {
-              setTimeout(() => setShowSuggestions(false), 200);
-            }}
-          />
+          <div className="relative w-full">
+            <input
+              id="design-style-input"
+              type="text"
+              name="currentDesignInput"
+              value={currentDesignInput}
+              placeholder={formData.designStyles.length === 0 ? "Type a design style and press Enter..." : "Add another style..."}
+              className="w-full border-1 border-[#d1d1d1] rounded-lg px-3 py-2 text-base focus:outline-none focus:border-[#3A98BB] relative z-10 bg-transparent font-sans"
+              onChange={(e) => {
+                const val = e.target.value;
+                setCurrentDesignInput(val);
+                if (val.length > 0) {
+                  const match = designStyles.find(style =>
+                    style.label.toLowerCase().startsWith(val.toLowerCase())
+                  );
+                  if (match) {
+                    setDesignSuggestion(val + match.label.slice(val.length));
+                  } else {
+                    setDesignSuggestion("");
+                  }
+                } else {
+                  setDesignSuggestion("");
+                }
+              }}
+              onKeyDown={(e) => {
+                if ((e.key === "Tab" || e.key === "ArrowRight") && designSuggestion) {
+                  e.preventDefault();
+                  if (!formData.designStyles.includes(designSuggestion)) {
+                    setValue("designStyles", [...formData.designStyles, designSuggestion]);
+                  }
+                  setCurrentDesignInput("");
+                  setDesignSuggestion("");
+                } else if (e.key === "Enter") {
+                  e.preventDefault();
+                  const styleToAdd = designSuggestion || currentDesignInput.trim();
+                  if (styleToAdd && !formData.designStyles.includes(styleToAdd)) {
+                    setValue("designStyles", [...formData.designStyles, styleToAdd]);
+                  }
+                  setCurrentDesignInput("");
+                  setDesignSuggestion("");
+                }
+              }}
+              onBlur={() => {
+                if (currentDesignInput.trim() && !formData.designStyles.includes(currentDesignInput.trim())) {
+                  setValue("designStyles", [...formData.designStyles, currentDesignInput.trim()]);
+                }
+                setCurrentDesignInput("");
+                setDesignSuggestion("");
+              }}
+            />
+            {designSuggestion && currentDesignInput && designSuggestion.toLowerCase().startsWith(currentDesignInput.toLowerCase()) && (
+              <div
+                className="absolute inset-0 px-3 py-2 text-base pointer-events-none flex items-center z-0 whitespace-pre overflow-hidden font-sans"
+              >
+                <span className="text-transparent">{currentDesignInput}</span>
+                <span className="text-gray-400">{designSuggestion.slice(currentDesignInput.length)}</span>
+              </div>
+            )}
+          </div>
 
-          {showSuggestions && (
-            <div
-              id="style-suggestions"
-              className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#d1d1d1] rounded-lg shadow-xl max-h-60 overflow-y-auto z-[50]"
-            >
-              {designStyles
-                .filter(item =>
-                  item.label.toLowerCase().includes(designValue.toLowerCase())
-                )
-                .map((item) => (
+          {formData.designStyles.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {formData.designStyles.map((style, index) => (
+                <div key={index} className="flex items-center gap-1 bg-[#F3F4F6] text-[#222222] px-3 py-1.5 rounded-lg text-sm border border-[#EAEAEA]">
+                  <span>{style}</span>
                   <button
-                    key={item.key}
                     type="button"
-                    onClick={() => {
-                      handleStyleSelection(item.label);
-                      setFormData(prev => ({ ...prev, designStyles: item.label }));
-                    }}
-                    className="w-full text-left px-4 py-3 hover:bg-[#F3F4F6] transition-colors text-sm border-b border-gray-50 last:border-none"
+                    onClick={() => setValue("designStyles", formData.designStyles.filter((_, i) => i !== index))}
+                    className="text-gray-400 hover:text-red-500 transition-colors ml-1"
                   >
-                    {item.label}
+                    <X size={14} />
                   </button>
-                ))}
-              {designStyles.filter(item => item.label.toLowerCase().includes(designValue.toLowerCase())).length === 0 && (
-                <div className="px-4 py-3 text-sm text-gray-500 italic">
-                  No matching styles found. press enter to use &quot;{designValue}&quot;
                 </div>
-              )}
+              ))}
             </div>
           )}
         </div>
 
-        <Select
-          variant="bordered"
-          radius="sm"
-          labelPlacement="outside"
-          classNames={classes}
-          className="lg:w-60 w-full"
+        <Controller
           name="projectTimeframe"
-          label={
-            <span>
-              Project Timeframe <span className="text-red-500">*</span>
-            </span>
-          }
-          placeholder="Select"
-          selectedKeys={formData.projectTimeframe ? new Set([formData.projectTimeframe]) : new Set([])}
-          onSelectionChange={(keys) => setFormData(prev => ({ ...prev, projectTimeframe: Array.from(keys)[0] }))}
-        >
-          {projectTimeframe.map((item) => (
-            <SelectItem key={item.key}>{item.label}</SelectItem>
-          ))}
-        </Select>
+          control={control}
+          rules={{ required: "Please enter a timeframe" }}
+          render={({ field, fieldState }) => (
+            <Input
+              {...field}
+              variant="bordered"
+              radius="sm"
+              labelPlacement="outside"
+              classNames={classes}
+              className="lg:w-96 w-full"
+              errorMessage={fieldState.error?.message}
+              isInvalid={!!fieldState.error}
+              label={
+                <span>
+                  Project Timeframe <span className="text-red-500">*</span>
+                </span>
+              }
+              placeholder="1 days, 2 days, 3 days, 10 days, 30 days"
+              type="number"
+            />
+          )}
+        />
         <div className="flex items-center justify-start gap-2 w-48">
           <Button type="reset" size="sm" radius="full" variant="flat" className="text-xs px-10">
             Cancel

@@ -21,7 +21,7 @@ const Profile = ({
     <div
       className={`${className} flex-col items-center p-5 md:p-0 md:items-start gap-6 mb-4 w-full bg-[#FAFAFA] md:bg-transparent rounded-lg md:w-[40%] lg:w-[25%] transition-all duration-300`}
     >
-      <h1 className="text-[#222222] font-bold text-2xl md:text-[32px] mb-2 md:mb-4 md:pt-12">
+      <h1 className="text-[#222222] font-bold text-2xl md:text-[32px] mb-2 md:mb-4">
         Profile Settings
       </h1>
       <div className="md:mb-4 flex flex-col items-center md:items-start gap-2">
@@ -29,7 +29,7 @@ const Profile = ({
           <label htmlFor="profile-upload" className="cursor-pointer relative group">
             <Avatar
               src={preview}
-              className="w-32 h-32 md:w-36 md:h-36 text-large shadow-lg hover:shadow-2xl transition-all bg-[#3A98BB]"
+              className="w-32 h-32 md:w-36 md:h-36 text-large shadow-lg hover:shadow-2xl transition-all bg-[#E9E9E9]"
               color="primary"
             />
             {/* Camera Overlay */}
@@ -94,7 +94,7 @@ const Profile = ({
             <List activeState={formData.language} text="Language" isHovered={hoveredField === 'Language'} />
             <List
               activeState={!!formData.dob}
-              text=" Date of Birth"
+              text="Date of birth"
               isHovered={hoveredField === 'Date of Birth'}
             />
             <List activeState={formData.about} text="About Yourself" isHovered={hoveredField === 'About Yourself'} />
