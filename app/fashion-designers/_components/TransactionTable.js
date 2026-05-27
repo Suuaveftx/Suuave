@@ -222,6 +222,7 @@ const TransactionTable = () => {
                                         <div onClick={() => handleTypeSelect('Project')} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Project</div>
                                         <div onClick={() => handleTypeSelect('Refund')} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Refund</div>
                                         <div onClick={() => handleTypeSelect('Licensing')} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Licensing</div>
+                                        <div onClick={() => handleTypeSelect('Retainer')} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Retainer</div>
                                     </div>
                                 )}
                             </div>

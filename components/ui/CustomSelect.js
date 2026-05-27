@@ -1,6 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
+
 'use client';
 import React from 'react';
+import Image from 'next/image';
 import { Select, SelectItem } from "@heroui/react";
 
 /**
@@ -23,6 +24,8 @@ const CustomSelect = ({
   isInvalid,
   errorMessage,
   placement = "bottom-start",
+  label,
+  labelPlacement = "outside",
 }) => {
   const selectedKeys = React.useMemo(() => {
     const vKeys = new Set(data.map((d) => String(d.key)));
@@ -51,6 +54,8 @@ const CustomSelect = ({
     <div className={className}>
       <Select
         id={id}
+        label={label}
+        labelPlacement={labelPlacement}
         aria-label={ariaLabel || id}
         placeholder={placeholder || `Select (${data?.length || 0})`}
         variant="bordered"
@@ -65,6 +70,7 @@ const CustomSelect = ({
           offset: 10,
         }}
         classNames={{
+          label: "font-medium text-black text-sm",
           trigger: [
             "font-normal text-base text-black border border-[#D1D1D1] outline-0 rounded-[8px] py-2",
             "hover:border-[#3A98BB]",
@@ -85,10 +91,12 @@ const CustomSelect = ({
             return (
               <div key={item.key} className="flex items-center gap-2">
                 {originalItem?.icon && (
-                  <img
+                  <Image
                     alt={originalItem?.label}
-                    className="w-5 h-4 object-cover rounded-[2px]"
                     src={originalItem?.icon}
+                    width={20}
+                    height={16}
+                    className="w-5 h-4 object-cover rounded-[2px]"
                   />
                 )}
                 <span className="truncate">{originalItem?.label || item.textValue}</span>
@@ -105,10 +113,12 @@ const CustomSelect = ({
             description={item.description}
             startContent={
               item.icon ? (
-                <img
+                <Image
                   alt={item.label}
-                  className="w-5 h-4 object-cover rounded-[2px]"
                   src={item.icon}
+                  width={20}
+                  height={16}
+                  className="w-5 h-4 object-cover rounded-[2px]"
                 />
               ) : null
             }

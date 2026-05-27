@@ -112,7 +112,7 @@ const PendingContracts = ({
         <div className="flex items-start space-x-3 p-3 rounded-lg bg-[#FFF8EB] border border-[#FFF8EB] mb-6 w-fit max-w-[95%]">
           <ExclamationTriangleIcon className="text-[#FF8024] w-5 h-5 mt-0.5" />
           <p className="text-xs text-[#E68A1D] font-bold leading-[1.4]">
-            Artists have 5 days to accept these offers. <br />
+            Artists have 2 days to accept these offers. <br />
             Failure to do so will result in automatic cancellation.
           </p>
         </div>

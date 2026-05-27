@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import Image from 'next/image';
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
 
 /**
@@ -65,10 +66,12 @@ const CustomAutocomplete = ({
             className="text-black hover:bg-[#EAF9FF]"
             startContent={
               item.icon ? (
-                <img
+                <Image
                   alt={item.label}
-                  className="w-5 h-4 object-cover rounded-[2px]"
                   src={item.icon}
+                  width={20}
+                  height={16}
+                  className="w-5 h-4 object-cover rounded-[2px]"
                 />
               ) : null
             }

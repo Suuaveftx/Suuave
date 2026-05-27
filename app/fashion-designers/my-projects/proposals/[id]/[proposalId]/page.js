@@ -65,18 +65,14 @@ const ProposalDetailsPage = ({ params }) => {
                     {/* Details Card (Payment, Duration, Skill Set) */}
                     <Card shadow="none" className="border rounded-2xl bg-white">
                         <CardBody className="p-8">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                <div className="flex flex-col gap-2">
-                                    <p className="text-[#767676] text-sm italic">Payment</p>
-                                    <p className="font-bold text-lg">{proposalData.quotation}</p>
+                            <div className="flex flex-col gap-5">
+                                <div className="flex items-center gap-2">
+                                    <p className="text-[#767676] text-md">Payment</p>
+                                    <p className="font-bold text-md ml-4">{proposalData.quotation}</p>
                                 </div>
-                                <div className="flex flex-col gap-2">
-                                    <p className="text-[#767676] text-sm italic">Timeframe :</p>
-                                    <p className="font-bold text-lg">5 days</p>
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <p className="text-[#767676] text-sm italic">Skill Set :</p>
-                                    <p className="font-bold text-lg">{proposalData.skillSet}</p>
+                                <div className="flex items-center gap-2">
+                                    <p className="text-[#767676] text-md">Duration :</p>
+                                    <p className="font-bold text-md ml-4">5 days</p>
                                 </div>
                             </div>
                         </CardBody>

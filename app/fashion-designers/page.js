@@ -1,10 +1,12 @@
 'use client';
+import Link from "next/link";
 
 import { Alert, Chip, Input, Tab, Tabs, Card, CardBody, Image } from '@heroui/react';
+import { FaCrown } from "react-icons/fa";
+
 import React, { useState } from 'react';
 import { IoSearchOutline } from 'react-icons/io5';
 import FashionDesignersCard from './_components/studio-page-components/FashionDesignersCard';
-import FloatingButton from './_components/FloatingButton';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { useAppStore } from '@/store';
 
@@ -276,7 +278,7 @@ const Page = () => {
             key='recent'
             title={<p className='flex items-center space-x-2'>Recently</p>}
           >
-            <div className='grid grid-cols-2 gap-3 mt-6 lg:gap-6 lg:grid-cols-4  '>
+            <div className='grid grid-cols-2 gap-3 mt-6 lg:gap-6 lg:grid-cols-4'>
               {cardsData.map((card, index) => (
                 <FashionDesignersCard
                   key={index}
@@ -289,6 +291,7 @@ const Page = () => {
                   userData={card.user}
                   isBookmarked={savedCardIds.includes(card.id)}
                   onToggleSave={() => toggleBookmark(card.id)}
+                  hasCrown={['card-1', 'card-4', 'card-8'].includes(card.id)}
                 />
               ))}
             </div>
@@ -302,7 +305,7 @@ const Page = () => {
               </div>
             }
           >
-            <div className='grid grid-cols-2 gap-3 mt-6 lg:gap-6 lg:grid-cols-4  '>
+            <div className='grid grid-cols-2 gap-3 mt-6 lg:gap-6 lg:grid-cols-4'>
               {cardsData
                 .filter((card) => savedCardIds.includes(card.id))
                 .map((card, index) => (
@@ -317,13 +320,13 @@ const Page = () => {
                     userData={card.user}
                     isBookmarked={true}
                     onToggleSave={() => toggleBookmark(card.id)}
+                    hasCrown={['card-1', 'card-4', 'card-8'].includes(card.id)}
                   />
                 ))}
             </div>
           </Tab>
         </Tabs>
       </div>
-      <FloatingButton />
     </div>
   );
 };

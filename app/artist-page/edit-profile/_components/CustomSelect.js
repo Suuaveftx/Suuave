@@ -1,6 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
+
 import { Select, SelectItem } from "@heroui/react";
 import React from "react";
+import Image from 'next/image';
 
 const CustomSelect = ({
   formData,
@@ -54,10 +55,12 @@ const CustomSelect = ({
         return items.map((item) => (
           <div key={item.key} className="flex items-center gap-2">
             {item.data?.icon && (
-              <img
+              <Image
                 alt={item.data.label}
-                className="w-5 h-4 object-cover rounded-[2px]"
                 src={item.data.icon}
+                width={20}
+                height={16}
+                className="w-5 h-4 object-cover rounded-[2px]"
               />
             )}
             <span className="truncate">{item.data?.label}</span>
@@ -72,10 +75,12 @@ const CustomSelect = ({
           textValue={item.label}
           startContent={
             item.icon ? (
-              <img
+              <Image
                 alt={item.label}
-                className="w-5 h-4 object-cover rounded-[2px]"
                 src={item.icon}
+                width={20}
+                height={16}
+                className="w-5 h-4 object-cover rounded-[2px]"
               />
             ) : null
           }

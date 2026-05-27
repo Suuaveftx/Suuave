@@ -1,5 +1,5 @@
 "use client";
-/* eslint-disable @next/next/no-img-element */
+
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -107,10 +107,12 @@ const NationalityMobile = () => {
                     return items.map((item) => (
                       <div key={item.key} className="flex items-center gap-2">
                         {item.data?.icon && (
-                          <img
+                          <Image
                             alt={item.data.label}
-                            className="w-5 h-4 object-cover rounded-[2px]"
                             src={item.data.icon}
+                            width={20}
+                            height={16}
+                            className="w-5 h-4 object-cover rounded-[2px]"
                           />
                         )}
                         <span className="truncate">{item.data?.label}</span>
@@ -124,10 +126,12 @@ const NationalityMobile = () => {
                       textValue={code.label}
                       startContent={
                         code.icon ? (
-                          <img
+                          <Image
                             alt={code.label}
-                            className="w-5 h-4 object-cover rounded-[2px]"
                             src={code.icon}
+                            width={20}
+                            height={16}
+                            className="w-5 h-4 object-cover rounded-[2px]"
                           />
                         ) : null
                       }

@@ -13,6 +13,7 @@ import {
 } from '@heroui/react';
 import React, { useState } from 'react';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
+import { FaCrown } from 'react-icons/fa';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -113,6 +114,7 @@ const FashionDesignersCard = ({
   idx,
   isBookmarked,
   onToggleSave,
+  hasCrown = false,
 }) => {
   const sliderSettings = {
     dots: true,
@@ -129,31 +131,35 @@ const FashionDesignersCard = ({
   };
 
   return (
-    <Card className='px-0 hover:shadow-xl overflow-hidden bg-white shadow-md border-none h-[308px] w-full flex flex-col' shadow='none'>
-      <CardBody className='overflow-hidden p-0 h-[200px] relative flex-none'>
-        <div className='block relative w-full h-full'>
-          <Button
-            isIconOnly
-            className='absolute right-4 top-4 z-20 bg-white shadow-md border-none hover:bg-white/90'
-            size='sm'
-            radius='full'
-            onPress={(e) => {
+    <Card className='px-0 hover:shadow-xl overflow-hidden bg-[#F9F9F9] shadow-sm border-none w-full flex flex-col' shadow='none'>
+      <CardBody className='overflow-hidden p-3 pb-0 relative flex-none'>
+        <div className='block relative w-full aspect-square rounded-lg overflow-hidden'>
+          {hasCrown && (
+            <div className='absolute left-3 top-3 z-20 flex bg-black/60 backdrop-blur-md rounded-md p-1.5 items-center justify-center'>
+              <FaCrown size={14} className='text-[#F4C753]' />
+            </div>
+          )}
+          <div
+            className='absolute right-3 top-3 z-20 flex bg-black/60 hover:bg-black/80 transition-colors backdrop-blur-md rounded-md p-1.5 cursor-pointer items-center justify-center'
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
               onToggleSave();
             }}
           >
             {isBookmarked ? (
-              <IoBookmark size={20} className='text-[#3A98BB]' />
+              <IoBookmark size={14} className='text-[#3A98BB]' />
             ) : (
-              <IoBookmarkOutline size={20} className='text-gray-600' />
+              <IoBookmarkOutline size={14} className='text-white' />
             )}
-          </Button>
-          <Link href={`/fashion-designers/${productID}`} className='block w-full h-full'>
+          </div>
+          <Link href={`/fashion-designers/${productID}${hasCrown ? '?crown=true' : ''}`} className='block w-full h-full'>
             <div className='overflow-hidden w-full h-full'>
               <div className='slider-container w-full h-full'>
                 <Slider {...sliderSettings} className='w-full h-full min-h-0 [&_.slick-list]:h-full [&_.slick-track]:h-full'>
                   {images?.map((image, index) => (
-                    <div key={index} className='outline-none block w-full h-[200px]'>
-                      <div className='relative w-full h-[200px] overflow-hidden bg-gray-50 block'>
+                    <div key={index} className='outline-none block w-full h-full'>
+                      <div className='relative w-full h-full overflow-hidden bg-gray-50 block aspect-square'>
                         <Image
                           src={image}
                           alt={`${title} - Image ${index + 1}`}
@@ -171,18 +177,25 @@ const FashionDesignersCard = ({
         </div>
       </CardBody>
 
-      <CardFooter className='flex flex-col items-start w-full p-4 pt-4 h-[108px] flex-none'>
-        <div className='flex flex-col gap-1.5 w-full'>
-          <p className='line-clamp-1 font-medium text-[15px] text-gray-800 '>
+      <CardFooter className='flex flex-col items-start w-full px-3 py-3 flex-none gap-2 bg-[#F9F9F9]'>
+        <div className='flex justify-between items-start w-full gap-2'>
+          <p className='line-clamp-2 font-medium text-[13.5px] text-gray-800 leading-[1.3] flex-1 text-left'>
             {title}
           </p>
-          <p className='font-semibold text-[16px] text-[#3A98BB]'>
+          <p className='font-semibold text-[13.5px] text-[#3A98BB] flex-shrink-0'>
             {formatToUSD(price)}
           </p>
-          <p className='text-[13px] text-gray-600 font-normal'>
-            {userName}
-          </p>
         </div>
+        <Link href='/artist-page/profile-vistor-view' className='flex items-center gap-2 mt-0.5 w-full hover:opacity-80 transition-opacity group cursor-pointer'>
+          <Avatar
+            src={userData?.photo && userData.photo !== 'userImg' ? userData.photo : `https://i.pravatar.cc/150?img=${idx + 10}`}
+            size='sm'
+            className='w-5 h-5 min-w-[20px] min-h-[20px]'
+          />
+          <p className='text-[12px] text-gray-600 font-medium line-clamp-1 group-hover:text-[#3A98BB] transition-colors'>
+            {userData?.handle || userName}
+          </p>
+        </Link>
       </CardFooter>
     </Card>
   );
