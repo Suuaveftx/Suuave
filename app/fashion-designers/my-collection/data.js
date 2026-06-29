@@ -12,6 +12,7 @@ export const collectionData = [
       ],
       title: "Modern Nigerian Agbada with Traditional Embellishments",
       collectionFiles: ["DC15263UG", "DC15263UG"],
+      type: "Exclusive",
       artist: {
         name: "Ocean Watermelon",
         username: "ocean",
@@ -33,6 +34,7 @@ export const collectionData = [
       ],
       title: "Modern Nigerian Agbada with Traditional Embellishments",
       collectionFiles: ["DC15263UG", "DC15263UG"],
+      type: "Exclusive",
       artist: {
         name: "Ocean Watermelon",
         image: "/collectionImage/image-6.svg",
@@ -53,6 +55,7 @@ export const collectionData = [
       ],
       title: "Modern Nigerian Agbada with Traditional Embellishments",
       collectionFiles: ["DC15263UG", "DC15263UG"],
+      type: "Exclusive",
       artist: {
         name: "Ocean Watermelon",
         image: "/collectionImage/image-6.svg",
@@ -73,6 +76,7 @@ export const collectionData = [
       ],
       title: "Modern Nigerian Agbada with Traditional Embellishments",
       collectionFiles: ["DC15263UG", "DC15263UG"],
+      type: "Non-Exclusive",
       artist: {
         name: "Ocean Watermelon",
         image: "/collectionImage/image-6.svg",
@@ -93,6 +97,7 @@ export const collectionData = [
       ],
       title: "Modern Nigerian Agbada with Traditional Embellishments",
       collectionFiles: ["DC15263UG", "DC15263UG"],
+      type: "Non-Exclusive",
       artist: {
         name: "Ocean Watermelon",
         image: "/collectionImage/image-6.svg",
@@ -113,6 +118,7 @@ export const collectionData = [
       ],
       title: "Modern Nigerian Agbada with Traditional Embellishments",
       collectionFiles: ["DC15263UG", "DC15263UG"],
+      type: "Non-Exclusive",
       artist: {
         name: "Ocean Watermelon",
         image: "/collectionImage/image-6.svg",
@@ -133,6 +139,7 @@ export const collectionData = [
       ],
       title: "Modern Nigerian Agbada with Traditional Embellishments",
       collectionFiles: ["DC15263UG", "DC15263UG"],
+      type: "Non-Exclusive",
       artist: {
         name: "Ocean Watermelon",
         image: "/collectionImage/image-6.svg",

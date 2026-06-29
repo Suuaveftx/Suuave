@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Textarea, Select, Checkbox, SelectItem, Button, Switch } from '@heroui/react';
 import { CiImageOn } from 'react-icons/ci';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Info, Paperclip } from 'lucide-react';
 import CustomButton from '../../../../components/CustomButton';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -12,16 +12,16 @@ import PublishDesignPopUp from './PublishDesignPopUp';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAppStore } from '@/store';
 import { CiFileOn } from 'react-icons/ci';
+import PageContainer from '../../../../components/layout/PageContainer';
 
 const License = () => {
   const router = useRouter();
   const [errors, setErrors] = React.useState({});
   const [images, setImages] = useState([]);
+  const [showSourceFileInfo, setShowSourceFileInfo] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { 
-    vaultFile, setVaultFile, 
-    commercialRights, setCommercialRights,
-    limitedUsageLicense, setLimitedUsageLicense,
+  const {
+    vaultFile, setVaultFile,
     confirmMasterFiles, setConfirmMasterFiles,
     confirmWatermarking, setConfirmWatermarking,
     confirmOwnership, setConfirmOwnership
@@ -34,7 +34,10 @@ const License = () => {
   const initialStyle = searchParams.get('style') || '';
   const initialPrice = searchParams.get('price') || '';
 
+  const allChecked = confirmMasterFiles && confirmWatermarking && confirmOwnership;
+
   const handleSubmitPublish = () => {
+    if (!allChecked) return;
     onOpen();
   };
 
@@ -58,19 +61,11 @@ const License = () => {
 
   return (
     <>
-      <div>
-        {/* Back Button for Mobile - Aligned with card */}
-        <div className='lg:hidden w-full max-w-[90%] mx-4 mt-6'>
-          <button
-            onClick={() => router.push("/artist-page")}
-            className='flex items-center text-[#222222] font-semibold'
-          >
-            <ChevronLeft className='w-5 h-5' />
-          </button>
-        </div>
+      <PageContainer className="flex flex-col items-start lg:items-start w-full">
 
-        <div className='lg:w-4/5 w-full max-w-[90%] px-6 py-2 lg:mx-16 mx-4 lg:mt-8 mt-4 rounded-lg bg-gradient-to-b from-[#CCE7F2] via-[#A1DCF3] to-[#49C0F0] text-[#393939]'>
-          <h1 className='lg:text-[32px] text-2xl text-[#393939] font-bold'>License Your Design</h1>
+
+        <div className='w-full px-6 py-2 pb-6 lg:mt-8 mt-4 rounded-lg bg-gradient-to-b from-[#CCE7F2] via-[#A1DCF3] to-[#49C0F0] text-[#393939]'>
+          <h1 className='text-[28px] text-[#393939] font-bold'>License Your Design</h1>
           <p className='text-base'>
             By uploading this design, you attest that you are the creator or legitimate owner and possess all necessary rights and permissions. Uploading work without authorization may constitute copyright infringement.{' '}
             <Link className='text-[#3A98BB]' href={'/'}>
@@ -79,7 +74,7 @@ const License = () => {
           </p>
         </div>
 
-        <div className='bg-[#FAFAFA] lg:w-4/5 w-full max-w-[90%] text-[#222222] lg:mx-16 mx-4 px-6 pt-[24px] pb-[32px] mt-7 mb-[99px] flex flex-col gap-6'>
+        <div className='bg-[#FAFAFA] w-full text-[#222222] px-6 pt-[24px] pb-[32px] mt-7 mb-[99px] flex flex-col gap-6 rounded-lg'>
           {/* Design Title & Description */}
           <div className='flex flex-col gap-4 w-full'>
             <div className='flex flex-col gap-1'>
@@ -377,7 +372,7 @@ const License = () => {
 
           {/* 1. Public Preview Gallery */}
           <div className='flex flex-col gap-2'>
-            <h3 className='text-lg font-bold text-[#222222]'>Public-Preview Gallery<span className='text-red-500 ml-0.5'>*</span></h3>
+            <h3 className='text-lg font-bold text-[#222222]'>Upload Your Designs<span className='text-red-500 ml-0.5'>*</span></h3>
             <p className='text-sm'>
               Upload public facing images.
             </p>
@@ -463,19 +458,43 @@ const License = () => {
             </div>
             {/* Term Note */}
             <p className='text-xs text-[#767676] mt-2'>
-              <span className='font-bold text-[#E73131]'>Term Note:</span> Only upload public facing images (sketches,photos). To prevent unapproved use, prioritize watermaking. We provide a separate, private field for secure master file delivery.
+              <span className='font-bold text-[#E73131]'>Term Note:</span> Only upload public facing images (sketches, photos). To prevent unapproved use, prioritize watermaking. We provide a separate, private field for secure master file delivery.
             </p>
           </div>
 
-          {/* 2. SECURE SOURCE FILES (THE VAULT) */}
+          {/* 2. UPLOAD SOURCE FILE */}
           <div className='flex flex-col gap-2'>
-            <div className='bg-[#FFF9EA] border border-[#EBC351] rounded-xl p-6'>
-              <div className='flex items-center gap-2 mb-4'>
-                <h3 className='text-lg font-bold text-[#222222] uppercase tracking-wide'>
-                  SECURE SOURCE FILES (THE VAULT)
+            <div className='flex flex-col'>
+              <div className='flex items-center gap-2'>
+                <h3 className='text-lg font-bold text-[#222222]'>
+                  Upload Source File
                 </h3>
-                <span className='text-2xl'>🔒</span>
+                <Info
+                  className="w-5 h-5 text-[#035A7A] cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => setShowSourceFileInfo(!showSourceFileInfo)}
+                />
               </div>
+              <p className='text-[15px] text-[#767676] mt-1'>
+                Upload the complete specifications, documents and all necessary files regarding the design or collection.
+              </p>
+            </div>
+
+            <div className='flex flex-col gap-4 mt-2'>
+              {vaultFile && (
+                <div className='bg-[#F4F4F4] rounded-lg px-4 py-2.5 flex items-center w-max gap-4'>
+                  <div className='flex items-center gap-2 text-[#3A98BB]'>
+                    <Paperclip className="w-4 h-4" />
+                    <span className='font-bold text-[15px]'>{vaultFile.name}</span>
+                  </div>
+                  <button
+                    type='button'
+                    onClick={() => setVaultFile(null)}
+                    className='text-[#222222] font-bold text-[15px] hover:opacity-70 transition-opacity'
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
 
               <input
                 type='file'
@@ -485,71 +504,28 @@ const License = () => {
                 onChange={handleVaultUpload}
               />
 
-              <Button
-                as='label'
+              <label
                 htmlFor='vault-upload'
-                className='!bg-[#CCE7F2] text-[#035A7A] w-full h-16 rounded-full flex items-center justify-center gap-3 cursor-pointer hover:opacity-90 transition-all'
+                className='w-full border-1 border-[#D1D1D1] rounded-lg h-[68px] flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-50 transition-colors'
               >
-                <CiFileOn className='text-2xl' />
-                <span className='text-lg font-bold'>
-                  {vaultFile ? vaultFile.name : 'Upload ZIP/Vector File'}
-                </span>
-              </Button>
+                <Paperclip className="w-5 h-5 text-[#3A98BB]" />
+                <span className='text-[#767676] text-[15px]'>Upload source file</span>
+              </label>
 
-              <div className='mt-4 text-[#222222] font-semibold text-xs leading-relaxed'>
-                <p>
-                  <span className='font-bold uppercase tracking-tight text-[10px]'>NOT PUBLICLY DISPLAYED.</span> Released only after escrow payment.
-                </p>
-                <p className='mt-1 opacity-70'>
-                  (Accepted formats: .zip, .ai, .eps, .psd, .pdf, Max 500MB)
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* 3. COMMERCIAL RIGHTS */}
-          <div className='flex flex-col gap-2'>
-            <div className='bg-[#EAF9FF] border border-[#CCE7F2] rounded-xl p-6'>
-              <h3 className='text-lg font-bold text-[#222222] uppercase tracking-wide mb-4'>
-                COMMERCIAL RIGHTS
-              </h3>
-
-              <div className='flex items-center gap-4'>
-                <Switch
-                  isSelected={commercialRights}
-                  onValueChange={setCommercialRights}
-                  classNames={{
-                    wrapper: 'h-10 w-24 bg-[#D1D1D1] group-data-[selected=true]:bg-[#CCE7F2]',
-                    thumb: 'h-8 w-8 bg-[#035A7A]',
-                  }}
-                  startContent={<div className='font-bold text-xs'>ON</div>}
-                  endContent={<div className='font-bold text-xs'>OFF</div>}
-                />
-                <div className='flex flex-col'>
-                  <span className='font-bold text-base text-[#222222]'>Include Commercial Rights?</span>
-                  <span className='text-xs text-[#767676] font-medium'>(Allows brand to use for mass production and global ads)</span>
+              {showSourceFileInfo && (
+                <div className='flex flex-col text-sm mt-1'>
+                  <p className='text-[#222222] font-bold'>
+                    NOT PUBLICLY DISPLAYED. Released only after escrow payment.
+                  </p>
+                  <p className='text-[#767676] mt-1'>
+                    Accepted formats: .zip, .ai, .eps, .psd, .pdf (Max 500MB).
+                  </p>
                 </div>
-              </div>
-
-              {/* Limited Usage License Field */}
-              <div className='mt-6 flex flex-col gap-2'>
-                <label className={`text-sm font-bold ${commercialRights ? 'opacity-30' : 'text-[#222222]'}`}>
-                  Limited Usage License
-                </label>
-                <Textarea
-                  placeholder='Define your Limited Usage License terms (e.g. 12-month non-exclusive rights for internal mood boards, digital presentations, and unpaid social media features only. No physical production or paid advertising permitted.)'
-                  value={limitedUsageLicense}
-                  onValueChange={setLimitedUsageLicense}
-                  isDisabled={commercialRights}
-                  classNames={{
-                    input: 'text-sm placeholder:text-[#BABABA]',
-                    inputWrapper: 'bg-white border-[#D1D1D1] rounded-lg'
-                  }}
-                  minRows={3}
-                />
-              </div>
+              )}
             </div>
           </div>
+
+
 
           {/* Asking Price */}
           <div className='flex flex-col gap-2'>
@@ -561,12 +537,32 @@ const License = () => {
             />
           </div>
 
+          {/* Sales Type */}
+          <div className='flex flex-col gap-2'>
+            <h3 className='text-lg font-semibold'>Choose Sales Type<span className='text-red-500 ml-0.5'>*</span></h3>
+            <Select
+              placeholder='Select Sales Type'
+              className='w-full lg:w-96'
+              classNames={{
+                trigger: 'border-1 border-[#d1d1d1] bg-white hover:bg-default-100 px-4 py-6 rounded-lg shadow-none',
+                value: 'text-base text-[#222222]',
+              }}
+            >
+              <SelectItem key='exclusive' value='exclusive'>
+                Exclusive
+              </SelectItem>
+              <SelectItem key='non-exclusive' value='non-exclusive'>
+                Non Exclusive
+              </SelectItem>
+            </Select>
+          </div>
+
 
 
           {/* Confirmation Checkboxes */}
           <div className='flex flex-col gap-4'>
             <div className='flex items-start gap-2'>
-              <Checkbox 
+              <Checkbox
                 isSelected={confirmMasterFiles}
                 onValueChange={setConfirmMasterFiles}
               />
@@ -574,9 +570,9 @@ const License = () => {
                 I confirm that the files in &quot;The Vault&quot; are original master files matching the public previews.
               </p>
             </div>
-            
+
             <div className='flex items-start gap-2'>
-              <Checkbox 
+              <Checkbox
                 isSelected={confirmWatermarking}
                 onValueChange={setConfirmWatermarking}
               />
@@ -586,7 +582,7 @@ const License = () => {
             </div>
 
             <div className='flex items-start gap-2'>
-              <Checkbox 
+              <Checkbox
                 isSelected={confirmOwnership}
                 onValueChange={setConfirmOwnership}
               />
@@ -602,22 +598,20 @@ const License = () => {
           <div className='flex flex-row gap-4 w-full justify-between lg:justify-start'>
             <CustomButton
               text='Save as Draft'
-              className='bg-[#F0F0F0] text-[#222222] flex-1 sm:flex-none sm:w-auto'
-              style={{
-                background: '#EDEDED',
-              }}
+              className={`bg-[#F0F0F0] text-[#222222] flex-1 sm:flex-none sm:w-auto ${!allChecked ? 'opacity-40 cursor-not-allowed' : ''}`}
+              style={{ background: '#EDEDED' }}
+              isDisabled={!allChecked}
             />
             <CustomButton
               text='Publish'
-              className='flex-1 sm:flex-none sm:w-auto'
-              style={{
-                color: '#035A7A',
-              }}
+              className={`flex-1 sm:flex-none sm:w-auto ${!allChecked ? 'opacity-40 cursor-not-allowed' : ''}`}
+              style={{ color: '#035A7A' }}
               onPress={handleSubmitPublish}
+              isDisabled={!allChecked}
             />
           </div>
         </div>
-      </div>
+      </PageContainer>
       <PublishDesignPopUp isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );

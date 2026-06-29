@@ -26,6 +26,7 @@ import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/ou
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import FashionDesignerHeader from '../../fashion-designers/_components/studio-page-components/FashionDesignerHeader';
+import PageContainer from '@/components/layout/PageContainer';
 import Footer from '../../about-page/components/Footer';
 
 import { useAppStore } from '@/store';
@@ -53,18 +54,23 @@ export const CheckoutPage = () => {
     // Save license info using Zustand store
     addLicense(id);
 
-    // Redirect back to product details page
-    router.push(`/fashion-designers/${id}`);
+    // Redirect based on exclusivity
+    if (hasCrown) {
+      router.push(`/fashion-designers`);
+    } else {
+      router.push(`/fashion-designers/${id}`);
+    }
   };
 
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
+  const hasCrown = searchParams.get('crown') === 'true' || searchParams.has('crown');
 
   return (
-    <div className='mx-auto bg-[#FAFAFA]'>
+    <div className='mx-auto bg-[#FAFAFA] min-h-screen'>
       <FashionDesignerHeader />
-      <div className='max-w-6xl mx-auto px-3 lg:px-6' style={{ paddingTop: '120px' }}>
+      <PageContainer className='pt-[120px] pb-[100px]'>
         {/* Header */}
         <div className='flex items-center gap-3 mb-4'>
           <Button
@@ -99,7 +105,9 @@ export const CheckoutPage = () => {
             <div className='flex items-center gap-2 py-1'>
               <Info size={18} className='text-black flex-shrink-0 self-center' />
               <span className='m-0 p-0 leading-tight text-sm md:text-base'>
-                Get Licensing right to the design and use as you desire. All files and specification will be transferred to you.
+                {hasCrown
+                  ? "Secure full, sole ownership of this design, which will be permanently removed from the marketplace."
+                  : "Obtain the rights to use this design for your projects, while allowing other brands to license it as well."}
               </span>
             </div>
           }
@@ -315,9 +323,9 @@ export const CheckoutPage = () => {
                       <p className='font-satoshi'>
                         Your payment is secure in our{' '}
                         <span className='font-satoshi text-[#3A98BB] '>Escrow</span> until
-                        your project is completed. Read our{' '}
+                        your design assets are successfully delivered. Read our{' '}
                         <Link href='#' className='font-semibold text-[#3A98BB]'>
-                          Collaboration Policy
+                          Licensing Policy
                         </Link>{' '}
                         for full details
                       </p>
@@ -346,8 +354,9 @@ export const CheckoutPage = () => {
                 </div>
                 <h2 className='text-2xl font-semibold mb-3'>Payment Successful</h2>
                 <p className='text-gray-600 text-sm leading-relaxed font-satoshi'>
-                  Complete file containing all specifications and related documents will
-                  be sent to your email.
+                  {hasCrown
+                    ? 'Complete file containing all specifications and related documents will be sent to your email.'
+                    : 'You can now download the complete file, containing all specifications and related documents.'}
                 </p>
               </div>
 
@@ -362,7 +371,7 @@ export const CheckoutPage = () => {
             </ModalBody>
           </ModalContent>
         </Modal>
-      </div>
+      </PageContainer>
 
       <Footer />
     </div>

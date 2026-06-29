@@ -49,7 +49,7 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className='w-full h-screen scrollbar-hide'>
+    <div className='w-full h-[calc(100vh-104px)] overflow-hidden'>
       {/* ----- Desktop View ----- */}
       <div className='hidden sm:flex h-full'>
         {/* Sidebar on Desktop */}
@@ -79,20 +79,20 @@ const SettingsPage = () => {
           <div className='w-full p-4'>
             {/* Back Button */}
             <button
-              className='flex items-center text-[#222222] font-semibold mb-4'
+              className='text-sm text-[#767676] mb-2 flex items-center gap-1'
               onClick={() => setShowSidebar(true)}
             >
-              <ChevronLeft className='w-5 h-5 mr-1' />
-              <span className='text-[20px]'>
-                {activeItem === 'profile'
-                  ? 'Profile Settings'
-                  : activeItem === 'notifications'
-                    ? 'Notifications'
-                    : activeItem === 'security'
-                      ? 'Security'
-                      : 'Account'}
-              </span>
+              Back
             </button>
+            <h2 className='text-[28px] font-semibold text-[#222222] mb-4'>
+              {activeItem === 'profile'
+                ? 'Profile Settings'
+                : activeItem === 'notifications'
+                  ? 'Notifications'
+                  : activeItem === 'security'
+                    ? 'Security'
+                    : 'Account'}
+            </h2>
 
             {/* Render active component */}
             {renderActiveComponent()}

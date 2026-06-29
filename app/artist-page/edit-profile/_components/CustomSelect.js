@@ -45,6 +45,7 @@ const CustomSelect = ({
       classNames={{
         trigger:
           "font-normal text-base text-[#878787] border border-[#D1D1D1] outline-0 rounded-[8px] py-2 " +
+          "hover:!border-[#3A98BB] " +
           "focus:!border-[#3A98BB] focus:!ring-1 focus:!ring-[#3A98BB] " +
           "data-[focus=true]:!border-[#3A98BB] data-[focus=true]:!ring-[#3A98BB]",
         value: "!text-[#878787]",

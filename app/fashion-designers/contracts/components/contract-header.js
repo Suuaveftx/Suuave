@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 
 import React from 'react';
 
-export default function ContractHeader({ title, maxWidth = 'max-w-7xl', tab = 'pending' }) {
+export default function ContractHeader({ title, maxWidth = 'max-w-7xl', tab = 'pending', showBack = false }) {
   const router = useRouter();
   // Function to handle back navigation
   const handleBack = () => {
@@ -14,18 +14,18 @@ export default function ContractHeader({ title, maxWidth = 'max-w-7xl', tab = 'p
   };
 
   return (
-    <div className={`${maxWidth} mx-auto md:my-8 my-4 px-2 md:pl-8 lg:pt-0`}>
-      <h1 className='text-[32px] md:text-4xl font-semibold flex items-center gap-2'>
-        {/* Show the arrow only on mobile view (sm and below) */}
-        <Button
-          isIconOnly
-          variant='light'
-          className='lg:hidden -ml-3 bg-transparent'
-          isPressable
-          onPress={handleBack}
-        >
-          <ChevronLeftIcon width={24} height={24} strokeWidth={2.5} className="text-black" />
-        </Button>
+    <div className={`w-full mx-auto md:my-8 my-4 lg:pt-0`}>
+      <h1 className='text-[28px] font-semibold flex items-center gap-2'>
+        {showBack && (
+          <Button
+            isIconOnly
+            variant='light'
+            onPress={handleBack}
+            className='min-w-fit flex items-center justify-center p-1 rounded-full w-auto h-auto px-1 -ml-2 bg-transparent hover:bg-gray-100'
+          >
+            <ChevronLeftIcon className='w-6 h-6 text-[#222222]' />
+          </Button>
+        )}
         {title}
       </h1>
     </div>

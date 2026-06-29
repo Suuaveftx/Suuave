@@ -1,16 +1,56 @@
-import React from 'react';
-import { useState } from 'react';
-import CustomButton from '../../../../components/CustomButton';
-import SearchBar from '../../../../components/Searchbar';
-import Link from 'next/link';
-import { MoreHorizontal, MoreVertical } from 'lucide-react';
-import SubmitProjectModal from '../../../../components/SubmitProjectModal';
+'use client';
+import React, { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { createPortal } from 'react-dom';
+import {
+  MagnifyingGlassIcon,
+  AdjustmentsVerticalIcon,
+  EllipsisHorizontalIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from '@heroicons/react/24/outline';
+import {
+  Input,
+  Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Pagination,
+} from '@heroui/react';
+import { Calendar } from 'lucide-react';
 import ChatClientModal from '../../../../components/ChatClientModal';
-import FilterDropdown from '../../../../components/FilterDropdown';
-import { HiOutlineCalendar } from 'react-icons/hi';
+import SubmitProjectModal from '../../../../components/SubmitProjectModal';
 
 const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(null);
+  const router = useRouter();
+  const [search, setSearch] = useState('');
+  const [openMenuContract, setOpenMenuContract] = useState(null);
+  const menuRef = useRef(null);
+  const menuButtonRefs = useRef({});
+  const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && menuRef.current.contains(e.target)) {
+        return;
+      }
+      const isButton = Object.values(menuButtonRefs.current).some(
+        (btn) => btn && btn.contains(e.target)
+      );
+      if (isButton) {
+        return;
+      }
+      setOpenMenuContract(null);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
 
   const pendingProjects = [
     {
@@ -37,248 +77,282 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
       timeStatus: '(1d left)',
       badgeColor: '#22C55E' // Green
     },
+    {
+      title: 'Elegant Evening Gown Illustration',
+      id: '44f89312-D',
+      StartDate: '1st September, 2024',
+      EndDate: '15th October, 2024',
+      timeStatus: '(14d left)',
+      badgeColor: '#22C55E'
+    },
+    {
+      title: 'Streetwear Graphic Prints',
+      id: '55j92841-E',
+      StartDate: '10th September, 2024',
+      EndDate: '12th November, 2024',
+      timeStatus: '(35d left)',
+      badgeColor: '#22C55E' // Green
+    },
+    {
+      title: 'Modern Abstract Accessories Art',
+      id: '66g34522-F',
+      StartDate: '14th September, 2024',
+      EndDate: '20th November, 2024',
+      timeStatus: '(40d left)',
+      badgeColor: '#22C55E' // Green
+    },
+    {
+      title: 'Luxury Bag Catalog Rendering',
+      id: '77b89182-G',
+      StartDate: '18th September, 2024',
+      EndDate: '5th December, 2024',
+      timeStatus: '(45d left)',
+      badgeColor: '#22C55E' // Green
+    },
   ];
 
-  // Date Filter Logic
-  const parseContractDate = (dateStr) => {
-    if (!dateStr) return new Date(0);
-    // Handle YYYY-MM-DD from calendar
-    if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) return new Date(dateStr);
-    // Handle ordinal dates like "18th June, 2024"
-    const normalized = dateStr.replace(/(\d+)(st|nd|rd|th)/, '$1');
-    return new Date(normalized);
-  };
+  // Filter by search
+  let filteredContracts = pendingProjects.filter((contract) =>
+    contract.title.toLowerCase().includes(search.toLowerCase())
+  );
 
-  const isToday = (date) => {
-    const today = new Date();
-    return date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear();
-  };
+  // Pagination state & calculations
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(filteredContracts.length / itemsPerPage);
 
-  const isWithinLastDays = (date, days) => {
-    const today = new Date();
-    const diffTime = Math.abs(today - date);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays <= days;
-  };
-
-  let filteredProjects = pendingProjects;
-
-  // Filter by Date
-  if (dateFilter) {
-    const now = new Date();
-    filteredProjects = filteredProjects.filter((project) => {
-      const cDate = parseContractDate(project.StartDate);
-
-      if (dateFilter === 'Today') return isToday(cDate);
-      if (dateFilter === 'This week') return isWithinLastDays(cDate, 7);
-      if (dateFilter === 'This month') {
-        return cDate.getMonth() === now.getMonth() && cDate.getFullYear() === now.getFullYear();
-      }
-      if (dateFilter === 'Last 3 month') return isWithinLastDays(cDate, 90);
-      if (dateFilter === 'Last 6 month') {
-        const sixMonthsAgo = new Date();
-        sixMonthsAgo.setMonth(now.getMonth() - 6);
-        return cDate >= sixMonthsAgo;
-      }
-      if (dateFilter === 'This year') return cDate.getFullYear() === now.getFullYear();
-      if (dateFilter.includes('-')) {
-        // Date from calendar (YYYY-MM-DD)
-        const filterDate = new Date(dateFilter);
-        return cDate.toDateString() === filterDate.toDateString();
-      }
-      return true;
-    });
-  }
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredContracts.slice(startIndex, endIndex);
 
   return (
-    <>
-      {/* Search and Sort Section */}
-      <div className='flex lg:flex-row lg:justify-between lg:items-center items-center w-[92%] mx-auto mb-4 lg:w-full lg:max-w-full lg:mt-6'>
-        <div className='w-full lg:max-w-[500px]'>
-          <SearchBar
-            placeholder="Search Project"
-            className='w-full'
-            endContent={
-              <FilterDropdown
-                label='Select Date'
-                options={dateOptions}
-                selectedOption={dateFilter}
-                setSelectedOption={setDateFilter}
-                defaultLabel='Select Date'
-                trigger={
-                  <div className="flex items-center gap-1 cursor-pointer hover:bg-gray-100 p-1.5 rounded-full transition-colors">
-                    <HiOutlineCalendar className='w-5 h-5 text-gray-400' />
-                    <span className='text-[10px] text-gray-400'>▼</span>
-                  </div>
-                }
-              />
-            }
-          />
+    <div className="px-4 lg:px-0">
+      {/* Search and Filter Bar */}
+      <div className='my-6 w-full'>
+        <div className='flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap'>
+          <div className='flex items-center flex-1 md:max-w-md w-full'>
+            <Input
+              type='text'
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder='Search project'
+              startContent={<MagnifyingGlassIcon className='h-5 w-5 text-gray-400' />}
+              className='w-full'
+              classNames={{
+                input: 'text-sm',
+                inputWrapper:
+                  'border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500 px-4',
+              }}
+            />
+          </div>
+
+          <div className='flex items-center shrink-0'>
+            <Dropdown placement="bottom-end" shouldBlockScroll={false} classNames={{ content: 'min-w-[150px]' }}>
+              <DropdownTrigger>
+                <Button
+                  variant="bordered"
+                  className="bg-white border border-gray-200 rounded-full text-[14px] font-medium text-[#222222] px-4 h-[40px] flex items-center gap-2"
+                >
+                  <AdjustmentsVerticalIcon className='h-4 w-4 text-gray-500' />
+                  Sort by Date
+                  <ChevronDownIcon className='h-4 w-4 text-gray-400' />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Date Filter"
+                onAction={(key) => {
+                  setDateFilter(key);
+                  setCurrentPage(1);
+                }}
+                selectedKeys={[dateFilter]}
+                selectionMode="single"
+              >
+                {dateOptions?.map((option) => (
+                  <DropdownItem key={option}>{option}</DropdownItem>
+                ))}
+                <DropdownItem key="" className="text-danger" color="danger">
+                  Reset Filter
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
         </div>
       </div>
 
-      {/* Contracts List */}
-      <div className='lg:mt-8'>
-        {filteredProjects.map((project) => (
-          <div key={project.id} className='relative bg-white border border-[#EAEAEA] lg:bg-white lg:border lg:border-[#EAEAEA] px-4 py-4 rounded-lg shadow-sm lg:shadow-md lg:px-6 lg:py-6 mt-4 lg:mt-[26px] mb-4 group hover:bg-gray-50 active:bg-gray-50 active:opacity-[0.98] transition-all duration-200'>
-            <div className='md:grid md:grid-cols-[1.5fr_1fr_auto] md:gap-x-8 md:items-center'>
-              {/* Project Info */}
-              <Link
-                href={`/artist-page/ongoing-contract-information?id=${project.id}&timeStatus=${encodeURIComponent(project.timeStatus)}&color=${encodeURIComponent(project.badgeColor)}`}
-                className='w-full lg:w-auto active:opacity-80 transition-opacity'
-              >
-                <div className='flex flex-col items-start md:pl-8'>
-                  {/* Desktop Title */}
-                  <h3 className='font-proximanova text-base tracking-[0.33px] text-[#222222] group-hover:text-[#3A98BB] group-active:text-[#3A98BB] transition-colors font-bold mb-1 truncate w-full hidden lg:block'>
-                    {project.title} ({project.id})
-                  </h3>
-                  {/* Mobile Title */}
-                  <h3 className='font-proximanova text-base tracking-[0.33px] text-[#222222] group-hover:text-[#3A98BB] group-active:text-[#3A98BB] transition-colors font-bold mb-1 w-full lg:hidden block'>
-                    Modern Fashion Illustration...
-                  </h3>
-                  <div className='flex items-center gap-1'>
-                    <span
-                      className='py-1 text-xs font-bold inline-flex items-center rounded whitespace-nowrap'
-                      style={{
-                        backgroundColor: project.badgeColor === '#3A98BB' ? `${project.badgeColor}26` : 'transparent',
-                        color: project.badgeColor
-                      }}
-                    >
-                      {project.timeStatus}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-
-              {/* Grouped Dates Column */}
-              <div className='mt-2 md:mt-0 flex flex-col items-start text-sm font-proximanova text-gray-600'>
-                <div className='mb-1 flex items-center gap-2 w-fit text-left outline-none'>
-                  <span className='text-xs font-satoshi flex-shrink-0 w-20 text-gray-500 group-hover:text-[#3A98BB] group-active:text-[#3A98BB] transition-colors'>Start Date :</span>
-                  <span className='whitespace-nowrap font-semibold text-[#222222] group-hover:text-[#3A98BB] group-active:text-[#3A98BB] transition-colors'>{project.StartDate}</span>
-                </div>
-                <div className='flex items-center gap-2 w-fit text-left outline-none'>
-                  <span className='text-xs font-satoshi flex-shrink-0 w-20 text-gray-500 group-hover:text-[#3A98BB] group-active:text-[#3A98BB] transition-colors'>End Date :</span>
-                  <span className='whitespace-nowrap font-semibold text-[#222222] group-hover:text-[#3A98BB] group-active:text-[#3A98BB] transition-colors'>{project.EndDate}</span>
-                </div>
-              </div>
-
-              {/* Actions Section Column */}
-              <div className='flex flex-col-reverse md:flex-row justify-end items-center gap-4 mt-4 md:mt-0'>
-                <div className='hidden lg:flex items-center gap-4 lg:min-w-fit'>
-                  <SubmitProjectModal
-                    trigger={
-                      <CustomButton
-                        variant='outline'
-                        size='sm'
-                        className='items-center font-bold px-6'
-                        text='Submit'
-                        style={{
-                          color: '#035A7A',
-                          background: 'linear-gradient(180deg, #E0F2F7 0%, #D1ECF4 100%)',
-                          border: 'none',
-                          borderRadius: '20px'
-                        }}
-                      />
-                    }
-                  />
-                  <ChatClientModal
-                    trigger={
-                      <CustomButton
-                        variant='outline'
-                        size='sm'
-                        className='items-center font-bold px-6'
-                        text='Chat Client'
-                        style={{
-                          color: '#222222',
-                          background: 'transparent',
-                          border: '1px solid #D1D1D1',
-                          borderRadius: '20px'
-                        }}
-                      />
-                    }
-                  />
-
-                  <div className='flex items-center relative space-x-1'>
-                    <span className='text-sm font-bold text-[#222222]'>More</span>
-                    <button
-                      onClick={() =>
-                        setDropdownOpen(dropdownOpen === project.id ? null : project.id)
-                      }
-                    >
-                      <MoreHorizontal className='w-5 h-5 text-[#878787] cursor-pointer' />
-                    </button>
-                    {dropdownOpen === project.id && (
-                      <div className='absolute  bottom-full mb-1 w-fit whitespace-nowrap bg-white border border-gray-200 rounded-lg shadow-lg z-10 lg:right-0'>
+      {/* Contract Cards */}
+      <div className='lg:mt-8 w-full'>
+        {currentItems.map((contract, index) => (
+          <div
+            key={contract.id || index}
+            onClick={() => router.push('/artist-page/ongoing-contract-information')}
+            className='bg-white border border-[#EAEAEA] rounded-[10px] mb-3 p-4 lg:p-6 transition-all hover:bg-gray-50 cursor-pointer'
+          >
+            <div className='md:px-2 px-1 py-1 overflow-visible'>
+              <div className='flex md:justify-between items-center w-full gap-2 pt-1'>
+                <div className='flex-1 grid md:grid-cols-[1.5fr_1fr_auto] md:gap-x-4 md:items-center min-w-0'>
+                  <div className='flex flex-col items-start gap-1 mb-1 md:mb-0 w-full min-w-0'>
+                    {/* Title row: title + mobile 3-dots side by side */}
+                    <div className='flex items-center w-full gap-2 min-w-0'>
+                      <h3 className='font-semibold text-[13px] md:text-[16px] text-[#3A98BB] truncate transition-colors flex-1 min-w-0'>
+                        {contract.title} {contract.id ? `(${contract.id})` : ''}
+                      </h3>
+                      {/* Mobile 3-dots — inline, shrink-0, never overlaps */}
+                      <div className='md:hidden shrink-0'>
                         <button
-                          onClick={() => setDropdownOpen(null)}
-                          className='block px-4 py-2 text-base font-normal text-[#222222] hover:bg-gray-100 w-full text-right'
+                          type='button'
+                          ref={(el) => { menuButtonRefs.current[contract.id || index] = el; }}
+                          className='flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 transition-colors'
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            const btnId = contract.id || index;
+                            const btnEl = menuButtonRefs.current[btnId];
+                            if (btnEl) {
+                              const rect = btnEl.getBoundingClientRect();
+                              setMenuPosition({
+                                top: rect.bottom + 4,
+                                right: window.innerWidth - rect.right,
+                              });
+                            }
+                            setOpenMenuContract(openMenuContract?.id === (contract.id || index) ? null : contract);
+                          }}
                         >
-                          Report
+                          <EllipsisHorizontalIcon className='w-5 h-5 text-gray-500' />
                         </button>
                       </div>
-                    )}
+                    </div>
+                  </div>
+
+                  <div className='flex flex-col items-start text-[14px] font-satoshi text-gray-500'>
+                    <div className='mb-1 flex items-center gap-2'>
+                      <span className='text-[14px] flex-shrink-0 w-20 text-gray-500'>Start Date :</span>
+                      <span className='whitespace-nowrap font-semibold text-[#222222]'>{contract.StartDate}</span>
+                    </div>
+                    <div className='flex items-center gap-2'>
+                      <span className='text-[14px] flex-shrink-0 w-20 text-gray-500'>End Date :</span>
+                      <span className='whitespace-nowrap font-semibold text-[#222222]'>{contract.EndDate}</span>
+                      <span
+                        className='text-xs font-bold inline-flex items-center whitespace-nowrap ml-1'
+                        style={{ color: contract.badgeColor }}
+                      >
+                        {contract.timeStatus}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Mobile-only three dots - Moved to root level for better z-index / overlap handling */}
-            <div className='absolute right-4 top-4 flex lg:hidden z-30'>
-              <div className='relative'>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setDropdownOpen(dropdownOpen === project.id ? null : project.id)
-                  }}
-                  className='p-1 hover:bg-gray-100 rounded-full transition-colors flex items-center justify-center'
-                >
-                  <MoreVertical className='w-5 h-5 text-gray-500 cursor-pointer' strokeWidth={3} />
-                </button>
-                <div className={`${dropdownOpen === project.id ? 'block' : 'hidden'} absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-xl z-50 overflow-hidden`}>
-                  <div onClick={(e) => e.stopPropagation()}>
+                {/* Desktop: action buttons + more options inline */}
+                <div className='hidden md:flex flex-row justify-end items-center gap-3 shrink-0 pl-4 overflow-visible'>
+                  <div className='flex items-center gap-3 shrink-0' onClick={(e) => e.stopPropagation()}>
                     <SubmitProjectModal
                       trigger={
-                        <button
-                          className='block px-4 py-3 text-sm text-[#222222] hover:bg-gray-50 active:bg-gray-100 w-full text-left border-b border-gray-100 font-semibold transition-colors'
-                          onClick={() => setDropdownOpen(null)}
+                        <Button
+                          className='bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold rounded-full px-6 h-[42px] border-0 shadow-md'
+                          radius='full'
                         >
-                          Submit
-                        </button>
+                          Submit Project
+                        </Button>
                       }
                     />
-                  </div>
-                  <div onClick={(e) => e.stopPropagation()}>
                     <ChatClientModal
                       trigger={
-                        <button
-                          className='block px-4 py-3 text-sm text-[#222222] hover:bg-gray-50 active:bg-gray-100 w-full text-left border-b border-gray-100 font-semibold transition-colors'
-                          onClick={() => setDropdownOpen(null)}
+                        <Button
+                          className='bg-white text-[#222222] font-bold rounded-full px-6 h-[42px] border border-[#D1D1D1]'
+                          radius='full'
+                          variant='bordered'
                         >
                           Chat Client
-                        </button>
+                        </Button>
                       }
                     />
                   </div>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setDropdownOpen(null);
-                    }}
-                    className='block px-4 py-3 text-sm text-[#222222] hover:bg-gray-50 active:bg-gray-100 w-full text-left font-semibold transition-colors'
-                  >
-                    Report
-                  </button>
+                  <div className='flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
+                    <span className='text-sm font-proximanova text-gray-500'>More</span>
+                    <Dropdown placement="bottom-end" shouldBlockScroll={false}>
+                      <DropdownTrigger>
+                        <Button isIconOnly variant='light' size='sm' className='bg-transparent border-0 rounded-lg'>
+                          <EllipsisHorizontalIcon className='w-6 h-6 text-gray-400' />
+                        </Button>
+                      </DropdownTrigger>
+                      <DropdownMenu aria-label="More Options">
+                        <DropdownItem key="request_extension" className="text-sm font-medium text-[#222222]">
+                          Request Extension
+                        </DropdownItem>
+                        <DropdownItem key="report" className="text-sm font-medium text-red-500 hover:text-red-600">
+                          Report Dispute
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         ))}
       </div>
-    </>
+
+      {/* Portal dropdown — renders at document.body, immune to overflow:hidden */}
+      {openMenuContract !== null && typeof document !== 'undefined' && createPortal(
+        <div
+          ref={menuRef}
+          style={{
+            position: 'fixed',
+            top: menuPosition.top,
+            right: menuPosition.right,
+            zIndex: 9999,
+          }}
+          className='w-44 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden flex flex-col'
+        >
+          <button
+            className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium border-b border-gray-100 cursor-pointer'
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpenMenuContract(null);
+            }}
+          >
+            Request Extension
+          </button>
+          <button
+            className='w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors font-medium cursor-pointer'
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpenMenuContract(null);
+            }}
+          >
+            Report Dispute
+          </button>
+        </div>,
+        document.body
+      )}
+
+      {/* Pagination */}
+      {
+        totalPages > 0 && (
+          <div className="flex justify-center items-center mt-8 w-full">
+            <Pagination
+              showControls
+              total={totalPages}
+              page={currentPage}
+              onChange={setCurrentPage}
+              classNames={{
+                cursor: "bg-[#3A98BB] text-white",
+              }}
+            />
+          </div>
+        )
+      }
+
+      {/* Empty State */}
+      {
+        filteredContracts.length === 0 && (
+          <div className='text-center py-12'>
+            <p className='text-gray-500'>
+              {search ? 'No contracts match your search' : 'No ongoing contracts'}
+            </p>
+          </div>
+        )
+      }
+    </div>
   );
 };
 

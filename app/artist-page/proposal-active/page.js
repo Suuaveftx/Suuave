@@ -10,6 +10,8 @@ import {
 } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import ProposalActive from "./_components/ProposalActive";
+import PageContainer from "../../../components/layout/PageContainer";
+
 const Page = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
@@ -50,7 +52,7 @@ const Page = () => {
   };
 
   return (
-    <div className="grid grid-cols-10 gap-2">
+    <PageContainer className="grid grid-cols-10 gap-2 mt-4 pb-36 lg:pb-20">
       {" "}
       {/* reduced from gap-4 to gap-2 */}
       {/* Main Content */}
@@ -96,7 +98,7 @@ const Page = () => {
         message="Are you sure you want to withdraw your proposal? This action cannot be undone."
         confirmButtonText="Yes"
       />
-    </div>
+    </PageContainer>
   );
 };
 

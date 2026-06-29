@@ -10,6 +10,7 @@ import {
 import { FaLocationDot } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
 import ContractHeader from '../../../contracts/components/contract-header';
+import PageContainer from '@/components/layout/PageContainer';
 
 const ProposalsList = ({ params }) => {
     const { id } = use(params);
@@ -42,7 +43,7 @@ const ProposalsList = ({ params }) => {
     };
 
     return (
-        <div className='min-h-screen max-w-[86.5rem] mx-auto px-4 lg:px-10 pb-20'>
+        <PageContainer className='min-h-screen pb-20 pt-4 lg:pt-8'>
             <ContractHeader title='Proposals' />
 
             <div className='mt-8'>
@@ -109,7 +110,7 @@ const ProposalsList = ({ params }) => {
                     </Card>
                 ))}
             </div>
-        </div>
+        </PageContainer>
     );
 };
 

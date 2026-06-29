@@ -10,7 +10,8 @@
 
 .suuave-phone-input.react-tel-input .suuave-phone-input-field {
   width: 100% !important;
-  height: 42px !important; /* Matches HeroUI bordered input height */
+  height: 40px !important;
+  /* Matches HeroUI bordered input height */
   background: transparent !important;
   border: 1px solid #D1D1D1 !important;
   border-radius: 8px !important;
@@ -20,13 +21,12 @@
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.suuave-phone-input.react-tel-input .suuave-phone-input-field:hover {
+.suuave-phone-input-container:hover .suuave-phone-input-field {
   border-color: #3A98BB !important;
 }
 
-.suuave-phone-input.react-tel-input .suuave-phone-input-field:focus {
+.suuave-phone-input-container:focus-within .suuave-phone-input-field {
   border-color: #3A98BB !important;
-  box-shadow: 0 0 0 1px #3A98BB !important;
   outline: none !important;
 }
 
@@ -36,23 +36,22 @@
 
 .suuave-phone-input.react-tel-input .suuave-phone-input-button {
   background: transparent !important;
-  border: 1px solid #D1D1D1 !important;
-  border-right: none !important;
-  border-radius: 8px 0 0 8px !important;
+  border: none !important;
+  border-radius: 7px 0 0 7px !important;
   width: 48px !important;
-  height: 42px !important;
-  top: 0 !important;
-  left: 0 !important;
+  height: 38px !important;
+  top: 1px !important;
+  left: 1px !important;
 }
 
 .suuave-phone-input-container.has-error .suuave-phone-input-button {
   border-color: #f31260 !important;
 }
 
-.suuave-phone-input.react-tel-input .suuave-phone-input-button:hover,
+.suuave-phone-input-container:hover .suuave-phone-input-button,
+.suuave-phone-input-container:focus-within .suuave-phone-input-button,
 .suuave-phone-input.react-tel-input .suuave-phone-input-button.open {
   background: #f8f8f8 !important;
-  border-color: #3A98BB !important;
 }
 
 .suuave-phone-input.react-tel-input .suuave-phone-input-button .selected-flag {

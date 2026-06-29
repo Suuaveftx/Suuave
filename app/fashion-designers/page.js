@@ -4,17 +4,27 @@ import Link from "next/link";
 import { Alert, Chip, Input, Tab, Tabs, Card, CardBody, Image } from '@heroui/react';
 import { FaCrown } from "react-icons/fa";
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { IoSearchOutline } from 'react-icons/io5';
 import FashionDesignersCard from './_components/studio-page-components/FashionDesignersCard';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { useAppStore } from '@/store';
+import PageContainer from '@/components/layout/PageContainer';
 
 const Page = () => {
   const [isVisible, setIsVisible] = useState(true);
   const { savedCardIds, toggleBookmark } = useAppStore();
 
-  const cardsData = [
+  const BATCH_SIZE = 12;
+  const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
+  const [displayedCards, setDisplayedCards] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [sentinelNode, setSentinelNode] = useState(null);
+  const isLoadingRef = useRef(false);
+  const baseCardsRef = useRef(null);
+
+  // Data for fashion designer cards
+  const baseCardsData = [
     {
       id: 'card-1',
       user: {
@@ -198,8 +208,39 @@ const Page = () => {
     },
   ];
 
+  const cardsData = [
+    ...baseCardsData,
+    ...baseCardsData.map(c => ({ ...c, id: c.id + '-2' })),
+    ...baseCardsData.map(c => ({ ...c, id: c.id + '-3' })),
+  ];
+
+
+
+  // IntersectionObserver for infinite scroll
+  useEffect(() => {
+    if (!sentinelNode) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !isLoadingRef.current && visibleCount < cardsData.length) {
+          setIsLoading(true);
+          isLoadingRef.current = true;
+          // Simulate async load
+          setTimeout(() => {
+            setVisibleCount((prev) => Math.min(prev + BATCH_SIZE, cardsData.length));
+            setIsLoading(false);
+            isLoadingRef.current = false;
+          }, 500);
+        }
+      });
+    });
+    observer.observe(sentinelNode);
+    return () => observer.disconnect();
+  }, [sentinelNode, visibleCount, cardsData.length]);
+
+
+
   return (
-    <div className=' lg:px-14 px-4 pt-7 font-satoshi mb-48'>
+    <PageContainer className='font-satoshi mb-48' withTopSpacing>
       <Alert
         isVisible={isVisible}
         icon={
@@ -218,15 +259,14 @@ const Page = () => {
         variant='bordered'
         onClose={() => setIsVisible(false)}
         closeButtonProps={{
-          className: 'place-self-center my-0',
           size: "sm",
         }}
         classNames={{
-          base: 'h-[38px] min-h-[38px] py-0 px-5 border-[#73D9FF] bg-[#EAF9FF] flex items-center',
-          mainWrapper: 'flex-row items-center h-full m-0 gap-3',
+          base: 'h-[38px] min-h-[38px] py-0 px-5 border-[#73D9FF] bg-[#EAF9FF] flex items-center relative',
+          mainWrapper: 'flex-row items-center h-full m-0 gap-3 pr-6',
           title: 'flex items-center m-0',
           iconWrapper: 'mt-0 bg-transparent p-0 shadow-none min-w-0 w-auto mr-3',
-          closeButton: 'relative text-gray-500 hover:bg-transparent',
+          closeButton: 'absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:bg-transparent [&_svg]:max-w-[14px] [&_svg]:max-h-[14px] [&_svg]:w-3.5 [&_svg]:h-3.5',
           alertIcon: 'text-[#3A98BB]',
         }}
         className='font-satoshi rounded-md'
@@ -279,9 +319,9 @@ const Page = () => {
             title={<p className='flex items-center space-x-2'>Recently</p>}
           >
             <div className='grid grid-cols-2 gap-3 mt-6 lg:gap-6 lg:grid-cols-4'>
-              {cardsData.map((card, index) => (
+              {cardsData.slice(0, visibleCount).map((card, index) => (
                 <FashionDesignersCard
-                  key={index}
+                  key={card.id}
                   images={card?.images}
                   title={card?.title}
                   price={card?.price}
@@ -294,7 +334,19 @@ const Page = () => {
                   hasCrown={['card-1', 'card-4', 'card-8'].includes(card.id)}
                 />
               ))}
+              {isLoading && (
+                <div className="col-span-2 lg:col-span-4 flex justify-center items-center py-6">
+                  <div className="flex space-x-2">
+                    <div className="w-3 h-3 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <div className="w-3 h-3 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <div className="w-3 h-3 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  </div>
+                </div>
+              )}
             </div>
+            {visibleCount < cardsData.length && (
+              <div ref={setSentinelNode} className='h-10 w-full mt-4' />
+            )}
           </Tab>
 
           <Tab
@@ -327,8 +379,10 @@ const Page = () => {
           </Tab>
         </Tabs>
       </div>
-    </div>
+    </PageContainer>
   );
 };
 
 export default Page;
+
+

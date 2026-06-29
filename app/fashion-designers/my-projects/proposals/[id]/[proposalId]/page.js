@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import ContractHeader from "../../../../contracts/components/contract-header";
 import HireModal from "../../../../_components/HireModal";
 import MessageModal from "../../../../contracts/components/MessageModal";
+import PageContainer from '@/components/layout/PageContainer';
 
 const ProposalDetailsPage = ({ params }) => {
     const { id, proposalId } = use(params);
@@ -40,8 +41,8 @@ const ProposalDetailsPage = ({ params }) => {
     };
 
     return (
-        <div className="font-satoshi pb-20">
-            <div className="grid grid-cols-1 lg:grid-cols-[1.8fr_0.7fr] gap-8 p-4 lg:p-10 max-w-[86.5rem] mx-auto">
+        <PageContainer className="font-satoshi pb-32 lg:pb-20">
+            <div className="grid grid-cols-1 lg:grid-cols-[1.8fr_0.7fr] gap-8 mt-4 lg:mt-8 w-full">
                 <div className="flex flex-col gap-6">
                     {/* Main Proposal Card */}
                     <Card shadow="none" className="border rounded-2xl bg-white">
@@ -65,15 +66,11 @@ const ProposalDetailsPage = ({ params }) => {
                     {/* Details Card (Payment, Duration, Skill Set) */}
                     <Card shadow="none" className="border rounded-2xl bg-white">
                         <CardBody className="p-8">
-                            <div className="flex flex-col gap-5">
-                                <div className="flex items-center gap-2">
-                                    <p className="text-[#767676] text-md">Payment</p>
-                                    <p className="font-bold text-md ml-4">{proposalData.quotation}</p>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <p className="text-[#767676] text-md">Duration :</p>
-                                    <p className="font-bold text-md ml-4">5 days</p>
-                                </div>
+                            <div className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-4 items-center">
+                                <p className="text-[#767676] text-md">Payment</p>
+                                <p className="font-bold text-md">{proposalData.quotation}</p>
+                                <p className="text-[#767676] text-md">Timeframe</p>
+                                <p className="font-bold text-md">5 days</p>
                             </div>
                         </CardBody>
                     </Card>
@@ -94,25 +91,27 @@ const ProposalDetailsPage = ({ params }) => {
                 </div>
 
                 <div className="flex flex-col gap-6">
-                    {/* Hire/Message Actions */}
-                    <Card shadow="none" className="border rounded-2xl drop-shadow-sm bg-white">
-                        <CardBody className="flex gap-5 flex-col p-8">
-                            <Button
-                                onPress={onHireOpen}
-                                className="w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] h-14 rounded-full font-bold text-lg shadow-sm"
-                            >
-                                Hire
-                            </Button>
-                            <Button
-                                radius="full"
-                                variant="bordered"
-                                className="w-full text-[#222222] h-14 bg-white border-2 border-[#CCE7F2] font-bold text-lg"
-                                onPress={onMessageOpen}
-                            >
-                                Message
-                            </Button>
-                        </CardBody>
-                    </Card>
+                    <div className="hidden lg:block">
+                        {/* Hire/Message Actions */}
+                        <Card shadow="none" className="border rounded-2xl drop-shadow-sm bg-white">
+                            <CardBody className="flex gap-5 flex-col p-8">
+                                <Button
+                                    onPress={onHireOpen}
+                                    className="w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] h-14 rounded-full font-bold text-lg shadow-sm"
+                                >
+                                    Hire
+                                </Button>
+                                <Button
+                                    radius="full"
+                                    variant="bordered"
+                                    className="w-full text-[#222222] h-14 bg-white border-2 border-[#CCE7F2] font-bold text-lg"
+                                    onPress={onMessageOpen}
+                                >
+                                    Message
+                                </Button>
+                            </CardBody>
+                        </Card>
+                    </div>
 
                     {/* Artist Card */}
                     <Card
@@ -168,6 +167,24 @@ const ProposalDetailsPage = ({ params }) => {
                 </div>
             </div>
 
+            {/* Mobile Fixed Bottom Actions */}
+            <div className="lg:hidden sticky bottom-0 left-0 right-0 px-4 py-4 bg-white border-t border-gray-200 shadow-[0_-10px_10px_-10px_rgba(0,0,0,0.1)] z-40 flex items-center gap-4">
+                <Button
+                    radius="full"
+                    variant="bordered"
+                    className="flex-1 text-[#222222] h-12 bg-white border-2 border-[#CCE7F2] font-bold text-md"
+                    onPress={onMessageOpen}
+                >
+                    Message
+                </Button>
+                <Button
+                    onPress={onHireOpen}
+                    className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] h-12 rounded-full font-bold text-md shadow-sm"
+                >
+                    Hire
+                </Button>
+            </div>
+
             <HireModal
                 isOpen={isHireOpen}
                 onOpenChange={onHireOpenChange}
@@ -178,7 +195,7 @@ const ProposalDetailsPage = ({ params }) => {
                 onOpenChange={onMessageOpenChange}
                 artistName={proposalData.artist.name}
             />
-        </div>
+        </PageContainer>
     );
 };
 

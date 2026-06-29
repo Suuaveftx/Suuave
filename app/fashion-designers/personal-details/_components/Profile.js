@@ -21,7 +21,7 @@ const Profile = ({
     <div
       className={`${className} flex-col items-center p-5 md:p-0 md:items-start gap-6 mb-4 w-full bg-[#FAFAFA] md:bg-transparent rounded-lg md:w-[40%] lg:w-[25%] transition-all duration-300`}
     >
-      <h1 className="text-[#222222] font-bold text-2xl md:text-[32px] mb-2 md:mb-4">
+      <h1 className="text-[#222222] font-bold text-2xl md:text-[28px] md:pt-6">
         Profile Settings
       </h1>
       <div className="md:mb-4 flex flex-col items-center md:items-start gap-2">
@@ -88,6 +88,11 @@ const Profile = ({
               activeState={formData.nationality?.size > 0}
               text="Nationality"
               isHovered={hoveredField === 'Nationality'}
+            />
+            <List
+              activeState={formData.countryOfResidence?.size > 0}
+              text="Country of Residence"
+              isHovered={hoveredField === 'Country of Residence'}
             />
             <List activeState={formData.phoneNumber} text="Phone Number" isHovered={hoveredField === 'Phone Number'} />
             <List activeState={formData.currentCity} text="Current City" isHovered={hoveredField === 'Current City'} />

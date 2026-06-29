@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Paperclip } from 'lucide-react';
 import { FaChevronLeft } from 'react-icons/fa';
 import Link from "next/link";
+import { Input } from "@heroui/react";
 import { IoMdInformationCircleOutline } from 'react-icons/io';
 import ProposalPopUpMobile from './ProposalPopUpMobile';
 import ProposalPopUp from './ProposalPopUp';
@@ -51,17 +52,14 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
   return (
     <>
       {/* Back icon and header section */}
-      <div className="flex items-center lg:mt-0 mt-4 px-4 py-[10px] mx-4 gap-4">
-        <div className="lg:hidden mt-[-4px]" onClick={() => router.push('/artist-page/project-page')}>
-          <FaChevronLeft color="#878787" />
-        </div>
-        <div className="w-full lg:text-[34px] text-[32px] font-bold lg:ml-9 lg:mb-[18.68px]">
+      <div className="flex lg:hidden items-center mt-4 px-0 py-[10px] w-full gap-4">
+        <div className="w-full text-[28px] font-bold">
           <h4>{isEditMode ? "Proposal Details" : "Send Proposal"}</h4>
         </div>
       </div>
 
       {/* Related Job Section */}
-      <div className="bg-[#FAFAFA] text-[#222222] px-6 py-6 lg:mx-16 mx-4 w-[90%] rounded-2xl border border-[#EAEAEA]">
+      <div className="bg-[#FAFAFA] text-[#222222] px-6 py-6 w-full rounded-2xl border border-[#EAEAEA]">
         <h4 className="font-bold leading-7 text-lg">Related Job</h4>
         <div className="flex justify-between mt-4">
           <div className="text-xs text-[#767676] leading-[18px] tracking-[0.33px]">
@@ -89,7 +87,7 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
       </div>
 
       {/* Proposal Form Section */}
-      <div className="bg-[#FAFAFA] flex flex-col gap-6 border border-[#EAEAEA] px-6 py-6 pb-[42px] lg:mx-16 mx-auto mt-4 rounded-2xl lg:w-[90%] w-[90%]">
+      <div className="bg-[#FAFAFA] flex flex-col gap-6 border border-[#EAEAEA] px-6 py-6 pb-[120px] lg:pb-[42px] w-full lg:mt-6 mt-4 rounded-2xl">
         <div className="font-bold text-xl leading-6">Write Proposal</div>
 
         {/* Cover Letter */}
@@ -151,49 +149,28 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
           </div>
         </div>
 
-        {/* Duration Dropdown */}
+        {/* Duration Input */}
         <div className="relative w-full">
-          <label className="text-sm font-semibold block mb-2 text-[#222222]">
-            How Long Will It Take You To Complete This Work?
-          </label>
-          <button
-            type="button"
-            className="w-full border border-[#EAEAEA] rounded-lg px-4 py-3 bg-white text-sm text-[#767676] flex justify-between items-center"
-            onClick={() => setOpen((prev) => !prev)}
-          >
-            <span>{selected}</span>
-            <svg
-              className={`w-4 h-4 ml-2 transform transition-transform ${open ? 'rotate-180' : 'rotate-0'
-                }`}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-
-          {open && (
-            <ul className="absolute left-0 w-full bg-white border border-gray-200 shadow-lg rounded-lg mt-1 z-10">
-              {options.map((option) => (
-                <li
-                  key={option}
-                  className="px-4 py-3 hover:bg-gray-50 cursor-pointer text-sm text-[#767676]"
-                  onClick={() => {
-                    setSelected(option);
-                    setOpen(false);
-                  }}
-                >
-                  {option}
-                </li>
-              ))}
-            </ul>
-          )}
+          <Input
+            value={selected}
+            onValueChange={setSelected}
+            variant="bordered"
+            radius="sm"
+            labelPlacement="outside"
+            classNames={{
+              label: "text-sm font-semibold text-[#222222]",
+            }}
+            label="How Long Will It Take You To Complete This Work?"
+            placeholder="1 days, 2 days, 3 days, 10 days, 30 days"
+            type="number"
+          />
         </div>
 
-        {/* Mobile Buttons */}
-        <div className="lg:hidden flex justify-between gap-4 mt-4">
+      </div>
+
+      {/* Mobile Buttons - Sticky Footer */}
+      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 px-4 py-4 z-[100] lg:hidden drop-shadow-[0_-4px_15px_rgba(0,0,0,0.08)]">
+        <div className="flex justify-between gap-4 max-w-[400px] mx-auto w-full">
           <button
             className="flex-1 py-3 bg-[#F0F0F0] text-[#222222] font-medium rounded-full text-sm"
             onClick={isEditMode ? handleCancelEdit : () => router.push('/artist-page/project-page')}

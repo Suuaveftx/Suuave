@@ -7,6 +7,8 @@ import {
   AdjustmentsVerticalIcon,
   EllipsisHorizontalIcon,
   ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
 } from '@heroicons/react/24/outline';
 import {
   Input,
@@ -22,6 +24,7 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Pagination,
 } from '@heroui/react';
 import { Calendar } from 'lucide-react';
 
@@ -54,12 +57,23 @@ const OngoingContracts = ({
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setOpenMenuContract(null);
+      if (menuRef.current && menuRef.current.contains(e.target)) {
+        return;
       }
+      const isButton = Object.values(menuButtonRefs.current).some(
+        (btn) => btn && btn.contains(e.target)
+      );
+      if (isButton) {
+        return;
+      }
+      setOpenMenuContract(null);
     };
-    document.addEventListener('pointerdown', handleClickOutside);
-    return () => document.removeEventListener('pointerdown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
   }, []);
 
   /*  const filteredContracts = contracts.filter((contract) =>
@@ -154,7 +168,7 @@ const OngoingContracts = ({
 
   // Pagination state & calculations
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 5;
   const totalPages = Math.ceil(filteredContracts.length / itemsPerPage);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -162,174 +176,85 @@ const OngoingContracts = ({
   const currentItems = filteredContracts.slice(startIndex, endIndex);
 
   return (
-    <div>
+    <div className="px-4 lg:px-0">
       {/* Search and Filter Bar */}
       <div className='my-6 w-full'>
-        <div className='flex items-center justify-between gap-4'>
-          <div className='flex items-center gap-3 flex-1'>
+        <div className='flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap'>
+          <div className='flex items-center flex-1 md:max-w-md w-full'>
             <Input
               type='text'
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder='Search Project'
+              placeholder='Search project'
               startContent={<MagnifyingGlassIcon className='h-5 w-5 text-gray-400' />}
-              className='flex-1 md:max-w-md md:flex-none'
+              className='w-full'
               classNames={{
                 input: 'text-sm',
                 inputWrapper:
-                  'border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500 pr-2',
+                  'border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500 px-4',
               }}
-              endContent={
-                <Dropdown placement="bottom-end" classNames={{ content: 'min-w-[150px]' }}>
-                  <DropdownTrigger>
-                    <Button
-                      isIconOnly
-                      variant="light"
-                      size="sm"
-                      className="text-gray-400 hover:text-gray-600 min-w-8 w-8 h-8 rounded-full"
-                    >
-                      <Calendar size={18} />
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu
-                    aria-label="Date Filter"
-                    onAction={(key) => {
-                      setDateFilter(key);
-                      setCurrentPage(1);
-                    }}
-                    selectedKeys={[dateFilter]}
-                    selectionMode="single"
-                  >
-                    {dateOptions.map((option) => (
-                      <DropdownItem key={option}>{option}</DropdownItem>
-                    ))}
-                    <DropdownItem key="" className="text-danger" color="danger">
-                      Reset Filter
-                    </DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              }
             />
+          </div>
+
+          <div className='flex items-center shrink-0'>
+            <Dropdown placement="bottom-end" shouldBlockScroll={false} classNames={{ content: 'min-w-[150px]' }}>
+              <DropdownTrigger>
+                <Button
+                  variant="bordered"
+                  className="bg-white border border-gray-200 rounded-full text-[14px] font-medium text-[#222222] px-4 h-[40px] flex items-center gap-2"
+                >
+                  <AdjustmentsVerticalIcon className='h-4 w-4 text-gray-500' />
+                  Sort by Date
+                  <ChevronDownIcon className='h-4 w-4 text-gray-400' />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Date Filter"
+                onAction={(key) => {
+                  setDateFilter(key);
+                  setCurrentPage(1);
+                }}
+                selectedKeys={[dateFilter]}
+                selectionMode="single"
+              >
+                {dateOptions.map((option) => (
+                  <DropdownItem key={option}>{option}</DropdownItem>
+                ))}
+                <DropdownItem key="" className="text-danger" color="danger">
+                  Reset Filter
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </div>
         </div>
       </div>
 
       {/* Contract Cards */}
-      <div className='space-y-2'>
+      <div className='lg:mt-8 w-full'>
         {currentItems.map((contract, index) => (
-          <Card
+          <div
             key={contract.id || index}
-            className='group bg-white border border-gray-200 hover:border-[#3A98BB]/40 hover:shadow-md transition-all w-full !overflow-visible'
-            classNames={{ base: 'overflow-visible' }}
-            shadow='none'
+            className='bg-white border border-[#EAEAEA] rounded-[10px] mb-3 p-4 lg:p-6 transition-all hover:bg-gray-50 cursor-pointer'
+            onClick={() => onContractClick(contract.id)}
           >
-            <div
-              className="cursor-pointer"
-              onClick={() => onContractClick(contract.id)}
-            >
-              <CardBody className='md:px-4 px-2 py-4 relative'>
-                <div className='md:grid md:grid-cols-[1.5fr_1fr_auto] md:gap-x-8 md:items-center'>
-                  <div className='flex flex-col items-start'>
-                    <h3
-                      className='font-proximanova text-md w-full truncate mb-1 group-hover:text-[#3A98BB] transition-colors'
-                    >
-                      {contract.title}
-                    </h3>
-                    <div className='flex items-center gap-1'>
-                      {contract.status && (contract.status !== 'Ongoing' || (!contract.isLate && !contract.isExpiringSoon)) && (
-                        <span className='bg-[#E0F2FE] text-[#2563EB] px-2 py-1 rounded text-xs'>
-                          {contract.status}
-                        </span>
-                      )}
-                      {contract.isLate && (
-                        <span className='text-red-500 text-xs font-semibold'>
-                          ({contract.daysLate}d late)
-                        </span>
-                      )}
-                      {contract.isExpiringSoon && (
-                        <span className='text-green-600 text-xs font-semibold'>
-                          ({contract.remainingDays}d left)
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className='mt-2 md:mt-0 flex flex-col items-start text-sm font-proximanova text-gray-600'>
-                    <div className='mb-1 flex items-center gap-2'>
-                      <span className='text-xs font-satoshi flex-shrink-0 w-16 text-gray-500 group-hover:text-[#3A98BB]/70 transition-colors'>Start Date:</span>
-                      <span className='whitespace-nowrap font-semibold group-hover:text-[#3A98BB] transition-colors'>{contract.startDate}</span>
-                    </div>
-                    <div className='flex items-center gap-2'>
-                      <span className='text-xs font-satoshi flex-shrink-0 w-16 text-gray-500 group-hover:text-[#3A98BB]/70 transition-colors'>End Date:</span>
-                      <span className='whitespace-nowrap font-semibold group-hover:text-[#3A98BB] transition-colors'>{contract.endDate}</span>
-                    </div>
-                  </div>
-
-                  <div className='flex flex-col-reverse md:flex-row justify-end items-center gap-4 mt-4 md:mt-0'>
-                    <div className='hidden md:flex items-center gap-3' onClick={(e) => e.stopPropagation()}>
-                      <Button
-                        className='border px-6 py-4 shadow-md bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-medium rounded-full shrink-0'
-                        size='sm'
-                        radius='full'
-                        onPress={() => {
-                          handleOpenApprovalModal(contract);
-                        }}
-                      >
-                        Approve Work
-                      </Button>
-                      <Button
-                        className='border px-6 py-4 shadow-md bg-white text-[#222222] font-medium rounded-full shrink-0'
-                        size='sm'
-                        radius='full'
-                        variant='bordered'
-                        onPress={() => {
-                          onMessageArtist(contract);
-                        }}
-                      >
-                        Message Artist
-                      </Button>
-                    </div>
-
-                    <div className='absolute top-5 right-2 md:static flex items-center gap-1'>
-                      <span className='text-sm font-proximanova hidden md:flex text-gray-500'>More</span>
-                      {/* Desktop more options button */}
-                      <div className='hidden md:flex' onClick={(e) => e.stopPropagation()}>
-                        <Dropdown placement="bottom-end">
-                          <DropdownTrigger>
-                            <Button
-                              isIconOnly
-                              variant='light'
-                              size='sm'
-                              className='bg-transparent border-0 rounded-lg'
-                            >
-                              <EllipsisHorizontalIcon className='w-6 h-6 text-gray-400' />
-                            </Button>
-                          </DropdownTrigger>
-                          <DropdownMenu aria-label="More Options">
-                            <DropdownItem key="request_extension" className="text-sm font-medium text-[#222222]" onPress={() => { setCurrentContract(contract); setShowExtensionModal(true); }}>
-                              Request Extension
-                            </DropdownItem>
-                            <DropdownItem key="report" className="text-sm font-medium text-[#222222]">
-                              Report
-                            </DropdownItem>
-                          </DropdownMenu>
-                        </Dropdown>
-                      </div>
-
-                      {/* Mobile 3-dots dropdown */}
-                      <div
-                        className='md:hidden relative'
-                        ref={openMenuContract?.id === (contract.id || index) ? menuRef : null}
-                        onPointerDown={(e) => e.stopPropagation()}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <Button
-                          isIconOnly
-                          variant='light'
-                          size='sm'
-                          className='bg-transparent border-0 rounded-lg'
+            <div className='md:px-2 px-1 py-1 overflow-visible'>
+              <div className='flex md:justify-between items-center w-full gap-2 pt-1'>
+                <div className='flex-1 grid md:grid-cols-[1.5fr_1fr_auto] md:gap-x-4 md:items-center min-w-0'>
+                  <div className='flex flex-col items-start gap-1 mb-1 md:mb-0'>
+                    {/* Title row: title + mobile 3-dots side by side */}
+                    <div className='flex items-center w-full gap-2'>
+                      <h3 className='font-semibold text-[13px] md:text-[16px] text-[#3A98BB] truncate transition-colors flex-1 min-w-0'>
+                        {contract.title} {contract.id ? `(${contract.id})` : ''}
+                      </h3>
+                      {/* Mobile 3-dots — inline, shrink-0, never overlaps */}
+                      <div className='md:hidden shrink-0'>
+                        <button
+                          type='button'
                           ref={(el) => { menuButtonRefs.current[contract.id || index] = el; }}
-                          onPress={() => {
+                          className='flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 transition-colors'
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
                             const btnId = contract.id || index;
                             const btnEl = menuButtonRefs.current[btnId];
                             if (btnEl) {
@@ -342,15 +267,82 @@ const OngoingContracts = ({
                             setOpenMenuContract(openMenuContract?.id === (contract.id || index) ? null : contract);
                           }}
                         >
-                          <EllipsisHorizontalIcon className='w-6 h-6 text-gray-400' />
-                        </Button>
+                          <EllipsisHorizontalIcon className='w-5 h-5 text-gray-500' />
+                        </button>
                       </div>
+                    </div>
+                    <div className='flex items-center gap-1 mt-1'>
+                      {contract.status && contract.status !== 'Ongoing' && (
+                        <span className='bg-[#E0F2FE] text-[#2563EB] px-2 py-1 rounded text-[12px] font-medium'>
+                          {contract.status}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className='flex flex-col items-start text-[14px] font-satoshi text-gray-500'>
+                    <div className='mb-1 flex items-center gap-2'>
+                      <span className='text-[14px] flex-shrink-0 w-20 text-gray-500'>Start Date :</span>
+                      <span className='whitespace-nowrap font-semibold text-[#222222]'>{contract.startDate}</span>
+                    </div>
+                    <div className='flex items-center gap-2'>
+                      <span className='text-[14px] flex-shrink-0 w-20 text-gray-500'>End Date :</span>
+                      <span className='whitespace-nowrap font-semibold text-[#222222]'>{contract.endDate}</span>
+                      {contract.isExpiringSoon && (
+                        <span className='text-[#E33629] text-[12px] font-medium ml-1 whitespace-nowrap'>
+                          ({contract.remainingDays}h left)
+                        </span>
+                      )}
+                      {contract.isLate && (
+                        <span className='text-[#E33629] text-[12px] font-medium ml-1 whitespace-nowrap'>
+                          ({contract.daysLate}h late)
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
-              </CardBody>
+
+                {/* Desktop: action buttons + more options inline */}
+                <div className='hidden md:flex flex-row justify-end items-center gap-3 shrink-0 pl-4 overflow-visible'>
+                  <div className='flex items-center gap-3 shrink-0' onClick={(e) => e.stopPropagation()}>
+                    <Button
+                      className='bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold rounded-full px-6 h-[42px] border-0 shadow-md'
+                      radius='full'
+                      onPress={() => { handleOpenApprovalModal(contract); }}
+                    >
+                      Approve Work
+                    </Button>
+                    <Button
+                      className='bg-white text-[#222222] font-bold rounded-full px-6 h-[42px] border border-[#D1D1D1]'
+                      radius='full'
+                      variant='bordered'
+                      onPress={() => { onMessageArtist(contract); }}
+                    >
+                      Message Artist
+                    </Button>
+                  </div>
+                  <div className='flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
+                    <span className='text-sm font-proximanova text-gray-500'>More</span>
+                    <Dropdown placement="bottom-end" shouldBlockScroll={false}>
+                      <DropdownTrigger>
+                        <Button isIconOnly variant='light' size='sm' className='bg-transparent border-0 rounded-lg'>
+                          <EllipsisHorizontalIcon className='w-6 h-6 text-gray-400' />
+                        </Button>
+                      </DropdownTrigger>
+                      <DropdownMenu aria-label="More Options">
+                        <DropdownItem key="request_extension" className="text-sm font-medium text-[#222222]" onPress={() => { setCurrentContract(contract); setShowExtensionModal(true); }}>
+                          Request Extension
+                        </DropdownItem>
+                        <DropdownItem key="report" className="text-sm font-medium text-red-500 hover:text-red-600">
+                          Report Dispute
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
+                  </div>
+                </div>
+              </div>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
 
@@ -374,32 +366,6 @@ const OngoingContracts = ({
               const contract = openMenuContract;
               setOpenMenuContract(null);
               if (contract) {
-                handleOpenApprovalModal(contract);
-              }
-            }}
-          >
-            Approve Work
-          </button>
-          <button
-            className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium border-b border-gray-100'
-            onClick={(e) => {
-              e.stopPropagation();
-              const contract = openMenuContract;
-              setOpenMenuContract(null);
-              if (contract) {
-                onMessageArtist(contract);
-              }
-            }}
-          >
-            Message Artist
-          </button>
-          <button
-            className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium border-b border-gray-100'
-            onClick={(e) => {
-              e.stopPropagation();
-              const contract = openMenuContract;
-              setOpenMenuContract(null);
-              if (contract) {
                 setCurrentContract(contract);
                 setShowExtensionModal(true);
               }
@@ -408,13 +374,13 @@ const OngoingContracts = ({
             Request Extension
           </button>
           <button
-            className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium'
+            className='w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors font-medium'
             onClick={(e) => {
               e.stopPropagation();
               setOpenMenuContract(null);
             }}
           >
-            Report
+            Report Dispute
           </button>
         </div>,
         document.body
@@ -639,40 +605,16 @@ const OngoingContracts = ({
       {/* Pagination */}
       {
         totalPages > 0 && (
-          <div className='flex items-center justify-center gap-2 mt-6'>
-            <div className='flex items-center gap-2'>
-              {/* Results info */}
-              <span className='text-sm text-gray-600 mr-4'>
-                {startIndex + 1} - {Math.min(endIndex, filteredContracts.length)} of{' '}
-                {filteredContracts.length}
-              </span>
-
-              {/* Previous button */}
-              <Button
-                isIconOnly
-                variant='flat'
-                size='sm'
-                radius='none'
-                isDisabled={currentPage === 1}
-                onPress={() => setCurrentPage(currentPage - 1)}
-                className='min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer'
-              >
-                &lt;
-              </Button>
-
-              {/* Next button */}
-              <Button
-                isIconOnly
-                variant='flat'
-                size='sm'
-                radius='none'
-                isDisabled={currentPage === totalPages}
-                onPress={() => setCurrentPage(currentPage + 1)}
-                className='min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2'
-              >
-                &gt;
-              </Button>
-            </div>
+          <div className="flex justify-center items-center mt-8 w-full">
+            <Pagination
+              showControls
+              total={totalPages}
+              page={currentPage}
+              onChange={setCurrentPage}
+              classNames={{
+                cursor: "bg-[#3A98BB] text-white",
+              }}
+            />
           </div>
         )
       }

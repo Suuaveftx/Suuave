@@ -24,18 +24,13 @@ const ProposalActive = ({
   const options = ["1 Day", "3 Days", "5 Days", "7 Days", "10 Days"];
   return (
     <>
-      <div className='flex items-center lg:mt-0 mt-4 px-4 lg:px-0 py-[10px] mx-4 lg:mx-0'>
-        <div
-          className='lg:hidden cursor-pointer p-1'
-          onClick={() => router.push("/artist-page/my-proposals")}
-        >
-          <FaChevronLeft color='#878787' />
-        </div>
-        <div className='border-b-2 w-[90%] lg:ml-16'>
-          <h4 className='font-bold lg:text-[34px] lg:text-[#222222] text-[32px] text-[#444444]'>Proposal Details</h4>
+      <div className='flex items-center lg:mt-0 mt-4 px-0 py-[10px] w-full gap-4'>
+
+        <div className='w-full border-b-2 lg:mb-[18.68px]'>
+          <h4 className='font-bold text-[28px] text-[#444444]'>Proposal Details</h4>
         </div>
       </div>
-      <div className='bg-[#FAFAFA] lg:flex lg:flex-col hidden text-[#222222] px-8 py-8 lg:ml-16 lg:w-[90%] w-full  rounded-2xl border-1 border-[#EAEAEA]'>
+      <div className='bg-[#FAFAFA] lg:flex lg:flex-col hidden text-[#222222] px-8 py-8 w-full rounded-2xl border-1 border-[#EAEAEA]'>
         <h4 className='font-bold leading-7'>Related Job</h4>
         <div className='flex justify-between mt-6'>
           <div className='text-sm text-[#767676] leading-[18px] tracking-[0.33px]'>
@@ -61,7 +56,7 @@ const ProposalActive = ({
           )}
         </div>
       </div>
-      <div className='bg-[#FAFAFA] flex flex-col  gap-2 border-1 border-[#EAEAEA] px-8 py-8 pb-[42px] lg:mx-16  mx-auto mt-4 rounded-2xl lg:mb-[240.32px] lg:w-full lg:max-w-[90%] w-screen max-w-[93%]'>
+      <div className='bg-[#FAFAFA] flex flex-col gap-2 border border-[#EAEAEA] px-8 py-8 pb-[120px] lg:pb-[42px] mt-4 rounded-2xl lg:mb-[240.32px] w-full'>
         <div className='lg:flex  font-bold hidden text-2xl leading-6 rounded-2xl'>
           Write Proposal
         </div>
@@ -74,9 +69,8 @@ const ProposalActive = ({
           </label>
           <textarea
             id="cover-letter"
-            placeholder="I am excited to apply for the Fashion Illustrator position at [Company/Brand Name]. With a strong background in fashion design and a keen eye for detail, I specialize in creating illustrations that bring concepts to life—from high fashion editorial looks to commercial-ready garment designs.
-My illustration style blends creativity with clarity, ensuring each sketch communicates not just the outfit, but the story behind it. I am skilled in both traditional hand-drawn techniques and digital illustration tools like Adobe Illustrator, Photoshop, and Procreate."
-            className="lg:w-full w-[90%] min-h-[150px] px-[10px] py-[10px] border border-[#D1D1D1] rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-[#3A98BB] text-sm text-[#222222]"
+            placeholder="Write your proposal"
+            className="w-full min-h-[150px] px-[10px] py-[10px] border border-[#D1D1D1] rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-[#3A98BB] text-sm text-[#222222]"
           ></textarea>
         </div>
 
@@ -137,60 +131,32 @@ My illustration style blends creativity with clarity, ensuring each sketch commu
             How long will it take you to complete this work?
           </label>
 
-          <button
-            type="button"
-            className="w-[50%] border border-gray-300 rounded-md px-4 py-2 bg-white text-sm flex justify-between items-center"
-            onClick={() => setOpen((prev) => !prev)}
-          >
-            <span>{selected}</span>
-
-            {/* Dropdown Arrow Icon */}
-            <svg
-              className={`w-4 h-4 ml-2 transform transition-transform ${open ? "rotate-180" : "rotate-0"
-                }`}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-
-          {open && (
-            <ul className="absolute left-0 w-full bg-white border border-gray-200 shadow-md rounded-md mt-1 z-10">
-              {options.map((option) => (
-                <li
-                  key={option}
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                  onClick={() => {
-                    setSelected(option);
-                    setOpen(false);
-                  }}
-                >
-                  {option}
-                </li>
-              ))}
-            </ul>
-          )}
+          <input
+            type="text"
+            value={selected}
+            readOnly
+            className="w-[50%] border border-gray-300 rounded-md px-[10px] py-[10px] text-sm text-gray-700 bg-gray-50"
+          />
         </div>
 
-        {/* Action Buttons for Mobile */}
-        <div className="lg:hidden mt-8 w-full flex justify-center">
-          <BtnProposals
-            sendText="Edit Proposal"
-            saveText="Withdraw Proposal"
-            showSaveIcon={false}
-            handleSubmitProposal={handleSubmitProposal}
-            handleViewProposal={handleSubmitProposal}
-            handleWithdrawProposal={handleWithdrawProposal}
-            proposalSubmitted={true}
-            isOpen={isOpen}
-            onOpenChange={onOpenChange}
-            containerClassName="!p-0 !border-none !bg-transparent !gap-4 !w-full !flex-row-reverse !justify-center"
-            buttonWidth="lg:w-48 !w-auto !min-w-[120px] !px-4 !py-2 !text-sm whitespace-nowrap"
-            buttonWrapperClassName="!w-auto"
-          />
+      </div>
+
+      {/* Action Buttons for Mobile */}
+      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 px-4 py-4 z-[100] lg:hidden drop-shadow-[0_-4px_15px_rgba(0,0,0,0.08)]">
+        <div className="flex justify-between gap-4 max-w-[400px] mx-auto w-full">
+          <button
+            className="flex-1 py-3 bg-white border border-[#3A98BB] text-[#222222] font-medium rounded-full text-sm shadow-sm"
+            onClick={handleWithdrawProposal}
+          >
+            Withdraw Proposal
+          </button>
+
+          <button
+            onClick={handleSubmitProposal}
+            className="flex-1 py-3 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold rounded-full text-sm shadow-sm"
+          >
+            Edit Proposal
+          </button>
         </div>
       </div>
     </>

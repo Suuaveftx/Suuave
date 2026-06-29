@@ -62,14 +62,14 @@ const ProductDetails = ({ id }) => {
   }
 
   const { details, url, title } = collection;
+  const typeValue = details?.type || "Exclusive";
+  const isExclusive = typeValue === "Exclusive";
 
   return (
     <>
       <div className="md:hidden">
-        <div className="w-full px-4 flex items-center gap-2 border-b-1 border-divider">
-          <button onClick={handleBack} className="outline-0 cursor-pointer p-2 hover:bg-gray-100 rounded-full transition-colors">
-            <ArrowLeft size={24} className="text-[#767676]" />
-          </button>
+        <div className="w-full flex items-center gap-2 border-b-1 border-divider">
+
 
           <h1 className="text-[#767676] py-3 font-satoshi font-bold text-xl md:text-2xl ">
             My Collections
@@ -80,33 +80,39 @@ const ProductDetails = ({ id }) => {
           <Image
             src={url}
             alt={title}
-            className="w-full px-4"
+            className="w-full"
             width={0}
             height={300}
           />
-          <p className="mt-4 px-4 text-[#222222] font-bold text-sm font-satoshi border-b-1 border-divider py-4">
+          <p className="mt-4 text-[#222222] font-bold text-sm font-satoshi border-b-1 border-divider py-4">
             {details.title}
           </p>
           {/* Description */}
           <Header>Description</Header>
-          <p className="text-[#555555] px-4 font-satoshi font-medium text-sm leading-6 border-b-1 border-divider mt-1 pb-6">
+          <p className="text-[#555555] font-satoshi font-medium text-sm leading-6 border-b-1 border-divider mt-1 pb-6">
             This illustration showcases a regal Nigerian Agbada, blending
             tradition and contemporary style. The design features a flowing,
             triple-layered
           </p>
           {/* Collection Files -> Source Files */}
           <Header>Source Files</Header>
-          <div className=" border-b-1 border-divider mt-4 pb-6 px-4 flex flex-col gap-2">
+          <div className=" border-b-1 border-divider mt-4 pb-6 flex flex-col gap-2">
             {details.collectionFiles.map((file, index) => (
-              <Link
-                key={index}
-                href={url}
-                download={file}
-                target="_blank"
-                className="text-[#767676] font-satoshi font-normal text-xs hover:text-[#3A98BB] cursor-pointer transition-colors"
-              >
-                {file}
-              </Link>
+              isExclusive ? (
+                <span key={index} className="text-[#767676] font-satoshi font-normal text-xs opacity-70">
+                  {file}
+                </span>
+              ) : (
+                <Link
+                  key={index}
+                  href={url}
+                  download={file}
+                  target="_blank"
+                  className="text-[#767676] font-satoshi font-normal text-xs hover:text-[#3A98BB] cursor-pointer transition-colors"
+                >
+                  {file}
+                </Link>
+              )
             ))}
           </div>
           {/* Amount */}
@@ -115,14 +121,14 @@ const ProductDetails = ({ id }) => {
 
           {/* Type */}
           <Header>Type</Header>
-          <Text>Exclusive</Text>
+          <Text>{typeValue}</Text>
 
           {/* Purchased Date */}
           <Header>Purchased Date</Header>
           <Text>{details.purchaseDate}</Text>
           {/* Artist */}
           <Header>About the Artist</Header>
-          <Link href="/artist-page/profile-vistor-view" className="flex mt-4 items-center gap-2 border-b-1 border-divider pb-6 px-4 cursor-pointer">
+          <Link href="/artist-page/profile-vistor-view" className="flex mt-4 items-center gap-2 border-b-1 border-divider pb-6 cursor-pointer">
             <Image
               src={details?.artist?.image}
               alt="image"
@@ -209,9 +215,15 @@ const ProductDetails = ({ id }) => {
                     <h1 className=" font-bold text-base">Source Files</h1>
                     <div className="flex flex-col gap-2 min-h-[24px] justify-center">
                       {details?.collectionFiles.map((file, index) => (
-                        <Link key={index} href={url} download={file} target="_blank" className="font-normal text-xs hover:text-[#3A98BB] cursor-pointer transition-colors leading-none">
-                          {file}
-                        </Link>
+                        isExclusive ? (
+                          <span key={index} className="font-normal text-xs text-[#767676] leading-none opacity-70">
+                            {file}
+                          </span>
+                        ) : (
+                          <Link key={index} href={url} download={file} target="_blank" className="font-normal text-xs hover:text-[#3A98BB] cursor-pointer transition-colors leading-none">
+                            {file}
+                          </Link>
+                        )
                       ))}
                     </div>
                   </div>
@@ -249,7 +261,7 @@ const ProductDetails = ({ id }) => {
                     <h1 className=" font-bold text-base">Type</h1>
                     <div className="min-h-[24px] flex items-center">
                       <p className="font-satoshi font-normal text-xs text-[#767676] leading-none">
-                        Exclusive
+                        {typeValue}
                       </p>
                     </div>
                   </div>
@@ -276,13 +288,13 @@ const ProductDetails = ({ id }) => {
 export default ProductDetails;
 
 const Header = ({ children }) => (
-  <h2 className="text-[#222222] font-satoshi font-medium text-sm mt-2 px-4">
+  <h2 className="text-[#222222] font-satoshi font-medium text-sm mt-2">
     {children}
   </h2>
 );
 
 const Text = ({ children }) => (
-  <p className="text-[#767676] px-4 font-satoshi font-normal text-xs  border-b-1 border-divider mt-4 pb-6">
+  <p className="text-[#767676] font-satoshi font-normal text-xs border-b-1 border-divider mt-4 pb-6">
     {children}
   </p>
 );

@@ -6,9 +6,10 @@ import { Camera, Pencil } from 'lucide-react';
 import { FaStar } from 'react-icons/fa';
 import CustomButton from '../../../../components/CustomButton';
 import { IoLocationSharp } from 'react-icons/io5';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import EditOccupationModal from './EditOccupationModal';
+import EditAboutModal from './EditAboutModal';
 
 
 
@@ -22,6 +23,10 @@ const ProfileArtist = ({ isVisitor = false }) => {
   const [previewProfileUrl, setPreviewProfileUrl] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+  const [isEditingAbout, setIsEditingAbout] = useState(false);
+  const [tempAboutValue, setTempAboutValue] = useState(fullText);
+  const fileInputRef = useRef(null);
   const router = useRouter();
 
   const handleRetainArtist = () => {
@@ -62,7 +67,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
 
   return (
     <div
-      className='w-full h-full lg:h-fit lg:sticky lg:top-[120px] lg:max-w-xs lg:mx-auto lg:bg-white rounded-lg lg:space-y-2 
+      className='w-full h-full lg:h-fit lg:w-[320px] lg:bg-white rounded-lg lg:space-y-2 
       flex flex-col items-center lg:items-start lg:text-left shadow-sm lg:shadow-none'
     >
       <div className='bg-white lg:bg-[#ffffff] w-full lg:px-6 lg:py-6 px-4 py-8 rounded-lg shadow-sm relative'>
@@ -84,20 +89,39 @@ const ProfileArtist = ({ isVisitor = false }) => {
         <div className='space-y-4 pb-3 w-full flex flex-col items-center'>
           {/* Profile Initials */}
           <div className='flex justify-center w-full'>
-            <div className='w-[100px] h-[100px] flex items-center justify-center rounded-full overflow-hidden relative border-2 border-[#f1f1f1]'>
-              <Image
-                src='/dev-images/Clients.png'
-                alt='Profile Picture'
-                fill
-                className='object-cover'
-              />
+            <div className='relative w-[100px] h-[100px]'>
+              <div className='w-full h-full flex items-center justify-center rounded-full overflow-hidden border-2 border-[#f1f1f1]'>
+                <Image
+                  src={previewProfileUrl || '/dev-images/Clients.png'}
+                  alt='Profile Picture'
+                  fill
+                  className='object-cover'
+                />
+              </div>
+              {!isVisitor && (
+                <>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                    accept="image/*"
+                  />
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className='absolute top-0 right-0 bg-white p-1.5 rounded-full shadow-md text-[#3A98BB] hover:opacity-75 transition-opacity'
+                  >
+                    <Pencil size={16} />
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
 
           {/* Name */}
           <div className='w-full flex flex-col items-center'>
-            <h4 className='lg:text-2xl font-bold text-[32px] text-[#222222] flex items-center gap-2'>
+            <h4 className='lg:text-2xl font-bold text-[28px] text-[#222222] flex items-center gap-2'>
               OCEAN CLARA
               <span className='w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white shadow-sm'></span>
             </h4>
@@ -123,15 +147,15 @@ const ProfileArtist = ({ isVisitor = false }) => {
             </div>
 
             {/* Rating */}
-            <div className='flex items-center space-x-2 mt-2'>
-              <div className='flex gap-1'>
+            <div className='flex items-center gap-2 mt-2 w-full justify-center'>
+              <div className='flex gap-0.5 flex-shrink-0'>
                 {[...Array(5)].map((_, i) => (
-                  <FaStar key={i} size={16} className={i < 4 ? 'text-[#F8B73B]' : 'text-gray-300'} />
+                  <FaStar key={i} size={15} className={i < 4 ? 'text-[#F8B73B]' : 'text-gray-300'} />
                 ))}
               </div>
-              <div className="flex items-center gap-1 text-sm">
+              <div className="flex items-center gap-1.5 text-sm whitespace-nowrap flex-shrink-0">
                 <span className="text-[#222222] font-semibold">4.0</span>
-                <span className='text-[#3A98BB]'>(5.0 reviews)</span>
+                <span className='text-[#3A98BB] cursor-pointer hover:underline'>(5.0 reviews)</span>
               </div>
             </div>
 
@@ -157,30 +181,21 @@ const ProfileArtist = ({ isVisitor = false }) => {
       <div className="w-full h-2 bg-[#F1F1F1] lg:hidden"></div>
 
       {/* Stats */}
-      <div className='bg-white w-full py-8 lg:py-0 border-y border-[#f1f1f1] lg:border-none'>
-        <div className={`flex flex-row justify-center ${userRole === 'brand' ? 'gap-4 px-2' : 'gap-12'}`}>
-          <div className='flex flex-col items-center text-[#222222] min-w-[80px]'>
-            <span className='font-bold text-xl mb-1 order-first'>7</span>
-            <h4 className='text-[#767676] text-[12px] font-medium text-center uppercase tracking-tight'>
-              {userRole === 'brand' ? 'Jobs Posted' : 'Design Collections'}
+      <div className='bg-white w-full py-6 lg:py-6 lg:px-6 px-4 border-y border-[#f1f1f1] lg:border-none'>
+        <div className='flex flex-row lg:flex-col justify-center gap-6 lg:gap-4 w-full'>
+          <div className='flex flex-row lg:justify-between items-center gap-2 lg:gap-0 text-[#222222] w-full'>
+            <h4 className='text-[#767676] text-[14px] lg:text-[15px] font-medium order-2 lg:order-1'>
+              Design Collections
             </h4>
+            <span className='font-bold text-[18px] order-1 lg:order-2'>14</span>
           </div>
 
-          <div className='flex flex-col items-center text-[#222222] min-w-[80px]'>
-            <span className='font-bold text-xl mb-1 order-first'>7</span>
-            <h4 className='text-[#767676] text-[12px] font-medium text-center uppercase tracking-tight'>
-              Projects Completed
+          <div className='flex flex-row lg:justify-between items-center gap-2 lg:gap-0 text-[#222222] w-full'>
+            <h4 className='text-[#767676] text-[14px] lg:text-[15px] font-medium order-2 lg:order-1'>
+              Completed Projects
             </h4>
+            <span className='font-bold text-[18px] order-1 lg:order-2'>14</span>
           </div>
-
-          {userRole === 'brand' && (
-            <div className='flex flex-col items-center text-[#222222] min-w-[80px]'>
-              <span className='font-bold text-xl mb-1 order-first'>$10000</span>
-              <h4 className='text-[#767676] text-[12px] font-medium text-center uppercase tracking-tight'>
-                Total Spent
-              </h4>
-            </div>
-          )}
         </div>
       </div>
 
@@ -190,9 +205,17 @@ const ProfileArtist = ({ isVisitor = false }) => {
       <div className='bg-white lg:bg-[#ffffff] w-full flex flex-col items-start lg:px-6 px-4 py-8 text-left lg:mt-0 rounded-lg shadow-sm mb-10'>
         {/* Heading */}
         <div className='flex items-center w-full justify-between mb-4'>
-          <h4 className='text-[32px] text-[#222222] font-bold'>
-            About Me
+          <h4 className='text-[28px] text-[#222222] font-bold'>
+            Description
           </h4>
+          {!isVisitor && (
+            <button
+              onClick={() => setIsAboutModalOpen(true)}
+              className="text-[#3A98BB] hover:opacity-75 transition-opacity"
+            >
+              <Pencil size={18} />
+            </button>
+          )}
         </div>
 
         {/* Text */}
@@ -209,6 +232,12 @@ const ProfileArtist = ({ isVisitor = false }) => {
         onClose={() => setIsModalOpen(false)}
         initialValue={titleValue}
         onSave={handleSaveOccupation}
+      />
+      <EditAboutModal
+        isOpen={isAboutModalOpen}
+        onClose={() => setIsAboutModalOpen(false)}
+        initialValue={aboutValue}
+        onSave={(newAbout) => setAboutValue(newAbout)}
       />
     </div >
   );

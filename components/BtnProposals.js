@@ -1,68 +1,55 @@
 'use client';
 import React from 'react';
 import CustomButton from './CustomButton';
-
+import CtaButtonGroup from './ui/CtaButtonGroup';
 
 /**
  * BtnProposals component to render a reusable "Send Proposal" and "Save Job" button block.
- *
- * @param {Object} props - Component props.
- * @param {string} [props.sendText] - Text for the send button (default: "Send Proposal").
- * @param {string} [props.saveText] - Text for the save button (default: "Save Job").
- * @param {string} [props.sendHref] - Href for the send button (default: "/artist-page/send-proposal").
- * @param {React.ReactNode} [props.saveIcon] - Icon for the save button (default: bookmark icon).
- * @param {boolean} [props.showSaveIcon] - Whether to show the save icon (default: true).
- * @param {Object} [props.saveButtonStyle] - Inline styles for the save button.
- * @param {string} [props.containerClassName] - Additional classes for the outer container.
  */
 const BtnProposals = ({
   sendText = 'Send Proposal',
   saveText = 'Save Job',
-  sendHref = '/artist-page/send-proposal',
   saveIcon = null,
   showSaveIcon = true,
   saveButtonStyle = {},
-  containerClassName = "",
-  buttonWidth = "lg:w-48",
-  buttonWrapperClassName = "w-full lg:w-auto",
+  containerClassName = '',
+  buttonWidth = 'w-full lg:w-48',
   handleSubmitProposal,
   handleViewProposal,
   handleWithdrawProposal,
   handleSave,
   proposalSubmitted = false,
-  onOpenChange,
   isSaved,
 }) => {
   return (
-    <>
-      <div
-        className={`flex lg:flex-col lg:gap-6  justify-center items-center lg:bg-[#FAFAFA] bg-[#FFFFFF] px-4 py-4 lg:px-6 lg:py-8 lg:w-screen lg:max-w-[80%] w-screen max-w-[100%] border border-[#EAEAEA] lg:rounded-2xl ${containerClassName}`}
-      >
-        <div className={buttonWrapperClassName}>
-          <CustomButton
-            text={sendText}
-            className={`w-full ${buttonWidth} text-[#035A7A]`}
-            onPress={proposalSubmitted ? handleViewProposal : handleSubmitProposal}
-          />
-        </div>
+    <div
+      className={`w-full rounded-2xl border border-[#EAEAEA] bg-white px-4 py-4 lg:bg-[#FAFAFA] lg:px-6 lg:py-8 ${containerClassName}`}
+    >
+      <CtaButtonGroup direction='column' className='lg:gap-6'>
+        <CustomButton
+          text={sendText}
+          className={`${buttonWidth} text-[#035A7A]`}
+          onPress={proposalSubmitted ? handleViewProposal : handleSubmitProposal}
+        />
 
-        <div className={buttonWrapperClassName}>
-          <CustomButton
-            className={`w-full ${buttonWidth} text-[#767676] flex items-center justify-center gap-2`}
-            icon={null}
-            text={saveText}
-            onPress={proposalSubmitted ? handleWithdrawProposal : handleSave}
-            style={{
-              background: isSaved ? "#3A98BB" : "transparent",
-              color: isSaved ? "white" : "#767676",
-              border: isSaved ? "none" : "1px solid #3A98BB",
-              ...saveButtonStyle,
-            }}
-          />
-
-        </div>
-      </div>
-    </>
+        <CustomButton
+          className={`${buttonWidth} text-[#767676]`}
+          icon={null}
+          text={saveText}
+          onPress={proposalSubmitted ? handleWithdrawProposal : handleSave}
+          style={proposalSubmitted ? {
+            background: 'transparent',
+            color: '#767676',
+            border: '1px solid #E0E0E0',
+          } : {
+            background: isSaved ? '#3A98BB' : 'transparent',
+            color: isSaved ? 'white' : '#767676',
+            border: isSaved ? 'none' : '1px solid #3A98BB',
+            ...saveButtonStyle,
+          }}
+        />
+      </CtaButtonGroup>
+    </div>
   );
 };
 

@@ -4,6 +4,8 @@ import SearchBar from "../../../../components/Searchbar";
 import FilterDropdown from "../../../../components/FilterDropdown";
 import { useState } from "react";
 import { HiOutlineCalendar, HiOutlineCurrencyDollar } from 'react-icons/hi';
+import { Button, Pagination } from '@heroui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 
 const data = [
@@ -28,7 +30,34 @@ const data = [
     earnings: "$2,500",
     status: "Completed",
   },
-
+  {
+    date: "5th February, 2024",
+    project: "Abstract Pattern Pack",
+    client: "TREND SETTERS",
+    earnings: "$1,800",
+    status: "Completed",
+  },
+  {
+    date: "12th January, 2024",
+    project: "Recycled Fiber Textile",
+    client: "GREEN EARTH APPAREL",
+    earnings: "$950",
+    status: "Completed",
+  },
+  {
+    date: "5th December, 2023",
+    project: "Avant Garde Collection Cover",
+    client: "FASHION FORWARD",
+    earnings: "$3,200",
+    status: "Completed",
+  },
+  {
+    date: "20th November, 2023",
+    project: "Virtual Runway Accessories",
+    client: "METAVERSE STYLES",
+    earnings: "$1,500",
+    status: "Completed",
+  },
 ];
 
 export default function CompletedContracts({ dateFilter, setDateFilter, dateOptions }) {
@@ -89,10 +118,18 @@ export default function CompletedContracts({ dateFilter, setDateFilter, dateOpti
     });
   }
 
+  // Pagination calculations
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredProjects.slice(startIndex, endIndex);
+
   return (
     <>
       {/* Search & Sort */}
-      <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4 w-[92%] mx-auto lg:w-full">
+      <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4 w-full">
         <div className="w-full md:max-w-[500px]">
           <SearchBar
             placeholder="Search Project"
@@ -145,7 +182,7 @@ export default function CompletedContracts({ dateFilter, setDateFilter, dateOpti
               </tr>
             </thead>
             <tbody className="bg-white">
-              {filteredProjects.map((item, index) => (
+              {currentItems.map((item, index) => (
                 <tr key={index} className="border-b border-[#EAEAEA] last:border-none hover:bg-gray-50 active:bg-gray-50">
                   <td className="px-6 py-6 text-sm text-[#222222]">{item.date}</td>
                   <td className="px-6 py-6 text-sm text-[#3A98BB] hover:underline active:opacity-70 cursor-pointer">
@@ -162,9 +199,22 @@ export default function CompletedContracts({ dateFilter, setDateFilter, dateOpti
           </table>
         </div>
 
-        {/* Pagination - Centered at the bottom */}
-
-      </div>
+        {/* Pagination */}
+        {
+          totalPages > 0 && (
+            <div className="flex justify-center items-center mt-8 w-full">
+              <Pagination
+                showControls
+                total={totalPages}
+                page={currentPage}
+                onChange={setCurrentPage}
+                classNames={{
+                  cursor: "bg-[#3A98BB] text-white",
+                }}
+              />
+            </div>
+          )
+        }      </div>
 
     </>
   );

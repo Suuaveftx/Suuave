@@ -1,15 +1,15 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Eye, Plus, Trash2 } from 'lucide-react';
+import { Paperclip } from 'lucide-react';
 import ThreeDotsDropdown from './ThreeDotsDropDown';
 import CustomButton from '../../../../components/CustomButton';
 import { useSearchParams, useRouter } from 'next/navigation';
-import AwardUploadModal from './AwardsUploadModal';
-import UploadModal from './UploadModal';
 import Link from 'next/link';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@heroui/react';
 
 const FashionCard = ({ isVisitor = false }) => {
   const [activeTab, setActiveTab] = useState('design');
@@ -19,7 +19,101 @@ const FashionCard = ({ isVisitor = false }) => {
   const [deleteItemType, setDeleteItemType] = useState(null); // 'design', 'award', 'work'
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [userRole, setUserRole] = useState(null);
+  const [isUploadWorkOpen, setIsUploadWorkOpen] = useState(false);
+  const [isUploadAwardOpen, setIsUploadAwardOpen] = useState(false);
+  const [visibleReviews, setVisibleReviews] = useState(5);
+  const [isInfiniteReviews, setIsInfiniteReviews] = useState(false);
+  const observerRef = useRef(null);
+  const [isInfiniteDesign, setIsInfiniteDesign] = useState(false);
+  const designObserverRef = useRef(null);
+
+  const [visibleItems, setVisibleItems] = useState({
+    design: 6,
+    awards: 4,
+    work: 4,
+  });
+
+  const baseAwardImages = [
+    { url: '/dev-images/Awards.png', description: 'Excellence in 3D Design 2023 - Recognition for outstanding contribution to digital fashion.' },
+    { url: '/dev-images/Awards2.png', description: 'Innovation Award - Awarded for pioneering new techniques in virtual garment simulation.' },
+    { url: '/dev-images/Awards.png', description: 'Best Portfolio 2022 - Selected as the top portfolio among international 3D artists.' },
+    { url: '/dev-images/Awards2.png', description: 'Digital Craftsmanship - Honored for meticulous attention to detail in material shaders.' },
+    { url: '/dev-images/Awards.png', description: 'Future of Fashion - Recognition for visionary approach to sustainable digital design.' },
+  ];
+
+  const [awardImages, setAwardImages] = useState(baseAwardImages);
+
+  const baseWorkSamples = [
+    { id: 1, title: 'Modern Style Dress', description: 'A sleek, modern silhouette featuring high-tech fabrics and architectural lines.' },
+    { id: 2, title: 'Vintage Gown', description: 'Classic elegance reimagined with intricate lace details and a timeless silhouette.' },
+    { id: 3, title: 'Casual Summer Top', description: 'Lightweight and breathable design perfect for effortless summer styling.' },
+    { id: 4, title: 'Corporate Blazer', description: 'Sharp tailoring and professional finish for the modern business environment.' },
+    { id: 5, title: 'Denim Jacket', description: 'Custom distressed denim with unique hardware and a relaxed fit.' },
+    { id: 6, title: 'Evening Shawl', description: 'Luxurious silk-blend shawl with hand-embroidered floral motifs.' },
+  ];
+
+  const [workSamples, setWorkSamples] = useState(baseWorkSamples);
+
+  const [isInfiniteAwards, setIsInfiniteAwards] = useState(false);
+  const awardsObserverRef = useRef(null);
+
+  const [isInfiniteWork, setIsInfiniteWork] = useState(false);
+  const workObserverRef = useRef(null);
+
   const router = useRouter();
+
+  useEffect(() => {
+    if (!isInfiniteReviews) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setVisibleReviews((prev) => prev + 5);
+      }
+    }, { threshold: 0.1 });
+
+    if (observerRef.current) observer.observe(observerRef.current);
+    return () => observer.disconnect();
+  }, [isInfiniteReviews, visibleReviews]);
+
+  useEffect(() => {
+    if (!isInfiniteAwards) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setVisibleItems((prev) => ({ ...prev, awards: prev.awards + 4 }));
+        if (isVisitor) {
+          setAwardImages((prev) => [
+            ...prev,
+            ...baseAwardImages.map((a, i) => ({ ...a, description: a.description + ` (Block ${prev.length})` }))
+          ]);
+        }
+      }
+    }, { threshold: 0.1 });
+
+    if (awardsObserverRef.current) observer.observe(awardsObserverRef.current);
+    return () => observer.disconnect();
+  }, [isInfiniteAwards, visibleItems.awards]);
+
+  useEffect(() => {
+    if (!isInfiniteWork) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setVisibleItems((prev) => ({ ...prev, work: prev.work + 4 }));
+        if (isVisitor) {
+          setWorkSamples((prev) => [
+            ...prev,
+            ...baseWorkSamples.map((w, i) => ({ ...w, id: prev.length + w.id, title: w.title + ` (Block ${prev.length})` }))
+          ]);
+        }
+      }
+    }, { threshold: 0.1 });
+
+    if (workObserverRef.current) observer.observe(workObserverRef.current);
+    return () => observer.disconnect();
+  }, [isInfiniteWork, visibleItems.work]);
+
+
 
   useEffect(() => {
     // Access localStorage in useEffect to avoid hydration issues
@@ -35,7 +129,7 @@ const FashionCard = ({ isVisitor = false }) => {
     { id: 'work', label: 'Work Samples' },
     { id: 'reviews', label: 'Reviews' },
   ];
-  const [collections, setCollections] = useState([
+  const baseCollections = [
     { id: 'a6c3e6d0-e01a-42e0-b798-2c3b1583b40e', title: 'Casual Top Design', price: '$253', views: 14, licensed: 14 },
     { id: 'b8d5f7e1-f12b-53f1-c8a9-3d4c2694c51f', title: 'Summer Collection', price: '$199', views: 25, licensed: 8 },
     { id: 'c9e6g8f2-023c-64g2-d9b0-4e5d3705d62g', title: 'Winter Wear', price: '$450', views: 42, licensed: 20 },
@@ -44,30 +138,33 @@ const FashionCard = ({ isVisitor = false }) => {
     { id: 'f2h9j1i5-356f-97j5-g2e3-7h8g6038g95j', title: 'Office Chic', price: '$310', views: 18, licensed: 10 },
     { id: 'g3i0k2j6-467g-08k6-h3f4-8i9h7149h06k', title: 'Autumn Vest', price: '$150', views: 22, licensed: 12 },
     { id: 'h4j1l3k7-578h-19l7-i4g5-9j0i8250i17l', title: 'Silk Scarf', price: '$85', views: 64, licensed: 45 },
+  ];
+  const [collections, setCollections] = useState([
+    ...baseCollections,
+    ...baseCollections.map(c => ({ ...c, id: c.id + '-dup' })),
+    ...baseCollections.map(c => ({ ...c, id: c.id + '-dup2' }))
   ]);
 
-  const [awardImages, setAwardImages] = useState([
-    { url: '/dev-images/Awards.png', description: 'Excellence in 3D Design 2023 - Recognition for outstanding contribution to digital fashion.' },
-    { url: '/dev-images/Awards2.png', description: 'Innovation Award - Awarded for pioneering new techniques in virtual garment simulation.' },
-    { url: '/dev-images/Awards.png', description: 'Best Portfolio 2022 - Selected as the top portfolio among international 3D artists.' },
-    { url: '/dev-images/Awards2.png', description: 'Digital Craftsmanship - Honored for meticulous attention to detail in material shaders.' },
-    { url: '/dev-images/Awards.png', description: 'Future of Fashion - Recognition for visionary approach to sustainable digital design.' },
-  ]);
 
-  const [workSamples, setWorkSamples] = useState([
-    { id: 1, title: 'Modern Style Dress', description: 'A sleek, modern silhouette featuring high-tech fabrics and architectural lines.' },
-    { id: 2, title: 'Vintage Gown', description: 'Classic elegance reimagined with intricate lace details and a timeless silhouette.' },
-    { id: 3, title: 'Casual Summer Top', description: 'Lightweight and breathable design perfect for effortless summer styling.' },
-    { id: 4, title: 'Corporate Blazer', description: 'Sharp tailoring and professional finish for the modern business environment.' },
-    { id: 5, title: 'Denim Jacket', description: 'Custom distressed denim with unique hardware and a relaxed fit.' },
-    { id: 6, title: 'Evening Shawl', description: 'Luxurious silk-blend shawl with hand-embroidered floral motifs.' },
-  ]);
 
-  const [visibleItems, setVisibleItems] = useState({
-    design: 6,
-    awards: 4,
-    work: 4,
-  });
+  useEffect(() => {
+    if (!isInfiniteDesign) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setVisibleItems((prev) => ({
+          ...prev,
+          design: prev.design + 3,
+        }));
+      }
+    }, { threshold: 0.1 });
+
+    if (designObserverRef.current) {
+      observer.observe(designObserverRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isInfiniteDesign, visibleItems.design]);
 
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
@@ -129,7 +226,7 @@ const FashionCard = ({ isVisitor = false }) => {
 
   return (
     <>
-      <div className='w-full h-4/5 p-6 bg-[#FDFDFD] lg:mt-16 mt-4'>
+      <div className='w-full h-4/5 p-6 bg-[#FDFDFD]'>
         <div className='flex space-x-2 mb-6 border-b overflow-x-auto scrollbar-hide w-full'>
           {tabs.map((tab) => (
             <button
@@ -179,11 +276,11 @@ const FashionCard = ({ isVisitor = false }) => {
                       style={{ backgroundImage: `url('/dev-images/FashionImg.png')` }}
                     >
                       {/* Overlay Gradient */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
 
                     {/* Bottom Content - Overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white bg-black/30 backdrop-blur-[2px]">
+                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white bg-black/30 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="flex justify-between items-center mb-1">
                         <h3 className="font-semibold text-base">{item.title}</h3>
                         <span className="font-bold text-base">{item.price}</span>
@@ -200,7 +297,7 @@ const FashionCard = ({ isVisitor = false }) => {
                   </div>
 
                   {/* Three Dots Menu - Outside Link to avoid redirection on click */}
-                  {userRole === 'artist' && (
+                  {!isVisitor && (
                     <div className="absolute top-3 right-3 z-20">
                       <ThreeDotsDropdown
                         onEdit={() => handleEdit(item.id)}
@@ -214,15 +311,15 @@ const FashionCard = ({ isVisitor = false }) => {
 
             {/* VIEW MORE / VIEW LESS BUTTONS */}
             <div className="w-full flex justify-center mt-8 gap-4">
-              {visibleItems.design < collections.length && (
+              {!isInfiniteDesign && visibleItems.design < collections.length && (
                 <button
-                  onClick={() => handleViewMore('design')}
+                  onClick={() => setIsInfiniteDesign(true)}
                   className="px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors"
                 >
-                  View More
+                  View more
                 </button>
               )}
-              {visibleItems.design > 6 && (
+              {!isInfiniteDesign && visibleItems.design > 6 && (
                 <button
                   onClick={() => handleViewLess('design')}
                   className="px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors"
@@ -231,6 +328,9 @@ const FashionCard = ({ isVisitor = false }) => {
                 </button>
               )}
             </div>
+            {isInfiniteDesign && visibleItems.design < collections.length && (
+              <div ref={designObserverRef} className="h-10 w-full" />
+            )}
           </div>
         )}
 
@@ -249,7 +349,7 @@ const FashionCard = ({ isVisitor = false }) => {
                   </div>
 
                   {/* Delete Icon */}
-                  {userRole === 'artist' && (
+                  {!isVisitor && (
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -264,33 +364,28 @@ const FashionCard = ({ isVisitor = false }) => {
               ))}
             </div>
 
-            {/* Add More button - hidden on mobile */}
-            {userRole === 'artist' && (
-              <div className='mt-6 flex justify-center'>
-                <AwardUploadModal onUpload={handleUploadAward} />
-              </div>
-            )}
-
-            {/* VIEW MORE / VIEW LESS BUTTONS - Only for visitors */}
-            {userRole !== 'artist' && (
-              <div className="w-full flex justify-center mt-8 gap-4">
-                {visibleItems.awards < awardImages.length && (
+            {/* Action buttons */}
+            <div className='mt-6 flex justify-center gap-4'>
+              {!isVisitor ? (
+                <button
+                  onClick={() => setIsUploadAwardOpen(true)}
+                  className="px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors"
+                >
+                  Add more
+                </button>
+              ) : (
+                !isInfiniteAwards && visibleItems.awards < awardImages.length && (
                   <button
-                    onClick={() => handleViewMore('awards')}
+                    onClick={() => setIsInfiniteAwards(true)}
                     className="px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors"
                   >
-                    View More
+                    View more
                   </button>
-                )}
-                {visibleItems.awards > 4 && (
-                  <button
-                    onClick={() => handleViewLess('awards')}
-                    className="px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors"
-                  >
-                    View Less
-                  </button>
-                )}
-              </div>
+                )
+              )}
+            </div>
+            {isInfiniteAwards && visibleItems.awards < awardImages.length && (
+              <div ref={awardsObserverRef} className="h-10 w-full" />
             )}
           </div>
         )}
@@ -313,7 +408,7 @@ const FashionCard = ({ isVisitor = false }) => {
                     </div>
 
                     {/* Delete Icon */}
-                    {userRole === 'artist' && (
+                    {!isVisitor && (
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -334,33 +429,28 @@ const FashionCard = ({ isVisitor = false }) => {
               ))}
             </div>
 
-            {/* Upload modal trigger below */}
-            {userRole === 'artist' && (
-              <div className='mt-6 flex justify-center'>
-                <UploadModal onUpload={handleUploadWork} />
-              </div>
-            )}
-
-            {/* VIEW MORE / VIEW LESS BUTTONS - Only for visitors */}
-            {userRole !== 'artist' && (
-              <div className="w-full flex justify-center mt-8 gap-4">
-                {visibleItems.work < workSamples.length && (
+            {/* Action buttons */}
+            <div className='mt-6 flex justify-center gap-4'>
+              {!isVisitor ? (
+                <button
+                  onClick={() => setIsUploadWorkOpen(true)}
+                  className="px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors"
+                >
+                  Add more
+                </button>
+              ) : (
+                !isInfiniteWork && visibleItems.work < workSamples.length && (
                   <button
-                    onClick={() => handleViewMore('work')}
+                    onClick={() => setIsInfiniteWork(true)}
                     className="px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors"
                   >
-                    View More
+                    View more
                   </button>
-                )}
-                {visibleItems.work > 4 && (
-                  <button
-                    onClick={() => handleViewLess('work')}
-                    className="px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors"
-                  >
-                    View Less
-                  </button>
-                )}
-              </div>
+                )
+              )}
+            </div>
+            {isInfiniteWork && visibleItems.work < workSamples.length && (
+              <div ref={workObserverRef} className="h-10 w-full" />
             )}
           </div>
         )}
@@ -379,46 +469,58 @@ const FashionCard = ({ isVisitor = false }) => {
               <p className='text-gray-600'>15 Verified Ratings</p>
             </div>
 
-            <div className='mt-6 lg:w-full lg:max-w-[70%] w-full border rounded-lg shadow p-4 divide-y'>
-              {[...Array(3)].map((_, i) => (
-                <div
-                  key={i}
-                  className={`py-4 flex items-start ${i > 0 ? 'hidden sm:flex' : ''}`}
-                >
-                  <Image
-                    src='/dev-images/Clients.png'
-                    width={50}
-                    height={50}
-                    alt='User'
-                    className='rounded-full'
-                  />
-                  <div className='ml-4'>
-                    <p className='font-semibold'>Alinko Amin {i + 1}</p>
-                    <div className='flex items-center mt-1'>
-                      <p className='text-gray-600'>Ratings:</p>
-                      <Image
-                        src='/dev-images/ratings3.png'
-                        width={100}
-                        height={20}
-                        alt='Stars'
-                        className='ml-2'
-                      />
+            <div className='mt-6 lg:w-full lg:max-w-[70%] w-full border rounded-lg shadow p-4'>
+              <div className='divide-y'>
+                {[...Array(visibleReviews)].map((_, i) => (
+                  <div
+                    key={i}
+                    className={`py-4 flex items-start ${i > 0 ? 'hidden sm:flex' : ''}`}
+                  >
+                    <Image
+                      src='/dev-images/Clients.png'
+                      width={50}
+                      height={50}
+                      alt='User'
+                      className='rounded-full'
+                    />
+                    <div className='ml-4'>
+                      <p className='font-semibold'>Alinko Amin {i + 1}</p>
+                      <div className='flex items-center mt-1'>
+                        <p className='text-gray-600'>Ratings:</p>
+                        <Image
+                          src='/dev-images/ratings3.png'
+                          width={100}
+                          height={20}
+                          alt='Stars'
+                          className='ml-2'
+                        />
+                      </div>
+                      <p className='mt-3 text-gray-700'>
+                        squ ad litora torquent per conubia nostra, per inceptos himenaeos.
+                        Praesent auctor purus luctus enim egestas, ac scelerisque ante
+                        pulvinar. Donec ut rhoncus ex. Suspendisse .
+                      </p>
+                      <p className='text-gray-500 text-sm mt-2'>11 October, 2024</p>
                     </div>
-                    <p className='mt-3 text-gray-700'>
-                      squ ad litora torquent per conubia nostra, per inceptos himenaeos.
-                      Praesent auctor purus luctus enim egestas, ac scelerisque ante
-                      pulvinar. Donec ut rhoncus ex. Suspendisse .
-                    </p>
-                    <p className='text-gray-500 text-sm mt-2'>11 October, 2024</p>
                   </div>
+                ))}
+              </div>
+              {/* Infinite Scroll Trigger & View More Button */}
+              {isInfiniteReviews ? (
+                <div ref={observerRef} className="h-10 w-full" />
+              ) : (
+                <div className='w-full flex justify-center mt-4 pt-2'>
+                  <button
+                    onClick={() => {
+                      setVisibleReviews((prev) => prev + 5);
+                      setIsInfiniteReviews(true);
+                    }}
+                    className='px-6 py-2 bg-transparent border border-[#CCE7F2] text-[#222222] rounded-lg hover:bg-[#F4FCFF] transition-colors'
+                  >
+                    View More
+                  </button>
                 </div>
-              ))}
-            </div>
-
-            <div className=' hidden lg:flex w-full ml-48'>
-              <button className='mt-6 px-6 py-2 bg-transparent border-1 border-[#CCE7F2]  text-[#222222] rounded-lg'>
-                View More
-              </button>
+              )}
             </div>
           </div>
         )}
@@ -442,6 +544,96 @@ const FashionCard = ({ isVisitor = false }) => {
             : `Are you sure you want to delete this ${deleteItemType === 'design' ? 'design' : 'work sample'}? This action cannot be undone.`
         }
       />
+
+      {/* Upload Work Samples Modal */}
+      <Modal isOpen={isUploadWorkOpen} placement="center" classNames={{ wrapper: 'items-center' }} onOpenChange={(open) => setIsUploadWorkOpen(open)}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader>Upload Work Sample</ModalHeader>
+              <div className="mt-0.5 flex items-center gap-2 w-full max-w-[400px] mx-auto">
+                <label
+                  htmlFor="work-file-upload"
+                  className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-[8px] cursor-pointer text-sm text-gray-700 hover:bg-gray-100 transition px-8 py-4"
+                >
+                  <Paperclip className="text-[#035A7A] w-5 h-5" />
+                  Upload
+                </label>
+                <input id="work-file-upload" type="file" className="w-full hidden" />
+              </div>
+              <ModalBody className="mt-[-20px]">
+                <div className="mt-8">
+                  <label className="block text-sm font-medium text-gray-700">Description</label>
+                  <div
+                    contentEditable
+                    role="textbox"
+                    aria-multiline="true"
+                    data-placeholder="Write short description"
+                    className="mt-1 w-full min-h-[150px] rounded-lg border border-gray-300 px-3 py-2 focus:border-[#035A7A] outline-none placeholder-div"
+                  />
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button onPress={onClose} className="bg-[#EAEAEA] rounded-full text-[#222222]">Cancel</Button>
+                <Button
+                  onPress={() => {
+                    handleUploadWork({ id: Date.now(), title: 'New Work Sample' });
+                    onClose();
+                  }}
+                  className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] rounded-full text-[#0A4A66]"
+                >
+                  Send
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
+      {/* Upload Awards Modal */}
+      <Modal isOpen={isUploadAwardOpen} placement="center" classNames={{ wrapper: 'items-center' }} onOpenChange={(open) => setIsUploadAwardOpen(open)}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader>Upload Award / Certificate</ModalHeader>
+              <div className="mt-0.5 flex items-center gap-2 w-full max-w-[400px] mx-auto">
+                <label
+                  htmlFor="award-file-upload"
+                  className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-[8px] cursor-pointer text-sm text-gray-700 hover:bg-gray-100 transition px-8 py-4"
+                >
+                  <Paperclip className="text-[#035A7A] w-5 h-5" />
+                  Upload
+                </label>
+                <input id="award-file-upload" type="file" className="w-full hidden" />
+              </div>
+              <ModalBody className="mt-[-20px]">
+                <div className="mt-8">
+                  <label className="block text-sm font-medium text-gray-700">Description</label>
+                  <div
+                    contentEditable
+                    role="textbox"
+                    aria-multiline="true"
+                    data-placeholder="Write short description"
+                    className="mt-1 w-full min-h-[150px] rounded-lg border border-gray-300 px-3 py-2 focus:border-[#035A7A] outline-none placeholder-div"
+                  />
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button onPress={onClose} className="bg-[#EAEAEA] rounded-full text-[#222222]">Cancel</Button>
+                <Button
+                  onPress={() => {
+                    handleUploadAward('/dev-images/Awards.png');
+                    onClose();
+                  }}
+                  className="bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] rounded-full text-[#0A4A66]"
+                >
+                  Send
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </>
   );
 };

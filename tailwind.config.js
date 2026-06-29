@@ -38,8 +38,8 @@ module.exports = {
         customWhiteBgText: "#035A7A",
         customPrimary: "#EAF9FF",
         customDark: "#424242",
-        customWhite: "#F9F9F9",
-        customTextBlack: "#404040",
+        customWhite: "#FAFAFA",
+        customTextBlack: "#222222",
         customTextWhite: "#EAEAEA",
         customBgBlack: "#181818",
         customDarkBlue: "#3A98BB",
@@ -86,6 +86,15 @@ module.exports = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        shimmer: {
+          '0%': { backgroundPosition: '200% 0' },
+          '100%': { backgroundPosition: '-200% 0' },
+        },
+      },
+      animation: {
+        shimmer: 'shimmer 1.4s ease-in-out infinite',
       },
     },
   },

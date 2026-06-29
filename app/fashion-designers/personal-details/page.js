@@ -28,6 +28,7 @@ export default function Page() {
       username: "",
       email: "",
       nationality: new Set(["Nigeria"]),
+      countryOfResidence: new Set([]),
       phoneCode: new Set([]),
       phoneNumber: "",
       currentCity: "",
@@ -62,33 +63,33 @@ export default function Page() {
 
   return (
     <>
-    <FormProvider {...methods}>
+      <FormProvider {...methods}>
 
-      <div className="flex flex-col md:flex-row px-5 md:px-10 mt-5 md:mt-14">
-        {/* sidebar */}
-        <Profile
-          setSelected={setSelected}
-          formData={formData}
-          setFormData={setFormData}
-          selected={selected}
-          step={step}
-          setStep={setStep}
-          hoveredField={hoveredField}
-          className="flex"
-          preview={preview}
-          handleImageChange={handleImageChange}
-        />
-
-        {/* Form content */}
-        <div className="flex-1 md:mt-6">
-          <BrandDetails
+        <div className="flex flex-col md:flex-row px-5 md:px-10 mt-5 md:mt-14">
+          {/* sidebar */}
+          <Profile
+            setSelected={setSelected}
+            formData={formData}
+            setFormData={setFormData}
+            selected={selected}
             step={step}
             setStep={setStep}
-            setHoveredField={setHoveredField}
+            hoveredField={hoveredField}
+            className="flex"
+            preview={preview}
+            handleImageChange={handleImageChange}
           />
+
+          {/* Form content */}
+          <div className="flex-1 md:mt-6">
+            <BrandDetails
+              step={step}
+              setStep={setStep}
+              setHoveredField={setHoveredField}
+            />
+          </div>
         </div>
-      </div>
-    </FormProvider>
+      </FormProvider>
     </>
   );
 }

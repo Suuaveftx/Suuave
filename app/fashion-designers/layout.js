@@ -1,25 +1,32 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import Footer from '../../components/landing-page-components/Footer';
 import FashionDesignerHeader from './_components/studio-page-components/FashionDesignerHeader';
 import FloatingButton from './_components/FloatingButton';
-import { usePathname } from 'next/navigation';
+import SectionMain from '../../components/layout/SectionMain';
+import {
+  FASHION_ONBOARDING_ROUTES,
+  SECTION_SHELL_CLASS,
+} from '../../components/layout/layoutConstants';
 
 export default function Layout({ children }) {
   const pathname = usePathname();
-  const isPersonalDetails = pathname === '/fashion-designers/personal-details';
-  const isPostProject = pathname === '/fashion-designers/post-project';
+  const isOnboarding = FASHION_ONBOARDING_ROUTES.some((route) =>
+    pathname.startsWith(route)
+  );
+  const showFloatingButton = pathname === '/fashion-designers';
 
   return (
     <>
-      <div className='mx-auto bg-[#DBDBDB]/30 min-h-screen'>
-        {!isPersonalDetails && <FashionDesignerHeader />}
-        <main className={`font-satoshi ${!isPersonalDetails ? 'pt-[80px]' : ''}`}>
+      <div className={SECTION_SHELL_CLASS}>
+        {!isOnboarding && <FashionDesignerHeader />}
+        <SectionMain withNavbarOffset={!isOnboarding} fontClass='font-satoshi'>
           {children}
-        </main>
-        {!isPersonalDetails && <Footer />}
+        </SectionMain>
+        {!isOnboarding && <Footer />}
       </div>
-      {!isPostProject && <FloatingButton />}
+      {showFloatingButton && !isOnboarding && <FloatingButton />}
     </>
   );
 }

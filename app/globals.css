@@ -5,7 +5,7 @@
 
 /* globals.css */
 :root {
-  --background: #f1f1f1;
+  --background: #F2F2F2;
   --foreground: #171717;
   --font-montserrat: 'Montserrat', sans-serif;
   --font-geist-sans: 'Geist Sans', sans-serif;
@@ -78,11 +78,13 @@
 
 @layer base {
   :root {
-    --background: hsl(0 0% 95%);
-    /* #f1f1f1 */
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --background: hsl(0 0% 94.9%);
+    /* #F2F2F2 */
+    --foreground: 0 0% 13.3%;
+    /* #222222 */
+    --card: 0 0% 98%;
+    /* #FAFAFA */
+    --card-foreground: 0 0% 13.3%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
     --primary: 0 0% 9%;
@@ -161,7 +163,7 @@ body::-webkit-scrollbar {
 
   /* Custom scrollbar for WebKit browsers (Chrome, Safari) */
   body {
-    background-color: #f1f1f1;
+    background-color: #F2F2F2;
   }
 
   .visible-scrollbar::-webkit-scrollbar {
@@ -170,7 +172,7 @@ body::-webkit-scrollbar {
   }
 
   .visible-scrollbar::-webkit-scrollbar-track {
-    background: #f1f1f1 !important;
+    background: #F2F2F2 !important;
     border-radius: 10px !important;
   }
 
@@ -185,7 +187,7 @@ body::-webkit-scrollbar {
 
   .visible-scrollbar {
     scrollbar-width: thin !important;
-    scrollbar-color: #3a98bb #f1f1f1 !important;
+    scrollbar-color: #3a98bb #F2F2F2 !important;
     overflow-y: auto !important;
   }
 }
@@ -196,7 +198,7 @@ body::-webkit-scrollbar {
   overflow-y: auto !important;
   overflow-x: hidden !important;
   scrollbar-width: thin !important;
-  scrollbar-color: #3a98bb #f1f1f1 !important;
+  scrollbar-color: #3a98bb #F2F2F2 !important;
 }
 
 [data-slot="listbox-wrapper"]::-webkit-scrollbar {
@@ -205,7 +207,7 @@ body::-webkit-scrollbar {
 }
 
 [data-slot="listbox-wrapper"]::-webkit-scrollbar-track {
-  background: #f1f1f1 !important;
+  background: #F2F2F2 !important;
 }
 
 [data-slot="listbox-wrapper"]::-webkit-scrollbar-thumb {
@@ -314,7 +316,7 @@ body.menu-open [class*="NavbarMenu"] {
 
 .suuave-location-select .stdropdown-input {
   width: 100% !important;
-  height: 42px !important;
+  height: 40px !important;
   border: 1px solid #D1D1D1 !important;
   border-radius: 8px !important;
   padding: 0 12px !important;

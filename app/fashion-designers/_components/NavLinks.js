@@ -61,7 +61,7 @@ export function NavLinks() {
   };
 
   return (
-    <nav className="hidden md:flex items-center gap-9 font-medium h-full">
+    <nav className="hidden md:flex items-center gap-9 font-bold h-full">
       <Link
         href="/fashion-designers"
         className="group text-[#1A1A1A] hover:text-[#B0B0B0] text-[15px] transition-colors relative flex items-center h-full"

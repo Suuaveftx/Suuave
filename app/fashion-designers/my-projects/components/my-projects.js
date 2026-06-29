@@ -111,13 +111,13 @@ const MyProjects = () => {
 
   return (
     <>
-      <div className='min-h-screen max-w-[86.5rem] mx-auto'>
+      <div className='min-h-screen w-full mx-auto'>
         <div className='  '>
           {/* Header */}
           <ContractHeader title='My Projects' />
 
           {/* Search Bar */}
-          <div className='mb-8 w-full px-4 lg:px-10'>
+          <div className='mb-8 w-full'>
             <Input
               placeholder='Search'
               value={searchTerm}
@@ -138,7 +138,7 @@ const MyProjects = () => {
           </div>
 
           {/* Projects List */}
-          <div className='space-y-4 w-full px-4 lg:px-10'>
+          <div className='space-y-4 w-full'>
             {currentProjects.length === 0 ? (
               <p className='text-gray-500 text-center py-20'>No projects found.</p>
             ) : (
@@ -176,7 +176,7 @@ const MyProjects = () => {
                             </div>
 
                             <div onClick={(e) => e.stopPropagation()} className="shrink-0">
-                              <Dropdown placement="bottom-end">
+                              <Dropdown placement="bottom-end" shouldBlockScroll={false}>
                                 <DropdownTrigger>
                                   <Button
                                     variant='bordered'
