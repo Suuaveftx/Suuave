@@ -83,16 +83,10 @@ const CollectionList = () => {
     return (
         <>
             {/* Header */}
-            <div className="w-full px-4 flex flex-col md:flex-row md:items-center justify-between gap-4 md:px-6 lg:px-14 border-b-2 border-divider py-4">
+            <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-2 border-divider py-4">
                 <div className="flex items-center gap-2">
-                    <Image
-                        src="/collectionImage/icons/arrow-left.svg"
-                        alt="icon"
-                        width={24}
-                        height={24}
-                        className="cursor-pointer md:hidden"
-                    />
-                    <h1 className="text-[#222222] font-satoshi font-bold text-xl md:text-2xl">
+
+                    <h1 className="text-[#222222] font-satoshi font-bold text-[28px]">
                         My Collections
                     </h1>
                 </div>
@@ -121,7 +115,7 @@ const CollectionList = () => {
                 </div>
             </div>
 
-            <div className="px-4 py-3 md:px-6 md:py-6 lg:px-14">
+            <div className="py-3 md:py-6">
                 {/* Mobile Search & Filter */}
                 <div className="mt-4 md:hidden">
                     <div className="flex items-center bg-white border border-divider rounded-full px-4 py-1 shadow-sm focus-within:ring-1 focus-within:ring-divider transition-all">

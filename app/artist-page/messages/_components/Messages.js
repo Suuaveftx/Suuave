@@ -6,6 +6,7 @@ import { FiChevronLeft } from 'react-icons/fi';
 import { useRouter } from 'next/navigation';
 import SearchBar from '../../../../components/Searchbar';
 import CustomButton from '../../../../components/CustomButton';
+import PageContainer from '@/components/layout/PageContainer';
 
 const Messages = () => {
   const router = useRouter();
@@ -64,7 +65,7 @@ const Messages = () => {
   return (
     <>
       {/* ✅ Desktop & Large Screens */}
-      <div className='hidden lg:flex h-screen gap-6 p-6'>
+      <PageContainer className='hidden lg:flex h-[calc(100vh-80px)] w-full gap-6 py-6'>
         {/* Sidebar */}
         <div className='w-1/4 h-full bg-white p-4 border-r shadow-lg rounded-lg flex flex-col'>
           <h1 className='font-bold text-2xl mb-4'>Messages</h1>
@@ -127,7 +128,7 @@ const Messages = () => {
         {/* Chat Section */}
         <div className='flex flex-col flex-1 h-full bg-gray-100 rounded-md border border-[#D3D3D3]'>
           {/* Chat Header */}
-          <div className='bg-white p-4 border-b shadow-md rounded-t-md font-bold text-center'>
+          <div className='bg-white p-4 border-b shadow-md rounded-t-md font-bold text-center z-10 relative'>
             <h2 className='text-lg inline-block border-b border-gray-300'>Tolu Isioma</h2>
             <div className='mt-2'>
               <span className='text-[#878787] text-sm'>
@@ -135,6 +136,11 @@ const Messages = () => {
                 <span className='text-[#3A98BB]'>(24t64754)</span>
               </span>
             </div>
+          </div>
+
+          {/* Disclaimer */}
+          <div className='bg-[#3A98BB] text-white text-[11px] sm:text-xs text-center py-2 px-4 shadow-sm z-10'>
+            <strong>Disclaimer:</strong> Keep conversations here to stay protected by our project terms. Only communication within our platform is valid for dispute resolution.
           </div>
 
           {/* Chat Messages */}
@@ -203,14 +209,14 @@ const Messages = () => {
             </div>
           </div>
         </div>
-      </div>
+      </PageContainer>
 
       {/* ✅ Mobile View */}
-      <div className='block lg:hidden h-screen flex-col bg-white'>
+      <PageContainer className='flex lg:hidden min-h-[calc(100dvh-80px)] flex-col bg-white withTopSpacing'>
         {!activeChat ? (
           <>
             {/* Header */}
-            <div className='flex items-center gap-2 p-4 border-b'>
+            <div className='flex items-center gap-2 py-4 border-b'>
               <FiChevronLeft
                 className='text-xl cursor-pointer'
                 onClick={() => router.push("/artist-page")}
@@ -219,7 +225,7 @@ const Messages = () => {
             </div>
 
             {/* Search */}
-            <div className='pt-2 px-4 pb-4 border-b mb-4'>
+            <div className='pt-2 pb-4 border-b mb-4'>
               <SearchBar placeholder='Search chats...' className='w-full' />
             </div>
 
@@ -251,7 +257,7 @@ const Messages = () => {
                 <div
                   key={chat.id}
                   onClick={() => setActiveChat(chat)} // ✅ open chat on mobile
-                  className={`flex items-center gap-3 p-4 border-b cursor-pointer ${chat.unread ? 'bg-gray-100' : ''
+                  className={`flex items-center gap-3 py-4 border-b cursor-pointer ${chat.unread ? 'bg-gray-100' : ''
                     }`}
                 >
                   <Image
@@ -274,11 +280,11 @@ const Messages = () => {
             </div>
           </>
         ) : (
-          <>
+          <div className='flex min-h-0 flex-1 flex-col'>
             {/* Mobile Active Chat */}
-            <div className='flex items-center p-4 border-b relative'>
+            <div className='flex items-center py-4 border-b relative z-10 bg-white'>
               <FiChevronLeft
-                className='text-xl cursor-pointer absolute left-4 z-10'
+                className='text-xl cursor-pointer absolute left-0 z-10'
                 onClick={() => setActiveChat(null)} // ✅ close chat
               />
               <div className='flex flex-col items-center mx-auto'>
@@ -290,9 +296,13 @@ const Messages = () => {
               </div>
             </div>
 
+            {/* Disclaimer */}
+            <div className='bg-[#3A98BB] text-white text-[10px] sm:text-[11px] text-center py-2 px-3 shadow-sm z-10 w-full'>
+              <strong>Disclaimer:</strong> Keep conversations here to stay protected by our project terms. Only communication within our platform is valid for dispute resolution.
+            </div>
+
             {/* Messages */}
-            {/* Messages */}
-            <div className='flex-1 p-4 space-y-6 overflow-y-auto'>
+            <div className='flex-1 py-4 space-y-6 overflow-y-auto'>
               <div className='text-center text-[#767676] text-xs font-normal'>
                 Tuesday, January 2025
               </div>
@@ -315,7 +325,7 @@ const Messages = () => {
             </div>
 
             {/* Input Area */}
-            <div className='md:hidden flex items-center justify-between rounded-full border border-gray-300 bg-white px-4 py-2 m-2 shadow-sm mt-[450px]'>
+            <div className='sticky bottom-0 z-20 flex items-center justify-between rounded-full border border-gray-300 bg-white px-4 py-2 m-2 shadow-sm'>
               <div className='flex items-center gap-2 flex-1'>
                 <Image src='/dev-images/smile.png' alt='smile' width={20} height={20} />
                 <textarea
@@ -346,9 +356,9 @@ const Messages = () => {
                 />
               </div>
             </div>
-          </>
+          </div>
         )}
-      </div>
+      </PageContainer>
     </>
   );
 };

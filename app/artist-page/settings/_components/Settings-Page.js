@@ -4,19 +4,21 @@ import { useRouter } from 'next/navigation';
 import Sidebar_MenuCard from './Sidebar-MenuCard';
 import NotificationSettings from './Notification-Settings';
 import SecuritySettings from './Security-Settings';
+import AccountSettings from './Account-Settings';
 
 import {
   Bell as LucideBell,
   Lock as LucideLock,
-  HelpCircle as LucideHelpCircle,
-  Phone as LucidePhone,
+  UserCog as LucideUserCog,
   CircleUserRound as LucideCircleUserRound,
   ChevronLeft,
 } from 'lucide-react';
 
 const settingsMenu = [
+  { id: 'profile', label: 'Profile Settings', icon: LucideCircleUserRound },
   { id: 'notifications', label: 'Notifications', icon: LucideBell },
   { id: 'security', label: 'Security', icon: LucideLock },
+  { id: 'account', label: 'Account', icon: LucideUserCog },
 ];
 
 const SettingsPage = () => {
@@ -24,19 +26,30 @@ const SettingsPage = () => {
   const [activeItem, setActiveItem] = useState('notifications');
   const [showSidebar, setShowSidebar] = useState(true); // for mobile
 
+  const handleSetItem = (id) => {
+    if (id === 'profile') {
+      router.push('/artist-page/edit-profile');
+    } else {
+      setActiveItem(id);
+      setShowSidebar(false);
+    }
+  };
+
   const renderActiveComponent = () => {
     switch (activeItem) {
       case 'notifications':
         return <NotificationSettings />;
       case 'security':
         return <SecuritySettings />;
+      case 'account':
+        return <AccountSettings />;
       default:
         return <div>Select a setting.</div>;
     }
   };
 
   return (
-    <div className='w-full h-screen scrollbar-hide'>
+    <div className='w-full h-[calc(100vh-104px)] overflow-hidden'>
       {/* ----- Desktop View ----- */}
       <div className='hidden sm:flex h-full'>
         {/* Sidebar on Desktop */}
@@ -44,7 +57,7 @@ const SettingsPage = () => {
           <Sidebar_MenuCard
             menuItems={settingsMenu}
             activeItem={activeItem}
-            setActiveItem={setActiveItem}
+            setActiveItem={handleSetItem}
           />
         </div>
 
@@ -60,24 +73,26 @@ const SettingsPage = () => {
           <Sidebar_MenuCard
             menuItems={settingsMenu}
             activeItem={activeItem}
-            setActiveItem={(id) => {
-              setActiveItem(id);
-              // hide sidebar for any selected setting
-              setShowSidebar(false);
-            }}
+            setActiveItem={handleSetItem}
           />
         ) : (
           <div className='w-full p-4'>
             {/* Back Button */}
             <button
-              className='flex items-center text-[#222222] font-semibold mb-4'
+              className='text-[#767676] mb-2 flex items-center p-1 hover:bg-gray-100 rounded-full transition-colors'
               onClick={() => setShowSidebar(true)}
             >
-              <ChevronLeft className='w-5 h-5 mr-1' />
-              <span className='text-[32px]'>
-                {activeItem === 'notifications' ? 'Notifications' : 'Security'}
-              </span>
+              <ChevronLeft className="w-6 h-6" />
             </button>
+            <h2 className='text-[28px] font-semibold text-[#222222] mb-4'>
+              {activeItem === 'profile'
+                ? 'Profile Settings'
+                : activeItem === 'notifications'
+                  ? 'Notifications'
+                  : activeItem === 'security'
+                    ? 'Security'
+                    : 'Account'}
+            </h2>
 
             {/* Render active component */}
             {renderActiveComponent()}

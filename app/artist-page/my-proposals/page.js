@@ -1,15 +1,14 @@
 import React from "react";
-import Footer from "../../../components/landing-page-components/Footer";
 
 import ProposalTables from "./_components/ProposalTables";
+import PageContainer from "../../../components/layout/PageContainer";
 
 const Page = () => {
   return (
     <div>
-      <ProposalTables />
-      <div>
-        <Footer />
-      </div>
+      <PageContainer withTopSpacing>
+        <ProposalTables />
+      </PageContainer>
     </div>
   );
 };

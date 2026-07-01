@@ -16,6 +16,7 @@ import {
   DropdownItem,
   Card,
   CardBody,
+  Pagination,
 } from "@heroui/react";
 import {
   MagnifyingGlassIcon,
@@ -257,7 +258,7 @@ export default function CompletedContracts() {
 
   // Pagination calculations
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 5;
   const totalPages = Math.ceil(
     filteredAndSortedContracts.length / itemsPerPage
   );
@@ -266,7 +267,7 @@ export default function CompletedContracts() {
   const currentItems = filteredAndSortedContracts.slice(startIndex, endIndex);
 
   return (
-    <div className="w-full max-w-full mx-auto ">
+    <div className="w-full max-w-full mx-auto px-4 lg:px-0">
       {/* Search and Filter Bar */}
       <div className="mt-8 pb-2">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -423,41 +424,16 @@ export default function CompletedContracts() {
       {/* Pagination */}
       {
         totalPages > 0 && (
-          <div className="flex items-center justify-center gap-2 mt-6">
-            <div className="flex items-center gap-2">
-              {/* Results info */}
-              <span className="text-sm text-gray-600 mr-4">
-                {startIndex + 1} -{" "}
-                {Math.min(endIndex, filteredAndSortedContracts.length)} of{" "}
-                {filteredAndSortedContracts.length}
-              </span>
-
-              {/* Previous button */}
-              <Button
-                isIconOnly
-                variant="flat"
-                size="sm"
-                radius="none"
-                isDisabled={currentPage === 1}
-                onPress={() => setCurrentPage(currentPage - 1)}
-                className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer"
-              >
-                <ChevronLeftIcon className="h-4 w-4" />
-              </Button>
-
-              {/* Next button */}
-              <Button
-                isIconOnly
-                variant="flat"
-                size="sm"
-                radius="none"
-                isDisabled={currentPage === totalPages}
-                onPress={() => setCurrentPage(currentPage + 1)}
-                className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2"
-              >
-                <ChevronRightIcon className="h-4 w-4" />
-              </Button>
-            </div>
+          <div className="flex justify-center items-center mt-8 w-full">
+            <Pagination
+              showControls
+              total={totalPages}
+              page={currentPage}
+              onChange={setCurrentPage}
+              classNames={{
+                cursor: "bg-[#3A98BB] text-white",
+              }}
+            />
           </div>
         )
       }

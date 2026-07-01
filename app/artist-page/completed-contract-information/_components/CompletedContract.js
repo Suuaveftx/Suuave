@@ -39,19 +39,18 @@ const clientProfile = {
 export default function CompletedContract() {
     const router = useRouter();
     return (
-        <div className="w-full max-w-[1400px] mx-auto p-4 md:p-6 lg:p-8 font-proximanova text-[#222222]">
-            {/* Mobile Header */}
-            <div className="flex items-center gap-2 mb-6 mt-4 pt-2 md:hidden">
-                <div
-                    onClick={() => router.push("/artist-page/my-contracts?tab=completed")}
-                    className="p-1 cursor-pointer"
-                >
-                    <ChevronLeft size={24} color="#222222" />
-                </div>
-            </div>
-
+        <div className="w-full max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8 font-proximanova text-[#222222]">
             {/* Desktop Page Title */}
-            <h1 className="hidden md:block text-2xl md:text-3xl font-bold mb-6">Contract Information</h1>
+            <div className="flex items-center gap-2 mb-6">
+                <button
+                    onClick={() => router.push('/artist-page/my-contracts?tab=completed')}
+                    className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+                    aria-label="Back to completed contracts"
+                >
+                    <ChevronLeft className="w-6 h-6 text-[#222222]" />
+                </button>
+                <h1 className="text-2xl md:text-3xl font-bold">Contract Information</h1>
+            </div>
 
             <div className="flex flex-col lg:flex-row gap-2 lg:gap-6">
                 {/* Left Column */}
@@ -67,40 +66,40 @@ export default function CompletedContract() {
 
                         <div className="space-y-4">
                             {/* Mobile-only fields order and styling */}
-                            <div className="flex justify-between items-start md:hidden mb-1">
-                                <span className="text-gray-500 text-sm">Job Title:</span>
-                                <span className="font-medium text-sm text-right max-w-[60%]">{contractDetails.jobTitle}</span>
+                            <div className="grid grid-cols-[38%_62%] sm:grid-cols-[200px_1fr] gap-2 md:gap-4 items-start md:hidden mb-1">
+                                <span className="text-gray-500 text-sm">Job Title</span>
+                                <span className="font-medium text-sm break-words whitespace-normal">{contractDetails.jobTitle}</span>
                             </div>
-                            <div className="flex justify-between items-center md:hidden mb-1">
-                                <span className="text-gray-500 text-sm">Status:</span>
+                            <div className="grid grid-cols-[38%_62%] sm:grid-cols-[200px_1fr] gap-2 md:gap-4 items-center md:hidden mb-1">
+                                <span className="text-gray-500 text-sm">Status</span>
                                 <span className="font-medium text-sm text-gray-500">Completed</span>
                             </div>
 
                             {/* Shared fields with responsive layout */}
-                            <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
-                                <span className="text-gray-500 text-sm">Contract Number :</span>
+                            <div className="grid grid-cols-[38%_62%] sm:grid-cols-[200px_1fr] gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
+                                <span className="text-gray-500 text-sm">Contract Number</span>
                                 <span className="font-medium text-sm">{contractDetails.contractNumber}</span>
                             </div>
-                            <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
-                                <span className="text-gray-500 text-sm">Contract Type :</span>
+                            <div className="grid grid-cols-[38%_62%] sm:grid-cols-[200px_1fr] gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
+                                <span className="text-gray-500 text-sm">Contract Type</span>
                                 <span className="font-medium text-sm">{contractDetails.contractType}</span>
                             </div>
-                            <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
-                                <span className="text-gray-500 text-sm">Role :</span>
+                            <div className="grid grid-cols-[38%_62%] sm:grid-cols-[200px_1fr] gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
+                                <span className="text-gray-500 text-sm">Role</span>
                                 <span className="font-medium text-sm">{contractDetails.role}</span>
                             </div>
-                            <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
-                                <span className="text-gray-500 text-sm">Budget :</span>
+                            <div className="grid grid-cols-[38%_62%] sm:grid-cols-[200px_1fr] gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
+                                <span className="text-gray-500 text-sm">Budget</span>
                                 <span className="font-medium text-sm">{contractDetails.budget}</span>
                             </div>
-                            <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start">
-                                <span className="text-gray-500 text-sm">Timeframe :</span>
+                            <div className="grid grid-cols-[38%_62%] sm:grid-cols-[200px_1fr] gap-2 md:gap-4 items-center md:items-start">
+                                <span className="text-gray-500 text-sm">Timeframe</span>
                                 <span className="font-medium text-sm">{contractDetails.duration}</span>
                             </div>
 
                             {/* Desktop only Job Title */}
                             <div className="hidden md:grid grid-cols-1 md:grid-cols-[200px_1fr] gap-2 md:gap-4">
-                                <span className="text-gray-500 text-sm">Job Title :</span>
+                                <span className="text-gray-500 text-sm">Job Title</span>
                                 <span className="font-medium text-sm">{contractDetails.jobTitle}</span>
                             </div>
                         </div>
@@ -184,7 +183,7 @@ export default function CompletedContract() {
                         </div>
                     </Card>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }

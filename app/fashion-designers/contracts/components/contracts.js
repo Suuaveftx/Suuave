@@ -41,7 +41,7 @@ export default function ContractPage() {
       expiresIn: '2 Days',
       artistName: 'Tolu',
       artistRole: 'Fashion Artist',
-      status: 'Pending',
+      status: 'Waiting Approval',
     },
     {
       title: 'Modern Fashion Attire Illustration',
@@ -50,7 +50,7 @@ export default function ContractPage() {
       expiresIn: '2 Days',
       artistName: 'Tolu',
       artistRole: 'Fashion Artist',
-      status: 'Pending',
+      status: 'Waiting Approval',
     },
     {
       title: 'Modern Fashion Attire Illustration',
@@ -59,7 +59,7 @@ export default function ContractPage() {
       expiresIn: '1 Day',
       artistName: 'Tolu',
       artistRole: 'Fashion Artist',
-      status: 'Pending',
+      status: 'Waiting Approval',
     },
     {
       title: 'Modern Fashion Attire Illustration',
@@ -133,21 +133,21 @@ export default function ContractPage() {
   return (
     <>
       <ContractHeader title='My Contracts' />
-      <div className='max-w-7xl mx-auto bg-white px-2 md:px-4 my-6'>
-        <div className='py-8 font-satoshi'>
+      <div className='bg-[#FFFFFF] lg:border lg:border-[#EAEAEA] w-full lg:px-[35px] py-[45px] lg:mt-8 mb-8 rounded-[16px]'>
+        <div className='font-satoshi'>
           {/* Tab Navigation */}
-          <div className='flex w-full flex-col mb-8'>
+          <div className='flex w-full flex-col mb-8 px-4 lg:px-0'>
             <Tabs
               selectedKey={activeTab}
               onSelectionChange={setActiveTab}
               variant='underlined'
               classNames={{
                 tabList:
-                  'gap-12 w-full relative rounded-none p-0 border-b border-gray-200',
-                cursor: 'w-full bg-[#3A98BB] h-0.5',
-                tab: 'px-0 py-2 h-auto max-w-fit',
+                  'gap-12 w-full relative rounded-none p-0 border-b border-gray-100 px-0 lg:px-[20px]',
+                cursor: 'w-full bg-[#222222] h-[2px]',
+                tab: 'px-0 py-3 h-auto max-w-fit',
                 tabContent:
-                  'text-sm font-light group-data-[selected=true]:font-bold text-primary',
+                  'text-[15px] font-medium text-[#878787] group-data-[selected=true]:font-bold group-data-[selected=true]:text-[#222222]',
               }}
             >
               {tabs.map((tab) => (

@@ -1,8 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import { Button } from "@heroui/react";
 
 import BrandDetails from "../_components/BrandDetails";
 import Profile from "../_components/Profile";
@@ -21,35 +19,33 @@ export default function Page() {
     }
   };
 
-  // Personal details form
-  const [step, setStep] = useState(2); // In edit mode, we might want to start at personal details or fundamentals. Default to 2 for PersonalDetails if that's the intent.
+  const [step, setStep] = useState(1);
   const [hoveredField, setHoveredField] = useState(null);
 
   const methods = useForm({
     defaultValues: {
-      fullName: "",
-      username: "",
-      email: "",
-      nationality: new Set([]),
-      phoneCode: new Set([]),
-      phoneNumber: "",
-      currentCity: "",
-      language: "",
-      day: new Set([]),
-      month: new Set([]),
-      year: new Set([]),
-      about: "",
-      skill: "",
-      companyName: "",
-      portfolioLink: "",
+      fullName: "Ocean Clara",
+      username: "ocean_clara",
+      email: "ocean@suuave.com",
+      nationality: new Set(["Nigeria"]),
+      countryOfResidence: new Set(["Nigeria"]),
+      phoneCode: new Set(["+234"]),
+      phoneNumber: "8000000000",
+      currentCity: "Lagos",
+      language: "English",
+      dob: "1990-03-22",
+      about: "Sorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Maecenas eget condimentum velit, sit amet feugiat lectus.",
+      skill: "Fashion Designer | Branding",
+      companyName: "Ocean Avenue",
+      portfolioLink: "https://behance.net/oceanclara",
       uploadedPortfolio: "",
-      availability: false,
-      nameofAwardCertificate: "",
-      awardedIssuedBy: "",
+      availability: true,
+      nameofAwardCertificate: "Excellence in Fashion Design 2023",
+      awardedIssuedBy: "Fashion Council Nigeria",
       uploadCertificateAward: "",
-      brandCategory: new Set([]),
-      businessName: "",
-      role: "",
+      brandCategory: new Set(["Independent Brand / Designer"]),
+      businessName: "Ocean Avenue Ltd.",
+      role: "Creative Director",
     },
     mode: "onChange"
   });
@@ -60,38 +56,29 @@ export default function Page() {
   return (
     <>
       <FormProvider {...methods}>
-        <div className="md:hidden px-5 py-4 flex items-center gap-2">
-          <Button
-            isIconOnly
-            variant="light"
-            className="-ml-3 text-black"
-            onPress={() => router.push('/fashion-designers/profile')}
-          >
-            <ChevronLeftIcon className="w-6 h-6" />
-          </Button>
-          <h1 className="text-xl font-bold text-gray-900 font-satoshi">Personal Information</h1>
-        </div>
+        <div className="min-h-screen bg-[#DBDBDB]/30">
 
-        <div className="flex flex-col md:flex-row px-5 md:px-10 pt-4 md:pt-24">
-          <Profile
-            setSelected={setSelected}
-            formData={formData}
-            selected={selected}
-            step={step}
-            setStep={setStep}
-            hoveredField={hoveredField}
-            className="flex"
-            preview={preview}
-            handleImageChange={handleImageChange}
-          />
-          <div className="flex-1">
-            <BrandDetails
+          <div className="flex flex-col md:flex-row px-5 md:px-10 pt-2">
+            <Profile
+              setSelected={setSelected}
+              formData={formData}
+              selected={selected}
               step={step}
               setStep={setStep}
-              setHoveredField={setHoveredField}
-              isEdit={true}
-              submitHref="/fashion-designers/profile"
+              hoveredField={hoveredField}
+              className="flex"
+              preview={preview}
+              handleImageChange={handleImageChange}
             />
+            <div className="flex-1">
+              <BrandDetails
+                step={step}
+                setStep={setStep}
+                setHoveredField={setHoveredField}
+                isEdit={true}
+                submitHref="/fashion-designers/profile"
+              />
+            </div>
           </div>
         </div>
       </FormProvider>

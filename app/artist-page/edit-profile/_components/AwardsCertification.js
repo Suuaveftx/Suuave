@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { Input as HeroInput } from "@heroui/react";
 
 const AwardsCertification = ({
   setSelected,
@@ -98,12 +99,17 @@ export default AwardsCertification;
 
 const Input = ({ placeholder, id, value, onChange }) => {
   return (
-    <input
+    <HeroInput
       onChange={onChange}
       value={value}
       id={id}
       placeholder={placeholder}
-      className='w-full border border-[#D1D1D1] text-[#878787] font-normal text-base py-2 px-2 rounded-lg outline-[#3A98BB] bg-transparent '
+      variant="bordered"
+      classNames={{
+        inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB] rounded-lg h-[40px]',
+        input: 'text-[#222222] text-sm placeholder:text-[#ADADAD] font-normal'
+      }}
+      className="w-full"
     />
   );
 };

@@ -11,6 +11,7 @@ import { TiLocation } from 'react-icons/ti';
 import { FaStar } from 'react-icons/fa6';
 import Link from 'next/link';
 import CancelContractModal from './CancelContractModal';
+import PageContainer from '../../../../components/layout/PageContainer';
 
 export default function PendingDetailsPage({ params }) {
   const contractId = params?.id || '24t64754';
@@ -59,9 +60,9 @@ export default function PendingDetailsPage({ params }) {
   };
 
   return (
-    <>
-      <ContractHeader title='' maxWidth='max-w-6xl' tab='pending' />
-      <div className='max-w-6xl mx-auto px-2 md:px-0 pb-6 '>
+    <PageContainer>
+      <ContractHeader title='Contract Information' maxWidth='max-w-6xl' tab='pending' showBack={true} />
+      <div className='w-full mx-auto pb-24 lg:pb-6'>
         <div className='grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-1'>
           {/* Left Column - Contract Details & Documents */}
           <div className='lg:col-span-2 space-y-2'>
@@ -99,16 +100,16 @@ export default function PendingDetailsPage({ params }) {
                     ].map((item, index) => (
                       <div
                         key={index}
-                        className='grid grid-cols-[8rem_1fr] gap-4 items-start'
+                        className='grid grid-cols-[38%_62%] sm:grid-cols-[8rem_1fr] md:gap-4 gap-2 items-start w-full'
                       >
                         <span
                           className={`${item.label === 'Status' ? 'lg:hidden' : ''} ${item.label === 'Contract Number' ? 'lg:-mt-4' : ''
-                            } md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
+                            } md:text-md text-sm mb-1 sm:mb-0 font-light`}
                         >
-                          {item.label} :
+                          {item.label}
                         </span>
                         {item.label === 'Status' ? (
-                          <div className="flex flex-wrap items-center gap-2 lg:hidden">
+                          <div className="flex items-center gap-2 lg:hidden">
                             <span className="bg-[#F2F9FB] text-[#035A7A] px-3 py-1 rounded-full text-xs font-semibold capitalize">
                               {item.value}
                             </span>
@@ -116,7 +117,7 @@ export default function PendingDetailsPage({ params }) {
                         ) : (
                           <span
                             className={`${item.label === 'Contract Number' ? 'lg:-mt-4' : ''
-                              } md:text-md text-sm font-proximanova`}
+                              } md:text-md text-sm font-proximanova break-words whitespace-normal`}
                           >
                             {item.value}
                           </span>
@@ -166,20 +167,20 @@ export default function PendingDetailsPage({ params }) {
 
           {/* Right Column - Artist Info & Actions */}
           <div className='flex gap-2 flex-col lg:flex-col'>
-            {/* Action Buttons */}
-            <Card className='bg-white border border-gray-200'>
-              <CardBody className='py-4 lg:py-4 px-6 lg:px-8 flex flex-row items-center justify-center gap-4 lg:flex-col lg:gap-3'>
+            {/* Action Buttons - desktop only (inline in grid) */}
+            <Card className='bg-white border border-gray-200 drop-shadow-md hidden lg:block'>
+              <CardBody className='py-6 px-6 flex flex-col items-center justify-center gap-6'>
                 <Button
-                  className='flex-1 w-full py-6 lg:py-2 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold text-sm rounded-3xl lg:rounded-2xl border-0'
-                  size='md'
+                  className='flex-1 w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] py-3 text-[#035A7A] font-medium rounded-full border-0 shadow-sm text-md'
+                  radius='full'
                   onPress={onMessageOpen}
                 >
                   Message Artist
                 </Button>
                 <Button
-                  variant='flat'
-                  className='flex-1 w-full bg-[#EAEAEA] py-6 lg:py-2 text-[#035A7A] font-semibold rounded-3xl lg:rounded-2xl text-sm'
-                  size='md'
+                  variant='bordered'
+                  className='flex-1 w-full bg-transparent py-3 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-full shadow-sm text-md'
+                  radius='full'
                   onPress={onCancelOpen}
                 >
                   Cancel
@@ -187,8 +188,27 @@ export default function PendingDetailsPage({ params }) {
               </CardBody>
             </Card>
 
+            {/* Action Buttons - mobile fixed bottom bar */}
+            <div className='fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-white border-t border-gray-200 px-6 py-4 flex flex-row gap-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]'>
+              <Button
+                className='flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] py-3 text-[#035A7A] font-medium rounded-full border-0 shadow-sm text-md'
+                radius='full'
+                onPress={onMessageOpen}
+              >
+                Message Artist
+              </Button>
+              <Button
+                variant='bordered'
+                className='flex-1 bg-transparent py-3 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-full shadow-sm text-md'
+                radius='full'
+                onPress={onCancelOpen}
+              >
+                Cancel
+              </Button>
+            </div>
+
             {/* Artist Information Card */}
-            <Card className='bg-white border font-satoshi border-gray-200 mt-[-4px]' shadow='none'>
+            <Card className='bg-white border font-satoshi border-gray-200 mt-4 lg:mt-0' shadow='none'>
               <CardBody className=''>
                 <div className='text-center font-satoshi'>
                   <h3 className='text-2xl font-bold mb-6'>About the Artist</h3>
@@ -258,6 +278,6 @@ export default function PendingDetailsPage({ params }) {
         onConfirm={(id) => console.log('Canceled:', id)}
         contractId={contractId}
       />
-    </>
+    </PageContainer>
   );
 }

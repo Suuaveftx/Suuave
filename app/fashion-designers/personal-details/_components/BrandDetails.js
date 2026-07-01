@@ -1,8 +1,7 @@
-'use client';
+﻿'use client';
 import React, { useState, useEffect } from 'react';
 import { DatePicker, Input as HeroInput, Textarea } from '@heroui/react';
 import { parseDate } from '@internationalized/date';
-// import FormLabel from '@/components/ui/FormLabel';
 import CustomSelect from '@/components/ui/CustomSelect';
 import PhoneInputCustom from '@/components/ui/PhoneInputCustom';
 import { CountrySelect, StateSelect } from "react-country-state-city";
@@ -60,10 +59,9 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
           onClick={() => setStep(step - 1)}
         >
           <ChevronLeft size={24} />
-          <span className='ml-1 font-medium'>Back</span>
         </button>
       )}
-      <h1 className='text-[#222222] font-bold text-2xl md:text-[32px]'>
+      <h1 className='text-[#222222] font-bold text-2xl md:text-[28px]'>
         {step === 1 ? 'Brand Fundamentals' : 'Personal Details'}
       </h1>
       <p className='text-[#767676] font-normal text-base mt-2'>
@@ -75,7 +73,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
           <section className='grid md:grid-cols-2 mt-12 gap-10'>
             {/* Enter Full Name */}
             <div
-              className='w-full flex flex-col gap-1'
+              className='w-full flex flex-col gap-2'
               onMouseEnter={() => setHoveredField('Full Name')}
               onMouseLeave={() => setHoveredField(null)}
             >
@@ -85,11 +83,10 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 labelPlacement="outside"
                 placeholder='Enter Full Name'
                 variant="bordered"
-                isRequired
                 classNames={{
-                  label: "font-medium text-black text-sm",
-                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                  input: 'text-black'
+                  label: "text-sm font-medium !text-[#767676]",
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
+                  input: 'text-black text-sm'
                 }}
                 {...register("fullName", { required: "Full name is required" })}
                 isInvalid={!!errors.fullName}
@@ -98,7 +95,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
             </div>
             {/* Business Name */}
             <div
-              className='w-full flex flex-col gap-1'
+              className='w-full flex flex-col gap-2'
               onMouseEnter={() => setHoveredField('Business Name')}
               onMouseLeave={() => setHoveredField(null)}
             >
@@ -108,11 +105,10 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 labelPlacement="outside"
                 placeholder='Suuave Fashion Ltd.'
                 variant="bordered"
-                isRequired
                 classNames={{
-                  label: "font-medium text-black text-sm",
-                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                  input: 'text-black'
+                  label: "text-sm font-medium !text-[#767676]",
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
+                  input: 'text-black text-sm'
                 }}
                 {...register("businessName", { required: "Business name is required" })}
                 isInvalid={!!errors.businessName}
@@ -121,7 +117,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
             </div>
             {/* Username */}
             <div
-              className='w-full flex flex-col gap-1'
+              className='w-full flex flex-col gap-2'
               onMouseEnter={() => setHoveredField('Username')}
               onMouseLeave={() => setHoveredField(null)}
             >
@@ -131,11 +127,10 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 labelPlacement="outside"
                 placeholder='@ocean'
                 variant="bordered"
-                isRequired
                 classNames={{
-                  label: "font-medium text-black text-sm",
-                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                  input: 'text-black'
+                  label: "text-sm font-medium !text-[#767676]",
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
+                  input: 'text-black text-sm'
                 }}
                 {...register("username", { required: "Username is required" })}
                 isInvalid={!!errors.username}
@@ -164,7 +159,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
             </div>
             {/* Email Address */}
             <div
-              className='w-full flex flex-col gap-1'
+              className='w-full flex flex-col gap-2'
               onMouseEnter={() => setHoveredField('Email Address')}
               onMouseLeave={() => setHoveredField(null)}
             >
@@ -174,11 +169,10 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 labelPlacement="outside"
                 placeholder='czysdgv@gmail.com'
                 variant="bordered"
-                isRequired
                 classNames={{
-                  label: "font-medium text-black text-sm",
-                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                  input: 'text-black'
+                  label: "text-sm font-medium !text-[#767676]",
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
+                  input: 'text-black text-sm'
                 }}
                 {...register("email", { required: "Email is required", pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Invalid email address" } })}
                 isInvalid={!!errors.email}
@@ -187,7 +181,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
             </div>
             {/* Position */}
             <div
-              className='w-full flex flex-col gap-1'
+              className='w-full flex flex-col gap-2'
               onMouseEnter={() => setHoveredField('Position')}
               onMouseLeave={() => setHoveredField(null)}
             >
@@ -197,11 +191,10 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 labelPlacement="outside"
                 placeholder='Creative Director'
                 variant="bordered"
-                isRequired
                 classNames={{
-                  label: "font-medium text-black text-sm",
-                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                  input: 'text-black'
+                  label: "text-sm font-medium !text-[#767676]",
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
+                  input: 'text-black text-sm'
                 }}
                 {...register("role", { required: "Position is required" })}
                 isInvalid={!!errors.role}
@@ -213,9 +206,12 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
           <div className='w-full flex justify-center md:justify-end mt-10'>
             <button
               onClick={handleContinue}
-              className='text-[#035A7A] rounded-3xl cursor-pointer px-6 py-2 mt-4 text-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] w-full md:w-auto font-semibold shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
+              className={`rounded-3xl cursor-pointer px-6 py-2 mt-4 text-center w-full md:w-auto font-semibold transition-all ${isEdit
+                ? 'border border-[#3A98BB] text-[#3A98BB] hover:bg-[#EAF9FF]'
+                : 'text-[#035A7A] bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
+                }`}
             >
-              Continue
+              {isEdit ? 'Update' : 'Continue'}
             </button>
           </div>
         </>
@@ -226,14 +222,36 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
           <section className='grid md:grid-cols-2 mt-12 gap-10'>
             {/*Nationality */}
             <div
-              className="w-full flex flex-col gap-1"
+              className="w-full flex flex-col gap-2"
               style={{ position: "relative", zIndex: 30 }}
               onMouseEnter={() => setHoveredField('Nationality')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <span className="font-medium text-black text-sm mb-1">Nationality <span className="text-red-500">*</span></span>
+              <label htmlFor="nationality" className="text-sm font-medium text-[#767676] block">Nationality</label>
               <Controller name="nationality" control={control} rules={{ required: "Nationality is required", validate: (val) => (val instanceof Set ? val.size > 0 : !!val) || "Nationality is required" }} render={({ field }) => (
-                <div className="max-w-[280px] suuave-location-select">
+                <div className="w-full suuave-location-select">
+                  <CountrySelect
+                    defaultValue={NIGERIA_DEFAULT}
+                    onChange={(e) => {
+                      field.onChange(new Set([e.name]));
+                    }}
+                    placeHolder="Search Country"
+                  />
+                </div>
+              )}
+              />
+              {errors.nationality && <p className="text-danger text-xs mt-1">{errors.nationality.message}</p>}
+            </div>
+            {/*Country of Residence*/}
+            <div
+              className="w-full flex flex-col gap-2"
+              style={{ position: "relative", zIndex: 29 }}
+              onMouseEnter={() => setHoveredField('Country of Residence')}
+              onMouseLeave={() => setHoveredField(null)}
+            >
+              <label htmlFor="countryOfResidence" className="text-sm font-medium text-[#767676] block">Country of Residence</label>
+              <Controller name="countryOfResidence" control={control} rules={{ required: "Country of Residence is required", validate: (val) => (val instanceof Set ? val.size > 0 : !!val) || "Country of Residence is required" }} render={({ field }) => (
+                <div className="w-full suuave-location-select">
                   <CountrySelect
                     defaultValue={NIGERIA_DEFAULT}
                     onChange={(e) => {
@@ -247,16 +265,16 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 </div>
               )}
               />
-              {errors.nationality && <p className="text-danger text-xs mt-1">{errors.nationality.message}</p>}
+              {errors.countryOfResidence && <p className="text-danger text-xs mt-1">{errors.countryOfResidence.message}</p>}
             </div>
             {/*Phone Number */}
             <div
-              className="w-full flex flex-col gap-1"
-              style={{ position: "relative", zIndex: 29 }}
+              className="w-full flex flex-col gap-2"
+              style={{ position: "relative", zIndex: 28 }}
               onMouseEnter={() => setHoveredField('Phone Number')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <span className="font-medium text-black text-sm mb-1">Phone Number <span className="text-red-500">*</span></span>
+              <label htmlFor="phoneNumber" className="text-sm font-medium text-[#767676] block">Phone Number</label>
               <Controller name="phoneNumber" control={control} rules={{ required: "Phone number is required" }} render={({ field }) => (
                 <PhoneInputCustom
                   id="phoneNumber"
@@ -276,17 +294,18 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
             </div>
             {/*Current City*/}
             <div
-              className="w-full flex flex-col gap-1"
-              style={{ position: "relative", zIndex: 28 }}
+              className="w-full flex flex-col gap-2"
+              style={{ position: "relative", zIndex: 27 }}
               onMouseEnter={() => setHoveredField('Current City')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <span className="font-medium text-black text-sm mb-1">Current City <span className="text-red-500">*</span></span>
+              <label htmlFor="currentCity" className="text-sm font-medium text-[#767676] block">Current City</label>
               <Controller name="currentCity" control={control} rules={{ required: "Current city is required" }} render={({ field }) => (
-                <div className="max-w-[280px] suuave-location-select">
+                <div className="w-full suuave-location-select">
                   <StateSelect
                     countryid={countryid}
                     value={stateid}
+                    defaultValue={field.value ? { id: 0, name: field.value } : undefined}
                     onChange={(e) => {
                       setStateid(e.id);
                       field.onChange(e.name);
@@ -300,7 +319,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
             </div>
             {/*Language */}
             <div
-              className='w-full flex flex-col gap-1'
+              className='w-full flex flex-col gap-2'
               onMouseEnter={() => setHoveredField('Language')}
               onMouseLeave={() => setHoveredField(null)}
             >
@@ -317,7 +336,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
             </div>
             {/*Date of Birth*/}
             <div
-              className='w-full flex flex-col gap-1'
+              className='w-full flex flex-col gap-2'
               onMouseEnter={() => setHoveredField('Date of Birth')}
               onMouseLeave={() => setHoveredField(null)}
             >
@@ -327,7 +346,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                   label="Date of birth"
                   labelPlacement="outside"
                   aria-label='Date of birth'
-                  isRequired
+
                   value={
                     field.value
                       ? (() => { try { return parseDate(field.value); } catch { return null; } })()
@@ -339,11 +358,11 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                   showMonthAndYearPickers
                   popoverProps={{ placement: 'bottom-start', shouldFlip: false }}
                   classNames={{
-                    base: 'max-w-[280px]',
-                    label: "font-medium text-black text-sm",
+                    base: 'w-full',
+                    label: "text-sm font-medium !text-[#767676]",
                     inputWrapper: [
                       'w-full border border-[#D1D1D1] rounded-lg bg-transparent px-2 py-1',
-                      'hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+                      'data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
                       'shadow-none',
                     ],
                     input: 'text-black font-normal text-base',
@@ -380,13 +399,13 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 id='about'
                 label="Describe Yourself"
                 labelPlacement="outside"
-                isRequired
+
                 placeholder='Tell Us About Yourself, Your Relevant Skills and Professional Experience.'
                 variant="bordered"
                 classNames={{
-                  label: "font-medium text-black text-sm",
-                  inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
-                  input: 'text-black'
+                  label: "text-sm font-medium !text-[#767676]",
+                  inputWrapper: 'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
+                  input: 'text-black text-sm'
                 }}
                 minRows={4}
                 {...field}
@@ -413,16 +432,30 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                   Skip
                 </a>
               )}
-              <a
-                href={submitHref}
-                onClick={handleSubmitClick}
-                className={`flex items-center justify-center rounded-3xl cursor-pointer px-6 py-2 text-center w-full md:w-auto font-semibold transition-all ${isEdit
-                  ? 'border border-[#3A98BB] text-[#3A98BB] hover:bg-[#EAF9FF]'
-                  : 'text-[#035A7A] bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
-                  }`}
-              >
-                {isEdit ? 'Update' : 'Submit'}
-              </a>
+              {isEdit ? (
+                <button
+                  onClick={async () => {
+                    const isValid = await trigger();
+                    if (!isValid) return;
+                    if (step === 1) {
+                      setStep(2);
+                    } else {
+                      window.location.href = submitHref;
+                    }
+                  }}
+                  className='flex items-center justify-center rounded-3xl cursor-pointer px-6 py-2 text-center w-full md:w-auto font-semibold transition-all border border-[#3A98BB] text-[#3A98BB] hover:bg-[#EAF9FF]'
+                >
+                  Update
+                </button>
+              ) : (
+                <a
+                  href={submitHref}
+                  onClick={handleSubmitClick}
+                  className='flex items-center justify-center rounded-3xl cursor-pointer px-6 py-2 text-center w-full md:w-auto font-semibold transition-all text-[#035A7A] bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
+                >
+                  Submit
+                </a>
+              )}
             </div>
           </div>
         </>
@@ -432,4 +465,10 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
 };
 
 export default BrandDetails;
+
+
+
+
+
+
 

@@ -7,14 +7,10 @@ import { useRouter } from "next/navigation";
 const Page = () => {
   const router = useRouter();
   return (
-    <div className="pt-2 lg:pt-24 pb-10 w-full">
+    <div className="pt-2 lg:pt-24 pb-[100px] lg:pb-10 w-full">
       <div className="flex items-center gap-4 py-4 lg:py-5 border-b-2 border-[#EAEAEA] px-5 lg:px-16">
-        <ChevronLeft
-          className="lg:hidden cursor-pointer text-[#878787]"
-          onClick={() => router.push("/artist-page/my-proposals")}
-          size={24}
-        />
-        <h1 className="text-[32px] lg:text-2xl font-bold text-[#222222]">
+
+        <h1 className="text-[28px] lg:text-2xl font-bold text-[#222222]">
           Proposal Details
         </h1>
       </div>
@@ -124,7 +120,7 @@ const Page = () => {
           </div>
         </section>
         {/* Side section */}
-        <section className="w-full lg:w-[30%] bg-[#FAFAFA] space-y-5 py-7 px-5 border-1 border-[#EAEAEA] rounded-2xl opacity-50 cursor-not-allowed select-none">
+        <section className="hidden lg:block w-full lg:w-[30%] bg-[#FAFAFA] space-y-5 py-7 px-5 border-1 border-[#EAEAEA] rounded-2xl opacity-50 cursor-not-allowed select-none">
           <button disabled className="w-full text-[#035A7A] py-4 px-6 bg-[#CCE7F2] rounded-3xl cursor-not-allowed">
             Edit Proposal
           </button>
@@ -132,6 +128,18 @@ const Page = () => {
             Withdraw Proposal
           </button>
         </section>
+
+        {/* Mobile Sticky Action Buttons */}
+        <div className="sticky bottom-0 left-0 w-full bg-white border-t border-gray-200 px-4 py-4 z-50 lg:hidden drop-shadow-xl opacity-50 cursor-not-allowed select-none">
+          <div className="flex gap-4 max-w-[400px] mx-auto justify-center">
+            <button disabled className="flex-1 w-full text-[#035A7A] py-3 px-2 bg-[#CCE7F2] rounded-3xl cursor-not-allowed whitespace-nowrap text-sm font-semibold">
+              Edit Proposal
+            </button>
+            <button disabled className="flex-1 w-full text-[#035A7A] py-3 px-2 bg-[#CCE7F2] rounded-3xl cursor-not-allowed whitespace-nowrap text-sm font-semibold">
+              Withdraw Proposal
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

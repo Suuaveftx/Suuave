@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image";
 import RatingStar from "../_components/RatingStar";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
+import PageContainer from "@/components/layout/PageContainer";
 import {
   EditAboutMe,
   EditAward,
@@ -10,26 +11,14 @@ import {
 } from "../_components/profile/edit";
 import Link from "next/link";
 
-const reviews = [
-  {
-    id: 1,
-    name: "Aliko Amin",
-    rating: 4.0,
-    comment:
-      " squ ad litora torquent per conubia nostra, per inceptos himenaeos.Praesent auctor purus luctus enim egestas, ac scelerisque ante           pulvinar. Donec ut",
-    date: "11 October, 2024",
-    image: "/profile/image-2.svg",
-  },
-  {
-    id: 2,
-    name: "Aliko Amin",
-    rating: 4.0,
-    comment:
-      " squ ad litora torquent per conubia nostra, per inceptos himenaeos.Praesent auctor purus luctus enim egestas, ac scelerisque ante           pulvinar. Donec ut",
-    date: "11 October, 2024",
-    image: "/profile/image-2.svg",
-  },
-];
+const reviews = Array.from({ length: 15 }).map((_, i) => ({
+  id: i + 1,
+  name: `Aliko Amin ${i + 1}`,
+  rating: 4.0,
+  comment: "squ ad litora torquent per conubia nostra, per inceptos himenaeos.Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut",
+  date: "11 October, 2024",
+  image: "/profile/image-2.svg"
+}));
 
 const fullText = `Sorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel bibendum lorem. Morbi convallis convallis diam sit amet lacinia. Aliquam in elementum tellus. Curabitur tempor quis eros tempus lacinia. Nam bibendum pellentesque quam a convallis. Sed ut vulputate nisi. Integer in felis sed leo vestibulum venenatis. Suspendisse quis arcu sem. Aenean feugiat ex eu vestibulum vestibulum. Morbi a eleifend magna. Nam metus lacus, porttitor eu mauris a, blandit ultrices nibh. Mauris sit amet magna non ligula vestibul`;
 
@@ -44,6 +33,26 @@ const Page = () => {
   const [previewProfileUrl, setPreviewProfileUrl] = useState(null);
   const [selectedAward, setSelectedAward] = useState(null);
   const [previewAwardUrl, setPreviewAwardUrl] = useState(null);
+
+  const [visibleReviews, setVisibleReviews] = useState(5);
+  const [isInfiniteReviews, setIsInfiniteReviews] = useState(false);
+  const observerRef = useRef(null);
+
+  useEffect(() => {
+    if (!isInfiniteReviews) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setVisibleReviews((prev) => prev + 5);
+      }
+    }, { threshold: 0.1 });
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isInfiniteReviews, visibleReviews]);
 
   // Generic file handler
   const createFileHandler = (setFile, setPreviewUrl) => (e) => {
@@ -92,7 +101,7 @@ const Page = () => {
   }, [isMobile, showFull, words]);
 
   return (
-    <div className=" md:bg-[#F1F1F1] md:px-12">
+    <PageContainer className="min-h-screen w-full pb-20 pt-4">
       {/* Header */}
 
       {/* User details  */}
@@ -174,7 +183,7 @@ const Page = () => {
       {/* About user */}
       <section className="p-4 bg-white font-satoshi md:bg-[#F9F9F9] md:mt-10 md:py-5 md:px-5 md:rounded-t-lg ">
         <div className="flex items-start justify-between">
-          <h1 className="font-bold text-base md:text-xl md:mb-8">About Me</h1>{" "}
+          <h1 className="font-bold text-base md:text-xl md:mb-8">Description</h1>{" "}
           <EditAboutMe setAboutValue={setAboutValue} aboutValue={aboutValue} />
         </div>
         <span className="font-normal tracking-wide text-sm md:text-base text-[#222222]  mt-2">
@@ -202,40 +211,59 @@ const Page = () => {
             </p>
           </div>
         </div>
-        <div className="mt-7 space-y-5 md:space-y-1">
-          {reviews.map((review) => (
-            <div
-              key={review.id}
-              className=" flex items-start gap-3 md:w-[60%] md:p-5 md:bg-[#F9F9F9]"
-            >
-              <Image
-                src="/profile/image-2.svg"
-                alt="image"
-                className="w-[42px] h-[42px] md:w-[70px] md:h-[70px]"
-                width={0}
-                height={0}
-              />
-              <div className="space-y-2">
-                <h1 className="font-bold text-base md:text-xl tracking-wide">
-                  {review.name}
-                </h1>
-                <span className="flex items-center">
-                  Ratings
-                  <RatingStar />
-                </span>
-                <p className="text-[#222222] font-normal text-base">
-                  {" "}
-                  {review.comment}{" "}
-                </p>
-                <p className="mt-10 text-[#727272] font-normal text-sm">
-                  {review.date}
-                </p>
+        <div className="mt-7 border border-[#E6E6E6] rounded-lg shadow-sm p-6 md:w-[60%] w-full bg-white">
+          <div className="space-y-5 md:space-y-1 divide-y divide-[#E6E6E6]">
+            {reviews.slice(0, visibleReviews).map((review) => (
+              <div
+                key={review.id}
+                className="flex items-start gap-3 py-6 md:py-8 bg-white"
+              >
+                <Image
+                  src="/profile/image-2.svg"
+                  alt="image"
+                  className="w-[42px] h-[42px] md:w-[60px] md:h-[60px] rounded-full object-cover"
+                  width={0}
+                  height={0}
+                />
+                <div className="space-y-2">
+                  <h1 className="font-bold text-base md:text-lg tracking-wide">
+                    {review.name}
+                  </h1>
+                  <span className="flex items-center gap-1 text-[#4F4F4F]">
+                    Ratings:
+                    <RatingStar />
+                  </span>
+                  <p className="text-[#222222] font-normal text-base leading-relaxed max-w-[85%] mt-2">
+                    {review.comment}
+                  </p>
+                  <p className="mt-4 text-[#767676] font-normal text-sm">
+                    {review.date}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* VIEW MORE & OBSERVER */}
+          {isInfiniteReviews ? (
+            visibleReviews < reviews.length && (
+              <div ref={observerRef} className="h-10 w-full" />
+            )
+          ) : (
+            visibleReviews < reviews.length ? (
+              <div className="w-full flex justify-center mt-4 pb-2">
+                <button
+                  onClick={() => setIsInfiniteReviews(true)}
+                  className="px-8 py-2.5 bg-transparent border border-[#E6E6E6] text-[#222222] font-medium rounded-xl hover:bg-gray-50 transition-colors"
+                >
+                  View More
+                </button>
+              </div>
+            ) : null
+          )}
         </div>
       </section>
-    </div>
+    </PageContainer>
   );
 };
 

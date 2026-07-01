@@ -6,8 +6,10 @@ import {
   ExclamationTriangleIcon,
   EllipsisHorizontalIcon,
   AdjustmentsVerticalIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
 } from "@heroicons/react/24/outline";
-import { Input, Card, CardBody, Button, Alert } from "@heroui/react";
+import { Input, Card, CardBody, Button, Alert, Pagination } from "@heroui/react";
 import { createPortal } from 'react-dom';
 
 const PendingContracts = ({
@@ -28,12 +30,23 @@ const PendingContracts = ({
 
   useEffect(() => {
     const handleClose = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setOpenMenuContract(null);
+      if (menuRef.current && menuRef.current.contains(e.target)) {
+        return;
       }
+      const isButton = Object.values(menuButtonRefs.current).some(
+        (btn) => btn && btn.contains(e.target)
+      );
+      if (isButton) {
+        return;
+      }
+      setOpenMenuContract(null);
     };
-    document.addEventListener('pointerdown', handleClose);
-    return () => document.removeEventListener('pointerdown', handleClose);
+    document.addEventListener('mousedown', handleClose);
+    document.addEventListener('touchstart', handleClose);
+    return () => {
+      document.removeEventListener('mousedown', handleClose);
+      document.removeEventListener('touchstart', handleClose);
+    };
   }, []);
 
   const [dateFilter, setDateFilter] = React.useState('');
@@ -99,14 +112,14 @@ const PendingContracts = ({
 
   // Pagination state & calculations
   const [currentPage, setCurrentPage] = React.useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 5;
   const totalPages = Math.ceil(filteredContracts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentItems = filteredContracts.slice(startIndex, endIndex);
 
   return (
-    <div>
+    <div className="px-4 lg:px-0">
       {/* Search */}
       <div className="mb-6 w-full">
         <div className="flex items-start space-x-3 p-3 rounded-lg bg-[#FFF8EB] border border-[#FFF8EB] mb-6 w-fit max-w-[95%]">
@@ -152,16 +165,16 @@ const PendingContracts = ({
             >
               <CardBody className="md:px-6 px-3 py-4 overflow-visible">
                 <div className="flex md:justify-between items-start w-full">
-                  <div className="flex-1 md:grid md:grid-cols-[1.5fr_1fr_0.8fr_auto] md:gap-x-8 md:items-center">
-                    <div className="flex flex-col mb-1 md:mb-0">
-                      <h3 className="md:text-md text-sm font-proximanova line-clamp-1 group-hover:text-[#3A98BB] transition-colors">
+                  <div className="flex-1 md:grid md:grid-cols-[1.5fr_1fr_1fr_auto] md:gap-x-8 md:items-center">
+                    <div className="flex flex-col gap-1 mb-1 md:mb-0">
+                      <h3 className="md:text-md text-sm font-proximanova line-clamp-1 group-hover:text-[#3A98BB] transition-colors font-semibold">
                         {contract.title} ({contract.id})
                       </h3>
                     </div>
 
                     <p className="text-sm font-satoshi flex items-center gap-2">
                       <span className="font-light whitespace-nowrap text-gray-500 group-hover:text-[#3A98BB]/70 transition-colors">Pending Since -</span>
-                      <span className="font-semibold whitespace-nowrap group-hover:text-[#3A98BB] transition-colors">
+                      <span className="font-semibold whitespace-nowrap text-[#222222] group-hover:text-[#3A98BB] transition-colors">
                         {contract.pendingSince}
                       </span>
                     </p>
@@ -169,7 +182,7 @@ const PendingContracts = ({
                     <p className="text-sm font-satoshi flex items-center gap-2">
                       <span className="max-[840px]:hidden text-gray-300">|</span>
                       <span className="font-light whitespace-nowrap text-gray-500 group-hover:text-[#3A98BB]/70 transition-colors">Expires in -</span>
-                      <span className="font-semibold whitespace-nowrap group-hover:text-[#3A98BB] transition-colors">
+                      <span className="font-semibold whitespace-nowrap text-[#222222] group-hover:text-[#3A98BB] transition-colors">
                         {contract.expiresIn}
                       </span>
                     </p>
@@ -200,18 +213,14 @@ const PendingContracts = ({
                   </div>
 
                   {/* Mobile 3 Dots Menu */}
-                  <div
-                    className="md:hidden relative shrink-0"
-                    onPointerDown={(e) => e.stopPropagation()}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Button
-                      isIconOnly
-                      variant="ghost"
-                      className="p-2 border-0"
+                  <div className="md:hidden relative shrink-0 self-start">
+                    <button
+                      className="p-1 rounded-full hover:bg-gray-100 active:bg-gray-200 transition-colors"
                       aria-label="More options"
                       ref={(el) => { menuButtonRefs.current[contract.id || index] = el; }}
-                      onPress={(e) => {
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
                         const btnId = contract.id || index;
                         const btnEl = menuButtonRefs.current[btnId];
                         if (btnEl) {
@@ -225,8 +234,7 @@ const PendingContracts = ({
                       }}
                     >
                       <EllipsisHorizontalIcon className="h-5 w-5 text-gray-600" />
-                    </Button>
-
+                    </button>
                   </div>
 
                   {/* Portal dropdown — renders at document.body, immune to overflow:hidden */}
@@ -240,11 +248,9 @@ const PendingContracts = ({
                         zIndex: 9999,
                       }}
                       className='w-44 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden'
-                      onPointerDown={(e) => e.stopPropagation()}
                     >
                       <button
                         className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium'
-                        onPointerDown={(e) => e.stopPropagation()}
                         onClick={(e) => {
                           e.stopPropagation();
                           const contract = openMenuContract;
@@ -257,7 +263,6 @@ const PendingContracts = ({
                       <div className="border-t border-gray-100" />
                       <button
                         className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors font-medium"
-                        onPointerDown={(e) => e.stopPropagation()}
                         onClick={(e) => {
                           e.stopPropagation();
                           const contract = openMenuContract;
@@ -280,40 +285,16 @@ const PendingContracts = ({
       {/* Pagination */}
       {
         totalPages > 0 && (
-          <div className="flex items-center justify-center gap-2 mt-6">
-            <div className="flex items-center gap-2">
-              {/* Results info */}
-              <span className="text-sm text-gray-600 mr-4">
-                {startIndex + 1} - {Math.min(endIndex, filteredContracts.length)}{" "}
-                of {filteredContracts.length}
-              </span>
-
-              {/* Previous button */}
-              <Button
-                isIconOnly
-                variant="flat"
-                size="sm"
-                radius="none"
-                isDisabled={currentPage === 1}
-                onPress={() => setCurrentPage(currentPage - 1)}
-                className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer"
-              >
-                &lt;
-              </Button>
-
-              {/* Next button */}
-              <Button
-                isIconOnly
-                variant="flat"
-                size="sm"
-                radius="none"
-                isDisabled={currentPage === totalPages}
-                onPress={() => setCurrentPage(currentPage + 1)}
-                className="min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2"
-              >
-                &gt;
-              </Button>
-            </div>
+          <div className="flex justify-center items-center mt-8 w-full">
+            <Pagination
+              showControls
+              total={totalPages}
+              page={currentPage}
+              onChange={setCurrentPage}
+              classNames={{
+                cursor: "bg-[#3A98BB] text-white",
+              }}
+            />
           </div>
         )
       }

@@ -10,7 +10,7 @@ import { useAppStore } from '@/store';
 const ProjectPage = () => {
   const [activeTab, setActiveTab] = useState('recent');
   const [loading, setLoading] = useState(true);
-  const [showLicence, setShowLicence] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const [copiedId, setCopiedId] = useState(null);
 
   const { savedJobs, toggleSaveJob, activeProposals } = useAppStore();
@@ -20,7 +20,20 @@ const ProjectPage = () => {
       setLoading(false);
     }, 1500);
 
-    return () => clearTimeout(timer);
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setHasScrolled(true);
+      } else {
+        setHasScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const handleBookmark = (e, jobId) => {
@@ -81,7 +94,7 @@ const ProjectPage = () => {
   ];
 
   return (
-    <div className="w-full max-w-full overflow-x-hidden p-6">
+    <div className="w-full max-w-full overflow-x-hidden pb-6">
       {/* Tab Bar */}
       <div className="flex lg:space-x-4 border-b mb-4 gap-4">
         <div className={tabClasses('recent')} onClick={() => setActiveTab('recent')}>
@@ -216,49 +229,25 @@ const ProjectPage = () => {
           })}
       </div>
 
-      {/* Fixed Redesigned License Design Button for Mobile */}
-      <div className="fixed bottom-24 right-[52px] flex items-center z-30 sm:hidden">
-        {showLicence ? (
-          <div
-            className="flex items-center rounded-full shadow-lg px-4 py-2"
+      {/* Fixed License Your Design Button for Mobile */}
+      <div className="fixed bottom-24 right-6 z-[9999] lg:hidden">
+        <Link
+          href="/artist-page/license-your-design"
+          className="flex items-center bg-[#EAF9FF] border border-[#73D9FF] text-[#035A7A] rounded-full shadow-2xl p-4 transition-all duration-300 ease-in-out"
+          aria-label="License Your Design"
+        >
+          <FiPlus className="w-6 h-6 shrink-0" />
+          <span
+            className="font-bold whitespace-nowrap overflow-hidden transition-all duration-300 ease-in-out"
             style={{
-              background: 'radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)',
+              maxWidth: hasScrolled ? '150px' : '0px',
+              opacity: hasScrolled ? 1 : 0,
+              marginLeft: hasScrolled ? '8px' : '0px',
             }}
           >
-            <Link href="/artist-page/license-your-design" className="flex items-center">
-              <span className="text-base text-[#035A7A] font-bold whitespace-nowrap mr-2">
-                License your design
-              </span>
-              <motion.div
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                transition={{ duration: 0.2 }}
-              >
-                <FiMinus
-                  className="text-[#3A98BB] cursor-pointer ml-2 text-xl"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setShowLicence(false);
-                  }}
-                />
-              </motion.div>
-            </Link>
-          </div>
-        ) : (
-          <div
-            className="w-[52px] h-[52px] flex items-center justify-center bg-[#E0F4FB] rounded-full shadow-lg cursor-pointer transition-all duration-300 ease-in-out"
-            onClick={() => setShowLicence(true)}
-          >
-            <motion.div
-              initial={{ rotate: 90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              transition={{ duration: 0.2 }}
-            >
-              <FiPlus className="text-[#035A7A] text-2xl font-bold" />
-            </motion.div>
-          </div>
-        )}
+            License Your Design
+          </span>
+        </Link>
       </div>
     </div>
   );

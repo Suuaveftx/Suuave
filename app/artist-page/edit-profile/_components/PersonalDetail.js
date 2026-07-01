@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Select, SelectItem } from "@heroui/react";
+import { Select, SelectItem, Input as HeroInput, Textarea } from "@heroui/react";
 import CustomSelect from "./CustomSelect";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
@@ -123,11 +123,16 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
         {/* textarea */}
         <div className="w-full flex flex-col gap-2">
           <Lable htmlFor="about" text="Describe Yourself" />
-          <textarea
+          <Textarea
             name="about"
             id="about"
             placeholder="Write About Your Design Style"
-            className="w-full border border-[#D1D1D1] text-[#222222] placeholder:text-[#ADADAD] font-normal text-sm py-2 px-3 rounded-lg outline-none focus:border-[#3A98BB] bg-transparent h-32 resize-none"
+            variant="bordered"
+            minRows={4}
+            classNames={{
+              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB] rounded-lg',
+              input: 'text-[#222222] text-sm placeholder:text-[#ADADAD] font-normal'
+            }}
             value={formData.about}
             onChange={(e) => setFormData({ ...formData, about: e.target.value })}
           />
@@ -220,14 +225,20 @@ const PersonalDetail = ({ setSelected, formData, setFormData }) => {
 export default PersonalDetail;
 
 const Input = ({ placeholder, id, value, onChange, className, readOnly }) => {
+  const isEmail = id === "emailAddress";
   return (
-    <input
+    <HeroInput
       onChange={onChange}
       value={value}
       id={id}
       placeholder={placeholder}
-      readOnly={readOnly}
-      className={`w-full border border-[#D1D1D1] text-[#222222] placeholder:text-[#ADADAD] font-normal text-sm py-2 px-3 rounded-lg outline-none focus:border-[#3A98BB] bg-transparent ${className}`}
+      isReadOnly={readOnly}
+      variant="bordered"
+      classNames={{
+        inputWrapper: isEmail ? "bg-[#F1F1F1] border-none rounded-lg h-[40px]" : "bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB] rounded-lg h-[40px]",
+        input: isEmail ? "text-[#767676] text-sm font-normal" : "text-[#222222] text-sm placeholder:text-[#ADADAD] font-normal"
+      }}
+      className="w-full"
     />
   );
 };

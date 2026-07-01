@@ -15,6 +15,7 @@ import { useRef, useState, useEffect, Suspense } from "react";
 import { useForm, Controller } from "react-hook-form";
 
 import { useAppStore } from "@/store";
+import PageContainer from "@/components/layout/PageContainer";
 
 const PageContent = () => {
   const router = useRouter();
@@ -162,20 +163,9 @@ const PageContent = () => {
   };
 
   return (
-    <div className="max-w-[1500px] mx-auto p-6">
+    <PageContainer className="py-6">
       <div className="flex items-center gap-3 mb-6">
-        <Button
-          isIconOnly
-          variant="light"
-          radius="full"
-          className="md:hidden text-black -ml-2"
-          onPress={() => {
-            if (isEditMode) clearEditProject();
-            router.push('/fashion-designers/my-projects');
-          }}
-        >
-          <ArrowLeft size={24} />
-        </Button>
+
         <p className="font-bold text-2xl">{isEditMode ? "Edit Project" : "Post Project"}</p>
       </div>
       <Form
@@ -480,7 +470,7 @@ const PageContent = () => {
           </Button>
         </div>
       </Form>
-    </div>
+    </PageContainer>
   );
 };
 

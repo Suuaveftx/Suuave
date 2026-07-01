@@ -9,6 +9,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useDisclosure } from '@heroui/react';
 
 import { useAppStore } from '@/store';
+import PageContainer from '../../../components/layout/PageContainer';
 
 const SendProposalPageContent = () => {
   const router = useRouter();
@@ -44,39 +45,48 @@ const SendProposalPageContent = () => {
   };
 
   return (
-    <div className='grid grid-cols-10 gap-2'>
-      {/* Main Content */}
-      <div className='lg:col-span-7 col-span-10'>
-        <SendProposal
-          isOpen={isOpen}
-          onOpen={onOpen}
-          onOpenChange={onOpenChange}
-          handleSubmitProposal={isEditMode ? handleUpdateProposal : handleSubmitProposal}
-          jobId={jobId}
-          isEditMode={isEditMode}
-          handleCancelEdit={handleCancelEdit}
-        />
-      </div>
-      {/* Sidebar */}
-      <div className='col-span-10 lg:col-span-3 lg:mt-24 flex flex-col'>
-        <div className='hidden lg:flex mb-2 lg:mb-4'>
-          <BtnProposals
-            handleSubmitProposal={isEditMode ? handleUpdateProposal : handleSubmitProposal}
-            isOpen={isOpen}
-            onOpenChange={onOpenChange}
-            sendText={isEditMode ? "Update" : "Send Proposal"}
-            saveText={isEditMode ? "Cancel" : "Cancel"}
-            handleSave={isEditMode ? handleCancelEdit : handleCancel}
-            showSaveIcon={false}
-          />
-          <ProposalPopUp isOpen={isOpen} onOpenChange={onOpenChange} />
+    <PageContainer className="pb-20 font-satoshi" withTopSpacing>
+      {/* Desktop Header */}
+      <section className="hidden lg:block lg:mb-[29.34px] lg:mt-4">
+        <div className="border-b-2 text-left w-full">
+          <h1 className="font-bold text-2xl">{isEditMode ? "Proposal Details" : "Send Proposal"}</h1>
         </div>
+      </section>
 
-        <div className='lg:flex mt-2 lg:mt-4 lg:mx-0 mx-auto w-full'>
-          <Abouttheclient />
+      <div className='grid grid-cols-1 lg:grid-cols-10 gap-x-8 gap-y-4 pt-0 pb-28 lg:pb-0 mt-4'>
+        {/* Main Content */}
+        <div className='lg:col-span-7 col-span-10'>
+          <SendProposal
+            isOpen={isOpen}
+            onOpen={onOpen}
+            onOpenChange={onOpenChange}
+            handleSubmitProposal={isEditMode ? handleUpdateProposal : handleSubmitProposal}
+            jobId={jobId}
+            isEditMode={isEditMode}
+            handleCancelEdit={handleCancelEdit}
+          />
+        </div>
+        {/* Sidebar */}
+        <div className='col-span-10 lg:col-span-3 flex flex-col'>
+          <div className='hidden lg:flex mb-2 lg:mb-4'>
+            <BtnProposals
+              handleSubmitProposal={isEditMode ? handleUpdateProposal : handleSubmitProposal}
+              isOpen={isOpen}
+              onOpenChange={onOpenChange}
+              sendText={isEditMode ? "Update" : "Send Proposal"}
+              saveText={isEditMode ? "Cancel" : "Cancel"}
+              handleSave={isEditMode ? handleCancelEdit : handleCancel}
+              showSaveIcon={false}
+            />
+            <ProposalPopUp isOpen={isOpen} onOpenChange={onOpenChange} />
+          </div>
+
+          <div className='lg:flex mt-2 lg:mt-4 lg:mx-0 mx-auto w-full'>
+            <Abouttheclient />
+          </div>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 };
 

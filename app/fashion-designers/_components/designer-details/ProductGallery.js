@@ -98,7 +98,7 @@ const ProductGallery = ({ images, title, onOpenDetails, isBookmarked, onToggleSa
   };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-4 bg-white rounded-3xl overflow-hidden p-0 lg:p-4 h-auto lg:h-[680px]">
+    <div className="flex flex-col lg:flex-row gap-4 bg-white rounded-[32px] overflow-hidden p-0 lg:py-4 lg:pr-4 lg:pl-6 h-auto lg:h-[680px]">
       {/* Thumbnail Navigation - Left side on desktop */}
       <div className="hidden lg:flex flex-col gap-3 overflow-y-auto pr-2 custom-scrollbar">
         {images.map((image, index) => (

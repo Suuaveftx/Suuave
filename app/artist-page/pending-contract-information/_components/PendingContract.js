@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import AcceptModal from "../../../../components/AcceptModal";
 import DeclineModal from "../../../../components/DeclineModal";
 
-import Navbars from "../../../../components/ArtistNavbar";
+
 
 const contractDetails = {
     jobTitle: "Modern Fashion Attire Illustration",
@@ -43,25 +43,15 @@ export default function PendingContract() {
     const router = useRouter();
     return (
         <>
-            <Navbars />
-            <div className="w-full max-w-[1400px] mx-auto p-4 md:p-6 lg:p-8 font-proximanova text-[#222222]">
-                {/* Mobile Header */}
-                <div className="flex items-center gap-2 mb-6 mt-20 pt-2 md:hidden">
+            <div className="w-full max-w-[1400px] mx-auto p-4 md:p-6 lg:p-8 pb-32 md:pb-8 font-proximanova text-[#222222]">
+                {/* Page Title */}
+                <div className="flex items-center gap-2 mb-4">
                     <button
-                        onClick={() => router.push("/artist-page/my-contracts")}
-                        className="p-1 bg-transparent border-none outline-none cursor-pointer"
+                        onClick={() => router.push('/artist-page/my-contracts?tab=pending')}
+                        className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+                        aria-label="Back to pending contracts"
                     >
-                        <ChevronLeft size={24} color="#222222" />
-                    </button>
-                </div>
-
-                {/* Desktop Page Title */}
-                <div className="hidden md:flex items-center gap-3 mb-6">
-                    <button
-                        onClick={() => router.push("/artist-page/my-contracts")}
-                        className="p-1 bg-transparent border-none outline-none cursor-pointer hover:bg-gray-100 rounded-full transition-colors"
-                    >
-                        <ChevronLeft size={28} color="#222222" />
+                        <ChevronLeft className="w-6 h-6 text-[#222222]" />
                     </button>
                     <h1 className="text-2xl md:text-3xl font-bold">Contract Information</h1>
                 </div>
@@ -80,40 +70,40 @@ export default function PendingContract() {
 
                             <div className="space-y-4">
                                 {/* Mobile-only fields order and styling */}
-                                <div className="flex justify-between items-start md:hidden mb-1">
-                                    <span className="text-gray-500 text-sm">Job Title :</span>
-                                    <span className="font-medium text-sm text-right max-w-[60%]">{contractDetails.jobTitle}</span>
+                                <div className="grid grid-cols-[38%_62%] sm:grid-cols-[200px_1fr] gap-2 md:gap-4 items-start md:hidden mb-1">
+                                    <span className="text-gray-500 text-sm">Job Title</span>
+                                    <span className="font-medium text-sm break-words whitespace-normal">{contractDetails.jobTitle}</span>
                                 </div>
-                                <div className="flex justify-between items-center md:hidden mb-1">
-                                    <span className="text-gray-500 text-sm">Status :</span>
+                                <div className="grid grid-cols-[38%_62%] sm:grid-cols-[200px_1fr] gap-2 md:gap-4 items-center md:hidden mb-1">
+                                    <span className="text-gray-500 text-sm">Status</span>
                                     <span className="font-medium text-sm text-gray-500">Pending</span>
                                 </div>
 
                                 {/* Shared fields with responsive layout */}
-                                <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
-                                    <span className="text-gray-500 text-sm">Contract Number :</span>
+                                <div className="grid grid-cols-[38%_62%] sm:grid-cols-[200px_1fr] gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
+                                    <span className="text-gray-500 text-sm">Contract Number</span>
                                     <span className="font-medium text-sm">{contractDetails.contractNumber}</span>
                                 </div>
-                                <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
-                                    <span className="text-gray-500 text-sm">Contract Type :</span>
+                                <div className="grid grid-cols-[38%_62%] sm:grid-cols-[200px_1fr] gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
+                                    <span className="text-gray-500 text-sm">Contract Type</span>
                                     <span className="font-medium text-sm">{contractDetails.contractType}</span>
                                 </div>
-                                <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
-                                    <span className="text-gray-500 text-sm">Role :</span>
+                                <div className="grid grid-cols-[38%_62%] sm:grid-cols-[200px_1fr] gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
+                                    <span className="text-gray-500 text-sm">Role</span>
                                     <span className="font-medium text-sm">{contractDetails.role}</span>
                                 </div>
-                                <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
-                                    <span className="text-gray-500 text-sm">Budget :</span>
+                                <div className="grid grid-cols-[38%_62%] sm:grid-cols-[200px_1fr] gap-2 md:gap-4 items-center md:items-start mb-1 md:mb-0">
+                                    <span className="text-gray-500 text-sm">Budget</span>
                                     <span className="font-medium text-sm">{contractDetails.budget}</span>
                                 </div>
-                                <div className="flex md:grid grid-cols-1 md:grid-cols-[200px_1fr] justify-between gap-2 md:gap-4 items-center md:items-start">
-                                    <span className="text-gray-500 text-sm">Timeframe :</span>
+                                <div className="grid grid-cols-[38%_62%] sm:grid-cols-[200px_1fr] gap-2 md:gap-4 items-center md:items-start">
+                                    <span className="text-gray-500 text-sm">Timeframe</span>
                                     <span className="font-medium text-sm">{contractDetails.duration}</span>
                                 </div>
 
                                 {/* Desktop only Job Title */}
                                 <div className="hidden md:grid grid-cols-1 md:grid-cols-[200px_1fr] gap-2 md:gap-4">
-                                    <span className="text-gray-500 text-sm">Job Title :</span>
+                                    <span className="text-gray-500 text-sm">Job Title</span>
                                     <span className="font-medium text-sm">{contractDetails.jobTitle}</span>
                                 </div>
                             </div>
@@ -133,17 +123,7 @@ export default function PendingContract() {
                             </div>
                         </Card>
 
-                        {/* Mobile Action Buttons - Integrated after documents */}
-                        <Card className="w-full p-6 shadow-sm border border-gray-100 rounded-2xl md:hidden bg-white flex flex-col items-center justify-center min-h-[120px]">
-                            <div className="flex gap-4 w-full justify-center">
-                                <div className="flex-1 [&>button]:w-full [&>button]:h-12 [&>button]:text-sm [&>button]:min-w-0 [&>button]:px-2">
-                                    <DeclineModal />
-                                </div>
-                                <div className="flex-1 [&>button]:w-full [&>button]:h-12 [&>button]:text-sm [&>button]:min-w-0 [&>button]:px-2">
-                                    <AcceptModal />
-                                </div>
-                            </div>
-                        </Card>
+
                     </div>
 
                     {/* Right Column (Sidebar) */}
@@ -221,6 +201,17 @@ export default function PendingContract() {
                                 </div>
                             </div>
                         </Card>
+                    </div>
+                </div>
+            </div>
+            {/* Mobile Fixed Bottom Action Bar */}
+            <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 px-4 py-4 z-50 lg:hidden drop-shadow-[0_-4px_15px_rgba(0,0,0,0.08)]">
+                <div className="flex flex-row items-center justify-center gap-3 w-full">
+                    <div className="flex-1 [&>button]:w-full [&>button]:h-[44px] [&>button]:text-[15px] [&>button]:rounded-full">
+                        <DeclineModal />
+                    </div>
+                    <div className="flex-1 [&>button]:w-full [&>button]:h-[44px] [&>button]:text-[15px] [&>button]:rounded-full">
+                        <AcceptModal />
                     </div>
                 </div>
             </div>

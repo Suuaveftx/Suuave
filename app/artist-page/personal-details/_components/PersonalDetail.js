@@ -1,8 +1,7 @@
-"use client";
+﻿"use client";
 import React, { useState, useEffect } from "react";
 import { DatePicker, Input as HeroInput, Textarea, Button } from "@heroui/react";
 import { parseDate } from "@internationalized/date";
-import FormLabel from "@/components/ui/FormLabel";
 import CustomSelect from "@/components/ui/CustomSelect";
 import PhoneInputCustom from "@/components/ui/PhoneInputCustom";
 import { useFormContext, Controller } from "react-hook-form";
@@ -17,7 +16,7 @@ const languageOptions = [
 
 const NIGERIA_DEFAULT = { id: 161, name: "Nigeria", iso2: "NG" };
 
-const PersonalDetail = ({ setSelected, setHoveredField }) => {
+const PersonalDetail = ({ setSelected, setHoveredField, isEdit = false, submitHref = '/artist-page/profile-for-artist' }) => {
   const {
     control,
     register,
@@ -29,9 +28,9 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
   const [countryid, setCountryid] = useState(161);
   const [stateid, setStateid] = useState(0);
 
-  
+
   const handleContinue = async () => {
-    const isValid = await trigger(["fullName", "email", "phoneNumber", "language", "about", "nationality", "currentCity", "dob"]);
+    const isValid = await trigger(["fullName", "email", "phoneNumber", "language", "about", "nationality", "countryOfResidence", "currentCity", "dob"]);
     if (isValid) {
       setSelected("ProfessionalInformation");
     }
@@ -39,7 +38,7 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
 
   return (
     <div className="w-full bg-[#FAFAFA] border border-[#DEDEDE] p-6 md:p-6 rounded-2xl pb-8">
-      <h1 className="text-[#222222] font-bold text-[32px] mb-1">Personal Details</h1>
+      <h1 className="text-[#222222] font-bold text-[28px] mb-1">Personal Details</h1>
       <p className="text-[#767676] font-normal text-sm mb-8">
         Fill in the following information carefully
       </p>
@@ -50,13 +49,15 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           onMouseEnter={() => setHoveredField("Full Name")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <FormLabel htmlFor="fullName" text="Full Name" required />
           <HeroInput
             id="fullName"
+            label="Full Name"
+            labelPlacement="outside"
             placeholder="Chinedu Ozulu"
             variant="bordered"
             classNames={{
-              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+              label: "text-sm font-medium !text-[#767676]",
+              inputWrapper: 'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
               input: 'text-black text-sm'
             }}
             {...register("fullName", { required: "Full name is required" })}
@@ -70,16 +71,18 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           onMouseEnter={() => setHoveredField(" Email Address")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <FormLabel htmlFor="emailAddress" text="Email Address" required />
           <HeroInput
             id="email"
+            label="Email Address"
+            labelPlacement="outside"
             placeholder="czysdgv@gmail.com"
             variant="bordered"
             classNames={{
-              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+              label: "text-sm font-medium !text-[#767676]",
+              inputWrapper: 'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
               input: 'text-black text-sm'
             }}
-            {...register("email", { 
+            {...register("email", {
               required: "Email is required",
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -93,11 +96,11 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
         {/*Phone Number */}
         <div
           className="w-full flex flex-col gap-2"
-              style={{ position: "relative", zIndex: 45 }}
-              onMouseEnter={() => setHoveredField('Phone Number')}
-              onMouseLeave={() => setHoveredField(null)}
+          style={{ position: "relative", zIndex: 45 }}
+          onMouseEnter={() => setHoveredField('Phone Number')}
+          onMouseLeave={() => setHoveredField(null)}
         >
-          <FormLabel htmlFor="phoneNumber" text="Phone Number" required />
+          <label htmlFor="phoneNumber" className="text-sm font-medium text-[#767676] block">Phone Number</label>
           <Controller
             name="phoneNumber"
             control={control}
@@ -125,7 +128,7 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           onMouseEnter={() => setHoveredField("Language")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <FormLabel htmlFor="language" text="Language" required />
+          <label htmlFor="language" className="text-sm font-medium text-[#767676] block">Language</label>
           <Controller
             name="language"
             control={control}
@@ -145,14 +148,16 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           onMouseEnter={() => setHoveredField("About Yourself")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <FormLabel htmlFor="about" text="Describe Yourself" required />
           <Textarea
             id="about"
+            label="Describe Yourself"
+            labelPlacement="outside"
             placeholder="Write About Your Design Style"
             variant="bordered"
             minRows={4}
             classNames={{
-              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+              label: "text-sm font-medium !text-[#767676]",
+              inputWrapper: 'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
               input: 'text-black text-sm'
             }}
             {...register("about", { required: "Description is required" })}
@@ -162,13 +167,15 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
         </div>
         {/* Company Name */}
         <div className="w-full flex flex-col gap-2">
-          <FormLabel htmlFor="companyName" text="Company/Brand Name (Optional)" />
           <HeroInput
             id="companyName"
+            label="Company/Brand Name (Optional)"
+            labelPlacement="outside"
             placeholder="Enter Company Name"
             variant="bordered"
             classNames={{
-              inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+              label: "text-sm font-medium !text-[#767676]",
+              inputWrapper: 'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
               input: 'text-black text-sm'
             }}
             {...register("companyName")}
@@ -179,27 +186,24 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
         {/*Nationality */}
         <div
           className="w-full flex flex-col gap-2"
-              style={{ position: "relative", zIndex: 50 }}
-              onMouseEnter={() => setHoveredField('Nationality')}
-              onMouseLeave={() => setHoveredField(null)}
+          style={{ position: "relative", zIndex: 50 }}
+          onMouseEnter={() => setHoveredField('Nationality')}
+          onMouseLeave={() => setHoveredField(null)}
         >
-          <FormLabel htmlFor="nationality" text="Nationality" required />
+          <label htmlFor="nationality" className="text-sm font-medium text-[#767676] block">Nationality</label>
           <Controller
             name="nationality"
             control={control}
-            rules={{ 
+            rules={{
               required: "Nationality is required",
               validate: (val) => (val instanceof Set ? val.size > 0 : !!val) || "Nationality is required"
             }}
             render={({ field }) => (
-              <div className="max-w-[280px] suuave-location-select">
+              <div className="w-full suuave-location-select">
                 <CountrySelect
-                        defaultValue={NIGERIA_DEFAULT}
+                  defaultValue={NIGERIA_DEFAULT}
                   onChange={(e) => {
-                    setCountryid(e.id);
-                    setStateid(0);
                     field.onChange(new Set([e.name]));
-                    setValue("currentCity", "");
                   }}
                   placeHolder="Select Nationality"
                 />
@@ -208,23 +212,56 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           />
           {errors.nationality && <p className="text-danger text-xs">{errors.nationality.message}</p>}
         </div>
+        {/*Country of Residence*/}
+        <div
+          className="w-full flex flex-col gap-2"
+          style={{ position: "relative", zIndex: 45 }}
+          onMouseEnter={() => setHoveredField('Country of Residence')}
+          onMouseLeave={() => setHoveredField(null)}
+        >
+          <label htmlFor="countryOfResidence" className="text-sm font-medium text-[#767676] block">Country of Residence</label>
+          <Controller
+            name="countryOfResidence"
+            control={control}
+            rules={{
+              required: "Country of Residence is required",
+              validate: (val) => (val instanceof Set ? val.size > 0 : !!val) || "Country of Residence is required"
+            }}
+            render={({ field }) => (
+              <div className="w-full suuave-location-select">
+                <CountrySelect
+                  defaultValue={NIGERIA_DEFAULT}
+                  onChange={(e) => {
+                    setCountryid(e.id);
+                    setStateid(0);
+                    field.onChange(new Set([e.name]));
+                    setValue("currentCity", "");
+                  }}
+                  placeHolder="Select Country"
+                />
+              </div>
+            )}
+          />
+          {errors.countryOfResidence && <p className="text-danger text-xs">{errors.countryOfResidence.message}</p>}
+        </div>
         {/*Current City*/}
         <div
           className="w-full flex flex-col gap-2"
-              style={{ position: "relative", zIndex: 40 }}
-              onMouseEnter={() => setHoveredField('Current City')}
-              onMouseLeave={() => setHoveredField(null)}
+          style={{ position: "relative", zIndex: 40 }}
+          onMouseEnter={() => setHoveredField('Current City')}
+          onMouseLeave={() => setHoveredField(null)}
         >
-          <FormLabel htmlFor="currentCity" text="Current City" required />
+          <label htmlFor="currentCity" className="text-sm font-medium text-[#767676] block">Current City</label>
           <Controller
             name="currentCity"
             control={control}
             rules={{ required: "Current city is required" }}
             render={({ field }) => (
-              <div className="max-w-[280px] suuave-location-select">
+              <div className="w-full suuave-location-select">
                 <StateSelect
                   countryid={countryid}
                   value={stateid}
+                  defaultValue={field.value ? { id: 0, name: field.value } : undefined}
                   onChange={(e) => {
                     setStateid(e.id);
                     field.onChange(e.name);
@@ -242,7 +279,6 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
           onMouseEnter={() => setHoveredField(" Date of Birth")}
           onMouseLeave={() => setHoveredField(null)}
         >
-          <FormLabel htmlFor="dob" text="Date Of Birth" required />
           <Controller
             name="dob"
             control={control}
@@ -250,7 +286,8 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
             render={({ field }) => (
               <DatePicker
                 id="dateofBirth"
-                aria-label="Date of Birth"
+                label="Date Of Birth"
+                labelPlacement="outside"
                 variant="bordered"
                 isInvalid={!!errors.dob}
                 errorMessage={errors.dob?.message}
@@ -265,11 +302,12 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
                 showMonthAndYearPickers
                 popoverProps={{ placement: 'bottom-start', shouldFlip: false }}
                 classNames={{
-                  base: 'max-w-[280px]',
+                  base: 'w-full',
+                  label: "text-sm font-medium !text-[#767676]",
                   inputWrapper: [
                     'w-full border rounded-lg bg-transparent px-2 py-1',
                     errors.dob ? 'border-danger' : 'border-[#D1D1D1]',
-                    'hover:border-[#3A98BB] focus-within:border-[#3A98BB]',
+                    'data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
                     'shadow-none',
                   ],
                   input: 'text-black font-normal text-sm',
@@ -291,16 +329,34 @@ const PersonalDetail = ({ setSelected, setHoveredField }) => {
         </div>
       </section>
 
-      <div className="w-full flex flex-col md:flex-row items-center justify-center md:justify-end gap-3 mt-12">
-          <Button
-            onPress={handleContinue}
-            className="w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]"
+      <div className="w-full flex flex-col md:flex-row justify-center md:justify-end items-center mt-10 gap-4">
+        {isEdit ? (
+          <button
+            onClick={async () => {
+              const isValid = await trigger(["fullName", "email", "phoneNumber", "language", "about", "nationality", "countryOfResidence", "currentCity", "dob"]);
+              if (isValid) setSelected("ProfessionalInformation");
+            }}
+            className="flex items-center justify-center w-full md:w-auto text-[#3A98BB] bg-transparent border border-[#3A98BB] font-semibold rounded-[40px] px-12 py-3.5 hover:bg-[#EAF9FF] transition-colors shadow-none"
+          >
+            Update
+          </button>
+        ) : (
+          <button
+            onClick={handleContinue}
+            className="flex items-center justify-center w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]"
           >
             Continue
-          </Button>
+          </button>
+        )}
       </div>
     </div>
   );
 };
 
 export default PersonalDetail;
+
+
+
+
+
+

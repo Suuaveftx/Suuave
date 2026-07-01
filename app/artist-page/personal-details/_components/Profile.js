@@ -71,6 +71,7 @@ const Profile = ({
             <List activeState={formData.username} text="Username" isHovered={hoveredField === "Username"} />
             <List activeState={formData.email} text=" Email Address" isHovered={hoveredField === "Email Address"} />
             <List activeState={formData.nationality?.size > 0} text="Nationality" isHovered={hoveredField === "Nationality"} />
+            <List activeState={formData.countryOfResidence?.size > 0} text="Country of Residence" isHovered={hoveredField === "Country of Residence"} />
             <List activeState={formData.phoneNumber} text="Phone Number" isHovered={hoveredField === "Phone Number"} />
             <List activeState={formData.currentCity} text="Current City" isHovered={hoveredField === "Current City"} />
             <List activeState={formData.language?.size > 0} text="Language" isHovered={hoveredField === "Language"} />
@@ -91,7 +92,6 @@ const Profile = ({
         {selected === "ProfessionalInformation" && (
           <ul className="font-normal text-sm space-y-3 p-3">
             <List activeState={formData.skill} text="Skills" isHovered={hoveredField === "Skills"} />
-            <List activeState={formData.availability} text="Availability" isHovered={hoveredField === "Availability"} />
           </ul>
         )}
       </section>

@@ -1,4 +1,4 @@
-
+﻿
 'use client';
 import React from 'react';
 import Image from 'next/image';
@@ -70,11 +70,11 @@ const CustomSelect = ({
           offset: 10,
         }}
         classNames={{
-          label: "font-medium text-black text-sm",
+          label: "font-medium !text-[#767676] text-sm",
           trigger: [
             "font-normal text-base text-black border border-[#D1D1D1] outline-0 rounded-[8px] py-2",
-            "hover:border-[#3A98BB]",
-            "data-[focus=true]:!border-[#3A98BB] data-[focus=true]:!ring-[#3A98BB]",
+            "data-[hover=true]:!border-[#3A98BB] hover:!border-[#3A98BB] data-[hover=true]:!border-[1px] hover:!border-[1px]",
+            "data-[focus=true]:!border-[#3A98BB] data-[focus=true]:!border-[1px]",
             "data-[invalid=true]:border-danger data-[invalid=true]:text-danger",
           ].join(" "),
           value: "!text-black",
@@ -134,3 +134,4 @@ const CustomSelect = ({
 };
 
 export default CustomSelect;
+

@@ -27,8 +27,10 @@ import {
 import ContractHeader from "./contract-header";
 import { TiLocation } from "react-icons/ti";
 import { FaStar } from "react-icons/fa6";
+import { IoFlagSharp } from "react-icons/io5";
 import Link from "next/link";
 import SubmitModal from "../../../../components/SubmitModal";
+import PageContainer from "../../../../components/layout/PageContainer";
 
 import { ongoingContracts } from "../data";
 
@@ -117,9 +119,9 @@ export default function OngoingDetailsPage({ params }) {
   };
 
   return (
-    <>
-      <ContractHeader title="" maxWidth="max-w-6xl" tab="ongoing" />
-      <div className="max-w-6xl mx-auto px-2 md:px-0 pb-6 ">
+    <PageContainer>
+      <ContractHeader title="Contract Information" maxWidth="max-w-6xl" tab="ongoing" showBack={true} />
+      <div className="w-full mx-auto pb-36 lg:pb-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-1">
           {/* Left Column - Contract Details & Documents */}
           <div className="lg:col-span-2 space-y-2">
@@ -160,22 +162,22 @@ export default function OngoingDetailsPage({ params }) {
                     ].map((item, index) => (
                       <div
                         key={index}
-                        className="grid grid-cols-[8rem_1fr] gap-4 items-start"
+                        className="grid grid-cols-[38%_62%] sm:grid-cols-[8rem_1fr] md:gap-4 gap-2 items-start w-full"
                       >
                         <span
                           className={`${item.label === "Status" ? "lg:hidden" : ""
                             } ${item.label === "Contract Number" ? "lg:-mt-4" : ""
-                            }  md:text-md text-sm w-36 mb-1 sm:mb-0 font-light`}
+                            }  md:text-md text-sm mb-1 sm:mb-0 font-light`}
                         >
-                          {item.label} :
+                          {item.label}
                         </span>
                         {item.label === "Status" ? (
-                          <div className="flex  items-center gap-2 lg:hidden">
-                            <span className="border border-[#D1D1D1] text-[#279711] px-3 py-1 rounded-full text-xs font-medium capitalize">
+                          <div className="flex items-center gap-2 lg:hidden">
+                            <span className="border border-[#D1D1D1] text-[#279711] px-3 py-1 rounded-full text-xs font-medium capitalize whitespace-nowrap">
                               Ongoing
                             </span>
                             {contractData.isSubmitted && (
-                              <span className="bg-[#E0F2FE] text-[#2563EB] px-3 py-1 rounded-full text-xs font-medium w-32">
+                              <span className="bg-[#E0F2FE] text-[#2563EB] px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap">
                                 Waiting Approval
                               </span>
                             )}
@@ -193,7 +195,7 @@ export default function OngoingDetailsPage({ params }) {
                         ) : (
                           <span
                             className={`${item.label === "Contract Number" ? "lg:-mt-4" : ""
-                              }  md:text-md text-sm font-proximanova`}
+                              }  md:text-md text-sm font-proximanova break-words whitespace-normal`}
                           >
                             {item.value}
                           </span>
@@ -256,13 +258,12 @@ export default function OngoingDetailsPage({ params }) {
           </div>
 
           {/* Right Column - Artist Info & Actions */}
-          <div className="flex gap-2 flex-col lg:flex-col">
-            {/* Action Buttons */}
-            <Card className="bg-white border border-gray-200 drop-shadow-md">
-              <CardBody className="py-4 lg:py-6 px-6 md:px-12 flex flex-row items-center justify-center gap-4 lg:flex-col lg:gap-6">
+          <div className="flex gap-4 flex-col lg:flex-col">
+            {/* Desktop Action Buttons */}
+            <Card className="hidden lg:block bg-white border border-gray-200 drop-shadow-md">
+              <CardBody className="py-6 px-12 flex flex-col items-center justify-center gap-6">
                 <Button
-                  className="flex-1 w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] py-6 text-[#035A7A] font-medium rounded-full border-0 shadow-sm"
-                  size="lg"
+                  className="w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] py-3 text-[#035A7A] font-medium rounded-full border-0 shadow-sm text-md"
                   radius="full"
                   onPress={onOpen}
                 >
@@ -272,8 +273,7 @@ export default function OngoingDetailsPage({ params }) {
                 {contractData.isSubmitted ? (
                   <Button
                     variant="bordered"
-                    className="flex-1 w-full bg-transparent py-6 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl shadow-sm"
-                    size="lg"
+                    className="w-full bg-transparent py-3 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-full shadow-sm text-md"
                     radius="full"
                     onPress={() => setShowRejectModal(true)}
                   >
@@ -282,19 +282,25 @@ export default function OngoingDetailsPage({ params }) {
                 ) : (
                   <Button
                     variant="bordered"
-                    className="flex-1 w-full bg-transparent py-6 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-3xl shadow-sm"
-                    size="lg"
+                    className="w-full bg-transparent py-3 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-full shadow-sm text-md"
                     radius="full"
                   >
                     Message Artist
                   </Button>
                 )}
+
+                <div className="mt-2 text-[#ef4444] flex gap-2 items-center justify-center border border-[rgba(229,229,229,0.61)] rounded-full px-6 py-2 cursor-pointer w-full font-medium text-sm">
+                  <IoFlagSharp size={14} color="#ef4444" />
+                  <Link href="#">
+                    Report Dispute
+                  </Link>
+                </div>
               </CardBody>
             </Card>
 
             {/* Artist Information Card */}
             <Card
-              className="bg-white border font-satoshi border-gray-200 mt-[-4px]"
+              className="bg-white border font-satoshi border-gray-200 mt-4 lg:mt-0"
               shadow="none"
             >
               <CardBody className="">
@@ -351,6 +357,38 @@ export default function OngoingDetailsPage({ params }) {
               </CardBody>
             </Card>
           </div>
+        </div>
+      </div>
+
+      {/* Mobile Action Buttons */}
+      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 px-4 py-4 z-50 lg:hidden drop-shadow-xl">
+        <div className="flex flex-row items-center justify-center gap-3 w-full">
+          <Button
+            className="flex-1 w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] h-[44px] text-[#035A7A] font-medium rounded-full border-0 shadow-sm text-[15px]"
+            radius="full"
+            onPress={onOpen}
+          >
+            Approve Work
+          </Button>
+
+          {contractData.isSubmitted ? (
+            <Button
+              variant="bordered"
+              className="flex-1 w-full bg-transparent h-[44px] border border-[#CCE7F2] text-[#035A7A] font-medium rounded-full shadow-sm text-[15px]"
+              radius="full"
+              onPress={() => setShowRejectModal(true)}
+            >
+              Reject
+            </Button>
+          ) : (
+            <Button
+              variant="bordered"
+              className="flex-1 w-full bg-transparent h-[44px] border border-[#CCE7F2] text-[#035A7A] font-medium rounded-full shadow-sm text-[15px]"
+              radius="full"
+            >
+              Message Artist
+            </Button>
+          )}
         </div>
       </div>
       {/* Approval Modal Implemetation */}
@@ -616,6 +654,6 @@ export default function OngoingDetailsPage({ params }) {
         name={contractData.artist.name}
         redirectPath='/fashion-designers/contracts'
       />
-    </>
+    </PageContainer >
   );
 }

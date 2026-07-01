@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import React from 'react';
 import { Autocomplete, AutocompleteItem, Avatar } from "@heroui/react";
 
@@ -26,21 +26,22 @@ const LanguageSelectCustom = ({ value, onChange, placeholder = "Select Language"
       aria-label={label || placeholder}
       placeholder={placeholder}
       variant="bordered"
+      size="md"
       defaultItems={languages}
       selectedKey={value}
       onSelectionChange={onChange}
       isInvalid={!!error}
       errorMessage={error}
-      className="max-w-[280px]"
+      className="w-full"
       classNames={{
         base: "w-full",
         listbox: "bg-white",
         popoverContent: "bg-white border border-[#EAEAEA] shadow-xl rounded-xl",
-        label: "font-medium text-black text-sm",
+        label: "font-medium !text-[#767676] text-sm",
       }}
       inputProps={{
         classNames: {
-          inputWrapper: 'bg-transparent border-[#D1D1D1] hover:border-[#3A98BB] focus-within:border-[#3A98BB] h-11',
+          inputWrapper: 'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
           input: 'text-black font-satoshi'
         }
       }}
@@ -66,3 +67,8 @@ const LanguageSelectCustom = ({ value, onChange, placeholder = "Select Language"
 };
 
 export default LanguageSelectCustom;
+
+
+
+
+

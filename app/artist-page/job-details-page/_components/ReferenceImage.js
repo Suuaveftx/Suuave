@@ -56,7 +56,7 @@ const ReferenceImage = ({ jobId }) => {
             </div>
 
             {/* Desktop View */}
-            <div className="hidden lg:block lg:w-screen lg:max-w-[85%] bg-[#F9F9F9] px-8 py-6 mt-6 lg:mx-16 mx-4 rounded-2xl">
+            <div className="hidden lg:block w-full bg-[#FAFAFA] border border-[#EAEAEA] px-8 py-6 mt-4 rounded-2xl">
                 <h4 className="font-bold text-[22px] text-[#222222] mb-4">Reference Image</h4>
                 <div className="mt-4">
                     <div className="flex gap-6">

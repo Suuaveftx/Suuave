@@ -64,18 +64,16 @@ const ProposalTables = () => {
   return (
     <div>
       {/* Title */}
-      <div className="w-[90%] border-b-2 text-left mb-[21px] ml-5 lg:ml-16">
+      <div className="w-full border-b-2 text-left mb-[21px]">
         <div className="flex items-center gap-2 mt-8 pb-1">
-          <button onClick={() => router.push("/artist-page/project-page")} className="flex items-center">
-            <ChevronLeftIcon className="w-6 h-6" />
-          </button>
-          <h1 className="text-[32px] font-bold">My Proposals</h1>
+
+          <h1 className="text-[28px] font-bold">My Proposals</h1>
         </div>
       </div>
 
       {/* Table */}
       <section className="w-full">
-        <div className="bg-[#FAFAFA] w-full max-w-6xl lg:ml-16 lg:px-8 lg:pt-4 lg:pb-8 rounded-2xl mb-10">
+        <div className="bg-[#FAFAFA] w-full lg:px-8 lg:pt-4 lg:pb-8 rounded-2xl mb-10 border border-[#EAEAEA]">
           {/* Header Row */}
           <div className="grid grid-cols-3 font-bold px-8 py-4 border-b">
             <h4 className="text-left">Job Posts</h4>
