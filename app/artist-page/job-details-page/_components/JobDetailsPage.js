@@ -83,169 +83,82 @@ const JobDetailsPage = ({
 
   return (
     <>
-      {/* Mobile View */}
-      <div className="lg:hidden bg-white min-h-full pb-36">
-        {/* Back Arrow and Header */}
-        <div className="px-4 pt-6 pb-4 border-b border-gray-200">
-          <div
-            className="flex items-center text-[#222222] font-semibold mb-2"
-          >
-            <h1 className="text-[28px] font-bold">Job Details</h1>
-          </div>
-        </div>
-
-        {/* Header Info */}
-        <div className="px-4 pt-2 pb-2">
-          <div className="flex justify-between items-start mb-4">
-            <div className="flex flex-col gap-1">
-              <div className="flex gap-2 items-center text-sm">
-                <span className="text-[#767676]">Job Status :</span>
-                <span className={`${proposalSubmitted ? "text-[#035A7A]" : "text-[#056D16]"}`}>
-                  {proposalSubmitted ? "Applied" : "Active"}
-                </span>
-              </div>
-              <h2 className="font-bold text-[20px] text-[#222222] leading-tight mt-1">
-                Modern Fashion Attire Illustration
-              </h2>
-              <span className="text-sm text-[#767676] mt-1">Posted 2 days ago</span>
+      {/* ── MOBILE LAYOUT  */}
+      <div className="lg:hidden">
+        {/* Job Card */}
+        <div className="bg-white rounded-[18px] border border-[#ECECEC] p-5 shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+          {/* Top Row: Status + Share */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-1 text-[13px] font-medium">
+              <span className="text-[#757575]">Job Status :</span>
+              <span className={proposalSubmitted ? "text-[#035A7A]" : "text-[#24B26B]"}>
+                {proposalSubmitted ? "Applied" : "Active"}
+              </span>
             </div>
-            <div className="relative flex flex-col items-end gap-2">
-              {/* Share + Bookmark aligned in a row */}
-              <div className="flex items-center gap-2">
-                <button onClick={handleBookmark} className="p-1 flex items-center justify-center">
-                  {isSaved ? (
-                    <HiBookmark className="text-[#3A98BB] w-6 h-6 shrink-0" />
-                  ) : (
-                    <HiOutlineBookmark className="text-[#3A98BB] w-6 h-6 shrink-0" />
-                  )}
-                </button>
-                <div className="relative">
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <button className="p-1 hover:bg-gray-100 rounded-full transition-colors flex items-center justify-center">
-                        <FaShareAlt className="text-[#878787] w-6 h-6 shrink-0" />
-                      </button>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                      aria-label="Share options"
-                      onAction={(key) => handleSocialShare(key)}
-                    >
-                      <DropdownItem key="whatsapp" startContent={<FaWhatsapp className="text-green-500" />}>
-                        WhatsApp
-                      </DropdownItem>
-                      <DropdownItem key="twitter" startContent={<FaTwitter className="text-blue-400" />}>
-                        X (Twitter)
-                      </DropdownItem>
-                      <DropdownItem key="facebook" startContent={<FaFacebook className="text-blue-700" />}>
-                        Facebook
-                      </DropdownItem>
-                      <DropdownItem key="linkedin" startContent={<FaLinkedin className="text-blue-800" />}>
-                        LinkedIn
-                      </DropdownItem>
-                      <DropdownItem key="copy" startContent={<FaCopy className="text-gray-500" />}>
-                        Copy Link
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-                </div>
-              </div>
-              {proposalSubmitted && (
-                <span className="bg-[#035A7A] text-white text-xs font-medium px-[8px] py-[4px] rounded-[4px] whitespace-nowrap">
-                  Applied
-                </span>
-              )}
+            <div className="relative">
+              <Dropdown>
+                <DropdownTrigger>
+                  <button className="p-1 hover:bg-gray-100 rounded-full transition-colors">
+                    <FaShareAlt className="text-[#878787] w-5 h-5" />
+                  </button>
+                </DropdownTrigger>
+                <DropdownMenu aria-label="Share options" onAction={(key) => handleSocialShare(key)}>
+                  <DropdownItem key="whatsapp" startContent={<FaWhatsapp className="text-green-500" />}>WhatsApp</DropdownItem>
+                  <DropdownItem key="twitter" startContent={<FaTwitter className="text-blue-400" />}>X (Twitter)</DropdownItem>
+                  <DropdownItem key="facebook" startContent={<FaFacebook className="text-blue-700" />}>Facebook</DropdownItem>
+                  <DropdownItem key="linkedin" startContent={<FaLinkedin className="text-blue-800" />}>LinkedIn</DropdownItem>
+                  <DropdownItem key="copy" startContent={<FaCopy className="text-gray-500" />}>Copy Link</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
               {isCopied && (
-                <span className="absolute -bottom-8 right-0 bg-black text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
-                  Copied!
-                </span>
+                <span className="absolute -bottom-8 right-0 bg-black text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">Copied!</span>
               )}
             </div>
           </div>
+
+          {/* Title */}
+          <h1 className="text-[22px] font-bold text-[#2E2E2E] leading-tight mb-2 flex items-center gap-2 flex-wrap">
+            Modern Fashion Attire Illustration
+            {proposalSubmitted && (
+              <span className="bg-[#035A7A] text-white text-xs font-medium px-2 py-1 rounded-[4px]">Applied</span>
+            )}
+          </h1>
+          <p className="text-[14px] text-[#757575] mb-5">Posted 2 days ago</p>
 
           {/* Description */}
-          <div className="text-[#222222] text-sm leading-6 mb-6">
+          <div className="text-[15px] text-[#2E2E2E] leading-[1.9] mb-6">
             <p className="mb-4">
-              We are seeking a talented and creative Fashion Illustrator to
-              collaborate with our design team on a new line of
-              African-inspired attire. The ideal candidate will have a strong
-              understanding of African fashion, culture, and textile patterns.
-              You will be responsible for bringing our design concepts to life
-              through detailed illustrations, contributing to the development
-              of unique, culturally resonant fashion pieces.
+              We are seeking a talented and creative Fashion Illustrator to collaborate with our design team on a new line of African-inspired attire. The ideal candidate will have a strong understanding of African fashion, culture, and textile patterns. You will be responsible for bringing our design concepts to life through detailed illustrations, contributing to the development of unique, culturally resonant fashion pieces.
             </p>
-            <p className="font-bold mb-2">Key Responsibilities:</p>
-            <ul className="list-disc pl-5 space-y-2">
-              <li>Collaborate with the fashion design team to create detailed illustrations of African attire, including dresses, tunics, and traditional garments.</li>
-              <li>Develop sketches and renderings that capture the essence of African culture and heritage.</li>
-              <li>Interpret design briefs to create visually appealing and accurate illustrations.</li>
+          </div>
+
+          {/* Responsibilities */}
+          <div>
+            <p className="text-[15px] font-bold text-[#2E2E2E] mb-3">Key Responsibilities:</p>
+            <ul className="text-[15px] text-[#2E2E2E] leading-[1.9] space-y-2">
+              <li className="flex items-start gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2E2E2E] shrink-0 mt-[9px]" />
+                <span>Collaborate with the fashion design team to create detailed illustrations of African attire, including dresses, tunics, and traditional garments.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2E2E2E] shrink-0 mt-[9px]" />
+                <span>Develop sketches and renderings that capture the essence of African culture and heritage.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2E2E2E] shrink-0 mt-[9px]" />
+                <span>Interpret design briefs to create visually appealing and accurate illustrations.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2E2E2E] shrink-0 mt-[9px]" />
+                <span>Incorporate traditional African patterns, motifs, and fabrics into designs while staying true to the brand&apos;s aesthetic.</span>
+              </li>
             </ul>
           </div>
-
-          {/* Skills & Design Style */}
-          <div className="mb-6">
-            <ReferenceImage jobId={jobId} />
-          </div>
-
-          <div className="mb-6">
-            <DesignStyle />
-          </div>
-          <div className="mb-6">
-            <SkillRequirement />
-          </div>
-
-          {/* Budget & Duration */}
-          <div className="mb-2">
-            <Budgets />
-          </div>
-
         </div>
       </div>
 
-      {/* Action Buttons - sticky footer */}
-      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 px-4 py-4 z-[100] lg:hidden drop-shadow-[0_-4px_15px_rgba(0,0,0,0.08)]">
-        <div className="flex gap-4 max-w-[400px] mx-auto">
-          {proposalSubmitted ? (
-            <>
-              <Button
-                variant="bordered"
-                radius="full"
-                className="flex-1 border-[#3A98BB] text-[#222222] font-medium h-12"
-                onPress={handleWithdrawProposal}
-              >
-                Withdraw Proposal
-              </Button>
-              <Button
-                radius="full"
-                className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-medium h-12"
-                onPress={handleViewProposal}
-              >
-                View Proposal
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button
-                variant={isSaved ? "solid" : "bordered"}
-                radius="full"
-                className={`flex-1 ${isSaved ? "border-none" : "border-[#3A98BB] text-[#222222]"} font-medium h-12`}
-                style={isSaved ? {
-                  background: "#3A98BB",
-                  color: "white",
-                } : {}}
-                onPress={handleBookmark}
-              >
-                {isSaved ? "Saved" : "Save Job"}
-              </Button>
-              <Button radius="full" className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-medium h-12" onPress={handleSubmitProposal}>
-                Send Proposal
-              </Button>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* Mobile: Keep title for mobile if needed */}
-      <section>
+      {/* Desktop only (Figma card legacy) */}
+      <section className="hidden lg:block">
         <div className="bg-[#FAFAFA] lg:px-8 lg:py-8 lg:pb-[42px] rounded-2xl w-full px-4 pt-8 pb-6 border border-[#EAEAEA]">
           <div className="text-sm text-[#767676] tracking-[0.33px] flex justify-between lg:mb-8 mb-4">
             <div className="lg:flex hidden">

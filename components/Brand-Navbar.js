@@ -81,180 +81,204 @@ const ArtistNavbar = () => {
   };
 
   return (
-    <Navbar
-      isMenuOpen={isMenuOpen}
-      shouldHideOnScroll={false}
-      position='static'
-      disableScrollHandler
-      className='w-full bg-[#EAF9FF] font-satoshi border-b border-gray-200 h-[80px]'
-      classNames={{ wrapper: 'w-full max-w-full px-0 h-full' }}
-      onMenuOpenChange={setIsMenuOpen}
-    >
-      <PageContainer className="flex items-center justify-between w-full h-full">
-        {/* LOGO */}
-        <NavbarBrand>
-          <div className='flex items-center gap-3'>
-            <Link
-              href='/artist-page'
-            >
-              {/* Mobile: dolphin icon only - cropped from logocombo */}
-              <div className='block sm:hidden w-14 h-14 overflow-hidden -ml-2.5'>
-                <Image
-                  src='/dev-images/logocombo.png'
-                  alt='Logo'
-                  className='w-[68px] h-14 object-cover object-left'
-                  width={68}
-                  height={56}
-                />
-              </div>
-              {/* Desktop: Text logo only */}
-              <Image
-                src='/dev-images/SuuaveTxt.png'
-                alt='Suuave'
-                className='hidden sm:block w-32 h-auto object-contain'
-                width={128}
-                height={40}
-              />
-            </Link>
-          </div>
-        </NavbarBrand>
-
-        {/* MENU */}
-        <NavbarContent className='hidden sm:flex gap-9 font-bold h-full' justify='center'>
-          {menuItems.map((item, index) => (
-            <NavbarItem key={index} className='h-full flex items-center'>
+    <>
+      <Navbar
+        shouldHideOnScroll={false}
+        position='static'
+        disableScrollHandler
+        className='w-full bg-[#EAF9FF] font-satoshi border-b border-gray-200 h-[80px]'
+        classNames={{ wrapper: 'w-full max-w-full px-0 h-full' }}
+      >
+        <PageContainer className="flex items-center justify-between w-full h-full">
+          {/* LOGO */}
+          <NavbarBrand>
+            <div className='flex items-center gap-3'>
               <Link
-                href={item.href}
-                className={`${textStyle} transition duration-300 relative flex items-center h-full`}
+                href='/artist-page'
               >
-                <motion.div
-                  animate={isActive(item.href) ? 'hovered' : 'initial'}
-                  whileHover='hovered'
-                  className='relative flex items-center h-full'
-                >
-                  {item.label}
-                  <motion.div
-                    variants={{
-                      initial: { scaleX: 0 },
-                      hovered: { scaleX: 1 },
-                    }}
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    className='absolute bottom-[20px] left-0 w-full h-[2px] bg-[#222222] origin-left'
+                {/* Mobile: dolphin icon only - cropped from logocombo */}
+                <div className='block sm:hidden w-14 h-14 overflow-hidden -ml-2.5'>
+                  <Image
+                    src='/dev-images/logocombo.png'
+                    alt='Logo'
+                    className='w-[68px] h-14 object-cover object-left'
+                    width={68}
+                    height={56}
                   />
-                </motion.div>
+                </div>
+                {/* Desktop: Text logo only */}
+                <Image
+                  src='/dev-images/SuuaveTxt.png'
+                  alt='Suuave'
+                  className='hidden sm:block w-32 h-auto object-contain'
+                  width={128}
+                  height={40}
+                />
+              </Link>
+            </div>
+          </NavbarBrand>
+
+          {/* MENU */}
+          <NavbarContent className='hidden sm:flex h-full flex-1 justify-center' justify='start'>
+            <div className='flex h-full items-center gap-4 xl:gap-9'>
+              {menuItems.map((item, index) => {
+                const navLink = (
+                  <NavbarItem key={`link-${index}`} className='h-full flex items-center'>
+                    <Link
+                      href={item.href}
+                      className={`${textStyle} transition duration-300 relative flex items-center h-full`}
+                    >
+                      <motion.div
+                        animate={isActive(item.href) ? 'hovered' : 'initial'}
+                        whileHover='hovered'
+                        className='relative flex items-center h-full'
+                      >
+                        {item.label}
+                        <motion.div
+                          variants={{
+                            initial: { scaleX: 0 },
+                            hovered: { scaleX: 1 },
+                          }}
+                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                          className='absolute bottom-[20px] left-0 w-full h-[2px] bg-[#222222] origin-left'
+                        />
+                      </motion.div>
+                    </Link>
+                  </NavbarItem>
+                );
+
+                if (index === menuItems.length - 1) {
+                  return (
+                    <div key={`group-${index}`} className="flex h-full items-center gap-[8px]">
+                      {navLink}
+                      <NavbarItem className='hidden lg:flex h-full items-center ml-[64px]'>
+                        <CustomButton
+                          text='License Your Design'
+                          href={'/artist-page/license-your-design'}
+                        />
+                      </NavbarItem>
+                    </div>
+                  );
+                }
+
+                return navLink;
+              })}
+            </div>
+          </NavbarContent>
+
+          <NavbarContent justify='end' className='gap-3 sm:gap-6'>
+
+            <NavbarItem className='flex'>
+              <Notification />
+            </NavbarItem>
+
+            <NavbarItem className='flex'>
+              <Link href='/artist-page/messages'>
+                <Button
+                  isIconOnly
+                  variant='bordered'
+                  radius='full'
+                  className='text-[#1A1A1A] w-8 h-8 min-w-8 sm:w-10 sm:h-10 sm:min-w-10'
+                  size='sm'
+                >
+                  <FaEnvelope className='w-4 h-4' />
+                </Button>
               </Link>
             </NavbarItem>
-          ))}
-        </NavbarContent>
 
-        <NavbarContent justify='end' className='gap-3 sm:gap-6'>
-          <NavbarItem className='hidden lg:flex'>
-            <CustomButton
-              text='License Your Design'
-              href={'/artist-page/license-your-design'}
-            />
-          </NavbarItem>
+            {/* PROFILE DROPDOWN / AVATAR */}
+            <NavbarItem className='flex'>
+              <Dropdown shouldBlockScroll={false}>
+                <DropdownTrigger>
+                  <button className='flex items-center gap-2 outline-none bg-transparent border-none cursor-pointer p-0'>
+                    <Avatar
+                      src='/dev-images/Avatar.png'
+                      className='w-10 h-10 rounded-full border border-gray-200'
+                    />
+                    <ChevronDown className='hidden sm:block w-4 h-4 text-gray-600' />
+                  </button>
+                </DropdownTrigger>
+                <DropdownMenu aria-label='User actions' className='w-[200px]'>
+                  <DropdownItem
+                    startContent={<LuCircleUser className='size-4' />}
+                    key='profile'
+                    as={Link}
+                    href='/artist-page/profile-for-artist'
+                  >
+                    Profile
+                  </DropdownItem>
+                  <DropdownItem
+                    startContent={<CreditCard className='size-4' />}
+                    key='wallet'
+                    as={Link}
+                    href='/artist-page/wallet'
+                  >
+                    Wallet
+                  </DropdownItem>
+                  <DropdownItem
+                    startContent={<Settings className='size-4' />}
+                    key='settings'
+                    as={Link}
+                    href='/artist-page/settings'
+                  >
+                    Settings
+                  </DropdownItem>
+                  <DropdownItem
+                    startContent={<HelpCircle className='size-4' />}
+                    key='help'
+                    as={Link}
+                    href='/artist-page/help'
+                  >
+                    Help and support
+                  </DropdownItem>
+                  <DropdownItem
+                    startContent={<TbLogout2 className='size-4' />}
+                    key='logout'
+                    className='text-danger'
+                    color='danger'
+                    onPress={handleLogout}
+                  >
+                    Logout
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </NavbarItem>
 
-          <NavbarItem className='flex'>
-            <Notification />
-          </NavbarItem>
-
-          <NavbarItem className='flex'>
-            <Link href='/artist-page/messages'>
-              <Button
-                isIconOnly
-                variant='bordered'
-                radius='full'
-                className='text-[#1A1A1A] w-8 h-8 min-w-8 sm:w-10 sm:h-10 sm:min-w-10'
-                size='sm'
-              >
-                <FaEnvelope className='w-4 h-4' />
-              </Button>
-            </Link>
-          </NavbarItem>
-
-          {/* PROFILE DROPDOWN / AVATAR */}
-          <NavbarItem className='flex'>
-            <Dropdown shouldBlockScroll={false}>
-              <DropdownTrigger>
-                <button className='flex items-center gap-2 outline-none bg-transparent border-none cursor-pointer p-0'>
-                  <Avatar
-                    src='/dev-images/Avatar.png'
-                    className='w-10 h-10 rounded-full border border-gray-200'
-                  />
-                  <ChevronDown className='hidden sm:block w-4 h-4 text-gray-600' />
-                </button>
-              </DropdownTrigger>
-              <DropdownMenu aria-label='User actions' className='w-[200px]'>
-                <DropdownItem
-                  startContent={<LuCircleUser className='size-4' />}
-                  key='profile'
-                  as={Link}
-                  href='/artist-page/profile-for-artist'
-                >
-                  Profile
-                </DropdownItem>
-                <DropdownItem
-                  startContent={<CreditCard className='size-4' />}
-                  key='wallet'
-                  as={Link}
-                  href='/artist-page/wallet'
-                >
-                  Wallet
-                </DropdownItem>
-                <DropdownItem
-                  startContent={<Settings className='size-4' />}
-                  key='settings'
-                  as={Link}
-                  href='/artist-page/settings'
-                >
-                  Settings
-                </DropdownItem>
-                <DropdownItem
-                  startContent={<HelpCircle className='size-4' />}
-                  key='help'
-                  as={Link}
-                  href='/artist-page/help'
-                >
-                  Help and support
-                </DropdownItem>
-                <DropdownItem
-                  startContent={<TbLogout2 className='size-4' />}
-                  key='logout'
-                  className='text-danger'
-                  color='danger'
-                  onPress={handleLogout}
-                >
-                  Logout
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </NavbarItem>
-
-          <NavbarItem className='sm:hidden'>
-            <NavbarMenuToggle
+            <button
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-              className='flex items-center justify-center border border-gray-200 rounded-full p-2 h-10 w-10 text-gray-600 bg-white z-50'
-            />
-          </NavbarItem>
-        </NavbarContent>
-      </PageContainer>
+              className='sm:hidden flex items-center justify-center border border-gray-200 rounded-full p-2 h-10 w-10 text-gray-600 bg-white z-[9999]'
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsMenuOpen(!isMenuOpen);
+              }}
+            >
+              <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+              </svg>
+            </button>
+          </NavbarContent>
+        </PageContainer>
+      </Navbar>
 
       {/* MOBILE MENU */}
-      <NavbarMenu>
-        {mobileMenuItems.map((item, index) => (
-          <NavbarMenuItem key={index}>
-            <Link
-              className='w-full text-black transition duration-300'
-              href={item.href}
-              size='lg'
-            >
-              {item.label}
-            </Link>
-          </NavbarMenuItem>
-        ))}
-      </NavbarMenu>
-    </Navbar>
+      {isMenuOpen && (
+        <div className="NavbarMenu fixed inset-x-0 top-[80px] bottom-0 z-[9999] bg-[#EAF9FF] pt-8 px-6 sm:hidden flex flex-col gap-6 overflow-y-auto shadow-xl">
+          {mobileMenuItems.map((item, index) => {
+            return (
+              <Link
+                key={index}
+                className='w-full text-[#222222] transition duration-300 py-2 text-lg font-satoshi font-medium'
+                href={item.href}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 };
 

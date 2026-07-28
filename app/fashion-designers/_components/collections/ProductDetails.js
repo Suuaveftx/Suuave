@@ -23,29 +23,10 @@ const ProductDetails = ({ id }) => {
   const collection = collectionData.find((item) => item.id.toString() === id);
 
   console.log(collection);
-  // Open modal on mount (desktop)
+  // Open modal unconditionally on mount
   useEffect(() => {
-    if (window.innerWidth >= 768) {
-      onOpen();
-    }
+    onOpen();
   }, [onOpen]);
-
-  // Close modal if window resized below md breakpoint (mobile)
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth < 768 && isOpen) {
-        onOpenChange(false); // close modal
-      }
-      // Optional: reopen modal if resized back to desktop and modal closed
-      if (window.innerWidth >= 768 && !isOpen) {
-        onOpen();
-      }
-    }
-
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, [isOpen, onOpen, onOpenChange]);
 
   const router = useRouter();
 
@@ -67,84 +48,9 @@ const ProductDetails = ({ id }) => {
 
   return (
     <>
-      <div className="md:hidden">
-        <div className="w-full flex items-center gap-2 border-b-1 border-divider">
+      {/* Desktop & Mobile view Modal Container */}
 
-
-          <h1 className="text-[#767676] py-3 font-satoshi font-bold text-xl md:text-2xl ">
-            My Collections
-          </h1>
-        </div>
-        {/* Product Gallery */}
-        <div className=" mt-4">
-          <Image
-            src={url}
-            alt={title}
-            className="w-full"
-            width={0}
-            height={300}
-          />
-          <p className="mt-4 text-[#222222] font-bold text-sm font-satoshi border-b-1 border-divider py-4">
-            {details.title}
-          </p>
-          {/* Description */}
-          <Header>Description</Header>
-          <p className="text-[#555555] font-satoshi font-medium text-sm leading-6 border-b-1 border-divider mt-1 pb-6">
-            This illustration showcases a regal Nigerian Agbada, blending
-            tradition and contemporary style. The design features a flowing,
-            triple-layered
-          </p>
-          {/* Collection Files -> Source Files */}
-          <Header>Source Files</Header>
-          <div className=" border-b-1 border-divider mt-4 pb-6 flex flex-col gap-2">
-            {details.collectionFiles.map((file, index) => (
-              isExclusive ? (
-                <span key={index} className="text-[#767676] font-satoshi font-normal text-xs opacity-70">
-                  {file}
-                </span>
-              ) : (
-                <Link
-                  key={index}
-                  href={url}
-                  download={file}
-                  target="_blank"
-                  className="text-[#767676] font-satoshi font-normal text-xs hover:text-[#3A98BB] cursor-pointer transition-colors"
-                >
-                  {file}
-                </Link>
-              )
-            ))}
-          </div>
-          {/* Amount */}
-          <Header>Amount</Header>
-          <Text>{details.price}</Text>
-
-          {/* Type */}
-          <Header>Type</Header>
-          <Text>{typeValue}</Text>
-
-          {/* Purchased Date */}
-          <Header>Purchased Date</Header>
-          <Text>{details.purchaseDate}</Text>
-          {/* Artist */}
-          <Header>About the Artist</Header>
-          <Link href="/artist-page/profile-vistor-view" className="flex mt-4 items-center gap-2 border-b-1 border-divider pb-6 cursor-pointer">
-            <Image
-              src={details?.artist?.image}
-              alt="image"
-              width={24}
-              height={24}
-            />
-            <span className="text-[#3A98BB] font-satoshi font-normal text-xs leading-none">
-              @{details?.artist?.username || "ocean"}
-            </span>
-          </Link>
-        </div>
-      </div>
-
-      {/* Desktop view */}
-
-      <div className="hidden md:block h-screen">
+      <div className="h-screen bg-gray-50/50">
         <Modal
           scrollBehavior="inside"
           placement="center"
@@ -171,10 +77,12 @@ const ProductDetails = ({ id }) => {
                 </h1>
               </ModalHeader>
               <ModalBody>
-                <div className="flex gap-16">
+                <div className="flex flex-col lg:flex-row gap-6 lg:gap-16">
                   {/* Product details model */}
-                  <Gallery details={details} />
-                  <div className="w-[50%] flex flex-col justify-start font-satoshi space-y-4 font-medium text-sm text-[#555555] ">
+                  <div className="w-full lg:w-1/2">
+                    <Gallery details={details} />
+                  </div>
+                  <div className="w-full lg:w-1/2 flex flex-col justify-start font-satoshi space-y-4 font-medium text-sm text-[#555555]">
                     {/* Description */}
                     <h2 className="text-[#222222] font-satoshi font-bold text-base">
                       Description
@@ -209,7 +117,7 @@ const ProductDetails = ({ id }) => {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <div className="w-full grid grid-cols-5 gap-4 items-start text-[#222222]">
+                <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-4 items-start text-[#222222]">
                   <div className="space-y-4">
                     {/* Collection Files -> Source Files */}
                     <h1 className=" font-bold text-base">Source Files</h1>

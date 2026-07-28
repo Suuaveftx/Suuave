@@ -9,6 +9,7 @@ import {
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
 import {
   Input,
@@ -48,12 +49,18 @@ const OngoingContracts = ({
   } = useDisclosure();
 
   const [showCongratulationsModal, setShowCongratulationsModal] = useState(false);
+  const [showRejectModal, setShowRejectModal] = useState(false);
   const [currentContract, setCurrentContract] = useState(null);
   const [openMenuContract, setOpenMenuContract] = useState(null);
   const [showExtensionModal, setShowExtensionModal] = useState(false);
   const menuRef = useRef(null);
   const menuButtonRefs = useRef({});
   const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
+
+  const handleOpenRejectModal = (contract) => {
+    setCurrentContract(contract);
+    setShowRejectModal(true);
+  };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -177,10 +184,20 @@ const OngoingContracts = ({
 
   return (
     <div className="px-4 lg:px-0">
+      {/* ── Warning Banner ── */}
+      <div className="flex items-start gap-2.5 bg-[#FFF4E5] border border-[#FDDCAA] rounded-lg px-4 py-3 mb-5 w-fit max-w-[520px]">
+        <ExclamationTriangleIcon className="w-[18px] h-[18px] text-[#F59E0B] shrink-0 mt-0.5" />
+        <div className="flex flex-col gap-0.5">
+          <p className="text-[13px] text-[#D97706] leading-relaxed">
+            All disputes must be reported while the project status is <span className="font-semibold">&#39;Active&#39;</span>. Once the project deadline passes or is marked <span className="font-semibold">&#39;Completed&#39;</span>, the project is automatically finalised, and payments are released. Please, review all deliverables before the project window closes.
+          </p>
+        </div>
+      </div>
+
       {/* Search and Filter Bar */}
-      <div className='my-6 w-full'>
-        <div className='flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap'>
-          <div className='flex items-center flex-1 md:max-w-md w-full'>
+      <div className='my-4 lg:my-6 w-full'>
+        <div className='flex items-center gap-3 w-full'>
+          <div className='flex items-center flex-1 w-full'>
             <Input
               type='text'
               value={search}
@@ -191,12 +208,44 @@ const OngoingContracts = ({
               classNames={{
                 input: 'text-sm',
                 inputWrapper:
-                  'border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500 px-4',
+                  'border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500 px-4 h-[48px] lg:h-[42px]',
               }}
             />
           </div>
 
-          <div className='flex items-center shrink-0'>
+          {/* Mobile: icon-only filter button */}
+          <div className='lg:hidden shrink-0'>
+            <Dropdown placement="bottom-end" shouldBlockScroll={false} classNames={{ content: 'min-w-[150px]' }}>
+              <DropdownTrigger>
+                <button
+                  type='button'
+                  className='flex items-center justify-center w-11 h-11 rounded-full bg-white border border-gray-200 hover:border-gray-300 active:bg-gray-50 transition-colors shadow-sm'
+                  aria-label='Filter contracts'
+                >
+                  <AdjustmentsVerticalIcon className='h-5 w-5 text-gray-500' />
+                </button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Date Filter"
+                onAction={(key) => {
+                  setDateFilter(key);
+                  setCurrentPage(1);
+                }}
+                selectedKeys={[dateFilter]}
+                selectionMode="single"
+              >
+                {dateOptions.map((option) => (
+                  <DropdownItem key={option}>{option}</DropdownItem>
+                ))}
+                <DropdownItem key="" className="text-danger" color="danger">
+                  Reset Filter
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+
+          {/* Desktop: full "Sort by Date" button */}
+          <div className='hidden lg:flex items-center shrink-0'>
             <Dropdown placement="bottom-end" shouldBlockScroll={false} classNames={{ content: 'min-w-[150px]' }}>
               <DropdownTrigger>
                 <Button
@@ -230,79 +279,92 @@ const OngoingContracts = ({
       </div>
 
       {/* Contract Cards */}
-      <div className='lg:mt-8 w-full'>
+      <div className='lg:mt-8 w-full space-y-3'>
         {currentItems.map((contract, index) => (
           <div
             key={contract.id || index}
-            className='bg-white border border-[#EAEAEA] rounded-[10px] mb-3 p-4 lg:p-6 transition-all hover:bg-gray-50 cursor-pointer'
+            className='bg-white border border-gray-200 rounded-[12px] p-4 lg:p-6 transition-all hover:border-[#3A98BB]/40 hover:shadow-md cursor-pointer'
             onClick={() => onContractClick(contract.id)}
           >
             <div className='md:px-2 px-1 py-1 overflow-visible'>
-              <div className='flex md:justify-between items-center w-full gap-2 pt-1'>
-                <div className='flex-1 grid md:grid-cols-[1.5fr_1fr_auto] md:gap-x-4 md:items-center min-w-0'>
-                  <div className='flex flex-col items-start gap-1 mb-1 md:mb-0'>
-                    {/* Title row: title + mobile 3-dots side by side */}
-                    <div className='flex items-center w-full gap-2'>
-                      <h3 className='font-semibold text-[13px] md:text-[16px] text-[#3A98BB] truncate transition-colors flex-1 min-w-0'>
+              {/* Card content container — switches to flex-row on md */}
+              <div className='flex flex-col md:flex-row md:justify-between items-start md:items-center w-full gap-3 pt-1'>
+
+                {/* Left block (Title & Info & Status) */}
+                <div className='flex-1 flex flex-col md:grid md:grid-cols-[1.5fr_1fr_auto] md:gap-x-4 md:items-center min-w-0 w-full'>
+
+                  {/* Title & Mobile 3-dot row */}
+                  <div className='flex items-start justify-between w-full min-w-0 mb-2 md:mb-0'>
+                    <div className='flex flex-col items-start gap-1 flex-1 min-w-0'>
+                      <h3 className='font-semibold text-[15px] md:text-[16px] text-[#3A98BB] truncate w-full group-hover:text-[#3A98BB] transition-colors leading-snug'>
                         {contract.title} {contract.id ? `(${contract.id})` : ''}
                       </h3>
-                      {/* Mobile 3-dots — inline, shrink-0, never overlaps */}
-                      <div className='md:hidden shrink-0'>
-                        <button
-                          type='button'
-                          ref={(el) => { menuButtonRefs.current[contract.id || index] = el; }}
-                          className='flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 transition-colors'
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            const btnId = contract.id || index;
-                            const btnEl = menuButtonRefs.current[btnId];
-                            if (btnEl) {
-                              const rect = btnEl.getBoundingClientRect();
-                              setMenuPosition({
-                                top: rect.bottom + 4,
-                                right: window.innerWidth - rect.right,
-                              });
-                            }
-                            setOpenMenuContract(openMenuContract?.id === (contract.id || index) ? null : contract);
-                          }}
-                        >
-                          <EllipsisHorizontalIcon className='w-5 h-5 text-gray-500' />
-                        </button>
-                      </div>
-                    </div>
-                    <div className='flex items-center gap-1 mt-1'>
-                      {contract.status && contract.status !== 'Ongoing' && (
-                        <span className='bg-[#E0F2FE] text-[#2563EB] px-2 py-1 rounded text-[12px] font-medium'>
-                          {contract.status}
-                        </span>
+                      {/* Optional Status Chip below title */}
+                      {contract.status && contract.status === 'Waiting Approval' && (
+                        <div className='mt-1 mb-1'>
+                          <span className='bg-[#EAF5FB] text-[#3A98BB] text-[11px] font-semibold px-2 py-1 rounded-full'>
+                            Waiting Approval
+                          </span>
+                        </div>
                       )}
+                      {contract.status && contract.status !== 'Ongoing' && contract.status !== 'Waiting Approval' && (
+                        <div className='mt-1 mb-1'>
+                          <span className='bg-[#E0F2FE] text-[#2563EB] text-[11px] font-semibold px-2 py-1 rounded-full'>
+                            {contract.status}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    {/* Mobile 3-dots */}
+                    <div className='md:hidden shrink-0 -mt-0.5 ml-2'>
+                      <button
+                        type='button'
+                        ref={(el) => { menuButtonRefs.current[contract.id || index] = el; }}
+                        className='flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 active:bg-gray-200 transition-colors'
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          const btnId = contract.id || index;
+                          const btnEl = menuButtonRefs.current[btnId];
+                          if (btnEl) {
+                            const rect = btnEl.getBoundingClientRect();
+                            setMenuPosition({
+                              top: rect.bottom + 4,
+                              right: window.innerWidth - rect.right,
+                            });
+                          }
+                          setOpenMenuContract(openMenuContract?.id === (contract.id || index) ? null : contract);
+                        }}
+                      >
+                        <EllipsisHorizontalIcon className='w-5 h-5 text-gray-500' />
+                      </button>
                     </div>
                   </div>
 
-                  <div className='flex flex-col items-start text-[14px] font-satoshi text-gray-500'>
-                    <div className='mb-1 flex items-center gap-2'>
-                      <span className='text-[14px] flex-shrink-0 w-20 text-gray-500'>Start Date :</span>
+                  {/* Date Columns */}
+                  <div className='flex flex-col items-start text-[13px] md:text-[14px] font-satoshi text-gray-500 space-y-1 md:space-y-0'>
+                    <div className='flex items-center gap-2'>
+                      <span className='font-light md:font-normal flex-shrink-0'>Start Date -</span>
                       <span className='whitespace-nowrap font-semibold text-[#222222]'>{contract.startDate}</span>
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='text-[14px] flex-shrink-0 w-20 text-gray-500'>End Date :</span>
+                      <span className='font-light md:font-normal flex-shrink-0'>End Date -</span>
                       <span className='whitespace-nowrap font-semibold text-[#222222]'>{contract.endDate}</span>
                       {contract.isExpiringSoon && (
-                        <span className='text-[#E33629] text-[12px] font-medium ml-1 whitespace-nowrap'>
-                          ({contract.remainingDays}h left)
+                        <span className='text-[#056D16] text-[12px] font-medium ml-1 whitespace-nowrap'>
+                          ({contract.remainingDays}d left)
                         </span>
                       )}
                       {contract.isLate && (
                         <span className='text-[#E33629] text-[12px] font-medium ml-1 whitespace-nowrap'>
-                          ({contract.daysLate}h late)
+                          ({contract.daysLate}d late)
                         </span>
                       )}
                     </div>
                   </div>
                 </div>
 
-                {/* Desktop: action buttons + more options inline */}
+                {/* Desktop: action buttons + more options inline (hidden on mobile) */}
                 <div className='hidden md:flex flex-row justify-end items-center gap-3 shrink-0 pl-4 overflow-visible'>
                   <div className='flex items-center gap-3 shrink-0' onClick={(e) => e.stopPropagation()}>
                     <Button
@@ -313,12 +375,18 @@ const OngoingContracts = ({
                       Approve Work
                     </Button>
                     <Button
-                      className='bg-white text-[#222222] font-bold rounded-full px-6 h-[42px] border border-[#D1D1D1]'
+                      className='bg-white text-[#222222] font-bold rounded-full px-6 h-[42px] border border-[#D1D1D1] w-[160px]'
                       radius='full'
                       variant='bordered'
-                      onPress={() => { onMessageArtist(contract); }}
+                      onPress={() => {
+                        if (contract.isSubmitted) {
+                          handleOpenRejectModal(contract);
+                        } else {
+                          onMessageArtist(contract);
+                        }
+                      }}
                     >
-                      Message Artist
+                      {contract.isSubmitted ? 'Reject' : 'Message Artist'}
                     </Button>
                   </div>
                   <div className='flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
@@ -356,32 +424,91 @@ const OngoingContracts = ({
             right: menuPosition.right,
             zIndex: 9999,
           }}
-          className='w-44 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden flex flex-col'
+          className='w-48 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden flex flex-col'
           onPointerDown={(e) => e.stopPropagation()}
         >
+          {/* Approve Work — always present */}
           <button
             className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium border-b border-gray-100'
             onClick={(e) => {
               e.stopPropagation();
               const contract = openMenuContract;
               setOpenMenuContract(null);
-              if (contract) {
-                setCurrentContract(contract);
-                setShowExtensionModal(true);
-              }
+              if (contract) handleOpenApprovalModal(contract);
             }}
           >
-            Request Extension
+            Approve Work
           </button>
-          <button
-            className='w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors font-medium'
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpenMenuContract(null);
-            }}
-          >
-            Report Dispute
-          </button>
+
+          {openMenuContract?.isSubmitted ? (
+            <>
+              {/* Reject — only when work is submitted */}
+              <button
+                className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium border-b border-gray-100'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const contract = openMenuContract;
+                  setOpenMenuContract(null);
+                  if (contract) handleOpenRejectModal(contract);
+                }}
+              >
+                Reject
+              </button>
+              {/* Request Extension */}
+              <button
+                className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium border-b border-gray-100'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const contract = openMenuContract;
+                  setOpenMenuContract(null);
+                  if (contract) {
+                    setCurrentContract(contract);
+                    setShowExtensionModal(true);
+                  }
+                }}
+              >
+                Request Extension
+              </button>
+              {/* Report Dispute */}
+              <button
+                className='w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors font-medium'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenMenuContract(null);
+                }}
+              >
+                Report Dispute
+              </button>
+            </>
+          ) : (
+            <>
+              {/* Request Extension */}
+              <button
+                className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium border-b border-gray-100'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const contract = openMenuContract;
+                  setOpenMenuContract(null);
+                  if (contract) {
+                    setCurrentContract(contract);
+                    setShowExtensionModal(true);
+                  }
+                }}
+              >
+                Request Extension
+              </button>
+              {/* Report Dispute */}
+              <button
+                className='w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors font-medium'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenMenuContract(null);
+                }}
+              >
+                Report Dispute
+              </button>
+            </>
+          )}
         </div>,
         document.body
       )}
@@ -396,6 +523,57 @@ const OngoingContracts = ({
           </div>
         )
       }
+
+      {/* Reject Modal */}
+      <Modal
+        isOpen={showRejectModal}
+        onOpenChange={setShowRejectModal}
+        classNames={{
+          base: 'bg-white w-[90vw] max-w-md',
+          backdrop: 'bg-black/50',
+          body: 'py-4',
+          footer: 'pt-4 border-t-0',
+        }}
+        size='md'
+        backdrop='blur'
+        hideCloseButton
+        placement='center'
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody>
+                <p className='text-sm font-satoshi leading-relaxed px-1 pt-2 text-left'>
+                  Are you sure you want to reject the work submitted by{' '}
+                  <strong>{currentContract?.artist?.name || 'the Artist'}</strong>?
+                </p>
+              </ModalBody>
+              <ModalFooter className='w-full flex justify-center items-center font-satoshi gap-5 -mt-4'>
+                <Button
+                  variant='bordered'
+                  onPress={onClose}
+                  className='w-full bg-radial from-[#EAF9FF] to-[#E8E8E8] text-[#222222] font-medium rounded-full border-0 shadow-sm'
+                  radius='full'
+                  size='md'
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className='w-full bg-red-500 text-white font-medium rounded-full border-0 shadow-sm hover:!bg-red-600'
+                  radius='full'
+                  size='md'
+                  onPress={() => {
+                    console.log('Contract rejected:', currentContract?.title);
+                    onClose();
+                  }}
+                >
+                  Yes, Reject
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
 
       {/* Approval Modal */}
       <Modal

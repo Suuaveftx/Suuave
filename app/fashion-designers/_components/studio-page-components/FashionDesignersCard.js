@@ -202,18 +202,18 @@ const FashionDesignersCard = ({
       </CardFooter>
 
       {/* --- MOBILE FOOTER --- */}
-      <CardFooter className='md:hidden flex flex-col items-start w-full px-3 py-3 flex-none gap-0.5 bg-white'>
+      <CardFooter className='md:hidden flex flex-col items-start w-full px-3 py-3 flex-none gap-0 bg-white'>
         <Link href={`/fashion-designers/${productID}${hasCrown ? '?crown=true' : ''}`} className="w-full flex">
-          <p className='line-clamp-2 font-bold text-[16px] text-[#222222] leading-snug text-left'>
+          <p className='line-clamp-2 font-bold text-[15px] text-[#222222] leading-snug text-left'>
             {title}
           </p>
         </Link>
-        <p className='font-bold text-[16.5px] text-[#3A98BB] mb-1.5 mt-0.5'>
-          {formatToUSD(price).replace('$', '$')}
+        <p className='font-bold text-[15px] text-[#3A98BB] mb-1 mt-0.5'>
+          {formatToUSD(price)}
         </p>
         <Link href='/artist-page/profile-vistor-view' className='flex items-center w-full hover:opacity-80 transition-opacity group cursor-pointer'>
-          <p className='text-[13.5px] text-[#444444] font-medium group-hover:text-[#3A98BB] transition-colors'>
-            {userData?.handle || userName}
+          <p className='text-[13px] text-[#7A7A7A] font-normal group-hover:text-[#3A98BB] transition-colors'>
+            {userData?.userName || userName}
           </p>
         </Link>
       </CardFooter>

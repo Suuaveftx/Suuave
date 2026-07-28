@@ -151,11 +151,11 @@ const PendingContracts = ({
       </div>
 
       {/* Contract Cards */}
-      <div className="space-y-2">
+      <div className="space-y-3 lg:mt-8">
         {currentItems.map((contract, index) => (
           <Card
             key={contract.id || index}
-            className="group bg-white border border-gray-200 hover:border-[#3A98BB]/40 hover:shadow-md transition-all w-full !overflow-visible"
+            className="group bg-white border border-gray-200 hover:border-[#3A98BB]/40 hover:shadow-md transition-all w-full !overflow-visible rounded-[12px]"
             classNames={{ base: 'overflow-visible' }}
             shadow="none"
           >
@@ -163,121 +163,95 @@ const PendingContracts = ({
               className="cursor-pointer"
               onClick={() => onContractClick(contract.id)}
             >
-              <CardBody className="md:px-6 px-3 py-4 overflow-visible">
-                <div className="flex md:justify-between items-start w-full">
-                  <div className="flex-1 md:grid md:grid-cols-[1.5fr_1fr_1fr_auto] md:gap-x-8 md:items-center">
-                    <div className="flex flex-col gap-1 mb-1 md:mb-0">
-                      <h3 className="md:text-md text-sm font-proximanova line-clamp-1 group-hover:text-[#3A98BB] transition-colors font-semibold">
-                        {contract.title} ({contract.id})
-                      </h3>
+              <CardBody className="md:px-2 px-1 py-1 overflow-visible">
+                {/* Card content container — switches to flex-row on md */}
+                <div className='flex flex-col md:flex-row md:justify-between items-start md:items-center w-full gap-3 p-3 pt-1'>
+
+                  {/* Left block */}
+                  <div className='flex-1 flex flex-col md:grid md:grid-cols-[1.5fr_1fr_1fr_auto] md:gap-x-4 md:items-center min-w-0 w-full'>
+
+                    {/* Title & Mobile 3-dot row */}
+                    <div className='flex items-start justify-between w-full min-w-0 mb-2 md:mb-0'>
+                      <div className='flex flex-col items-start gap-1 flex-1 min-w-0'>
+                        <h3 className='font-semibold text-[15px] md:text-[16px] text-[#3A98BB] truncate w-full group-hover:text-[#3A98BB] transition-colors leading-snug'>
+                          {contract.title} {contract.id ? `(${contract.id})` : ''}
+                        </h3>
+                        {/* Status Chip removed */}
+                      </div>
+
+                      {/* Mobile 3-dots */}
+                      <div className='md:hidden shrink-0 -mt-0.5 ml-2'>
+                        <button
+                          type='button'
+                          ref={(el) => { menuButtonRefs.current[contract.id || index] = el; }}
+                          className='flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 active:bg-gray-200 transition-colors'
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            const btnId = contract.id || index;
+                            const btnEl = menuButtonRefs.current[btnId];
+                            if (btnEl) {
+                              const rect = btnEl.getBoundingClientRect();
+                              setMenuPosition({
+                                top: rect.bottom + 4,
+                                right: window.innerWidth - rect.right,
+                              });
+                            }
+                            setOpenMenuContract(openMenuContract?.id === (contract.id || index) ? null : contract);
+                          }}
+                        >
+                          <EllipsisHorizontalIcon className='w-5 h-5 text-gray-500' />
+                        </button>
+                      </div>
                     </div>
 
-                    <p className="text-sm font-satoshi flex items-center gap-2">
-                      <span className="font-light whitespace-nowrap text-gray-500 group-hover:text-[#3A98BB]/70 transition-colors">Pending Since -</span>
-                      <span className="font-semibold whitespace-nowrap text-[#222222] group-hover:text-[#3A98BB] transition-colors">
-                        {contract.pendingSince}
-                      </span>
-                    </p>
+                    {/* Date Columns */}
+                    <div className='flex flex-col items-start text-[13px] md:text-[14px] font-satoshi text-gray-500 space-y-1 md:space-y-0'>
+                      <div className='flex items-center gap-2'>
+                        <span className='font-light md:font-normal flex-shrink-0'>Start Date -</span>
+                        <span className='whitespace-nowrap font-semibold text-[#222222]'>{contract.pendingSince}</span>
+                      </div>
+                      <div className='flex items-center gap-2 md:hidden'>
+                        <span className='font-light flex-shrink-0 text-gray-500'>End Date -</span>
+                        {/* Display generic End Date mock since original only has expiresIn */}
+                        <span className='whitespace-nowrap font-semibold text-[#222222]'>25th June, 2024</span>
+                      </div>
+                    </div>
 
-                    <p className="text-sm font-satoshi flex items-center gap-2">
-                      <span className="max-[840px]:hidden text-gray-300">|</span>
-                      <span className="font-light whitespace-nowrap text-gray-500 group-hover:text-[#3A98BB]/70 transition-colors">Expires in -</span>
-                      <span className="font-semibold whitespace-nowrap text-[#222222] group-hover:text-[#3A98BB] transition-colors">
-                        {contract.expiresIn}
-                      </span>
-                    </p>
+                    <div className='hidden md:flex flex-col items-start text-[14px] font-satoshi text-gray-500'>
+                      <div className='flex items-center gap-2'>
+                        <span className="font-light whitespace-nowrap text-gray-500">Expires in -</span>
+                        <span className="font-semibold whitespace-nowrap text-[#222222]">{contract.expiresIn}</span>
+                      </div>
+                    </div>
+                  </div>
 
-                    {/* Desktop Buttons */}
-                    <div className="hidden md:flex gap-3 shrink-0" onClick={(e) => e.stopPropagation()}>
+                  {/* Desktop: action buttons + more options inline (hidden on mobile) */}
+                  <div className='hidden md:flex flex-row justify-end items-center gap-3 shrink-0 pl-4 overflow-visible'>
+                    <div className='flex items-center gap-3 shrink-0' onClick={(e) => e.stopPropagation()}>
                       <Button
-                        className="border px-8 py-4 shadow-md bg-white border-[#CCE7F2] text-[#222222] font-semibold rounded-full"
-                        size="sm"
-                        radius="full"
-                        onPress={() => {
-                          onMessageArtist(contract);
-                        }}
+                        className='bg-white text-[#222222] font-bold rounded-full px-6 h-[42px] border border-[#D1D1D1] w-[160px]'
+                        radius='full'
+                        variant='bordered'
+                        onPress={() => { onMessageArtist(contract); }}
                       >
                         Message Artist
                       </Button>
                       <Button
-                        className="border px-8 py-4 shadow-md bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-medium rounded-full"
-                        size="sm"
-                        radius="full"
-                        onPress={() => {
-                          onCancelContract(contract.id);
-                        }}
+                        className='bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold rounded-full px-6 h-[42px] border-0 shadow-md'
+                        radius='full'
+                        onPress={() => { onCancelContract(contract.id); }}
                       >
                         Cancel
                       </Button>
                     </div>
                   </div>
 
-                  {/* Mobile 3 Dots Menu */}
-                  <div className="md:hidden relative shrink-0 self-start">
-                    <button
-                      className="p-1 rounded-full hover:bg-gray-100 active:bg-gray-200 transition-colors"
-                      aria-label="More options"
-                      ref={(el) => { menuButtonRefs.current[contract.id || index] = el; }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        const btnId = contract.id || index;
-                        const btnEl = menuButtonRefs.current[btnId];
-                        if (btnEl) {
-                          const rect = btnEl.getBoundingClientRect();
-                          setMenuPosition({
-                            top: rect.bottom + 4,
-                            right: window.innerWidth - rect.right,
-                          });
-                        }
-                        setOpenMenuContract(openMenuContract?.id === (contract.id || index) ? null : contract);
-                      }}
-                    >
-                      <EllipsisHorizontalIcon className="h-5 w-5 text-gray-600" />
-                    </button>
-                  </div>
-
-                  {/* Portal dropdown — renders at document.body, immune to overflow:hidden */}
-                  {openMenuContract !== null && typeof document !== 'undefined' && createPortal(
-                    <div
-                      ref={menuRef}
-                      style={{
-                        position: 'fixed',
-                        top: menuPosition.top,
-                        right: menuPosition.right,
-                        zIndex: 9999,
-                      }}
-                      className='w-44 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden'
-                    >
-                      <button
-                        className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium'
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          const contract = openMenuContract;
-                          setOpenMenuContract(null);
-                          onMessageArtist(contract);
-                        }}
-                      >
-                        Message Artist
-                      </button>
-                      <div className="border-t border-gray-100" />
-                      <button
-                        className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors font-medium"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          const contract = openMenuContract;
-                          setOpenMenuContract(null);
-                          onCancelContract(contract.id);
-                        }}
-                      >
-                        Cancel
-                      </button>
-                    </div>,
-                    document.body
-                  )}
                 </div>
               </CardBody>
             </div>
+
+            {/* Portal Dropdown is rendered in the global file block */}
           </Card>
         ))}
       </div>
@@ -309,6 +283,45 @@ const PendingContracts = ({
           </div>
         )
       }
+
+      {/* Portal dropdown — renders at document.body, immune to overflow:hidden */}
+      {openMenuContract !== null && typeof document !== 'undefined' && createPortal(
+        <div
+          ref={menuRef}
+          style={{
+            position: 'fixed',
+            top: menuPosition.top,
+            right: menuPosition.right,
+            zIndex: 9999,
+          }}
+          className='w-48 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden flex flex-col'
+          onPointerDown={(e) => e.stopPropagation()}
+        >
+          <button
+            className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium border-b border-gray-100'
+            onClick={(e) => {
+              e.stopPropagation();
+              const contract = openMenuContract;
+              setOpenMenuContract(null);
+              if (contract) onMessageArtist(contract);
+            }}
+          >
+            Message Artist
+          </button>
+          <button
+            className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium'
+            onClick={(e) => {
+              e.stopPropagation();
+              const contract = openMenuContract;
+              setOpenMenuContract(null);
+              if (contract && contract.id) onCancelContract(contract.id);
+            }}
+          >
+            Cancel
+          </button>
+        </div>,
+        document.body
+      )}
     </div >
   );
 };

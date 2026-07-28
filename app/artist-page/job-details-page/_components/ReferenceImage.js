@@ -36,18 +36,18 @@ const ReferenceImage = ({ jobId }) => {
     return (
         <>
             {/* Mobile View */}
-            <div className="lg:hidden mt-6">
-                <h4 className="font-bold text-lg text-[#222222] mb-3">Reference Image</h4>
-                <div className="bg-[#FAFAFA] rounded-2xl p-4 border border-[#EAEAEA]">
-                    <div className="space-y-3">
+            <div className="lg:hidden mt-4">
+                <h4 className="font-bold text-[15px] text-[#2E2E2E] mb-3">Reference Image</h4>
+                <div className="bg-white rounded-[18px] p-5 border border-[#ECECEC] shadow-[0_1px_8px_rgba(0,0,0,0.04)] mb-4">
+                    <div className="space-y-4">
                         {attachments.map((file, index) => (
                             <div key={index} className="flex items-center gap-3">
-                                <div className="bg-[#CCE7F2] p-2 rounded-lg">
-                                    <Paperclip className="w-4 h-4 text-[#035A7A]" />
+                                <div className="bg-[#E7F3F8] p-2.5 rounded-xl">
+                                    <Paperclip className="w-5 h-5 text-[#146C94]" />
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-sm font-medium text-[#222222]">{file.name}</span>
-                                    <span className="text-xs text-[#767676]">{file.size}</span>
+                                    <span className="text-[14px] font-medium text-[#2E2E2E]">{file.name}</span>
+                                    <span className="text-[13px] text-[#757575]">{file.size}</span>
                                 </div>
                             </div>
                         ))}

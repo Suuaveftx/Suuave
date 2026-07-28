@@ -537,22 +537,29 @@ const License = () => {
             />
           </div>
 
-          {/* Sales Type */}
+          {/* Licensing Option */}
           <div className='flex flex-col gap-2'>
-            <h3 className='text-lg font-semibold'>Choose Sales Type<span className='text-red-500 ml-0.5'>*</span></h3>
+            <h3 className='text-lg font-semibold'>Licensing Option<span className='text-red-500 ml-0.5'>*</span></h3>
             <Select
-              placeholder='Select Sales Type'
-              className='w-full lg:w-96'
+              placeholder='Select Licensing Option'
+              className='w-full lg:w-[28rem]'
+              popoverProps={{ placement: "bottom", shouldFlip: false }}
               classNames={{
                 trigger: 'border-1 border-[#d1d1d1] bg-white hover:bg-default-100 px-4 py-6 rounded-lg shadow-none',
                 value: 'text-base text-[#222222]',
               }}
             >
-              <SelectItem key='exclusive' value='exclusive'>
-                Exclusive
+              <SelectItem key='exclusive' value='exclusive' textValue="Exclusive">
+                <div className="flex flex-col gap-1 py-1 whitespace-normal">
+                  <span className="font-bold text-base">Exclusive</span>
+                  <span className="text-sm text-gray-500">Transfer all rights of ownership and use directly to a single buyer. The design will be permanently removed from the store after purchase.</span>
+                </div>
               </SelectItem>
-              <SelectItem key='non-exclusive' value='non-exclusive'>
-                Non Exclusive
+              <SelectItem key='non-exclusive' value='non-exclusive' textValue="Non Exclusive">
+                <div className="flex flex-col gap-1 py-1 whitespace-normal">
+                  <span className="font-bold text-base">Non Exclusive</span>
+                  <span className="text-sm text-gray-500">Sell this design to multiple brands. You keep the rights and earn passive income.</span>
+                </div>
               </SelectItem>
             </Select>
           </div>

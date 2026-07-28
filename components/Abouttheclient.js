@@ -9,93 +9,90 @@ import Image from 'next/image';
 
 const Abouttheclient = () => {
   return (
-    <div className="bg-[#FAFAFA] w-full max-w-[550px] lg:max-w-[80%] lg:px-6 px-4 pt-0 pb-[56px] rounded-2xl flex flex-col items-center justify-center text-center border border-[#EAEAEA] mx-auto">
+    <div className="bg-white lg:bg-[#FAFAFA] w-full lg:px-6 px-5 pt-5 pb-6 lg:pb-[56px] rounded-[18px] lg:rounded-2xl flex flex-col text-left border border-[#ECECEC] lg:border-[#EAEAEA] mb-4 shadow-[0_1px_8px_rgba(0,0,0,0.04)] lg:shadow-none">
       {/* Header */}
-      <div className="lg:mb-8 mb-6 px-0 py-4">
-        <h4 className="border-b font-bold lg:text-[22px] text-[18px] whitespace-nowrap">
+      <div className="lg:mb-8 mb-4 px-0 py-0 w-full border-b border-[#ECECEC] lg:border-none pb-3 lg:pb-0">
+        <h4 className="font-bold lg:text-[22px] text-[15px] text-[#2E2E2E]">
           About the Client
         </h4>
       </div>
 
-      {/* Client Image Removed */}
-
       {/* Client Info */}
-      <div className="mb-8 flex flex-col items-center text-center">
-        <div className='font-bold'>
-          <Link href="/artist-page/client-profile" className="text-[#3A98BB] hover:opacity-80 transition-opacity duration-200">
+      <div className="mb-6 flex flex-col items-start text-left w-full">
+        <div className='font-bold mb-1'>
+          <Link href="/artist-page/client-profile" className="text-[#146C94] lg:text-[#3A98BB] hover:opacity-80 transition-opacity duration-200">
             <h4>@Ocean</h4>
           </Link>
         </div>
-        <div className="flex flex-col gap-2 mb-6 items-center">
-          <h5 className="font-medium text-sm">Fashion Brand</h5>
+        <div className="flex flex-col gap-2 mb-6 items-start">
+          <h5 className="font-medium text-[14px] text-[#2E2E2E]">Fashion Brand</h5>
 
-
-          <div className="flex items-center gap-2 justify-center">
-            <MdLocationPin color="#878787" />
-            <span className="tracking-[0.33px] text-[#767676]">
+          <div className="flex items-center gap-2 justify-start">
+            <MdLocationPin className="text-[#878787] w-[18px] h-[18px]" />
+            <span className="tracking-[0.33px] text-[#757575] text-[14px]">
               Lagos, Nigeria
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-1 justify-center">
-            <span className="tracking-[0.33px] text-[#767676]">Ratings:</span>
+          <div className="flex flex-wrap items-center gap-1 justify-start">
+            <span className="tracking-[0.33px] text-[#757575] text-[14px]">Ratings:</span>
             <div className="flex items-center gap-1">
               {Array(5)
                 .fill(null)
                 .map((_, index) => (
-                  <FaStar key={index} color="#F8B73B" />
+                  <FaStar key={index} className="text-[#F8B73B] w-3 h-3" />
                 ))}
             </div>
             <Link href="/artist-page/client-profile">
-              <span className="text-sm text-[#3A98BB] tracking-[0.33px] leading-[18px]">
+              <span className="text-[14px] text-[#146C94] lg:text-[#3A98BB] tracking-[0.33px] leading-[18px] ml-1">
                 (5 Reviews)
               </span>
             </Link>
           </div>
 
           <div>
-            <span className="text-[#767676] tracking-[0.33px] leading-[18px]">
+            <span className="text-[#757575] text-[14px] tracking-[0.33px] leading-[18px]">
               Member since 12 June, 2024
             </span>
           </div>
         </div>
 
         {/* Jobs & Artists */}
-        <div className="flex flex-col gap-2 items-center">
-          <div className="flex flex-col items-center gap-2 text-[#76767676]">
-            <span className="font-bold text-[#222222]">14</span>
+        <div className="flex flex-col gap-2 items-start">
+          <div className="flex items-center gap-2 text-[#757575] text-[14px]">
+            <span className="font-bold text-[#2E2E2E]">14</span>
             <span>Jobs Posted</span>
           </div>
-          <div className="flex flex-col items-center gap-2 text-[#76767676]">
-            <span className="font-bold text-[#222222]">14</span>
+          <div className="flex items-center gap-2 text-[#757575] text-[14px]">
+            <span className="font-bold text-[#2E2E2E]">14</span>
             <span>Artists Hired</span>
           </div>
         </div>
       </div>
 
       {/* Client Verifications */}
-      <div className="flex flex-col items-center text-center">
-        <div className="text-lg mb-[22px]">
-          <h5 className="leading-[160%] tracking-[0.33px] text-[18px] text-[#222222] font-bold">
+      <div className="flex flex-col items-start text-left w-full">
+        <div className="mb-4">
+          <h5 className="leading-[160%] tracking-[0.33px] text-[15px] lg:text-[18px] text-[#2E2E2E] font-bold">
             Client Verifications
           </h5>
         </div>
-        <div className="flex flex-col gap-4 items-center">
-          <div className="flex items-center gap-2">
-            <FaRegUser color="#3A98BB" />
-            <span className="text-[#767676]">Identity Verified</span>
+        <div className="flex flex-col gap-3 items-start">
+          <div className="flex items-center gap-3">
+            <FaRegUser className="text-[#146C94] lg:text-[#3A98BB] w-4 h-4" />
+            <span className="text-[#757575] text-[14px]">Identity Verified</span>
           </div>
-          <div className="flex items-center gap-2">
-            <MdOutlineMailOutline color="#3A98BB" />
-            <span className="text-[#767676]">Email Address Verified</span>
+          <div className="flex items-center gap-3">
+            <MdOutlineMailOutline className="text-[#146C94] lg:text-[#3A98BB] w-4 h-4" />
+            <span className="text-[#757575] text-[14px]">Email Address Verified</span>
           </div>
-          <div className="flex items-center gap-2">
-            <MdOutlinePhone color="#3A98BB" />
-            <span className="text-[#767676]">Phone Number Verified</span>
+          <div className="flex items-center gap-3">
+            <MdOutlinePhone className="text-[#146C94] lg:text-[#3A98BB] w-4 h-4" />
+            <span className="text-[#757575] text-[14px]">Phone Number Verified</span>
           </div>
-          <div className="flex items-center gap-2">
-            <LuCreditCard color="#3A98BB" />
-            <span className="text-[#767676]">Payment Method Verified</span>
+          <div className="flex items-center gap-3">
+            <LuCreditCard className="text-[#146C94] lg:text-[#3A98BB] w-4 h-4" />
+            <span className="text-[#757575] text-[14px]">Payment Method Verified</span>
           </div>
         </div>
       </div>

@@ -45,7 +45,7 @@ const SendProposalPageContent = () => {
   };
 
   return (
-    <PageContainer className="pb-20 font-satoshi" withTopSpacing>
+    <PageContainer className="pb-20 pt-0 lg:pt-0 font-satoshi">
       {/* Desktop Header */}
       <section className="hidden lg:block lg:mb-[29.34px] lg:mt-4">
         <div className="border-b-2 text-left w-full">
@@ -53,7 +53,12 @@ const SendProposalPageContent = () => {
         </div>
       </section>
 
-      <div className='grid grid-cols-1 lg:grid-cols-10 gap-x-8 gap-y-4 pt-0 pb-28 lg:pb-0 mt-4'>
+      {/* Mobile Header - outside cards */}
+      <div className="flex items-center gap-2 mb-4 lg:hidden">
+        <h1 className="text-[28px] font-bold text-[#222222]">{isEditMode ? "Proposal Details" : "Send Proposal"}</h1>
+      </div>
+
+      <div className='bg-white rounded-3xl px-2 py-6 lg:p-0 lg:bg-transparent lg:rounded-none grid grid-cols-1 lg:grid-cols-10 gap-x-8 gap-y-4 pt-4 pb-4 lg:pb-0 mt-2 mb-32 lg:mb-10 shadow-sm lg:shadow-none'>
         {/* Main Content */}
         <div className='lg:col-span-7 col-span-10'>
           <SendProposal
