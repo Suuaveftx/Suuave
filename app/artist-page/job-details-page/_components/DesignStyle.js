@@ -6,16 +6,16 @@ const DesignStyle = () => {
   return (
     <>
       {/* Mobile View */}
-      <div className='lg:hidden bg-transparent'>
-        <h4 className='font-bold text-lg text-[#222222] mb-3'>Design Style</h4>
+      <div className='lg:hidden bg-white p-5 rounded-[18px] border border-[#ECECEC] shadow-[0_1px_8px_rgba(0,0,0,0.04)] mb-4'>
+        <h4 className='font-bold text-[15px] text-[#2E2E2E] mb-3'>Design Style</h4>
         <div className='flex flex-wrap gap-2'>
-          <div className='bg-[#F0F0F0] px-4 py-2 rounded-full text-[#222222] text-sm'>
+          <div className='bg-[#F6F6F6] px-4 py-2 rounded-full text-[#757575] text-[13px] font-medium'>
             Casual
           </div>
-          <div className='bg-[#F0F0F0] px-4 py-2 rounded-full text-[#222222] text-sm'>
+          <div className='bg-[#F6F6F6] px-4 py-2 rounded-full text-[#757575] text-[13px] font-medium'>
             Ethnic
           </div>
-          <div className='bg-[#F0F0F0] px-4 py-2 rounded-full text-[#222222] text-sm'>
+          <div className='bg-[#F6F6F6] px-4 py-2 rounded-full text-[#757575] text-[13px] font-medium'>
             Street Wear
           </div>
         </div>

@@ -7,18 +7,18 @@ const Budgets = () => {
   return (
     <>
       {/* Mobile View */}
-      <div className='lg:hidden bg-[#FAFAFA] rounded-lg px-4 pt-4 pb-0'>
-        <h4 className='font-bold text-[18px] text-[#222222] mb-2'>Payment And Timeframe</h4>
+      <div className='lg:hidden bg-white p-5 rounded-[18px] border border-[#ECECEC] shadow-[0_1px_8px_rgba(0,0,0,0.04)] mb-4'>
+        <h4 className='font-bold text-[15px] text-[#2E2E2E] mb-3'>Payment And Timeframe</h4>
         <div className='flex flex-col gap-2'>
           <div className='flex items-center gap-2'>
-            <HiOutlineCash className='w-5 h-5 text-[#767676]' />
-            <span className='text-[#767676]'>Budget -</span>
-            <span className='font-bold text-[#3A98BB]'>N200,000</span>
+            <HiOutlineCash className='w-[18px] h-[18px] text-[#757575]' />
+            <span className='text-[14px] text-[#757575]'>Budget -</span>
+            <span className='font-bold text-[#3A98BB] text-[15px]'>N200,000</span>
           </div>
           <div className='flex items-center gap-2'>
-            <FaRegClock className='w-5 h-5 text-[#767676]' />
-            <span className='text-[#767676]'>Timeframe -</span>
-            <span className='font-medium text-[#222222]'>2 Days</span>
+            <FaRegClock className='w-[18px] h-[18px] text-[#757575]' />
+            <span className='text-[14px] text-[#757575]'>Timeframe -</span>
+            <span className='font-medium text-[#2E2E2E] text-[15px]'>2 Days</span>
           </div>
         </div>
       </div>

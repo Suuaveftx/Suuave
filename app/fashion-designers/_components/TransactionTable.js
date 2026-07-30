@@ -9,6 +9,7 @@ import {
     TableRow,
     TableCell,
     Button,
+    Pagination,
 } from "@heroui/react";
 import { Search, ChevronDown, Calendar, Info } from "lucide-react";
 
@@ -17,6 +18,8 @@ const TransactionTable = () => {
     const [selectedType, setSelectedType] = useState("All Types");
     const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
     const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 3;
 
     // Filter state: { type: 'range' | 'custom', value: any, label: string }
     const [dateFilter, setDateFilter] = useState({ type: 'none', value: null, label: 'Select Date' });
@@ -148,6 +151,17 @@ const TransactionTable = () => {
         return matchesSearch && matchesType && matchesDate;
     });
 
+    // Pagination
+    const totalPages = Math.max(1, Math.ceil(filteredTransactions.length / itemsPerPage));
+    const paginatedTransactions = filteredTransactions.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    // Reset page when filters change
+    const handleSearchChange = (val) => { setFilterValue(val); setCurrentPage(1); };
+    const handleTypeSelectWithReset = (type) => { handleTypeSelect(type); setCurrentPage(1); };
+
     const columns = [
         { name: "Date/Time", uid: "dateTime" },
         { name: "Transaction", uid: "transaction" },
@@ -197,7 +211,7 @@ const TransactionTable = () => {
                         <input
                             type='text'
                             value={filterValue}
-                            onChange={(e) => setFilterValue(e.target.value)}
+                            onChange={(e) => handleSearchChange(e.target.value)}
                             placeholder='Search'
                             className='block w-full pl-11 pr-24 py-3 bg-white border border-[#E5E5E5] rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-[#3A98BB] placeholder-gray-400 h-12 shadow-sm'
                         />
@@ -288,7 +302,7 @@ const TransactionTable = () => {
                             </TableColumn>
                         )}
                     </TableHeader>
-                    <TableBody items={filteredTransactions}>
+                    <TableBody items={paginatedTransactions}>
                         {(item) => (
                             <TableRow key={item.id}>
                                 {(columnKey) => (
@@ -304,7 +318,7 @@ const TransactionTable = () => {
 
             {/* Mobile Card View */}
             <div className="md:hidden flex flex-col gap-4">
-                {filteredTransactions.map((item) => (
+                {paginatedTransactions.map((item) => (
                     <div key={item.id} className="bg-white rounded-2xl p-5 shadow-sm border border-[#F0F0F0] space-y-4">
                         <div className="flex justify-between items-start">
                             <div className="space-y-1">
@@ -332,16 +346,16 @@ const TransactionTable = () => {
                 )}
             </div>
 
-            <div className="flex justify-center items-center gap-4 mt-4">
-                <span className="text-sm text-[#555555]">1 - 5 of 12</span>
-                <div className="flex gap-2">
-                    <Button isIconOnly variant="bordered" size="sm" className="min-w-10 h-10 rounded-md border-[#E5E5E5] bg-[#F5F5F5]/50">
-                        <ChevronDown className="rotate-90 size-4 text-[#555555]" />
-                    </Button>
-                    <Button isIconOnly variant="bordered" size="sm" className="min-w-10 h-10 rounded-md border-[#E5E5E5] bg-[#F5F5F5]/50">
-                        <ChevronDown className="-rotate-90 size-4 text-[#555555]" />
-                    </Button>
-                </div>
+            <div className="flex justify-center items-center mt-6 mb-2">
+                <Pagination
+                    showControls
+                    total={totalPages}
+                    page={currentPage}
+                    onChange={setCurrentPage}
+                    classNames={{
+                        cursor: "bg-[#3A98BB] text-white",
+                    }}
+                />
             </div>
         </div>
     );

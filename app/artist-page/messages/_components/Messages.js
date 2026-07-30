@@ -221,7 +221,7 @@ const Messages = () => {
                 className='text-xl cursor-pointer'
                 onClick={() => router.push("/artist-page")}
               />
-              <h1 className='font-bold text-lg'>Messages</h1>
+              <h1 className='font-bold text-[28px]'>Messages</h1>
             </div>
 
             {/* Search */}
@@ -288,7 +288,7 @@ const Messages = () => {
                 onClick={() => setActiveChat(null)} // ✅ close chat
               />
               <div className='flex flex-col items-center mx-auto'>
-                <h1 className='font-bold text-lg'>{activeChat.name}</h1>
+                <h1 className='font-bold text-[28px]'>{activeChat.name}</h1>
                 <p className='text-xs text-gray-500'>
                   Modern Fashion Attire Illustration{' '}
                   <span className='text-[#3A98BB]'>(24t64754)</span>

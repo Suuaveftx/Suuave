@@ -2,10 +2,12 @@
 import { Link as HeroLink } from "@heroui/react";
 import Link from "next/link";
 import Image from "next/image";
+import { FaFacebook } from "react-icons/fa";
+import { FaXTwitter, FaInstagram, FaLinkedin, FaYoutube, FaTelegram } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#223B44] text-white lg:px-14 px-4 pt-12 pb-[150px] lg:py-12">
+    <footer className="bg-[#223B44] text-white lg:px-14 px-4 py-8 md:py-12 h-[498px] overflow-y-auto overflow-x-hidden">
       <div className="  grid grid-cols-1 lg:grid-cols-[1.6fr_1fr_1fr_1fr] gap-8 items-start">
         {/* First Column */}
         <div className=" flex-col gap-4 hidden lg:flex">
@@ -73,44 +75,53 @@ const Footer = () => {
           OUR SOCIALS
         </h2>
 
-        <div className="flex lg:justify-center lg:items-center gap-6 mt-4">
+        <div className="flex flex-wrap lg:justify-center items-center gap-4 mt-4 mb-8 pb-4">
           <a
-            className="flex items-center justify-center w-10 h-10 rounded-full border border-white hover:bg-white/10 transition-colors"
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.instagram.com/suuaveftx?igsh=dWgzYzF6YXl5M3N3"
-          >
-            <Image
-              src="/dev-images/insta.png"
-              alt="Instagram"
-              width={20}
-              height={20}
-            />
-          </a>
-          <a
-            className="flex items-center justify-center w-10 h-10 rounded-full border border-white hover:bg-white/10 transition-colors"
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-white transition-colors"
             target="_blank"
             rel="noopener noreferrer"
             href="https://x.com/SuuaveFTx"
           >
-            <Image
-              src="/dev-images/X.png"
-              alt="X"
-              width={20}
-              height={20}
-            />
+            <FaXTwitter className="w-5 h-5 text-black" />
           </a>
           <Link
-            className="flex items-center justify-center w-10 h-10 rounded-full border border-white hover:bg-white/10 transition-colors"
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-[#1877F2] bg-white transition-colors"
             href="/"
           >
-            <Image
-              src="/dev-images/Face.png"
-              alt="Facebook"
-              width={20}
-              height={20}
-            />
+            <FaFacebook className="w-5 h-5 text-[#1877F2]" />
           </Link>
+          <a
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-[#E4405F] bg-white transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.instagram.com/suuaveftx"
+          >
+            <FaInstagram className="w-5 h-5 text-[#E4405F]" />
+          </a>
+          <a
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-[#0A66C2] bg-white transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://linkedin.com"
+          >
+            <FaLinkedin className="w-5 h-5 text-[#0A66C2]" />
+          </a>
+          <a
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-[#FF0000] bg-white transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.youtube.com/@SuuaveFTx"
+          >
+            <FaYoutube className="w-5 h-5 text-[#FF0000]" />
+          </a>
+          <a
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-[#229ED9] bg-white transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://telegram.org"
+          >
+            <FaTelegram className="w-5 h-5 text-[#229ED9]" />
+          </a>
         </div>
       </div>
     </footer>

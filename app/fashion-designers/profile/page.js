@@ -10,6 +10,8 @@ import {
   EditTitle,
 } from "../_components/profile/edit";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "@heroui/react";
 
 const reviews = Array.from({ length: 15 }).map((_, i) => ({
   id: i + 1,
@@ -23,6 +25,7 @@ const reviews = Array.from({ length: 15 }).map((_, i) => ({
 const fullText = `Sorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel bibendum lorem. Morbi convallis convallis diam sit amet lacinia. Aliquam in elementum tellus. Curabitur tempor quis eros tempus lacinia. Nam bibendum pellentesque quam a convallis. Sed ut vulputate nisi. Integer in felis sed leo vestibulum venenatis. Suspendisse quis arcu sem. Aenean feugiat ex eu vestibulum vestibulum. Morbi a eleifend magna. Nam metus lacus, porttitor eu mauris a, blandit ultrices nibh. Mauris sit amet magna non ligula vestibul`;
 
 const Page = () => {
+  const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [showFull, setShowFull] = useState(false);
   const [aboutValue, setAboutValue] = useState(fullText);
@@ -101,65 +104,81 @@ const Page = () => {
   }, [isMobile, showFull, words]);
 
   return (
-    <PageContainer className="min-h-screen w-full pb-20 pt-4">
-      {/* Header */}
+    <PageContainer className="min-h-screen w-full pb-20 pt-2 lg:pt-4  lg:bg-transparent !px-0">
+      <div className="bg-white md:bg-transparent pt-3 md:pt-0">
+        {/* Mobile Back Arrow Header */}
+        <div className="lg:hidden flex items-center gap-1 mb-2 px-2">
+          <Button
+            isIconOnly
+            variant="light"
+            onPress={() => router.back()}
+            className="min-w-fit flex items-center justify-center rounded-full w-9 h-9 bg-transparent text-gray-500"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </Button>
+          <h1 className="text-[20px] font-semibold text-[#222222]">Profile</h1>
+        </div>
 
-      {/* User details  */}
-      <div className="mt-3 bg-white flex relative flex-col md:py-5 md:bg-[#F9F9F9] md:px-5 md:rounded-t-lg  md:justify-between md:mt-4 md:flex-row md:items-start md:gap-4 items-center p-4 text-[#222222] font-satoshi">
+        {/* User details  */}
+        <div className="bg-white flex relative flex-col md:py-5 md:bg-[#F9F9F9] md:px-5 md:rounded-t-lg md:justify-between md:mt-4 md:flex-row md:items-start md:gap-4 items-center p-4 pt-1 text-[#222222] font-satoshi">
 
-        <div className="w-full flex flex-col items-center md:flex-row md:items-start md:gap-3">
-          <div className="relative flex flex-col items-end w-20 h-20 flex-shrink-0 aspect-square rounded-full md:w-28 md:h-28">
-            <EditProfile handleFileChange={handleFileChange} className="top-0 -right-2" />
+          <div className="w-full flex flex-col items-center md:flex-row md:items-start md:gap-3">
+            <div className="relative flex flex-col items-end w-20 h-20 flex-shrink-0 aspect-square rounded-full md:w-28 md:h-28">
+              <EditProfile handleFileChange={handleFileChange} className="top-0 -right-2" />
 
-            {/* Image Preview */}
-            {previewProfileUrl ? (
-              <Image
-                src={previewProfileUrl}
-                alt="Preview"
-                width={0}
-                height={0}
-                className="w-full h-full rounded-full object-cover border"
-              />
-            ) : (
-              <Image
-                src="/profile/image-3.svg"
-                alt="Default profile"
-                className="w-full h-full rounded-full object-cover border"
-                width={0}
-                height={0}
-              />
-            )}
+              {/* Image Preview */}
+              {previewProfileUrl ? (
+                <Image
+                  src={previewProfileUrl}
+                  alt="Preview"
+                  width={0}
+                  height={0}
+                  className="w-full h-full rounded-full object-cover border"
+                />
+              ) : (
+                <Image
+                  src="/profile/image-3.svg"
+                  alt="Default profile"
+                  className="w-full h-full rounded-full object-cover border"
+                  width={0}
+                  height={0}
+                />
+              )}
+            </div>
+
+            <div className="w-full flex flex-col items-center md:items-start gap-2 mt-1">
+              <div className="flex items-center gap-2 justify-center md:justify-start">
+                <h1 className="text-base font-bold uppercase flex items-center gap-2">
+                  OCEAN CLARA
+                  <span className="w-2 h-2 bg-[#056D16] rounded-full"></span>
+                </h1>
+              </div>
+              <div className="flex items-center gap-2 justify-center md:justify-start">
+                <p className="font-normal text-base"> {titleValue}</p>
+                <EditTitle
+                  setTitleValue={setTitleValue}
+                  titleValue={titleValue}
+                />
+              </div>
+              <div className="flex items-center gap-2 font-normal text-sm justify-center md:justify-start">
+                <Image
+                  src="/profile/locationIcon.svg"
+                  alt="icon"
+                  width={20}
+                  height={20}
+                />{" "}
+                Lagos, Nigeria
+              </div>
+              <div className="flex items-center gap-2 mt-1 justify-center md:justify-start">
+                <RatingStar />
+                <p className="text-[#767676] font-normal text-sm">4.0</p>
+                <p className="text-[#3A98BB] font-normal text-sm">(5 Reviews)</p>
+              </div>
+            </div>
           </div>
 
-          <div className="w-full flex flex-col items-center md:items-start gap-2 mt-1">
-            <div className="flex items-center gap-2 justify-center md:justify-start">
-              <h1 className="text-base font-bold uppercase flex items-center gap-2">
-                OCEAN CLARA
-                <span className="w-2 h-2 bg-[#056D16] rounded-full"></span>
-              </h1>
-            </div>
-            <div className="flex items-center gap-2 justify-center md:justify-start">
-              <p className="font-normal text-base"> {titleValue}</p>
-              <EditTitle
-                setTitleValue={setTitleValue}
-                titleValue={titleValue}
-              />
-            </div>
-            <div className="flex items-center gap-2 font-normal text-sm justify-center md:justify-start">
-              <Image
-                src="/profile/locationIcon.svg"
-                alt="icon"
-                width={20}
-                height={20}
-              />{" "}
-              Lagos, Nigeria
-            </div>
-            <div className="flex items-center gap-2 mt-1 justify-center md:justify-start">
-              <RatingStar />
-              <p className="text-[#767676] font-normal text-sm">4.0</p>
-              <p className="text-[#3A98BB] font-normal text-sm">(5 Reviews)</p>
-            </div>
-          </div>
         </div>
 
       </div>
@@ -181,9 +200,9 @@ const Page = () => {
         </div>
       </section>
       {/* About user */}
-      <section className="p-4 bg-white font-satoshi md:bg-[#F9F9F9] md:mt-10 md:py-5 md:px-5 md:rounded-t-lg ">
+      <section className="p-4 mt-[6px] bg-white font-satoshi md:bg-[#F9F9F9] md:mt-10 md:py-5 md:px-5 md:rounded-t-lg">
         <div className="flex items-start justify-between">
-          <h1 className="font-bold text-base md:text-xl md:mb-8">Description</h1>{" "}
+          <h1 className="font-bold text-base md:text-xl md:mb-8">Description</h1>
           <EditAboutMe setAboutValue={setAboutValue} aboutValue={aboutValue} />
         </div>
         <span className="font-normal tracking-wide text-sm md:text-base text-[#222222]  mt-2">
@@ -200,7 +219,7 @@ const Page = () => {
       </section>
 
       {/* Reviews */}
-      <section className="p-4 mt-5 bg-white font-satoshi ">
+      <section className="p-4 mt-[6px] bg-white font-satoshi">
         <h1 className="font-bold text-base  md:text-xl">Reviews</h1>
         <div className="flex justify-center md:justify-start md:px-20 ">
           <div className="mt-[28px] flex flex-col items-center gap-2 bg-[#FAFAFA] border-1 border-[#E6E6E6] drop-shadow-lg rounded-lg py-4 px-6">

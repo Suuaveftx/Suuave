@@ -23,188 +23,91 @@ const Page = () => {
   const isLoadingRef = useRef(false);
   const baseCardsRef = useRef(null);
 
-  // Data for fashion designer cards
+  // Data for fashion designer cards — matches reference design
   const baseCardsData = [
     {
       id: 'card-1',
-      user: {
-        id: 'user-1',
-        userName: 'Amira Bashir',
-        photo: 'userImg',
-        handle: '@amirabash',
-        description: 'Textile alchemist, silhouette enthusiast 👗✨',
-        followers: 45800,
-        following: 124,
-      },
-      title: 'Flowy linen sets for summer brunch elegance',
-      price: 128000,
+      user: { id: 'user-1', userName: 'Tega Isama', photo: 'userImg', handle: '@tega', description: '', followers: 0, following: 0 },
+      title: 'Modern Style Dress',
+      price: 340,
       images: ['/dev-images/fashionImg1.png'],
     },
     {
       id: 'card-2',
-      user: {
-        id: 'user-2',
-        userName: 'Leo Tang',
-        photo: 'userImg',
-        handle: '@leotang',
-        description: 'Menswear visionary — structure meets soul 🧵 he/him',
-        followers: 89200,
-        following: 312,
-      },
-      title: 'Tailored modern suits inspired by Tokyo streetwear',
-      price: 265000,
-      images: [
-        '/dev-images/fashionImg1.png',
-        '/dev-images/fashionImg2.png',
-        '/dev-images/fashionImg3.png',
-      ],
+      user: { id: 'user-2', userName: 'Tega Isama', photo: 'userImg', handle: '@tega', description: '', followers: 0, following: 0 },
+      title: 'Modern Style Dress',
+      price: 340,
+      images: ['/dev-images/fashionImg2.png', '/dev-images/fashionImg3.png'],
     },
     {
       id: 'card-3',
-      user: {
-        id: 'user-3',
-        userName: 'Tega Isama',
-        photo: 'userImg',
-        handle: '@tega',
-        description: 'Fashion designer, fabric whisperer ✂️ she/her ✨',
-        followers: 97100,
-        following: 7,
-      },
-      title: 'Experimental silhouettes with a minimalist heart',
-      price: 34034000,
-      images: ['/dev-images/fashionImg1.png'],
+      user: { id: 'user-3', userName: 'Tega Isama', photo: 'userImg', handle: '@tega', description: '', followers: 0, following: 0 },
+      title: 'Modern Style Dress',
+      price: 340,
+      images: ['/dev-images/fashionImg3.png'],
     },
     {
       id: 'card-4',
-      user: {
-        id: 'user-4',
-        userName: 'Kai Nwosu',
-        photo: 'userImg',
-        handle: '@kai_nwosu',
-        description: 'Couture meets culture, Lagos born 🪡🌍',
-        followers: 60200,
-        following: 98,
-      },
-      title: 'Ankara-inspired gowns with futuristic detailing',
-      price: 487500,
-      images: [
-        '/dev-images/fashionImg1.png',
-        '/dev-images/fashionImg2.png',
-        '/dev-images/fashionImg3.png',
-      ],
+      user: { id: 'user-4', userName: 'Tega Isama', photo: 'userImg', handle: '@tega', description: '', followers: 0, following: 0 },
+      title: 'Modern Style Dress',
+      price: 340,
+      images: ['/dev-images/fashionImg1.png', '/dev-images/fashionImg2.png'],
     },
     {
       id: 'card-5',
-      user: {
-        id: 'user-5',
-        userName: 'Yuna Lee',
-        photo: 'userImg',
-        handle: '@yunalee.studio',
-        description: 'Soft tailoring & fluid forms 🌸 she/her',
-        followers: 120900,
-        following: 43,
-      },
-      title: 'Spring drop: silk layers & modular design',
-      price: 219900,
-      images: [
-        '/dev-images/fashionImg1.png',
-        '/dev-images/fashionImg2.png',
-        '/dev-images/fashionImg3.png',
-      ],
+      user: { id: 'user-5', userName: 'Tega Isama', photo: 'userImg', handle: '@tega', description: '', followers: 0, following: 0 },
+      title: 'Modern Style Dress',
+      price: 340,
+      images: ['/dev-images/fashionImg2.png'],
     },
     {
       id: 'card-6',
-      user: {
-        id: 'user-6',
-        userName: 'Obadea Isama',
-        photo: 'userImg',
-        handle: '@isama',
-        description: 'Modern textures. Timeless cuts. ✂️ she/her ✨',
-        followers: 97100,
-        following: 7,
-      },
-      title: 'Draped elegance with a bold color story',
-      price: 187000,
-      images: [
-        '/dev-images/fashionImg1.png',
-        '/dev-images/fashionImg2.png',
-        '/dev-images/fashionImg3.png',
-      ],
+      user: { id: 'user-6', userName: 'Tega Isama', photo: 'userImg', handle: '@tega', description: '', followers: 0, following: 0 },
+      title: 'Modern Style Dress',
+      price: 340,
+      images: ['/dev-images/fashionImg3.png', '/dev-images/fashionImg1.png'],
     },
     {
       id: 'card-7',
-      user: {
-        id: 'user-7',
-        userName: 'Nico Arora',
-        photo: 'userImg',
-        handle: '@nico.designs',
-        description: 'Eco-fashion crusader 🌱✂️ he/they',
-        followers: 42200,
-        following: 214,
-      },
-      title: 'Recycled denim reinvented into high-street staples',
-      price: 142300,
-      images: ['/dev-images/fashionImg1.png', '/dev-images/fashionImg2.png'],
+      user: { id: 'user-7', userName: 'Tega Isama', photo: 'userImg', handle: '@tega', description: '', followers: 0, following: 0 },
+      title: 'Modern Style Dress',
+      price: 340,
+      images: ['/dev-images/fashionImg1.png'],
     },
     {
       id: 'card-8',
-      user: {
-        id: 'user-8',
-        userName: 'Zoé Marchand',
-        photo: 'userImg',
-        handle: '@zoemarchand',
-        description: 'Paris-based romanticism in ready-to-wear 🥀 she/her',
-        followers: 110500,
-        following: 89,
-      },
-      title: 'Sheer layers and lace — dreamy yet grounded',
-      price: 398000,
-      images: ['/dev-images/fashionImg1.png', '/dev-images/fashionImg3.png'],
+      user: { id: 'user-8', userName: 'Tega Isama', photo: 'userImg', handle: '@tega', description: '', followers: 0, following: 0 },
+      title: 'Modern Style Dress',
+      price: 340,
+      images: ['/dev-images/fashionImg2.png', '/dev-images/fashionImg3.png'],
     },
     {
       id: 'card-9',
-      user: {
-        id: 'user-9',
-        userName: 'Luca Bianchi',
-        photo: 'userImg',
-        handle: '@bianchi.studio',
-        description: 'Geometry meets glamor. 🇮🇹🧷 he/him',
-        followers: 88000,
-        following: 51,
-      },
-      title: 'Architectural cuts blended with silk and shimmer',
-      price: 504500,
-      images: ['/dev-images/fashionImg1.png', '/dev-images/fashionImg2.png'],
+      user: { id: 'user-9', userName: 'Tega Isama', photo: 'userImg', handle: '@tega', description: '', followers: 0, following: 0 },
+      title: 'Modern Style Dress',
+      price: 340,
+      images: ['/dev-images/fashionImg3.png'],
     },
     {
       id: 'card-10',
-      user: {
-        id: 'user-10',
-        userName: 'Nyah Okeke',
-        photo: 'userImg',
-        handle: '@nyah.okeke',
-        description: 'Bold prints, bolder stories 🎨 she/her',
-        followers: 75000,
-        following: 60,
-      },
-      title: 'Statement pieces with Afro-urban narratives',
-      price: 298700,
-      images: ['/dev-images/fashionImg2.png', '/dev-images/fashionImg3.png'],
+      user: { id: 'user-10', userName: 'Tega Isama', photo: 'userImg', handle: '@tega', description: '', followers: 0, following: 0 },
+      title: 'Modern Style Dress',
+      price: 340,
+      images: ['/dev-images/fashionImg1.png', '/dev-images/fashionImg2.png'],
     },
     {
       id: 'card-11',
-      user: {
-        id: 'user-11',
-        userName: 'Nyah Okeke',
-        photo: 'userImg',
-        handle: '@nyah.okeke',
-        description: 'Bold prints, bolder stories 🎨 she/her',
-        followers: 75000,
-        following: 60,
-      },
-      title: 'Statement pieces with Afro-urban narratives',
-      price: 298700,
-      images: ['/dev-images/fashionImg2.png', '/dev-images/fashionImg3.png'],
+      user: { id: 'user-11', userName: 'Tega Isama', photo: 'userImg', handle: '@tega', description: '', followers: 0, following: 0 },
+      title: 'Modern Style Dress',
+      price: 340,
+      images: ['/dev-images/fashionImg2.png'],
+    },
+    {
+      id: 'card-12',
+      user: { id: 'user-12', userName: 'Tega Isama', photo: 'userImg', handle: '@tega', description: '', followers: 0, following: 0 },
+      title: 'Modern Style Dress',
+      price: 340,
+      images: ['/dev-images/fashionImg3.png', '/dev-images/fashionImg1.png'],
     },
   ];
 
@@ -240,7 +143,7 @@ const Page = () => {
 
 
   return (
-    <PageContainer className='font-satoshi mb-48' withTopSpacing>
+    <PageContainer className='font-satoshi mb-48 pt-4 md:pt-7'>
       <Alert
         isVisible={isVisible}
         icon={
@@ -273,7 +176,7 @@ const Page = () => {
       />
 
       <Card
-        className='w-full mt-10 border-none relative overflow-hidden'
+        className='w-full mt-4 border-none relative overflow-hidden'
         shadow='sm'
         radius='lg'
       >
@@ -284,39 +187,38 @@ const Page = () => {
           className='absolute z-0 inset-0 w-full h-full object-cover object-center'
         />
         <CardBody className='relative z-10 lg:h-[180px] h-[120px] flex flex-col items-center justify-center text-white p-0'>
-          <h2 className='lg:text-[40px] text-[18px] font-semibold lg:mb-2 mb-1 text-center w-full px-4 tracking-wide z-10 lg:whitespace-nowrap'>
+          <h2 className='lg:text-[40px] text-[16px] font-bold lg:mb-2 mb-1 text-center w-full px-2 tracking-wide z-10 leading-tight whitespace-nowrap'>
             Explore Hundreds of Creative Designs
           </h2>
-          <p className='lg:text-[18px] text-[13px] font-light text-center w-full px-4 z-10 lg:whitespace-nowrap'>
+          <p className='lg:text-[18px] text-[11px] font-light text-center w-full px-2 z-10 leading-snug whitespace-nowrap'>
             Get licensing access for your brand and collections.
           </p>
         </CardBody>
       </Card>
       <Input
-        startContent={<IoSearchOutline className='size-5' />}
+        startContent={<IoSearchOutline className='size-5 text-[#7A7A7A]' />}
         placeholder='Search'
         radius='full'
-        className='lg:w-[40%]  mt-10 w-full'
-        classNames={{ inputWrapper: 'shadow-lg py-6' }}
+        className='lg:w-[40%] mt-5 w-full'
+        classNames={{ inputWrapper: 'shadow-md py-6 border border-[#ECECEC]' }}
         variant='bordered'
       />
 
-      {/* taba */}
-      <div className='flex w-full flex-col mt-7'>
+      <div className='flex w-full flex-col mt-5'>
         <Tabs
           aria-label='Options'
           classNames={{
             tabList: 'gap-6 w-full relative rounded-none p-0 border-b border-divider',
-            cursor: 'w-full bg-[#22d3ee]',
+            cursor: 'w-full bg-[#3CA8D8]',
             tab: 'max-w-fit px-0 h-12',
-            tabContent: 'group-data-[selected=true]:text-[#06b6d4]',
+            tabContent: 'group-data-[selected=true]:text-[#3CA8D8] font-medium',
           }}
           color='primary'
           variant='underlined'
         >
           <Tab
             key='recent'
-            title={<p className='flex items-center space-x-2'>Recently</p>}
+            title={<p className='flex items-center space-x-2 text-[14px] font-medium'>Recently posted</p>}
           >
             <div className='grid grid-cols-2 gap-3 mt-6 lg:gap-6 lg:grid-cols-4'>
               {cardsData.slice(0, visibleCount).map((card, index) => (
@@ -353,7 +255,7 @@ const Page = () => {
             key='saved'
             title={
               <div className='flex items-center space-x-2'>
-                <span>Saved ({savedCardIds.length})</span>
+                <span className='text-[14px] font-medium'>Saved Designs ({savedCardIds.length})</span>
               </div>
             }
           >

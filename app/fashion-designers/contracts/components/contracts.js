@@ -136,22 +136,25 @@ export default function ContractPage() {
       <div className='bg-[#FFFFFF] lg:border lg:border-[#EAEAEA] w-full lg:px-[35px] py-[45px] lg:mt-8 mb-8 rounded-[16px]'>
         <div className='font-satoshi'>
           {/* Tab Navigation */}
-          <div className='flex w-full flex-col mb-8 px-4 lg:px-0'>
+          <div className='flex w-full flex-col mb-4 lg:mb-8 px-0 lg:px-0'>
             <Tabs
               selectedKey={activeTab}
-              onSelectionChange={setActiveTab}
+              onSelectionChange={(key) => {
+                setActiveTab(key);
+                router.push(`?tab=${key}`, { scroll: false });
+              }}
               variant='underlined'
               classNames={{
                 tabList:
-                  'gap-12 w-full relative rounded-none p-0 border-b border-gray-100 px-0 lg:px-[20px]',
-                cursor: 'w-full bg-[#222222] h-[2px]',
-                tab: 'px-0 py-3 h-auto max-w-fit',
+                  'gap-6 lg:gap-12 w-full relative rounded-none p-0 border-b border-gray-100 px-4 lg:px-[20px] overflow-x-auto no-scrollbar',
+                cursor: 'w-full bg-[#3A98BB] lg:bg-[#222222] h-[2px]',
+                tab: 'px-0 py-3 h-auto max-w-fit shrink-0',
                 tabContent:
-                  'text-[15px] font-medium text-[#878787] group-data-[selected=true]:font-bold group-data-[selected=true]:text-[#222222]',
+                  'text-[14px] lg:text-[15px] font-medium text-[#878787] group-data-[selected=true]:font-bold group-data-[selected=true]:text-[#222222]',
               }}
             >
               {tabs.map((tab) => (
-                <Tab fullwidth key={tab.id} title={`${tab.label} (${tab.count})`} />
+                <Tab key={tab.id} title={tab.label} />
               ))}
             </Tabs>
           </div>

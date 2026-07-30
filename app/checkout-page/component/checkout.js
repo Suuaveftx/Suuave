@@ -68,16 +68,33 @@ export const CheckoutPage = () => {
   const hasCrown = searchParams.get('crown') === 'true' || searchParams.has('crown');
 
   return (
-    <div className='mx-auto bg-[#FAFAFA] min-h-screen'>
+    <div className='mx-auto bg-[#F5F8FA] lg:bg-[#FAFAFA] min-h-screen'>
       <FashionDesignerHeader />
-      <PageContainer className='pt-[120px] pb-[100px]'>
+      <PageContainer className='pt-[100px] lg:pt-[120px] pb-[100px] !px-4 lg:!px-8'>
         {/* Header */}
-        <div className='flex items-center gap-3 mb-4'>
+        {/* Mobile Header */}
+        <div className='lg:hidden flex items-center gap-1 mb-4 mt-2'>
           <Button
             isIconOnly
             variant='light'
             radius='full'
-            className='md:hidden text-black -ml-2'
+            className='min-w-fit flex items-center justify-center p-1 rounded-full w-10 h-10 bg-transparent text-gray-500'
+            onPress={() => router.back()}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </Button>
+          <h1 className='text-[20px] font-semibold text-[#222222]'>Check-out</h1>
+        </div>
+
+        {/* Desktop Header */}
+        <div className='hidden lg:flex items-center gap-3 mb-4'>
+          <Button
+            isIconOnly
+            variant='light'
+            radius='full'
+            className='text-black -ml-2'
             onPress={() => router.back()}
           >
             <ArrowLeft size={24} />
@@ -102,41 +119,44 @@ export const CheckoutPage = () => {
           variant='flat'
           hideIcon
           description={
-            <div className='flex items-center gap-2 py-1'>
-              <Info size={18} className='text-black flex-shrink-0 self-center' />
-              <span className='m-0 p-0 leading-tight text-sm md:text-base'>
+            <div className='flex items-start md:items-center gap-2 py-1'>
+              <div className='w-5 h-5 bg-black rounded-full text-white flex items-center justify-center p-0.5 mt-0.5 md:mt-0 flex-shrink-0'>
+                <Info size={14} strokeWidth={3} />
+              </div>
+              <span className='m-0 p-0 leading-tight text-[13px] md:text-base font-medium'>
                 {hasCrown
                   ? "Secure full, sole ownership of this design, which will be permanently removed from the marketplace."
-                  : "Obtain the rights to use this design for your projects, while allowing other brands to license it as well."}
+                  : "Get Licensing right to the design and use as you desire. All files and specification will be tranferred to you."}
               </span>
             </div>
           }
           classNames={{
-            base: 'border-none bg-gradient-to-r from-[#A5D5E9] to-[#28A5D8] text-[#222222] font-proximanova px-4 min-h-[56px] flex items-center',
+            base: 'border-none bg-gradient-to-r from-[#A5D5E9] to-[#28A5D8] text-[#222222] font-satoshi px-4 py-3 min-h-[56px] flex items-center rounded-xl mb-4 mt-2',
             mainWrapper: 'p-0 m-0 flex-1',
-            description: 'p-0 m-0 flex items-center',
+            description: 'p-0 m-0 flex items-center text-white',
           }}
         />
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mt-6'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8 mt-4'>
           {/* Left Section - Forms */}
-          <div className='lg:col-span-1 space-y-6 font-satoshi'>
+          <div className='lg:col-span-1 space-y-4 lg:space-y-6 font-satoshi'>
             {/* Billing Information */}
-            <Card className='shadow-md border-2 border-gray-200'>
-              <CardBody className='md:p-6 p-2'>
-                <h2 className='text-lg font-semibold mb-4'>Billing Information</h2>
+            <Card className='shadow-none lg:shadow-md border border-[#EAEAEA] lg:border-2 lg:border-gray-200 rounded-xl lg:rounded-2xl'>
+              <CardBody className='p-4 md:p-6'>
+                <h2 className='text-base md:text-lg font-bold mb-4 text-[#222222]'>Billing Information</h2>
 
                 <div className='space-y-4'>
                   <div>
-                    <label className='block text-sm font-semibold  mb-1'>Full Name</label>
+                    <label className='block text-sm font-bold text-[#222222] mb-1.5'>Full Name</label>
                     <Input
                       placeholder='Name on card'
                       variant='bordered'
                       className='w-full'
+                      classNames={{ inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]' }}
                     />
                   </div>
 
                   <div>
-                    <label className='block text-sm font-semibold text-gray-700 mb-1'>
+                    <label className='block text-sm font-bold text-[#222222] mb-1.5'>
                       Country
                     </label>
                     <Select
@@ -146,6 +166,7 @@ export const CheckoutPage = () => {
                       }
                       variant='bordered'
                       className='w-full'
+                      classNames={{ trigger: 'rounded-lg border-[#EAEAEA] h-[48px]' }}
                     >
                       {countries.map((country) => (
                         <SelectItem key={country.value} value={country.value}>
@@ -159,9 +180,9 @@ export const CheckoutPage = () => {
             </Card>
 
             {/* Payment Method */}
-            <Card className='shadow-md border-2 border-gray-200 '>
-              <CardBody className='md:p-6 p-2'>
-                <h2 className='text-lg font-semibold text-gray-900 mb-4'>
+            <Card className='shadow-none lg:shadow-md border border-[#EAEAEA] lg:border-2 lg:border-gray-200 rounded-xl lg:rounded-2xl'>
+              <CardBody className='p-4 md:p-6'>
+                <h2 className='text-base md:text-lg font-bold text-[#222222] mb-4'>
                   Payment Method
                 </h2>
 
@@ -212,33 +233,34 @@ export const CheckoutPage = () => {
                 {paymentMethod === 'credit' && (
                   <div className='space-y-4'>
                     <div className='relative'>
-                      <label className='block text-sm font-proximanova mb-1'>
+                      <label className='block text-sm font-bold text-[#222222] mb-1.5'>
                         Card Number
                       </label>
                       <Input
                         placeholder='0000 0000 0000 0000'
                         variant='bordered'
                         endContent={<CreditCard size={20} className='text-gray-400' />}
+                        classNames={{ inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]' }}
                       />
                     </div>
 
                     <div>
-                      <label className='block text-sm font-proximanova mb-1'>
+                      <label className='block text-sm font-bold text-[#222222] mb-1.5'>
                         Name On Card
                       </label>
-                      <Input placeholder='Name on card' variant='bordered' />
+                      <Input placeholder='Name on card' variant='bordered' classNames={{ inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]' }} />
                     </div>
 
                     <div className='grid grid-cols-2 gap-4'>
                       <div>
-                        <label className='block text-sm font-proximanova mb-1'>
+                        <label className='block text-sm font-bold text-[#222222] mb-1.5'>
                           Expiry Date
                         </label>
-                        <Input placeholder='DD/YY' variant='bordered' />
+                        <Input placeholder='DD/YY' variant='bordered' classNames={{ inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]' }} />
                       </div>
                       <div>
-                        <label className='block text-sm font-proximanova mb-1'>CVV</label>
-                        <Input placeholder='XXX' variant='bordered' />
+                        <label className='block text-sm font-bold text-[#222222] mb-1.5'>CVV</label>
+                        <Input placeholder='XXX' variant='bordered' classNames={{ inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]' }} />
                       </div>
                     </div>
                   </div>
@@ -248,38 +270,38 @@ export const CheckoutPage = () => {
           </div>
 
           {/* Right Section  */}
-          <div className='w-full md:w-auto'>
-            <Card className='shadow-sm sticky top-8 border-2 border-gray-200'>
-              <CardBody className='p-6'>
+          <div className='w-full md:w-auto font-satoshi'>
+            <Card className='shadow-none lg:shadow-md sticky top-8 border border-[#EAEAEA] lg:border-2 lg:border-gray-200 rounded-xl lg:rounded-2xl'>
+              <CardBody className='p-4 md:p-6'>
                 <div className='md:text-center text-left w-full'>
-                  <h2 className='md:text-xl text-lg font-semibold  mb-2'>
-                    Payment Summary
+                  <h2 className='md:text-xl text-base font-bold mb-4 text-[#222222]'>
+                    Order Summary
                   </h2>
-                  <Divider className='mb-8' />
+                  <Divider className='mb-6 hidden lg:block' />
                 </div>
 
-                <div className='flex items-start justify-between  gap-1 mb-6 font-satoshi'>
-                  <div className='flex items-center gap-4 md:max-w-sm '>
-                    <Image
-                      src='/checkout/attire.png'
-                      alt='Visa'
-                      width={60}
-                      height={60}
-                      className='rounded-[11px] object-center'
-                    />
-                    <div className='flex-1 w-full mr-2'>
-                      <h3 className='font-proximanova  text-md'>
-                        Modern Fashion Attire (863758558)
+                <div className='flex items-start justify-between gap-2 mb-6 font-satoshi'>
+                  <div className='flex items-center gap-3 md:max-w-sm w-full'>
+                    <div className='min-w-[48px] h-[48px] rounded-lg overflow-hidden bg-gray-100'>
+                      <Image
+                        src='/checkout/attire.png'
+                        alt='Fashion Attire'
+                        width={48}
+                        height={48}
+                        className='w-full h-full object-cover'
+                      />
+                    </div>
+                    <div className='flex-1 pr-2'>
+                      <h3 className='font-bold text-[13px] md:text-sm text-[#222222] leading-tight mb-1 truncate max-w-[170px] lg:max-w-full'>
+                        Modern Fashion Attire...
                       </h3>
-                      <p className='text-xs text-gray-500 line-clamp-2'>
-                        Modern Fashion Attire made with authority artisan Modern Fashion
-                        Attire made with authority artisan Modern Fashion Attire made with
-                        authority artisan
+                      <p className='text-[11px] text-[#888888] line-clamp-2 leading-tight'>
+                        Modern Fashion Attire made with authority african...
                       </p>
                     </div>
                   </div>
 
-                  <span className='font-satoshi text-sm'>$350</span>
+                  <span className='font-satoshi text-[13px] font-medium'>$350</span>
                 </div>
 
                 <Divider className='my-4' />
@@ -291,17 +313,17 @@ export const CheckoutPage = () => {
                   </div>
                 </div>
 
-                <div className='flex justify-between items-center mb-6'>
-                  <span className='font-semibold md:text-2xl text-xl text-gray-900'>
+                <div className='flex justify-between items-center mb-6 mt-1 lg:mt-0'>
+                  <span className='font-bold md:text-2xl text-[14px] text-[#222222]'>
                     Total Amount To Pay :
                   </span>
-                  <span className='text-xl font-bold text-gray-900'>$350</span>
+                  <span className='text-[15px] font-black text-[#222222]'>$350</span>
                 </div>
 
-                <Divider className='mb-5 -mt-2' />
+                <Divider className='mb-5 hidden lg:block' />
 
                 <Button
-                  className='w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-semibold rounded-full border-0 shadow-md mt-6'
+                  className='w-full bg-gradient-to-r from-[#DFF2FA] to-[#C9EBF9] text-[#055C7A] font-bold rounded-full border-0 lg:shadow-md'
                   size='lg'
                   radius='full'
                   onPress={handlePayment}
@@ -309,15 +331,15 @@ export const CheckoutPage = () => {
                   Make Payment
                 </Button>
 
-                <div className='my-6'>
+                <div className='mt-6 lg:my-6'>
                   <Alert
                     hideIcon
                     color='primary'
                     variant='flat'
                     startContent={
-                      <ExclamationTriangleIcon className='h-5 w-5 text-[#3A98BB] flex-shrink-0 mt-0.5' />
+                      <ExclamationTriangleIcon className='h-4 w-4 text-[#777777] flex-shrink-0 mt-0.5' />
                     }
-                    className='bg-transparent border-none text-black my-2 px-0 items-start'
+                    className='bg-[#F5FAFC] lg:bg-transparent border lg:border-none border-[#EAEAEA] rounded-lg text-black px-3 py-3 items-start'
                   >
                     <div className='text-sm'>
                       <p className='font-satoshi'>

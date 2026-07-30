@@ -6,6 +6,7 @@ import { useState } from "react";
 import { HiOutlineCalendar, HiOutlineCurrencyDollar } from 'react-icons/hi';
 import { Button, Pagination } from '@heroui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/navigation';
 
 
 const data = [
@@ -61,6 +62,7 @@ const data = [
 ];
 
 export default function CompletedContracts({ dateFilter, setDateFilter, dateOptions }) {
+  const router = useRouter();
   const [currencyFilter, setCurrencyFilter] = useState('Select Currency');
 
   const currencyOptions = ['USD ($)', 'EUR (€)', 'GBP (£)', 'NGN (₦)', 'CAD ($)'];
@@ -129,8 +131,8 @@ export default function CompletedContracts({ dateFilter, setDateFilter, dateOpti
   return (
     <>
       {/* Search & Sort */}
-      <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4 w-full">
-        <div className="w-full md:max-w-[500px]">
+      <div className="flex items-center justify-between mb-6 lg:mb-8 gap-3 w-full">
+        <div className="flex-1 w-full lg:max-w-[500px]">
           <SearchBar
             placeholder="Search Project"
             className="w-full"
@@ -168,53 +170,81 @@ export default function CompletedContracts({ dateFilter, setDateFilter, dateOpti
         </div>
       </div>
 
-
-      <div className="w-full bg-white border border-[#EAEAEA] rounded-lg p-6 min-h-[500px] flex flex-col justify-between">
-        <div className="w-full overflow-x-auto">
-          <table className="min-w-[640px] w-full border-collapse">
-            <thead className="border-b border-[#EAEAEA]">
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Date</th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Project</th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Client</th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Earnings</th>
-                <th className="px-6 py-4 text-right text-xs font-bold text-[#222222] uppercase tracking-wider">Status</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white">
-              {currentItems.map((item, index) => (
-                <tr key={index} className="border-b border-[#EAEAEA] last:border-none hover:bg-gray-50 active:bg-gray-50">
-                  <td className="px-6 py-6 text-sm text-[#222222]">{item.date}</td>
-                  <td className="px-6 py-6 text-sm text-[#3A98BB] hover:underline active:opacity-70 cursor-pointer">
-                    <Link href="/artist-page/completed-contract-information">
-                      {item.project}
-                    </Link>
-                  </td>
-                  <td className="px-6 py-6 text-sm text-[#767676] uppercase">{item.client}</td>
-                  <td className="px-6 py-6 text-sm text-[#222222]">{item.earnings}</td>
-                  <td className="px-6 py-6 text-sm text-[#222222] text-right">{item.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Pagination */}
-        {
-          totalPages > 0 && (
-            <div className="flex justify-center items-center mt-8 w-full">
-              <Pagination
-                showControls
-                total={totalPages}
-                page={currentPage}
-                onChange={setCurrentPage}
-                classNames={{
-                  cursor: "bg-[#3A98BB] text-white",
-                }}
-              />
+      <div className="lg:hidden space-y-3 mb-6">
+        {currentItems.map((item, index) => (
+          <div
+            key={index}
+            onClick={() => router.push('/artist-page/completed-contract-information')}
+            className="bg-white border border-gray-200 rounded-[12px] px-4 py-4 cursor-pointer hover:bg-gray-50 transition-colors"
+          >
+            <p className="text-[15px] font-bold text-[#3A98BB] truncate mb-1">{item.project}</p>
+            <p className="text-[12px] text-gray-500 mb-1">{item.date}</p>
+            <div className="flex items-center justify-between">
+              <p className="text-[12px] text-[#767676] uppercase">{item.client}</p>
+              <p className="text-[13px] font-semibold text-[#222222]">{item.earnings}</p>
             </div>
-          )
-        }      </div>
+            <p className="text-[12px] text-gray-400 mt-1">{item.status}</p>
+          </div>
+        ))}
+        {currentItems.length === 0 && (
+          <div className="text-center py-8">
+            <p className="text-gray-500 text-sm">No completed contracts</p>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop: table */}
+      <div className="hidden lg:block w-full">
+        <div className="w-full bg-white border border-[#EAEAEA] rounded-lg p-6 min-h-[500px] flex flex-col justify-between">
+          <div className="w-full overflow-x-auto">
+            <table className="min-w-[640px] w-full border-collapse">
+              <thead className="border-b border-[#EAEAEA]">
+                <tr>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Date</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Project</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Client</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Earnings</th>
+                  <th className="px-6 py-4 text-right text-xs font-bold text-[#222222] uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white">
+                {currentItems.map((item, index) => (
+                  <tr
+                    key={index}
+                    onClick={() => router.push('/artist-page/completed-contract-information')}
+                    className="border-b border-[#EAEAEA] last:border-none hover:bg-gray-50 active:bg-gray-50 cursor-pointer"
+                  >
+                    <td className="px-6 py-6 text-sm text-[#222222]">{item.date}</td>
+                    <td className="px-6 py-6 text-sm text-[#3A98BB] hover:underline active:opacity-70">
+                      {item.project}
+                    </td>
+                    <td className="px-6 py-6 text-sm text-[#767676] uppercase">{item.client}</td>
+                    <td className="px-6 py-6 text-sm text-[#222222]">{item.earnings}</td>
+                    <td className="px-6 py-6 text-sm text-[#222222] text-right">{item.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          {
+            totalPages > 0 && (
+              <div className="flex justify-center items-center mt-8 w-full">
+                <Pagination
+                  showControls
+                  total={totalPages}
+                  page={currentPage}
+                  onChange={setCurrentPage}
+                  classNames={{
+                    cursor: "bg-[#3A98BB] text-white",
+                  }}
+                />
+              </div>
+            )
+          }
+        </div>
+      </div>
 
     </>
   );

@@ -269,10 +269,10 @@ export default function CompletedContracts() {
   return (
     <div className="w-full max-w-full mx-auto px-4 lg:px-0">
       {/* Search and Filter Bar */}
-      <div className="mt-8 pb-2">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="mt-8 pb-4 lg:pb-0">
+        <div className="flex flex-row items-center justify-between gap-3 w-full">
           {/* Search Input - Always left-aligned */}
-          <div className="flex items-center gap-3 w-full md:flex-1">
+          <div className="flex flex-1 items-center w-full min-w-0">
             <Input
               type="text"
               value={search}
@@ -285,11 +285,11 @@ export default function CompletedContracts() {
               classNames={{
                 input: "text-sm",
                 inputWrapper:
-                  "border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500 pr-2",
+                  "border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500 pr-2 h-[48px] lg:h-[42px]",
               }}
               endContent={
                 <div className="flex items-center gap-1">
-                  <Dropdown placement="bottom-end" classNames={{ content: 'min-w-[150px]' }}>
+                  <Dropdown placement="bottom-end" shouldFlip={false} shouldBlockScroll={false} classNames={{ content: 'min-w-[150px]' }}>
                     <DropdownTrigger>
                       <Button
                         isIconOnly
@@ -318,7 +318,7 @@ export default function CompletedContracts() {
                     </DropdownMenu>
                   </Dropdown>
 
-                  <Dropdown placement="bottom-end" classNames={{ content: 'min-w-[150px]' }}>
+                  <Dropdown placement="bottom-end" shouldFlip={false} shouldBlockScroll={false} classNames={{ content: 'min-w-[150px]' }}>
                     <DropdownTrigger>
                       <Button
                         isIconOnly
@@ -350,9 +350,6 @@ export default function CompletedContracts() {
               }
             />
           </div>
-
-          <div className='flex items-center justify-center md:justify-start gap-4 md:gap-3 w-full md:w-auto pb-1 md:pb-0'>
-          </div>
         </div>
       </div>
 
@@ -369,57 +366,59 @@ export default function CompletedContracts() {
         )
       }
 
-      {/* Table - Responsive View */}
-      <Card className="w-full mt-4 !overflow-visible" shadow="none">
-        <CardBody className="p-0">
-          <div className="overflow-x-auto">
-            <Table
-              aria-label="Completed contracts table"
-              classNames={{
-                wrapper: "shadow-none rounded-none min-w-[700px] md:min-w-full",
-                th: "bg-[#CCE7F2] text-xs uppercase tracking-wide",
-                td: "py-4 px-2",
-                tbody: "divide-y divide-gray-100",
-              }}
-            >
-              <TableHeader columns={columns}>
-                {(column) => (
-                  <TableColumn key={column.uid} className="text-justify">
-                    {column.name}
-                  </TableColumn>
-                )}
-              </TableHeader>
-              <TableBody
-                /* items={filteredAndSortedContracts} */
-                items={currentItems}
-                emptyContent={
-                  <div className="text-center py-8">
-                    <p className="text-gray-500">
-                      {search
-                        ? `No contracts found matching "${search}"`
-                        : "No contracts found"}
-                    </p>
-                  </div>
-                }
+      {/* Desktop & Mobile Table */}
+      <div className="w-full mt-4">
+        <Card className="w-full !overflow-visible bg-transparent lg:bg-white" shadow="none">
+          <CardBody className="px-0 lg:p-0">
+            <div className="overflow-x-auto w-full no-scrollbar pb-2">
+              <Table
+                aria-label="Completed contracts table"
+                classNames={{
+                  wrapper: "shadow-none rounded-[10px] min-w-full md:min-w-full lg:border lg:border-gray-200 px-0 py-0 overflow-visible bg-transparent lg:bg-white",
+                  th: "bg-[#CCE7F2] text-[13px] font-bold text-[#111111] tracking-wide py-5 first:rounded-l-[10px] last:rounded-r-[10px]",
+                  td: "py-4 px-3 md:px-4 tabular-nums",
+                  tbody: "divide-y divide-gray-100",
+                }}
               >
-                {(item) => (
-                  <TableRow
-                    key={item.id}
-                    className="hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
-                    onClick={() => handleCompletedClick(item.id)}
-                  >
-                    {(columnKey) => (
-                      <TableCell className="py-3 text-left">
-                        {renderCell(item, columnKey)}
-                      </TableCell>
-                    )}
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </CardBody>
-      </Card>
+                <TableHeader columns={columns}>
+                  {(column) => (
+                    <TableColumn key={column.uid} className="text-left">
+                      {column.uid === 'payment' ? 'Budget' : column.name}
+                    </TableColumn>
+                  )}
+                </TableHeader>
+                <TableBody
+                  /* items={filteredAndSortedContracts} */
+                  items={currentItems}
+                  emptyContent={
+                    <div className="text-center py-8">
+                      <p className="text-gray-500">
+                        {search
+                          ? `No contracts found matching "${search}"`
+                          : "No contracts found"}
+                      </p>
+                    </div>
+                  }
+                >
+                  {(item) => (
+                    <TableRow
+                      key={item.id}
+                      className="hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+                      onClick={() => handleCompletedClick(item.id)}
+                    >
+                      {(columnKey) => (
+                        <TableCell className="py-3 text-left">
+                          {renderCell(item, columnKey)}
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
 
       {/* Pagination */}
       {

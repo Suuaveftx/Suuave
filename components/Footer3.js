@@ -2,13 +2,12 @@
 import Image from 'next/image';
 import React from 'react';
 import Link from 'next/link';
-import { TiSocialFacebookCircular } from 'react-icons/ti';
-import { FaInstagram } from 'react-icons/fa';
-import { FaXTwitter } from 'react-icons/fa6';
+import { FaFacebook } from 'react-icons/fa';
+import { FaXTwitter, FaInstagram, FaLinkedin, FaYoutube, FaTelegram } from 'react-icons/fa6';
 
 const Footer3 = () => {
   return (
-    <footer className='bg-[#12333E] text-white py-8'>
+    <footer className='bg-[#12333E] text-white py-8 h-[498px] overflow-y-auto overflow-x-hidden'>
       <div className='container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8'>
         {/* OUR COMPANY */}
         <div>
@@ -71,21 +70,35 @@ const Footer3 = () => {
       <div className='border-gray-400 mt-8 pt-6'>
         <div className='container mx-auto px-6 text-center'>
           <h3 className='text-lg font-bold mb-2 border-b'>OUR SOCIALS</h3>
-          <div className='flex space-x-4 justify-center mt-6'>
+          <div className='flex flex-wrap gap-4 justify-center mt-6'>
+            <Link href='https://www.twitter.com' passHref>
+              <div className='w-12 h-12 rounded-full border border-white bg-white flex items-center justify-center transition'>
+                <FaXTwitter className='w-6 h-6 text-black' />
+              </div>
+            </Link>
             <Link href='https://www.facebook.com' passHref>
-              <div className='w-12 h-12 rounded-full border border-[#737373] flex items-center justify-center hover:bg-blue-600 hover:text-white transition'>
-                <TiSocialFacebookCircular color='white' className='w-6 h-6' />
+              <div className='w-12 h-12 rounded-full border border-[#1877F2] bg-white flex items-center justify-center transition'>
+                <FaFacebook className='w-6 h-6 text-[#1877F2]' />
               </div>
             </Link>
             <Link href='https://www.instagram.com' passHref>
-              <div className='w-12 h-12 rounded-full border border-[#737373] flex items-center justify-center hover:bg-pink-600 hover:text-white transition'>
-                <FaInstagram color='white' className='w-6 h-6' />
+              <div className='w-12 h-12 rounded-full border border-[#E4405F] bg-white flex items-center justify-center transition'>
+                <FaInstagram className='w-6 h-6 text-[#E4405F]' />
               </div>
             </Link>
-
-            <Link href='https://www.twitter.com' passHref>
-              <div className='w-12 h-12 rounded-full border border-[#737373] flex items-center justify-center hover:bg-black hover:text-white transition'>
-                <FaXTwitter color='white' className='w-6 h-6' />
+            <Link href='https://www.linkedin.com' passHref>
+              <div className='w-12 h-12 rounded-full border border-[#0A66C2] bg-white flex items-center justify-center transition'>
+                <FaLinkedin className='w-6 h-6 text-[#0A66C2]' />
+              </div>
+            </Link>
+            <Link href='https://www.youtube.com/@SuuaveFTx' passHref>
+              <div className='w-12 h-12 rounded-full border border-[#FF0000] bg-white flex items-center justify-center transition'>
+                <FaYoutube className='w-6 h-6 text-[#FF0000]' />
+              </div>
+            </Link>
+            <Link href='https://telegram.org' passHref>
+              <div className='w-12 h-12 rounded-full border border-[#229ED9] bg-white flex items-center justify-center transition'>
+                <FaTelegram className='w-6 h-6 text-[#229ED9]' />
               </div>
             </Link>
           </div>

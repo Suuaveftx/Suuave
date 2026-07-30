@@ -79,10 +79,10 @@ const SettingsPage = () => {
           <div className='w-full p-4'>
             {/* Back Button */}
             <button
-              className='text-sm text-[#767676] mb-2 flex items-center gap-1'
+              className='text-[#222222] mb-2 flex items-center'
               onClick={() => setShowSidebar(true)}
             >
-              Back
+              <ChevronLeft className='w-6 h-6' />
             </button>
             <h2 className='text-[28px] font-semibold text-[#222222] mb-4'>
               {activeItem === 'profile'

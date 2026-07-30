@@ -25,7 +25,10 @@ export default function ArtistPageLayout({ children }) {
 
   return (
     <div className={SECTION_SHELL_CLASS}>
-      {!isOnboarding && <ArtistNavbar />}
+      {/* Conditionally hide Navbar on mobile for specific routes */}
+      <div className={pathname.includes('-contract-information') ? "hidden lg:block" : ""}>
+        {!isOnboarding && <ArtistNavbar />}
+      </div>
       <SectionMain
         withNavbarOffset={!isOnboarding}
         fontClass='font-proximanova'

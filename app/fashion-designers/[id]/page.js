@@ -169,7 +169,7 @@ const ProductDetails = ({ params }) => {
 
   return (
     <div className='relative pb-24 lg:pb-12 bg-transparent min-h-screen'>
-      <PageContainer>
+      <PageContainer className="hidden lg:block pt-5 md:pt-8">
         {hasCrown && (
           <button
             onClick={() => router.push('/fashion-designers')}
@@ -442,155 +442,192 @@ const ProductDetails = ({ params }) => {
       </PageContainer>
 
       {/* ===== MOBILE LAYOUT (hidden on lg+) ===== */}
-      <PageContainer className="lg:hidden pb-32 space-y-4 mt-2">
-        {/* Title & Price */}
-        <div>
-          <h1 className="text-[18px] font-bold leading-snug text-[#222222]">{product.title}</h1>
-          <p className="text-[#3A98BB] font-semibold text-[15px] mt-1">
-            <span className="text-gray-500 font-normal mr-1 text-sm">Price</span> {product.price}
-          </p>
-        </div>
+      <div className="lg:hidden w-full bg-[#F9FAFB]">
+        <div className="w-full max-w-[390px] mx-auto bg-white min-h-screen pb-10">
 
-        <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm mt-2">
-          {/* Licensing Right Accordion */}
-          {!(isLicensed && !hasCrown) && <MobileLicenseAccordion hasCrown={hasCrown} />}
+          {/* Header */}
+          <header className="flex items-center px-4 py-[14px] bg-white w-full sticky top-0 z-50">
+            <button onClick={() => router.back()} className="flex items-center justify-center -ml-1.5 p-1.5 text-[#222222] active:opacity-70 transition-opacity">
+              <FaChevronLeft size={20} className="stroke-[2.5]" />
+            </button>
+            <h1 className="text-[17px] font-bold text-[#222222] ml-2 font-satoshi">Design Details</h1>
+          </header>
 
-          {/* Action Buttons */}
-          {isLicensed ? (
-            /* Licensed state - Mobile */
-            <div className="bg-gray-100 rounded-2xl p-5 flex flex-col items-center text-center gap-3">
-              <h3 className="text-[17px] font-bold text-[#222222]">Congratulations!</h3>
-              {hasCrown ? (
-                <>
-                  <p className="text-[12px] text-gray-500">
-                    You have successfully purchased the exclusive rights to this design.
-                    It has been removed from the marketplace.
-                  </p>
-                  <Button
-                    variant="light"
-                    radius="full"
-                    className="mt-1 text-gray-400 hover:text-gray-600 underline text-xs"
-                    onPress={handleResetLicense}
-                  >
-                    Reset Licensing (For Testing)
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <p className="text-[12px] text-gray-500">
-                    You can now download the complete file, containing all specifications and related documents.
-                  </p>
-                  <Button
-                    radius="full"
-                    className="w-full font-bold text-white text-[15px] py-6 mt-1"
-                    style={{ background: '#B8952A' }}
-                    onPress={handleDownload}
-                  >
-                    Download Files
-                  </Button>
-                  <Button
-                    variant="light"
-                    radius="full"
-                    className="mt-1 text-gray-400 hover:text-gray-600 underline text-xs"
-                    onPress={handleResetLicense}
-                  >
-                    Reset Licensing (For Testing)
-                  </Button>
-                </>
-              )}
+          {/* Hero Image */}
+          <div className="relative w-full h-[540px] bg-gray-200">
+            <img
+              src={product.images[0]}
+              alt={product.title}
+              className="w-full h-full object-cover object-top"
+            />
+            {/* View count indicator */}
+            <div className="absolute top-[18px] right-[18px] flex items-center gap-[6px] text-white">
+              <MdOutlineRemoveRedEye size={18} className="stroke-2" />
+              <span className="text-[13px] font-medium tracking-wide font-satoshi">12</span>
             </div>
-          ) : (
-            <div className="grid grid-cols-2 gap-3 w-full">
+            {/* Floating action container */}
+            <div className="absolute right-4 bottom-14 flex flex-col items-center bg-black/60 rounded-xl backdrop-blur-sm shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
+              <button onClick={handleSave} className="p-3 text-[#3A98BB] hover:opacity-80 transition-opacity">
+                {isBookmarked ? <IoBookmark size={20} /> : <IoBookmarkOutline size={20} />}
+              </button>
+              <div className="w-[60%] h-[1px] bg-white/20"></div>
+
+              <Dropdown shouldBlockScroll={false} placement="left-start">
+                <DropdownTrigger>
+                  <button className="p-3 text-white hover:opacity-80 transition-opacity">
+                    <FaShareAlt size={18} className="stroke-2" />
+                  </button>
+                </DropdownTrigger>
+                <DropdownMenu aria-label='Share options' onAction={handleSocialShare}>
+                  <DropdownItem key='whatsapp' startContent={<FaWhatsapp className='text-green-500' />}>WhatsApp</DropdownItem>
+                  <DropdownItem key='twitter' startContent={<FaTwitter className='text-blue-400' />}>X (Twitter)</DropdownItem>
+                  <DropdownItem key='facebook' startContent={<FaFacebook className='text-blue-700' />}>Facebook</DropdownItem>
+                  <DropdownItem key='linkedin' startContent={<FaLinkedin className='text-blue-800' />}>LinkedIn</DropdownItem>
+                  <DropdownItem key='copy' startContent={<FaCopy className='text-gray-500' />}>Copy Link</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+            {/* Image pagination indicators */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-[6px]">
+              <div className="w-[14px] h-[4px] rounded-full bg-white"></div>
+              <div className="w-[4px] h-[4px] rounded-full bg-white/60"></div>
+              <div className="w-[4px] h-[4px] rounded-full bg-white/60"></div>
+            </div>
+          </div>
+
+          <div className="px-4 font-satoshi">
+            {/* Product Info */}
+            <div className="mt-[18px]">
+              <h2 className="text-[#222222] text-[18px] font-bold leading-[23px] tracking-[-0.2px]">
+                {product.title}
+              </h2>
+              <div className="flex items-center gap-2 mt-[14px]">
+                <span className="text-[#767676] text-[13px]">Price :</span>
+                <span className="text-[#035A7A] text-[15px] font-semibold tracking-tight">{product.price}</span>
+              </div>
+            </div>
+
+            {/* License Card */}
+            <div className="mt-4">
+              <Card shadow="none" className="border border-[#EAEAEA] bg-[#FCFCFC] rounded-xl w-full">
+                <CardBody className="p-4 overflow-hidden">
+                  <div className="flex justify-between items-center mb-[6px]">
+                    <h3 className="text-[13px] font-bold text-[#222222]">{hasCrown ? 'Exclusive Right' : 'Licensing Right (Non-Exclusive)'}</h3>
+                    <svg className="w-4 h-4 text-[#878787]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <p className="text-[13px] text-[#767676] leading-[19px] pr-2">
+                    Use this design in your collections without<br />
+                    owning it exclusively.<br />
+                    You&#39;re allowed to use it for both personal an<br />
+                    <span onClick={() => { }} className="text-[#3A98BB] cursor-pointer">Read more...</span>
+                  </p>
+                </CardBody>
+              </Card>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="mt-5 flex gap-[14px]">
               <Button
                 variant="bordered"
                 radius="full"
-                className="font-bold text-[#035A7A] border-[#3A98BB] h-12"
                 onPress={handleSave}
+                className="flex-1 h-[42px] border-[#3A98BB] text-[#0A4A66] font-semibold text-[13px] tracking-wide bg-white"
+                disableRipple
               >
                 {isBookmarked ? 'Saved' : 'Save Design'}
               </Button>
               <Button
                 radius="full"
-                className="font-bold text-[#035A7A] h-12"
-                style={{ background: 'radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                 onPress={handleGetLicense}
+                className="flex-1 h-[42px] bg-[#CCE7F2] text-[#0A4A66] font-semibold text-[13px] tracking-wide"
+                disableRipple
               >
                 {hasCrown ? 'Buy Exclusive Right' : 'Get License'}
               </Button>
             </div>
-          )}
-        </div>
-
-        {/* Description */}
-        <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-          <h2 className="text-[15px] font-bold mb-3 border-b border-gray-50 pb-3">Description</h2>
-          <p className="text-[13px] text-gray-600 leading-relaxed">{product.description}</p>
-          <div className="flex flex-wrap gap-2 mt-4">
-            {product.tags.map((tag, i) => (
-              <Chip key={i} radius="full" size="sm" variant="flat" className="bg-gray-100 text-gray-700 text-[11px] px-1 h-6">
-                {tag}
-              </Chip>
-            ))}
-          </div>
-        </div>
-
-        {/* About the Artist */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm mt-2 flex flex-col items-center text-center">
-          <h2 className="text-[17px] font-bold pb-4 mb-4 font-satoshi">About the Artist</h2>
-
-          <Link href="/artist-page/profile-vistor-view" className="block w-fit mx-auto mb-3">
-            <Avatar
-              src="https://i.pravatar.cc/150?u=a04258114e29026708c"
-              className="w-24 h-24 mx-auto"
-            />
-          </Link>
-
-          <Link href="/artist-page/profile-vistor-view">
-            <p className="font-bold text-[15px] text-[#3A98BB] hover:underline mb-1">{product.artist.handle}</p>
-          </Link>
-
-          <p className="text-[13px] text-gray-800 mb-4">{product.artist.role}</p>
-
-          <div className="flex items-center justify-center gap-1.5 mb-2 text-gray-600">
-            <TiLocation className="size-5 fill-[#878787]" />
-            <span className="text-[13px]">{product.artist.location}</span>
           </div>
 
-          <div className="flex items-center justify-center gap-2 mt-3 text-gray-800">
-            <span className="text-[13px]">Ratings</span>
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <FaStar key={i} className={i < product.artist.rating ? 'text-yellow-500' : 'text-gray-300'} size={14} />
+          <div className="w-full h-2 bg-[#F9FAFB] mt-6"></div>
+
+          {/* Description */}
+          <div className="px-4 mt-5 font-satoshi">
+            <h3 className="font-bold text-[15px] text-[#222222] mb-[10px]">Description</h3>
+            <p className="text-[13px] text-[#767676] leading-[22px] tracking-[0.1px] mb-[18px]">
+              Yorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis.
+            </p>
+            <div className="flex flex-wrap gap-[10px]">
+              {product.tags.map((tag, i) => (
+                <div key={i} className="bg-[#F2F2F2] px-4 py-[6px] rounded-md text-[12px] text-[#555555]">
+                  {tag}
+                </div>
               ))}
             </div>
-            <Link href="/artist-page/profile-vistor-view?tab=reviews" className="text-[12px] text-[#3A98BB] hover:underline ml-1">
-              ({product.artist.reviews} Reviews)
-            </Link>
           </div>
-        </div>
 
-        {/* You May Also Like */}
-        <div className="pt-2">
-          <h2 className="text-[15px] font-bold mb-3">You May Also Like These</h2>
-          <div className="grid grid-cols-2 gap-3">
-            {relatedCards.map((card, index) => (
-              <FashionDesignersCard
-                key={index}
-                images={card?.images}
-                title={card?.title}
-                price={card?.price}
-                userName={card?.user?.userName}
-                productID={card?.id}
-                idx={index}
-                userData={card.user}
-                isBookmarked={savedCardIds.includes(card.id)}
-                onToggleSave={() => toggleBookmark(card.id)}
-                hasCrown={['card-1', 'card-4', 'card-8'].includes(card.id)}
+          <div className="w-full h-2 bg-[#F9FAFB] mt-6"></div>
+
+          {/* About Artist */}
+          <div className="px-4 mt-5 font-satoshi">
+            <h3 className="font-bold text-[15px] text-[#222222] mb-4">About the artist</h3>
+
+            <div className="flex items-center gap-[14px]">
+              <Avatar
+                src="https://i.pravatar.cc/150?u=a04258114e29026708c"
+                alt={product.artist.handle}
+                className="w-10 h-10 text-large"
               />
-            ))}
+              <div className="flex flex-col">
+                <span className="font-bold text-[14px] text-[#222222] underline underline-offset-2">Ocean Cliff</span>
+                <span className="text-[11px] text-[#767676] mt-0.5">{product.artist.role}</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-1 mt-3 ml-0.5">
+              <TiLocation className="text-[#767676]" size={15} />
+              <span className="text-[#767676] text-[11px] ml-0.5">{product.artist.location}</span>
+            </div>
+
+            <div className="flex items-center gap-1.5 mt-[6px] ml-1">
+              <span className="text-[11px] text-[#767676]">Ratings :</span>
+              <div className="flex gap-0.5">
+                <FaStar className="text-[#FBBC05]" size={10} />
+              </div>
+              <div className="text-[11px] text-[#767676] flex items-center">
+                5.0 &nbsp;|&nbsp; <span className="text-[#3A98BB] underline underline-offset-2">5 Verified reviews |</span>
+              </div>
+            </div>
           </div>
+
+          <div className="w-full h-2 bg-[#F9FAFB] mt-6"></div>
+
+          {/* You May Also Like */}
+          <div className="w-full pl-4 mt-5 font-satoshi">
+            <h2 className="font-bold text-[15px] text-[#222222] mb-4">You May Also Like These</h2>
+            <div className="flex w-full overflow-x-auto gap-3 pb-4 snap-x pr-4">
+              {relatedCards.map((card, index) => (
+                <Link key={index} href={`/fashion-designers/${card.id}`}>
+                  <Card shadow="none" className="cursor-pointer w-[145px] flex-shrink-0 bg-transparent border-none rounded-none p-0">
+                    <CardBody className="p-0 overflow-visible">
+                      <div className="w-[145px] h-[180px] rounded-xl overflow-hidden mb-[10px]">
+                        <img
+                          src={card.images[0]}
+                          alt={card.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <h4 className="font-bold text-[11px] text-[#222222] leading-tight truncate px-0">{card.title}</h4>
+                      <span className="font-bold text-[12px] text-[#3A98BB] mt-1 block px-0">${card.price?.toString().slice(0, 3)}</span>
+                    </CardBody>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </div>
+
         </div>
-      </PageContainer>
+      </div>
     </div>
   );
 };
