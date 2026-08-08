@@ -1,0 +1,101 @@
+On branch aorf_designs/NewCorrections/DesktopMobile/Allpages
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   app/artist-page/completed-contract-information/_components/CompletedContract.js
+	modified:   app/artist-page/job-details-page/_components/Budgets.js
+	modified:   app/artist-page/job-details-page/_components/DesignStyle.js
+	modified:   app/artist-page/job-details-page/_components/JobDetailsPage.js
+	modified:   app/artist-page/job-details-page/_components/ReferenceImage.js
+	modified:   app/artist-page/job-details-page/_components/SkillRequirement.js
+	modified:   app/artist-page/job-details-page/page.js
+	modified:   app/artist-page/layout.js
+	modified:   app/artist-page/license-your-design/_components/License.js
+	modified:   app/artist-page/messages/_components/Messages.js
+	modified:   app/artist-page/my-contracts/_components/CompletedContracts.js
+	modified:   app/artist-page/my-contracts/_components/OngoingContracts.js
+	modified:   app/artist-page/my-contracts/_components/PendingProject.js
+	modified:   app/artist-page/my-contracts/_components/Tabs.js
+	modified:   app/artist-page/my-contracts/page.js
+	modified:   app/artist-page/my-proposals/_components/ProposalTables.js
+	modified:   app/artist-page/my-proposals/page.js
+	modified:   app/artist-page/ongoing-contract-information/_components/OngoingContract.js
+	modified:   app/artist-page/pending-contract-information/_components/PendingContract.js
+	modified:   app/artist-page/pending-contract-information/page.js
+	modified:   app/artist-page/project-page/_components/Project-Page.js
+	modified:   app/artist-page/proposal-active/_components/ProposalActive.js
+	modified:   app/artist-page/proposal-active/page.js
+	modified:   app/artist-page/send-proposal/_components/SendProposal.js
+	modified:   app/artist-page/send-proposal/page.js
+	modified:   app/checkout-page/component/checkout.js
+	new file:   app/design-details/components/ActionButtons.jsx
+	new file:   app/design-details/components/ArtistCard.jsx
+	new file:   app/design-details/components/Description.jsx
+	new file:   app/design-details/components/Header.jsx
+	new file:   app/design-details/components/HeroImage.jsx
+	new file:   app/design-details/components/LicenseCard.jsx
+	new file:   app/design-details/components/ProductInfo.jsx
+	new file:   app/design-details/components/RecommendationCard.jsx
+	new file:   app/design-details/page.js
+	modified:   app/fashion-designers/[id]/page.js
+	modified:   app/fashion-designers/_components/TransactionTable.js
+	modified:   app/fashion-designers/_components/collections/Gallery.js
+	modified:   app/fashion-designers/_components/collections/ProductDetails.js
+	modified:   app/fashion-designers/_components/studio-page-components/FashionDesignerHeader.js
+	modified:   app/fashion-designers/_components/studio-page-components/FashionDesignersCard.js
+	modified:   app/fashion-designers/contracts/components/completed-contracts.js
+	modified:   app/fashion-designers/contracts/components/completed-details.js
+	modified:   app/fashion-designers/contracts/components/contract-header.js
+	modified:   app/fashion-designers/contracts/components/contracts.js
+	modified:   app/fashion-designers/contracts/components/ongoing-contracts.js
+	modified:   app/fashion-designers/contracts/components/ongoing-details.js
+	modified:   app/fashion-designers/contracts/components/pending-contracts.js
+	modified:   app/fashion-designers/contracts/components/pending-details.js
+	modified:   app/fashion-designers/contracts/page.js
+	modified:   app/fashion-designers/layout.js
+	modified:   app/fashion-designers/my-collection/_components/CollectionList.js
+	modified:   app/fashion-designers/my-projects/components/my-projects.js
+	modified:   app/fashion-designers/my-projects/page.js
+	modified:   app/fashion-designers/my-projects/proposals/[id]/[proposalId]/page.js
+	modified:   app/fashion-designers/page.js
+	modified:   app/fashion-designers/post-project/page.js
+	modified:   app/fashion-designers/profile/page.js
+	modified:   app/fashion-designers/settings/_components/Settings-Page.js
+	modified:   app/fashion-designers/transactions/page.js
+	modified:   app/globals.css
+	new file:   app/job/_components/BudgetCard.js
+	new file:   app/job/_components/ClientCard.js
+	new file:   app/job/_components/JobCard.js
+	new file:   app/job/_components/Navbar.js
+	new file:   app/job/_components/SkillsSection.js
+	new file:   app/job/_components/StickyActionBar.js
+	new file:   app/job/_components/VerificationList.js
+	new file:   app/job/page.js
+	modified:   components/Abouttheclient.js
+	modified:   components/ArtistNavbar.js
+	modified:   components/Brand-Navbar.js
+	modified:   components/Footer3.js
+	new file:   components/contracts/ContractCard.js
+	new file:   components/contracts/ContractDropdown.js
+	new file:   components/contracts/ContractList.js
+	new file:   components/contracts/ContractTabs.js
+	new file:   components/contracts/ContractsTabs.js
+	new file:   components/contracts/EmptyState.js
+	new file:   components/contracts/Pagination.js
+	new file:   components/contracts/SearchBar.js
+	new file:   components/contracts/WarningBanner.js
+	new file:   components/contracts/mobile/MobileContractCard.js
+	new file:   components/contracts/mobile/MobileContractTabs.js
+	new file:   components/contracts/mobile/MobileHeader.js
+	new file:   components/contracts/mobile/MobileNavbar.js
+	new file:   components/contracts/mobile/MobileSearchBar.js
+	new file:   components/contracts/mobile/MobileWarningBanner.js
+	modified:   components/landing-page-components/Footer.js
+	modified:   components/layout/layoutConstants.js
+	new file:   data/contracts.js
+	new file:   hooks/useContracts.js
+	modified:   package-lock.json
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	git_status_out.txt
+

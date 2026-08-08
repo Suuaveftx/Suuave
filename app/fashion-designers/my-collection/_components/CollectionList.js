@@ -1,17 +1,20 @@
 "use client";
 
 import React from "react";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Input, Card, CardBody } from "@heroui/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Card, CardBody, Pagination } from "@heroui/react";
 import Image from "next/image";
 import { collectionData } from "../data";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 
+const ITEMS_PER_PAGE = 10;
+
 const CollectionList = () => {
     const router = useRouter();
     const [searchTerm, setSearchTerm] = React.useState("");
     const [sortBy, setSortBy] = React.useState("");
+    const [currentPage, setCurrentPage] = React.useState(1);
 
     const parsePrice = (priceStr) => {
         if (!priceStr) return 0;
@@ -35,6 +38,17 @@ const CollectionList = () => {
 
         return data;
     }, [searchTerm, sortBy]);
+
+    // Reset to page 1 whenever filters change
+    React.useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm, sortBy]);
+
+    const totalPages = Math.max(1, Math.ceil(filteredAndSortedData.length / ITEMS_PER_PAGE));
+    const paginatedData = filteredAndSortedData.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
 
     const sortOptions = [
         { label: "Amount: Highest to Lowest", key: "high-low" },
@@ -128,7 +142,7 @@ const CollectionList = () => {
             <div className="lg:py-6">
                 {/* Desktop Products Grid */}
                 <div className="mt-8 hidden lg:grid grid-cols-4 lg:grid-cols-5 gap-4">
-                    {filteredAndSortedData.map((items) => (
+                    {paginatedData.map((items) => (
                         <Link
                             key={items.id}
                             href={`/fashion-designers/my-collection/${items.id}`}
@@ -152,7 +166,7 @@ const CollectionList = () => {
                             </div>
                         </Link>
                     ))}
-                    {filteredAndSortedData.length === 0 && (
+                    {paginatedData.length === 0 && (
                         <div className="col-span-full py-20 text-center text-gray-500 font-satoshi">
                             No collections match your criteria.
                         </div>
@@ -160,8 +174,8 @@ const CollectionList = () => {
                 </div>
 
                 {/* Mobile Products Grid */}
-                <div className="lg:hidden grid grid-cols-2 gap-3 pb-24 -mx-4 px-4 mt-3">
-                    {filteredAndSortedData.map((items) => (
+                <div className="lg:hidden grid grid-cols-2 gap-3 -mx-4 px-4 mt-3">
+                    {paginatedData.map((items) => (
                         <Link key={items.id} href={`/fashion-designers/my-collection/${items.id}`}>
                             <Card className="w-full h-full border border-[#EAEAEA] shadow-sm rounded-xl overflow-hidden">
                                 <div className="relative aspect-[3/4] w-full bg-[#f4f2ef]">
@@ -180,16 +194,30 @@ const CollectionList = () => {
                             </Card>
                         </Link>
                     ))}
-                    {filteredAndSortedData.length === 0 && (
+                    {paginatedData.length === 0 && (
                         <div className="col-span-2 py-20 text-center text-gray-500 font-satoshi">
                             No collections match your criteria.
                         </div>
                     )}
                 </div>
+
+                {/* Shared Pagination */}
+                {totalPages > 1 && (
+                    <div className="flex justify-center items-center mt-8 mb-6 pb-6">
+                        <Pagination
+                            showControls
+                            total={totalPages}
+                            page={currentPage}
+                            onChange={setCurrentPage}
+                            classNames={{
+                                cursor: "bg-[#3A98BB] text-white",
+                            }}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );
 };
 
 export default CollectionList;
-

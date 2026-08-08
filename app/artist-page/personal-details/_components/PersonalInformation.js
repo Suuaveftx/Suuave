@@ -99,7 +99,7 @@ const PersonalInformation = ({
               }}
               className="w-full md:w-auto flex items-center justify-center transition-all border border-[#3A98BB] text-[#3A98BB] hover:bg-[#EAF9FF] font-semibold rounded-[40px] px-12 py-3.5"
             >
-              Update
+              Next
             </button>
           </div>
         ) : (

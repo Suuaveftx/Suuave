@@ -12,9 +12,14 @@ export default function PaymentTabs() {
   const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
   const [selectedType, setSelectedType] = useState('All Types');
   const [customRange, setCustomRange] = useState({ start: '', end: '' });
+  const [payoutSearch, setPayoutSearch] = useState('');
+  const [isPayoutDateDropdownOpen, setIsPayoutDateDropdownOpen] = useState(false);
+  const [payoutFilterState, setPayoutFilterState] = useState({ type: 'none', value: null, label: 'Select Date' });
+  const [payoutCustomRange, setPayoutCustomRange] = useState({ start: '', end: '' });
 
   const typeDropdownRef = useRef(null);
   const dateDropdownRef = useRef(null);
+  const payoutDateDropdownRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -23,6 +28,9 @@ export default function PaymentTabs() {
       }
       if (dateDropdownRef.current && !dateDropdownRef.current.contains(event.target)) {
         setIsDateDropdownOpen(false);
+      }
+      if (payoutDateDropdownRef.current && !payoutDateDropdownRef.current.contains(event.target)) {
+        setIsPayoutDateDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -63,6 +71,26 @@ export default function PaymentTabs() {
   const handleTypeReset = () => {
     setSelectedType('All Types');
     setIsTypeDropdownOpen(false);
+  };
+
+  // Payout date filter handlers
+  const handlePayoutRangeSelect = (days) => {
+    setPayoutFilterState({ type: 'range', value: days, label: `Last ${days} days` });
+    setIsPayoutDateDropdownOpen(false);
+  };
+
+  const handlePayoutReset = () => {
+    setPayoutFilterState({ type: 'none', value: null, label: 'Select Date' });
+    setPayoutCustomRange({ start: '', end: '' });
+    setIsPayoutDateDropdownOpen(false);
+  };
+
+  const handlePayoutCustomDateChange = (field, value) => {
+    const newRange = { ...payoutCustomRange, [field]: value };
+    setPayoutCustomRange(newRange);
+    if (newRange.start && newRange.end) {
+      setPayoutFilterState({ type: 'custom', value: newRange, label: `${newRange.start} - ${newRange.end}` });
+    }
   };
 
   return (
@@ -215,10 +243,87 @@ export default function PaymentTabs() {
         </div>
       )}
 
+      {/* Payout History filter row */}
+      {selectedTab === 'payouts' && (
+        <div className='mt-8 flex flex-col lg:flex-row gap-4 justify-between items-center'>
+          <div className='flex-grow max-w-2xl w-full'>
+            <SearchBar
+              placeholder='Search by Transaction ID or Status'
+              value={payoutSearch}
+              onChange={(e) => setPayoutSearch(e.target.value)}
+              endContent={
+                <div className='flex items-center gap-3 pr-2'>
+                  {/* Calendar Dropdown */}
+                  <div className='relative' ref={payoutDateDropdownRef}>
+                    <button
+                      onClick={() => setIsPayoutDateDropdownOpen(!isPayoutDateDropdownOpen)}
+                      className='flex items-center gap-1 cursor-pointer hover:bg-gray-100 p-1.5 rounded-full transition-colors'
+                      title='Filter by Date'
+                    >
+                      <Calendar className='h-4 w-4 text-gray-400' />
+                      <span className='text-[10px] text-gray-400'>▼</span>
+                    </button>
+
+                    {isPayoutDateDropdownOpen && (
+                      <div className='absolute top-full right-0 mt-2 w-72 bg-white border border-[#E5E5E5] rounded-xl shadow-lg z-[100] overflow-hidden'>
+                        <div className='py-2 border-b border-gray-100'>
+                          <div onClick={handlePayoutReset} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB] font-medium'>Reset Filter</div>
+                          <div className='border-t border-gray-100 my-1'></div>
+                          <div onClick={() => handlePayoutRangeSelect(7)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 7 days</div>
+                          <div onClick={() => handlePayoutRangeSelect(14)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 14 days</div>
+                          <div onClick={() => handlePayoutRangeSelect(30)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 30 days</div>
+                        </div>
+                        <div className='p-4 bg-gray-50 space-y-3'>
+                          <p className="text-xs font-bold text-[#767676] uppercase tracking-wider">Custom Range</p>
+                          <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-1">
+                              <span className="text-[10px] text-[#888888] ml-1">From</span>
+                              <input
+                                type="date"
+                                value={payoutCustomRange.start}
+                                onChange={(e) => handlePayoutCustomDateChange('start', e.target.value)}
+                                className="w-full border border-[#E5E5E5] rounded-lg p-2 text-sm text-[#555555] focus:outline-none focus:ring-1 focus:ring-[#3A98BB] bg-white h-10"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <span className="text-[10px] text-[#888888] ml-1">To</span>
+                              <input
+                                type="date"
+                                value={payoutCustomRange.end}
+                                onChange={(e) => handlePayoutCustomDateChange('end', e.target.value)}
+                                className="w-full border border-[#E5E5E5] rounded-lg p-2 text-sm text-[#555555] focus:outline-none focus:ring-1 focus:ring-[#3A98BB] bg-white h-10"
+                              />
+                            </div>
+                          </div>
+                          <Button
+                            size="sm"
+                            fullWidth
+                            className="bg-[#3A98BB] text-white font-bold h-10 rounded-lg mt-2 shadow-sm"
+                            onClick={() => setIsPayoutDateDropdownOpen(false)}
+                          >
+                            Apply Range
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              }
+            />
+          </div>
+          <div className='flex flex-wrap lg:flex-nowrap gap-4 items-center w-full lg:w-auto mt-4 lg:mt-0 pb-2 lg:pb-0'>
+            <button className='flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-[#FFF5F5] border border-[#FFE0E0] rounded-full text-[#FF4D4D] text-sm font-medium hover:bg-[#ffe6e6] whitespace-nowrap'>
+              <Info className='h-4 w-4' />
+              Report Any Issue
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Content Area */}
       <div className='mt-6'>
         {selectedTab === 'earnings' && <PaymentTable filterType={filterState.type} filterValue={filterState.value} />}
-        {selectedTab === 'payouts' && <PayoutHistory />}
+        {selectedTab === 'payouts' && <PayoutHistory search={payoutSearch} filterType={payoutFilterState.type} filterValue={payoutFilterState.value} />}
       </div>
     </div>
   );

@@ -46,7 +46,7 @@ export default function PendingContract() {
         <>
             <div className="w-full max-w-[1400px] mx-auto pt-0 p-4 md:pt-0 md:p-6 lg:p-8 pb-32 md:pb-8 font-proximanova text-[#222222]">
                 {/* Page Title */}
-                <div className="flex items-center gap-2 mb-2 md:mb-6 mt-1">
+                <div className="flex items-center gap-2 mb-4 md:mb-6 mt-1">
                     <button
                         onClick={() => router.push('/artist-page/my-contracts?tab=pending')}
                         className="p-1 rounded-full hover:bg-gray-100 transition-colors"
@@ -193,7 +193,7 @@ export default function PendingContract() {
                     </div>
                 </div>
                 {/* ── MOBILE UI IMPLEMENTATION ── */}
-                <div className="flex flex-col md:hidden bg-[#F4F4F5] -mx-4 -mt-2 pb-12 w-screen min-h-screen">
+                <div className="flex flex-col md:hidden bg-[#F4F4F5] -mx-4 mt-2 pb-28 w-screen min-h-screen">
                     {/* Panel 1: Contract Details */}
                     <div className="w-full bg-white border-b border-gray-200 px-4 py-8 flex flex-col gap-5">
                         <div className="grid grid-cols-[140px_1fr] items-start text-[14px]">

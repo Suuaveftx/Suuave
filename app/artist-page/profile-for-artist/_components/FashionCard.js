@@ -23,6 +23,7 @@ const FashionCard = ({ isVisitor = false }) => {
   const [isUploadAwardOpen, setIsUploadAwardOpen] = useState(false);
   const [visibleReviews, setVisibleReviews] = useState(5);
   const [isInfiniteReviews, setIsInfiniteReviews] = useState(false);
+  const [isLoadingReviews, setIsLoadingReviews] = useState(false);
   const observerRef = useRef(null);
   const [isInfiniteDesign, setIsInfiniteDesign] = useState(false);
   const designObserverRef = useRef(null);
@@ -64,16 +65,25 @@ const FashionCard = ({ isVisitor = false }) => {
 
   useEffect(() => {
     if (!isInfiniteReviews) return;
+    let timeoutId;
 
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        setVisibleReviews((prev) => prev + 5);
+        setIsLoadingReviews(true);
+        timeoutId = setTimeout(() => {
+          setVisibleReviews((prev) => prev + 5);
+          setIsLoadingReviews(false);
+        }, 1200);
       }
     }, { threshold: 0.1 });
 
     if (observerRef.current) observer.observe(observerRef.current);
-    return () => observer.disconnect();
-  }, [isInfiniteReviews, visibleReviews]);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, [isInfiniteReviews]);
 
   useEffect(() => {
     if (!isInfiniteAwards) return;
@@ -474,7 +484,7 @@ const FashionCard = ({ isVisitor = false }) => {
                 {[...Array(visibleReviews)].map((_, i) => (
                   <div
                     key={i}
-                    className={`py-4 flex items-start ${i > 0 ? 'hidden sm:flex' : ''}`}
+                    className="py-4 flex items-start"
                   >
                     <Image
                       src='/dev-images/Clients.png'
@@ -507,18 +517,38 @@ const FashionCard = ({ isVisitor = false }) => {
               </div>
               {/* Infinite Scroll Trigger & View More Button */}
               {isInfiniteReviews ? (
-                <div ref={observerRef} className="h-10 w-full" />
+                <div ref={observerRef} className="h-10 w-full flex justify-center items-center my-4">
+                  {isLoadingReviews && (
+                    <div className="flex gap-1.5 justify-center items-center h-full">
+                      <div className="w-2 h-2 rounded-full bg-[#3A98BB] animate-bounce" />
+                      <div className="w-2 h-2 rounded-full bg-[#3A98BB] animate-bounce" style={{ animationDelay: '0.15s' }} />
+                      <div className="w-2 h-2 rounded-full bg-[#3A98BB] animate-bounce" style={{ animationDelay: '0.3s' }} />
+                    </div>
+                  )}
+                </div>
               ) : (
                 <div className='w-full flex justify-center mt-4 pt-2'>
-                  <button
-                    onClick={() => {
-                      setVisibleReviews((prev) => prev + 5);
-                      setIsInfiniteReviews(true);
-                    }}
-                    className='px-6 py-2 bg-transparent border border-[#CCE7F2] text-[#222222] rounded-lg hover:bg-[#F4FCFF] transition-colors'
-                  >
-                    View More
-                  </button>
+                  {isLoadingReviews ? (
+                    <div className="flex gap-1.5 justify-center items-center h-10">
+                      <div className="w-2 h-2 rounded-full bg-[#3A98BB] animate-bounce" />
+                      <div className="w-2 h-2 rounded-full bg-[#3A98BB] animate-bounce" style={{ animationDelay: '0.15s' }} />
+                      <div className="w-2 h-2 rounded-full bg-[#3A98BB] animate-bounce" style={{ animationDelay: '0.3s' }} />
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setIsLoadingReviews(true);
+                        setTimeout(() => {
+                          setVisibleReviews((prev) => prev + 5);
+                          setIsInfiniteReviews(true);
+                          setIsLoadingReviews(false);
+                        }, 1200);
+                      }}
+                      className='px-6 py-2 bg-transparent border border-[#CCE7F2] text-[#222222] rounded-lg hover:bg-[#F4FCFF] transition-colors'
+                    >
+                      View More
+                    </button>
+                  )}
                 </div>
               )}
             </div>

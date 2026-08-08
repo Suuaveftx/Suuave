@@ -49,9 +49,9 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className='w-full h-[calc(100vh-104px)] overflow-hidden'>
+    <div className='w-full min-h-[calc(100vh-104px)]'>
       {/* ----- Desktop View ----- */}
-      <div className='hidden sm:flex h-full'>
+      <div className='hidden sm:flex min-h-full'>
         {/* Sidebar on Desktop */}
         <div className='w-64 flex-shrink-0'>
           <Sidebar_MenuCard
@@ -62,7 +62,7 @@ const SettingsPage = () => {
         </div>
 
         {/* Content on Desktop (fills remaining space) */}
-        <div className='flex p-6  bg-white lg:w-full lg:max-w-[950px] w-full max-w-[3640px] overflow-hidden'>
+        <div className='flex p-6 bg-white lg:w-full lg:max-w-[950px] w-full max-w-[3640px]'>
           {renderActiveComponent()}
         </div>
       </div>
@@ -84,15 +84,7 @@ const SettingsPage = () => {
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
-            <h2 className='text-[28px] font-semibold text-[#222222] mb-4'>
-              {activeItem === 'profile'
-                ? 'Profile Settings'
-                : activeItem === 'notifications'
-                  ? 'Notifications'
-                  : activeItem === 'security'
-                    ? 'Security'
-                    : 'Account'}
-            </h2>
+
 
             {/* Render active component */}
             {renderActiveComponent()}

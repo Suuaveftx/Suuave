@@ -70,7 +70,7 @@ export const CheckoutPage = () => {
   return (
     <div className='mx-auto bg-[#F5F8FA] lg:bg-[#FAFAFA] min-h-screen'>
       <FashionDesignerHeader />
-      <PageContainer className='pt-[100px] lg:pt-[120px] pb-[100px] !px-4 lg:!px-8'>
+      <PageContainer className='pt-5 lg:pt-8 pb-[100px] !px-4 lg:!px-8'>
         {/* Header */}
         {/* Mobile Header */}
         <div className='lg:hidden flex items-center gap-1 mb-4 mt-2'>
@@ -85,7 +85,7 @@ export const CheckoutPage = () => {
               <path d="M15 18l-6-6 6-6" />
             </svg>
           </Button>
-          <h1 className='text-[20px] font-semibold text-[#222222]'>Check-out</h1>
+          <h1 className='text-[20px] font-semibold text-[#222222]'>Checkout</h1>
         </div>
 
         {/* Desktop Header */}

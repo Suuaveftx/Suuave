@@ -127,22 +127,22 @@ const ProposalTables = () => {
               );
             })}
           </div>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center items-center mt-6 w-full">
-              <Pagination
-                showControls
-                total={totalPages}
-                page={currentPage}
-                onChange={setCurrentPage}
-                classNames={{
-                  cursor: "bg-[#3A98BB] text-white",
-                }}
-              />
-            </div>
-          )}
         </div>
+
+        {/* Pagination – outside the card */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center mt-6 mb-16 w-full">
+            <Pagination
+              showControls
+              total={totalPages}
+              page={currentPage}
+              onChange={setCurrentPage}
+              classNames={{
+                cursor: "bg-[#3A98BB] text-white",
+              }}
+            />
+          </div>
+        )}
       </section>
 
       <DeleteConfirmationModal

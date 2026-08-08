@@ -16,15 +16,15 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
 
   const initialCoverLetter = searchParams.get('coverLetter') || '';
   const initialPrice = searchParams.get('price') || 'N200,000';
-  const initialDuration = searchParams.get('duration') || '5 Days';
-
-  const [selected, setSelected] = useState(initialDuration);
+  const [days, setDays] = useState(1);
+  const spinUp = () => setDays((d) => d + 1);
+  const spinDown = () => setDays((d) => Math.max(1, d - 1));
 
   const handleSendProposal = () => {
     const proposalData = {
       coverLetter: initialCoverLetter,
       price: initialPrice,
-      duration: selected,
+      duration: `${days} ${days === 1 ? 'day' : 'days'}`,
       timestamp: new Date().toISOString(),
     };
     addProposal(jobId || 'default', proposalData);
@@ -125,24 +125,19 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
             <label className="text-base font-semibold block">
               How Long Will It Take You To Complete This Work?
             </label>
-            <div className="w-1/2">
-              <Input
-                value={selected}
-                onValueChange={setSelected}
-                variant="bordered"
-                radius="md"
-                startContent={
-                  <div className="w-5 h-5 text-gray-400 shrink-0">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                }
-                classNames={{
-                  input: 'text-[14px] ml-1',
-                  inputWrapper: 'border-gray-300 bg-white h-[48px]',
-                }}
-              />
+            {/* Duration Spinbox – Desktop */}
+            <div className="w-1/2 flex items-center h-[48px] border border-gray-300 rounded-xl bg-white overflow-hidden focus-within:border-[#3A98BB]">
+              <span className="flex-1 pl-4 text-[15px] text-[#767676]">
+                {days} {days === 1 ? 'day' : 'days'}
+              </span>
+              <div className="flex flex-col h-full border-l border-gray-200">
+                <button type="button" onClick={spinUp} className="flex-1 px-3 flex items-center justify-center text-gray-500 hover:text-[#3A98BB] hover:bg-[#EAF9FF] transition-colors border-b border-gray-200">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" /></svg>
+                </button>
+                <button type="button" onClick={spinDown} className="flex-1 px-3 flex items-center justify-center text-gray-500 hover:text-[#3A98BB] hover:bg-[#EAF9FF] transition-colors">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -231,23 +226,20 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
           {/* Duration */}
           <div className="flex flex-col gap-2 mt-2">
             <h3 className="text-[14px] font-bold text-[#111111]">How Long Will It Take You To Complete This Work?</h3>
-            <Input
-              value={selected}
-              onValueChange={setSelected}
-              variant="bordered"
-              radius="md"
-              startContent={
-                <div className="w-5 h-5 text-gray-400 shrink-0">
-                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
-              }
-              classNames={{
-                input: 'text-[14px] ml-1',
-                inputWrapper: 'border-gray-200 bg-white shadow-sm h-[48px]',
-              }}
-            />
+            {/* Duration Spinbox – Mobile */}
+            <div className="flex items-center h-[48px] border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden focus-within:border-[#3A98BB]">
+              <span className="flex-1 pl-4 text-[14px] text-[#767676]">
+                {days} {days === 1 ? 'day' : 'days'}
+              </span>
+              <div className="flex flex-col h-full border-l border-gray-100">
+                <button type="button" onClick={spinUp} className="flex-1 px-3 flex items-center justify-center text-gray-500 hover:text-[#3A98BB] hover:bg-[#EAF9FF] transition-colors border-b border-gray-100">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" /></svg>
+                </button>
+                <button type="button" onClick={spinDown} className="flex-1 px-3 flex items-center justify-center text-gray-500 hover:text-[#3A98BB] hover:bg-[#EAF9FF] transition-colors">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

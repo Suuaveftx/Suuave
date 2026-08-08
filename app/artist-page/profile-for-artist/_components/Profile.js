@@ -35,14 +35,16 @@ const ProfileArtist = ({ isVisitor = false }) => {
   };
 
   useEffect(() => {
-    // Access localStorage in useEffect to avoid hydration issues
     let role = isVisitor ? 'brand' : localStorage.getItem('activeCategory');
     if (role === 'Fashion Artist') role = 'artist';
     if (role === 'Fashion Brand') role = 'brand';
 
-    const savedOccupation = localStorage.getItem('artist_occupation');
-    if (savedOccupation) {
-      setTitleValue(savedOccupation);
+    const storageKey = role === 'brand' ? 'brand_title' : 'artist_occupation';
+    const savedTitle = localStorage.getItem(storageKey);
+    if (savedTitle) {
+      setTitleValue(savedTitle);
+    } else if (role === 'brand') {
+      setTitleValue('Designer/Brand');
     }
     setUserRole(role);
   }, [isVisitor]);
@@ -62,7 +64,8 @@ const ProfileArtist = ({ isVisitor = false }) => {
 
   const handleSaveOccupation = (newOccupation) => {
     setTitleValue(newOccupation);
-    localStorage.setItem('artist_occupation', newOccupation);
+    const storageKey = userRole === 'brand' ? 'brand_title' : 'artist_occupation';
+    localStorage.setItem(storageKey, newOccupation);
   };
 
   return (
@@ -131,7 +134,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
           <div className="flex flex-col items-center gap-2 w-full">
             <div className="flex items-center gap-2">
               <p className="text-[#222222] text-[16px] font-medium">
-                {userRole === 'brand' ? 'Designer/Brand' : titleValue}
+                {titleValue}
               </p>
               {!isVisitor && (
                 <button onClick={() => setIsModalOpen(true)} className="text-[#3A98BB] hover:opacity-75 transition-opacity">
@@ -218,14 +221,20 @@ const ProfileArtist = ({ isVisitor = false }) => {
           )}
         </div>
 
-        {/* Text */}
-        <p
-          className={`text-[#222222] text-sm leading-relaxed
-      ${isExpanded ? '' : 'line-clamp-3'} 
-      lg:line-clamp-none`}
-        >
-          {aboutValue}
-        </p>
+        {/* Text Area */}
+        <div className="w-full">
+          <p
+            className={`text-[#222222] text-sm leading-relaxed ${isExpanded ? '' : 'line-clamp-3'}`}
+          >
+            {aboutValue}
+          </p>
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-[#3A98BB] font-semibold text-sm mt-1 hover:underline"
+          >
+            {isExpanded ? 'Show less' : 'Read more'}
+          </button>
+        </div>
       </div>
       <EditOccupationModal
         isOpen={isModalOpen}

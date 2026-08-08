@@ -204,7 +204,7 @@ const FashionDesignersCard = ({
       {/* --- MOBILE FOOTER --- */}
       <CardFooter className='md:hidden flex flex-col items-start w-full px-3 py-3 flex-none gap-0 bg-white'>
         <Link href={`/fashion-designers/${productID}${hasCrown ? '?crown=true' : ''}`} className="w-full flex">
-          <p className='line-clamp-2 font-bold text-[15px] text-[#222222] leading-snug text-left'>
+          <p className='truncate font-bold text-[15px] text-[#222222] leading-snug text-left'>
             {title}
           </p>
         </Link>

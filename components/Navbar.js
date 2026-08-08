@@ -35,21 +35,22 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
 
   return (
     <Navbar
-      shouldHideOnScroll
-      className={`w-full ${bgColor} font-satoshi ${textStyle} z-40`}
-      classNames={{ wrapper: "w-full max-w-full px-0" }}
+      className={`w-full ${bgColor} font-satoshi ${textStyle} z-40 !static lg:!sticky h-[80px]`}
+      classNames={{ wrapper: "w-full max-w-full px-0 h-full" }}
       onMenuOpenChange={setIsMenuOpen}
     >
       <PageContainer className="flex items-center justify-between w-full h-full">
-        <NavbarBrand className="lg:justify-start justify-start max-w-fit">
-          <Link href='/'>
+        <NavbarBrand className="lg:justify-start justify-start max-w-fit -ml-4 lg:ml-0">
+          <Link href='/' className="flex items-center">
             {/* Mobile Logo */}
-            <Image
-              disableAnimation
-              src={mobileLogo}
-              alt='Logo'
-              className='w-[140px] h-[140px] object-contain object-left lg:hidden'
-            />
+            <span className="lg:hidden flex items-center overflow-hidden w-[110px] h-14">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={mobileLogo}
+                alt='Logo'
+                style={{ width: '140px', height: '140px', objectFit: 'contain', objectPosition: 'left center', flexShrink: 0 }}
+              />
+            </span>
             {/* Desktop Logo */}
             <Image
               disableAnimation
@@ -60,7 +61,7 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
           </Link>
         </NavbarBrand>
 
-        <NavbarContent className="hidden lg:flex gap-14" justify="center">
+        <NavbarContent className="hidden lg:flex gap-4 xl:gap-14 lg:ml-12" justify="center">
           <NavbarItem>
             <Link href='/join-waitlist' className={`text-white transition duration-300`}>
               Join the Waitlist
@@ -88,7 +89,7 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
           </NavbarItem>
         </NavbarContent>
 
-        <NavbarContent justify='end' className='space'>
+        <NavbarContent justify='end' className='gap-4'>
           <NavbarItem className='hidden lg:flex'>
             <Link href='/auth' className={`text-white transition duration-300`}>
               Login
@@ -102,7 +103,7 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
               Get started
             </Link>
           </NavbarItem>
-          <Link href='/auth' className='lg:hidden text-white'>
+          <Link href='/auth' className='lg:hidden text-white pr-2'>
             Login
           </Link>
           {/* Hamburger Toggle (mobile only, after Login) */}
@@ -113,7 +114,7 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
         </NavbarContent>
       </PageContainer>
 
-      <NavbarMenu className="bg-customNavBg pt-8 px-4">
+      <NavbarMenu className="bg-customNavBg pt-8 px-4 overflow-hidden h-fit">
         {menuItems.map((item, index) => (
           <NavbarMenuItem className="py-3" key={`${item.title}-${index}`}>
             <Link className="w-full text-white" href={item.url} size="lg">

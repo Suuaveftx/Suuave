@@ -8,7 +8,7 @@ const Budgets = () => {
     <>
       {/* Mobile View */}
       <div className='lg:hidden bg-white p-5 rounded-[18px] border border-[#ECECEC] shadow-[0_1px_8px_rgba(0,0,0,0.04)] mb-4'>
-        <h4 className='font-bold text-[15px] text-[#2E2E2E] mb-3'>Payment And Timeframe</h4>
+        <h4 className='font-bold text-[15px] text-[#2E2E2E] mb-3'>Budget And Timeframe</h4>
         <div className='flex flex-col gap-2'>
           <div className='flex items-center gap-2'>
             <HiOutlineCash className='w-[18px] h-[18px] text-[#757575]' />
@@ -25,7 +25,7 @@ const Budgets = () => {
 
       {/* Desktop View (Preserved) */}
       <div className='hidden lg:flex flex-col gap-4 w-full bg-[#FAFAFA] border border-[#EAEAEA] lg:px-8 px-4 py-8 lg:mt-4 mt-[22px] rounded-2xl lg:mb-[92.82px] mb-[3px]'>
-        <h4 className='font-bold text-[22px] text-[#222222] lg:flex hidden'>Payment And Timeframe</h4>
+        <h4 className='font-bold text-[22px] text-[#222222] lg:flex hidden'>Budget And Timeframe</h4>
         <div >
           <div className='flex items-center gap-2'>
             <div className='flex gap-2 items-center'>
