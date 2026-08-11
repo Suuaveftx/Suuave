@@ -37,6 +37,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence, useDragControls } from 'framer-motion';
 import { useAppStore } from '@/store';
 import PageContainer from '@/components/layout/PageContainer';
+import useEmblaCarousel from 'embla-carousel-react';
 
 
 const ProductDetails = ({ params }) => {
@@ -96,6 +97,16 @@ const ProductDetails = ({ params }) => {
   ];
 
   const [copied, setCopied] = useState(false);
+  const [isLicenseOpen, setIsLicenseOpen] = useState(false);
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
+
+  React.useEffect(() => {
+    if (!emblaApi) return;
+    emblaApi.on('select', () => {
+      setCurrentSlide(emblaApi.selectedScrollSnap());
+    });
+  }, [emblaApi]);
   const {
     toggleBookmark,
     savedCardIds,
@@ -327,7 +338,7 @@ const ProductDetails = ({ params }) => {
                         style={{ background: 'radial-gradient(ellipse at center, white 0%, #CCE7F2 100%)', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                         onPress={handleGetLicense}
                       >
-                        {hasCrown ? 'Buy Exclusive Right' : 'Get License'}
+                        {hasCrown ? 'Buy Exclusive' : 'Get License'}
                       </Button>
                     </div>
                   </>
@@ -454,19 +465,34 @@ const ProductDetails = ({ params }) => {
           </header>
 
           {/* Hero Image */}
-          <div className="relative w-full h-[540px] bg-gray-200">
-            <img
-              src={product.images[0]}
-              alt={product.title}
-              className="w-full h-full object-cover object-top"
-            />
+          <div className="relative w-full h-[540px] bg-gray-200 overflow-hidden">
+            {/* Embla carousel viewport */}
+            <div ref={emblaRef} className="w-full h-full overflow-hidden">
+              <div className="flex h-full">
+                {product.images.map((img, index) => (
+                  <div key={index} className="flex-none w-full h-full">
+                    <img
+                      src={img}
+                      alt={product.title}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {hasCrown && (
+              <div className='absolute left-[18px] top-[18px] z-20 flex bg-black/60 backdrop-blur-md rounded-md p-1.5 items-center justify-center'>
+                <FaCrown size={15} className='text-[#F4C753]' />
+              </div>
+            )}
             {/* View count indicator */}
-            <div className="absolute top-[18px] right-[18px] flex items-center gap-[6px] text-white">
-              <MdOutlineRemoveRedEye size={18} className="stroke-2" />
+            <div className="absolute top-[18px] right-[18px] z-20 flex items-center gap-[6px] text-white">
+              <MdOutlineRemoveRedEye size={18} />
               <span className="text-[13px] font-medium tracking-wide font-satoshi">12</span>
             </div>
             {/* Floating action container */}
-            <div className="absolute right-4 bottom-14 flex flex-col items-center bg-black/60 rounded-xl backdrop-blur-sm shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
+            <div className="absolute right-4 bottom-14 z-20 flex flex-col items-center bg-black/60 rounded-xl backdrop-blur-sm shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
               <button onClick={handleSave} className="p-3 text-[#3A98BB] hover:opacity-80 transition-opacity">
                 {isBookmarked ? <IoBookmark size={20} /> : <IoBookmarkOutline size={20} />}
               </button>
@@ -488,10 +514,13 @@ const ProductDetails = ({ params }) => {
               </Dropdown>
             </div>
             {/* Image pagination indicators */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-[6px]">
-              <div className="w-[14px] h-[4px] rounded-full bg-white"></div>
-              <div className="w-[4px] h-[4px] rounded-full bg-white/60"></div>
-              <div className="w-[4px] h-[4px] rounded-full bg-white/60"></div>
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-[6px] z-20">
+              {product.images.map((_, idx) => (
+                <div
+                  key={idx}
+                  className={`h-[4px] rounded-full transition-all duration-300 ${currentSlide === idx ? 'w-[14px] bg-white' : 'w-[4px] bg-white/60'}`}
+                />
+              ))}
             </div>
           </div>
 
@@ -511,18 +540,53 @@ const ProductDetails = ({ params }) => {
             <div className="mt-4">
               <Card shadow="none" className="border border-[#EAEAEA] bg-[#FCFCFC] rounded-xl w-full">
                 <CardBody className="p-4 overflow-hidden">
-                  <div className="flex justify-between items-center mb-[6px]">
-                    <h3 className="text-[13px] font-bold text-[#222222]">{hasCrown ? 'Exclusive Right' : 'Licensing Right (Non-Exclusive)'}</h3>
-                    <svg className="w-4 h-4 text-[#878787]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <div
+                    className="flex justify-between items-center mb-[6px] cursor-pointer"
+                    onClick={() => setIsLicenseOpen(!isLicenseOpen)}
+                  >
+                    <div className="flex items-center gap-1.5">
+                      {hasCrown && <FaCrown size={14} className="text-[#F4C753]" />}
+                      <h3 className="text-[13px] font-bold text-[#222222]">{hasCrown ? 'Exclusive Right' : 'Licensing Right (Non-Exclusive)'}</h3>
+                    </div>
+                    <svg
+                      className={`w-4 h-4 text-[#878787] transition-transform ${isLicenseOpen ? 'rotate-180' : ''}`}
+                      fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+                    >
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
-                  <p className="text-[13px] text-[#767676] leading-[19px] pr-2">
-                    Use this design in your collections without<br />
-                    owning it exclusively.<br />
-                    You&#39;re allowed to use it for both personal an<br />
-                    <span onClick={() => { }} className="text-[#3A98BB] cursor-pointer">Read more...</span>
-                  </p>
+                  {!isLicenseOpen ? (
+                    <p className="text-[13px] text-[#767676] leading-[19px] pr-2">
+                      {hasCrown ? (
+                        <>
+                          Own this design completely and make it uniquely yours.<br />
+                          <span className="text-[#3A98BB] cursor-pointer" onClick={(e) => { e.stopPropagation(); setIsLicenseOpen(true); }}>Read more...</span>
+                        </>
+                      ) : (
+                        <>
+                          Use this design in your collections without<br />
+                          owning it exclusively.<br />
+                          You&#39;re allowed to use it for both personal an<br />
+                          <span className="text-[#3A98BB] cursor-pointer" onClick={(e) => { e.stopPropagation(); setIsLicenseOpen(true); }}>Read more...</span>
+                        </>
+                      )}
+                    </p>
+                  ) : (
+                    <p className="text-[13px] text-[#767676] leading-[19px] pr-2">
+                      {hasCrown ? (
+                        <>
+                          Own this design completely and make it uniquely yours.<br />
+                          Once purchased, the design is removed from the marketplace and will not be resold.<br />
+                          You gain full rights for personal and commercial use. <Link href="/fashion-designers/licensing-guide" className="text-[#3A98BB] hover:underline" onClick={(e) => e.stopPropagation()}>Learn more...</Link>
+                        </>
+                      ) : (
+                        <>
+                          You are buying a right to use this design for both personal and commercial use.<br />
+                          The Artist retains ownership, and other buyers can purchase and use it too. <Link href="/fashion-designers/licensing-guide" className="text-[#3A98BB] hover:underline" onClick={(e) => e.stopPropagation()}>Learn more...</Link>
+                        </>
+                      )}
+                    </p>
+                  )}
                 </CardBody>
               </Card>
             </div>
@@ -544,7 +608,7 @@ const ProductDetails = ({ params }) => {
                 className="flex-1 h-[42px] bg-[#CCE7F2] text-[#0A4A66] font-semibold text-[13px] tracking-wide"
                 disableRipple
               >
-                {hasCrown ? 'Buy Exclusive Right' : 'Get License'}
+                {hasCrown ? 'Buy Exclusive' : 'Get License'}
               </Button>
             </div>
           </div>
@@ -570,19 +634,19 @@ const ProductDetails = ({ params }) => {
 
           {/* About Artist */}
           <div className="px-4 mt-5 font-satoshi">
-            <h3 className="font-bold text-[15px] text-[#222222] mb-4">About the artist</h3>
+            <h3 className="font-bold text-[15px] text-[#222222] mb-4">About the Artist</h3>
 
-            <div className="flex items-center gap-[14px]">
+            <Link href="/artist-page/profile-vistor-view" className="flex items-center gap-[14px]">
               <Avatar
                 src="https://i.pravatar.cc/150?u=a04258114e29026708c"
                 alt={product.artist.handle}
                 className="w-10 h-10 text-large"
               />
-              <div className="flex flex-col">
+              <div className="flex flex-col hover:opacity-80">
                 <span className="font-bold text-[14px] text-[#222222] underline underline-offset-2">Ocean Cliff</span>
                 <span className="text-[11px] text-[#767676] mt-0.5">{product.artist.role}</span>
               </div>
-            </div>
+            </Link>
 
             <div className="flex items-center gap-1 mt-3 ml-0.5">
               <TiLocation className="text-[#767676]" size={15} />
@@ -595,7 +659,7 @@ const ProductDetails = ({ params }) => {
                 <FaStar className="text-[#FBBC05]" size={10} />
               </div>
               <div className="text-[11px] text-[#767676] flex items-center">
-                5.0 &nbsp;|&nbsp; <span className="text-[#3A98BB] underline underline-offset-2">5 Verified reviews |</span>
+                5.0 &nbsp;|&nbsp; <Link href="/artist-page/profile-vistor-view?tab=reviews" className="text-[#3A98BB] hover:underline underline-offset-2">5 Verified reviews</Link> &nbsp;|
               </div>
             </div>
           </div>

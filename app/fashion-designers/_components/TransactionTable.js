@@ -19,7 +19,7 @@ const TransactionTable = () => {
     const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
     const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 3;
+    const itemsPerPage = 5;
 
     // Filter state: { type: 'range' | 'custom', value: any, label: string }
     const [dateFilter, setDateFilter] = useState({ type: 'none', value: null, label: 'Select Date' });
@@ -70,53 +70,18 @@ const TransactionTable = () => {
         setIsDateDropdownOpen(false);
     };
 
-    const transactions = [
-        {
-            id: 1,
-            date: "2024-11-01T12:32:34",
-            dateTime: "01-11-2024 / 12:32.34",
-            transaction: "Project",
-            description: "Project ID 231 (Wedding gown design)",
+    const transactions = Array.from({ length: 50 }, (_, i) => {
+        const trTypes = ["Project", "Refund", "Licensing", "Retainer"];
+        return {
+            id: i + 1,
+            date: `2024-11-${String((i % 30) + 1).padStart(2, '0')}T12:32:34`,
+            dateTime: `${String((i % 30) + 1).padStart(2, '0')}-11-2024 / 12:32.34`,
+            transaction: trTypes[i % trTypes.length],
+            description: `Project ID ${231 + i} (Wedding gown design)`,
             amount: "N150,000",
             status: "Successful",
-        },
-        {
-            id: 2,
-            date: "2024-11-01T12:32:34",
-            dateTime: "01-11-2024 / 12:32.34",
-            transaction: "Refund",
-            description: "Project ID 231 (Wedding gown design)",
-            amount: "N150,000",
-            status: "Successful",
-        },
-        {
-            id: 3,
-            date: "2024-11-02T12:32:34",
-            dateTime: "02-11-2024 / 12:32.34",
-            transaction: "Licensing",
-            description: "Project ID 231 (Wedding gown design)",
-            amount: "N150,000",
-            status: "Successful",
-        },
-        {
-            id: 4,
-            date: "2024-11-03T12:32:34",
-            dateTime: "03-11-2024 / 12:32.34",
-            transaction: "Project",
-            description: "Project ID 231 (Wedding gown design)",
-            amount: "N150,000",
-            status: "Successful",
-        },
-        {
-            id: 5,
-            date: "2024-11-04T12:32:34",
-            dateTime: "04-11-2024 / 12:32.34",
-            transaction: "Refund",
-            description: "Project ID 231 (Wedding gown design)",
-            amount: "N150,000",
-            status: "Successful",
-        },
-    ];
+        };
+    });
 
     const filteredTransactions = transactions.filter((item) => {
         // Search filter

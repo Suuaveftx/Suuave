@@ -161,7 +161,7 @@ const ProductGallery = ({ images, title, onOpenDetails, isBookmarked, onToggleSa
 
         {/* Floating Icons (Mobile Indicator) */}
         <div className="lg:hidden absolute top-4 left-4 z-20 flex items-center gap-2">
-          <div className="bg-black/20 backdrop-blur-md px-2 py-1 rounded-lg flex items-center gap-1.5 text-white text-[10px] font-medium border border-white/10">
+          <div className="flex items-center gap-1.5 text-white text-[10px] font-medium">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0z" /><circle cx="12" cy="12" r="3" /></svg>
             <span>12</span>
           </div>

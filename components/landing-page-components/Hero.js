@@ -50,10 +50,12 @@ const HeroSection = () => {
             verified African talented artists - from digital patterns to 3D
             couture.
           </p>
-          <CustomButton
-            className="lg:ml-14 mx-auto w-40 text-lg h-[52px] relative z-50"
-            href="/onboarding/category"
-          />
+          <div className="flex justify-center lg:justify-start lg:pl-14 w-full">
+            <CustomButton
+              className="w-40 text-lg h-[52px] relative z-50"
+              href="/onboarding/category"
+            />
+          </div>
         </div>
         <div className="lg:pr-14 py-14 relative pr-5 px-5 lg:px-0 lg:mt-0 mt-7">
           <ScrollParallax isAbsolutelyPositioned strength={0.1} zIndex={30}>

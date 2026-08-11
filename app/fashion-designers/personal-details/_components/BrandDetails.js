@@ -211,7 +211,7 @@ const BrandDetails = ({ step, setStep, setHoveredField, submitHref = '/fashion-d
                 : 'text-[#035A7A] bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
                 }`}
             >
-              {isEdit ? 'Update' : 'Continue'}
+              {isEdit ? 'Next' : 'Continue'}
             </button>
           </div>
         </>

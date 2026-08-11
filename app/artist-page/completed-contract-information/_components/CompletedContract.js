@@ -47,7 +47,7 @@ export default function CompletedContract() {
     return (
         <PageContainer>
             {/* Header mapped to ContractHeader logic */}
-            <div className="w-full max-w-6xl mx-auto flex items-center gap-2 mb-2 lg:mb-6 mt-1 lg:mt-4">
+            <div className="w-full max-w-6xl mx-auto flex items-center gap-2 mb-4 lg:mb-6 mt-1 lg:mt-4">
                 <button
                     onClick={() => router.push('/artist-page/my-contracts?tab=completed')}
                     className="p-1 rounded-full hover:bg-gray-100 transition-colors"

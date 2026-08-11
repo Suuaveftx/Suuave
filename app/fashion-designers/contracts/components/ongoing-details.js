@@ -30,6 +30,7 @@ import { FaStar } from "react-icons/fa6";
 import { IoFlagSharp } from "react-icons/io5";
 import Link from "next/link";
 import SubmitModal from "../../../../components/SubmitModal";
+import PageContainer from "../../../../components/layout/PageContainer";
 
 
 import { ongoingContracts } from "../data";
@@ -120,8 +121,8 @@ export default function OngoingDetailsPage({ params }) {
 
   return (
     <>
-      <div className="w-full max-w-[1400px] mx-auto pt-0 p-4 md:pt-0 md:p-6 lg:p-8 pb-32 md:pb-8 font-proximanova text-[#222222]">
-        <ContractHeader title="Contracts Information" maxWidth="max-w-6xl" tab="ongoing" showBack={true} withNavbarOffset={false} />
+      <PageContainer>
+        <ContractHeader title="Contract Information" maxWidth="max-w-6xl" tab="ongoing" showBack={true} withNavbarOffset={false} />
         <div className="w-full mx-auto pb-36 lg:pb-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-0 -mx-4 lg:mx-0">
             {/* Left Column - Contract Details & Documents */}
@@ -324,7 +325,7 @@ export default function OngoingDetailsPage({ params }) {
             </div>
           </div>
         </div>
-      </div>
+      </PageContainer>
 
       {/* Mobile Action Buttons - outside PageContainer to avoid overflow-x-hidden clipping */}
       <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 px-4 py-4 z-50 lg:hidden drop-shadow-xl">

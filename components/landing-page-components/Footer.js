@@ -31,7 +31,11 @@ const Footer = () => {
             OUR COMPANY
           </h2>
           <ul className="space-y-2 text-sm font-thin text-[#C8C8C8]">
-            <li>Contact Us</li>
+            <li>
+              <HeroLink href="/partner-with-us" className="text-sm font-thin text-[#C8C8C8]">
+                Contact Us
+              </HeroLink>
+            </li>
             <li>
               <HeroLink
                 href="/about-page"

@@ -338,7 +338,7 @@ const PersonalDetail = ({ setSelected, setHoveredField, isEdit = false, submitHr
             }}
             className="flex items-center justify-center w-full md:w-auto text-[#3A98BB] bg-transparent border border-[#3A98BB] font-semibold rounded-[40px] px-12 py-3.5 hover:bg-[#EAF9FF] transition-colors shadow-none"
           >
-            Update
+            Next
           </button>
         ) : (
           <button

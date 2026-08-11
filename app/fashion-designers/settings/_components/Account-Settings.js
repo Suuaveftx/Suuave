@@ -8,7 +8,7 @@ const AccountSettings = () => {
 
     return (
         <div className='w-full flex flex-col gap-6'>
-            <h2 className='font-bold text-2xl text-[#222222]'>Account</h2>
+            <h2 className='font-bold text-2xl text-[#222222] hidden lg:block'>Account</h2>
 
             {/* Contact Details */}
             <Card className='w-full shadow-none border border-[#E9E9E9] rounded-2xl'>
