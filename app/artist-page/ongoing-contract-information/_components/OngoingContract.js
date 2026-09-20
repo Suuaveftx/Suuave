@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Card, CardBody, Button } from "@heroui/react";
+import { Card, CardBody, Button, Modal, ModalContent, ModalBody, ModalFooter, useDisclosure } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import CustomButton from "../../../../components/CustomButton";
@@ -10,6 +10,7 @@ import { IoFlagSharp } from "react-icons/io5";
 import { useSearchParams, useRouter } from "next/navigation";
 import ChatClientModal from "../../../../components/ChatClientModal";
 import SubmitProjectModal from "../../../../components/SubmitProjectModal";
+import { useAppStore } from "@/store";
 
 const contractDetails = {
     jobTitle: "Modern Fashion Attire Illustration",
@@ -47,6 +48,11 @@ export default function OngoingContract() {
     const color = searchParams.get("color") || "#22C55E";
     const isWaitingApproval = id === "24t64754-A";
     const router = useRouter();
+    const isExtended = searchParams.get('isExtended') === 'true';
+
+    const { reportedDisputes, withdrawDispute } = useAppStore();
+    const isDisputed = reportedDisputes[id];
+    const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onOpenChange: onWithdrawOpenChange } = useDisclosure();
 
     return (
         <>
@@ -68,7 +74,7 @@ export default function OngoingContract() {
                     <div className="flex-1 space-y-2 lg:space-y-6">
                         {/* Contract Details Card */}
                         <Card className="w-full p-4 md:p-6 shadow-sm border border-gray-100 rounded-2xl bg-white">
-                            <div className="hidden md:flex justify-between items-start mb-6">
+                            <div className="hidden md:flex justify-between items-start mb-6 border-b pb-2">
                                 <h2 className="text-xl font-bold">Contract Details </h2>
                                 <div className="flex gap-2 items-center">
                                     <span className="border border-[#D1D1D1] text-[#279711] px-3 py-1 rounded-full text-xs font-medium">
@@ -78,11 +84,28 @@ export default function OngoingContract() {
                                         <span className="inline-flex items-center bg-[#EAF5FB] text-[#3A98BB] text-[11px] font-semibold px-2 rounded-full h-[22px]">
                                             Waiting Approval
                                         </span>
-                                    ) : timeStatus && (
+                                    ) : (timeStatus && !isExtended) ? (
                                         <span className="text-xs font-bold" style={{ color: color }}>{timeStatus}</span>
-                                    )}
+                                    ) : null}
                                 </div>
                             </div>
+
+                            {/* Deadline Extended Banner */}
+                            {isExtended && (
+                                <div className="flex items-start gap-3 bg-[#EAF9FF] border border-[#CCE7F2] rounded-xl px-4 py-3 mb-5 mt-2">
+                                    <div className="w-5 h-5 rounded-full bg-[#035A7A] flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <svg width="10" height="8" viewBox="0 0 12 10" fill="none">
+                                            <path d="M1 5L4.5 8.5L11 1.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-bold text-[#035A7A]">Deadline Extended</p>
+                                        <p className="text-xs text-[#035A7A] mt-0.5">
+                                            Contract deadline updated to <span className="font-bold">24th April, 2026</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="space-y-4">
                                 {/* Job Title */}
@@ -113,7 +136,14 @@ export default function OngoingContract() {
                                 {/* Contract Ends */}
                                 <div className="grid grid-cols-[200px_1fr] gap-4 items-center">
                                     <span className="text-gray-500 text-sm">Contract Ends :</span>
-                                    <span className="font-medium text-sm">12th May, 2026</span>
+                                    {isExtended ? (
+                                        <div className="flex items-center gap-2 flex-wrap">
+                                            <span className="font-medium text-sm">24th April, 2026</span>
+                                            <span className="text-[10px] bg-[#FFA500] text-white px-2 py-0.5 rounded-full font-semibold whitespace-nowrap">Extended</span>
+                                        </div>
+                                    ) : (
+                                        <span className="font-medium text-sm">12th May, 2026</span>
+                                    )}
                                 </div>
                             </div>
                         </Card>
@@ -145,12 +175,21 @@ export default function OngoingContract() {
                                 <div className="[&>button]:w-48 [&>button]:h-12 [&>button]:rounded-full [&>button]:border [&>button]:border-[#3A98BB] [&>button]:bg-transparent [&>button]:text-[#222222] [&>button]:font-medium">
                                     <ChatClientModal clientName={clientProfile.name} />
                                 </div>
-                                <div className="mt-2 text-[#ef4444] flex gap-2 items-center justify-center border border-[rgba(229,229,229,0.61)] rounded-full px-6 py-2 cursor-pointer w-48 font-medium text-sm">
-                                    <IoFlagSharp size={14} color="#ef4444" />
-                                    <Link href="#">
-                                        Report Dispute
-                                    </Link>
-                                </div>
+                                {isDisputed ? (
+                                    <div
+                                        className="mt-2 flex gap-2 items-center justify-center border border-[rgba(229,229,229,0.61)] rounded-full px-6 py-2 cursor-pointer w-48 font-medium text-sm text-gray-500 hover:bg-gray-50"
+                                        onClick={() => withdrawDispute(id)}
+                                    >
+                                        Withdraw Dispute
+                                    </div>
+                                ) : (
+                                    <div className="mt-2 text-[#ef4444] flex gap-2 items-center justify-center border border-[rgba(229,229,229,0.61)] rounded-full px-6 py-2 cursor-pointer w-48 font-medium text-sm">
+                                        <IoFlagSharp size={14} color="#ef4444" />
+                                        <Link href={`/artist-page/report-dispute?contractId=${id}`}>
+                                            Report Dispute
+                                        </Link>
+                                    </div>
+                                )}
                             </div>
                         </Card>
 
@@ -314,15 +353,76 @@ export default function OngoingContract() {
                                 </Button>
                             } />
                         </div>
-                        <Button
-                            className="w-full h-[44px] rounded-full bg-[#FAFAFA] border border-gray-100 text-[#ef4444] font-semibold text-[15px] shadow-sm flex items-center justify-center gap-2"
-                            radius="full"
-                        >
-                            <IoFlagSharp size={16} className="text-[#ef4444]" /> Report Dispute
-                        </Button>
+                        {isDisputed ? (
+                            <Button
+                                className="w-full h-[44px] rounded-full bg-[#FAFAFA] border border-gray-100 text-gray-500 font-semibold text-[15px] shadow-sm flex items-center justify-center gap-2 hover:bg-gray-50"
+                                radius="full"
+                                onPress={onWithdrawOpen}
+                            >
+                                Withdraw Dispute
+                            </Button>
+                        ) : (
+                            <Button
+                                className="w-full h-[44px] rounded-full bg-[#FAFAFA] border border-gray-100 text-[#ef4444] font-semibold text-[15px] shadow-sm flex items-center justify-center gap-2"
+                                radius="full"
+                                onPress={() => router.push(`/artist-page/report-dispute?contractId=${id}`)}
+                            >
+                                <IoFlagSharp size={16} className="text-[#ef4444]" /> Report Dispute
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>
+
+            {/* Withdraw Dispute Modal */}
+            <Modal
+                isOpen={isWithdrawOpen}
+                onOpenChange={onWithdrawOpenChange}
+                classNames={{
+                    base: 'bg-white w-[90vw] max-w-sm',
+                    backdrop: 'bg-black/50',
+                    body: 'py-6 px-6',
+                    footer: 'pt-2 pb-6 px-6 border-t-0',
+                }}
+                size='sm'
+                backdrop='blur'
+                placement='center'
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalBody>
+                                <div className="text-center">
+                                    <h3 className="text-[18px] font-bold text-[#222222] mb-2 font-satoshi">Withdraw Dispute</h3>
+                                    <p className="text-sm font-satoshi leading-relaxed text-gray-600">
+                                        Are you sure you want to withdraw your reported dispute for this contract?
+                                    </p>
+                                </div>
+                            </ModalBody>
+                            <ModalFooter className='w-full flex justify-center items-center font-satoshi gap-3 -mt-2'>
+                                <Button
+                                    variant='bordered'
+                                    onPress={onClose}
+                                    className='flex-1 border border-gray-300 text-[#222222] font-medium rounded-full shadow-sm'
+                                    radius='full'
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    className='flex-1 bg-red-500 text-white font-medium rounded-full border-0 shadow-sm hover:!bg-red-600'
+                                    radius='full'
+                                    onPress={() => {
+                                        withdrawDispute(id);
+                                        onClose();
+                                    }}
+                                >
+                                    Yes, withdraw
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </>
     );
 }

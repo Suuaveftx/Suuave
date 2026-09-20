@@ -33,8 +33,11 @@ const License = () => {
   const initialDescription = searchParams.get('description') || '';
   const initialStyle = searchParams.get('style') || '';
   const initialPrice = searchParams.get('price') || '';
+  const [designStyles, setDesignStyles] = useState(initialStyle ? [initialStyle] : []);
+  const [styleInputValue, setStyleInputValue] = useState('');
+  const [isStyleDropdownOpen, setIsStyleDropdownOpen] = useState(false);
 
-  const allChecked = confirmMasterFiles && confirmWatermarking && confirmOwnership;
+  const allChecked = confirmMasterFiles && confirmOwnership;
 
   const handleSubmitPublish = () => {
     if (!allChecked) return;
@@ -65,12 +68,9 @@ const License = () => {
 
 
         <div className='w-full px-6 py-2 pb-6 lg:mt-8 mt-4 rounded-lg bg-gradient-to-b from-[#CCE7F2] via-[#A1DCF3] to-[#49C0F0] text-[#393939]'>
-          <h1 className='text-[28px] text-[#393939] font-bold'>License Your Design</h1>
+          <h1 className='text-[28px] text-[#393939] font-bold'>List a Design</h1>
           <p className='text-base'>
-            By uploading this design, you attest that you are the creator or legitimate owner and possess all necessary rights and permissions. Uploading work without authorization may constitute copyright infringement.{' '}
-            <Link className='text-[#3A98BB]' href={'/'}>
-              Learn more{' '}
-            </Link>
+            Publish your design to the marketplace and set your licensing preferences. Only upload original work you have the right to commercialise.
           </p>
         </div>
 
@@ -117,264 +117,87 @@ const License = () => {
           </div>
 
           {/* Fashion Style */}
-          <div className='flex flex-col gap-2 relative'>
+          <div className='flex flex-col gap-2'>
             <h3 className='text-lg font-semibold'>Design Style<span className='text-red-500 ml-0.5'>*</span></h3>
-            <input
-              id='design-style-input'
-              type='text'
-              defaultValue={initialStyle}
-              placeholder='Enter category of your design, E.g Casual, etc.'
-              className='border-1 border-[#d1d1d1] rounded-lg px-3 py-2 text-base focus:outline-none focus:border-[#3A98BB]'
-              onInput={(e) => {
-                const value = e.target.value.toLowerCase();
-                const dropdown = document.getElementById('style-suggestions');
-                const suggestions = dropdown?.querySelectorAll('button');
 
-                if (!value) {
-                  dropdown.classList.add('hidden');
-                  return;
-                }
+            <div className='relative w-full'>
+              <input
+                id='design-style-input'
+                type='text'
+                value={styleInputValue}
+                placeholder='Enter category of your design, E.g Casual, etc. (Press Enter to add)'
+                className='border-1 border-[#d1d1d1] rounded-lg px-3 py-2 text-base focus:outline-none focus:border-[#3A98BB] w-full'
+                onChange={(e) => {
+                  setStyleInputValue(e.target.value);
+                  setIsStyleDropdownOpen(true);
+                }}
+                onFocus={() => setIsStyleDropdownOpen(true)}
+                onBlur={() => {
+                  setTimeout(() => setIsStyleDropdownOpen(false), 200);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (styleInputValue.trim()) {
+                      const newStyle = styleInputValue.trim();
+                      if (!designStyles.includes(newStyle)) {
+                        setDesignStyles([...designStyles, newStyle]);
+                      }
+                      setStyleInputValue('');
+                      setIsStyleDropdownOpen(false);
+                    }
+                  }
+                }}
+              />
 
-                let hasVisibleSuggestion = false;
-                suggestions?.forEach((btn) => {
-                  const text = btn.textContent.toLowerCase();
-                  if (text.includes(value)) {
-                    btn.classList.remove('hidden');
-                    hasVisibleSuggestion = true;
-                  } else {
-                    btn.classList.add('hidden');
-                  }
-                });
-
-                if (hasVisibleSuggestion) {
-                  dropdown.classList.remove('hidden');
-                } else {
-                  dropdown.classList.add('hidden');
-                }
-              }}
-              onFocus={(e) => {
-                const value = e.target.value.toLowerCase();
-                const dropdown = document.getElementById('style-suggestions');
-                if (value) {
-                  dropdown.classList.remove('hidden');
-                }
-              }}
-              onBlur={() => {
-                setTimeout(() => {
-                  const dropdown = document.getElementById('style-suggestions');
-                  dropdown?.classList.add('hidden');
-                }, 200);
-              }}
-            />
-
-            {/* Autocomplete Suggestions Dropdown */}
-            <div
-              id='style-suggestions'
-              className='hidden absolute top-full left-0 right-0 mt-1 bg-white border border-[#d1d1d1] rounded-lg shadow-lg max-h-60 overflow-y-auto z-10'
-            >
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Casual';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Casual
-              </button>
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Formal';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Formal
-              </button>
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Streetwear';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Streetwear
-              </button>
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Vintage';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Vintage
-              </button>
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Bohemian';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Bohemian
-              </button>
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Minimalist';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Minimalist
-              </button>
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Avant-Garde';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Avant-Garde
-              </button>
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Sporty';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Sporty
-              </button>
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Elegant';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Elegant
-              </button>
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Preppy';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Preppy
-              </button>
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Grunge';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Grunge
-              </button>
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Chic';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Chic
-              </button>
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Romantic';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Romantic
-              </button>
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Edgy';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Edgy
-              </button>
-              <button
-                type='button'
-                onClick={(e) => {
-                  const input = document.getElementById('design-style-input');
-                  if (input) {
-                    input.value = 'Classic';
-                    input.focus();
-                  }
-                }}
-                className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
-              >
-                Classic
-              </button>
+              {/* Autocomplete Suggestions Dropdown */}
+              {isStyleDropdownOpen && styleInputValue.trim() !== '' && (
+                <div className='absolute top-full left-0 right-0 mt-1 bg-white border border-[#d1d1d1] rounded-lg shadow-lg max-h-60 overflow-y-auto z-10'>
+                  {['Casual', 'Formal', 'Streetwear', 'Vintage', 'Bohemian', 'Minimalist', 'Avant-Garde', 'Sporty', 'Elegant', 'Preppy', 'Grunge', 'Chic', 'Romantic', 'Edgy', 'Classic']
+                    .filter(s => s.toLowerCase().includes(styleInputValue.toLowerCase()))
+                    .map((style) => (
+                      <button
+                        key={style}
+                        type='button'
+                        onClick={() => {
+                          if (!designStyles.includes(style)) {
+                            setDesignStyles([...designStyles, style]);
+                          }
+                          setStyleInputValue('');
+                        }}
+                        className='w-full text-left px-4 py-2 hover:bg-[#F0F0F0] transition-colors text-sm'
+                      >
+                        {style}
+                      </button>
+                    ))}
+                </div>
+              )}
             </div>
+
+            {/* Tags display */}
+            {designStyles.length > 0 && (
+              <div className='flex flex-wrap gap-2 mt-1'>
+                {designStyles.map((style, idx) => (
+                  <div key={idx} className='flex items-center gap-1 bg-[#EAEAEA] text-[#222222] px-3 py-1.5 rounded-full text-sm font-medium'>
+                    <span>{style}</span>
+                    <button
+                      type="button"
+                      onClick={() => setDesignStyles(designStyles.filter((s) => s !== style))}
+                      className='hover:text-red-500 ml-1 flex items-center justify-center rounded-full'
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* 1. Public Preview Gallery */}
           <div className='flex flex-col gap-2'>
-            <h3 className='text-lg font-bold text-[#222222]'>Upload Your Designs<span className='text-red-500 ml-0.5'>*</span></h3>
+            <h3 className='text-lg font-bold text-[#222222]'>Upload Public Previews<span className='text-red-500 ml-0.5'>*</span></h3>
             <p className='text-sm'>
-              Upload public facing images.
+              Upload up to 5 preview images ( Front, Back, Details).
             </p>
 
             {/* Hidden File Input */}
@@ -458,7 +281,7 @@ const License = () => {
             </div>
             {/* Term Note */}
             <p className='text-xs text-[#767676] mt-2'>
-              <span className='font-bold text-[#E73131]'>Term Note:</span> Only upload public facing images (sketches, photos). To prevent unapproved use, prioritize watermaking. We provide a separate, private field for secure master file delivery.
+              <span className='font-bold text-[#E73131]'>Term Note:</span> To prevent unapproved use, prioritize watermaking. We provide a separate, private field for secure master file delivery.
             </p>
           </div>
 
@@ -467,12 +290,8 @@ const License = () => {
             <div className='flex flex-col'>
               <div className='flex items-center gap-2'>
                 <h3 className='text-lg font-bold text-[#222222]'>
-                  Upload Source File
+                  Upload Source File<span className='text-red-500 ml-0.5'>*</span>
                 </h3>
-                <Info
-                  className="w-5 h-5 text-[#035A7A] cursor-pointer hover:opacity-80 transition-opacity"
-                  onClick={() => setShowSourceFileInfo(!showSourceFileInfo)}
-                />
               </div>
               <p className='text-[15px] text-[#767676] mt-1'>
                 Upload the complete specifications, documents and all necessary files regarding the design or collection.
@@ -506,22 +325,16 @@ const License = () => {
 
               <label
                 htmlFor='vault-upload'
-                className='w-full border-1 border-[#D1D1D1] rounded-lg h-[68px] flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-50 transition-colors'
+                className='w-full border-1 border-[#D1D1D1] rounded-lg min-h-[68px] py-2 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors'
               >
-                <Paperclip className="w-5 h-5 text-[#3A98BB]" />
-                <span className='text-[#767676] text-[15px]'>Upload source file</span>
-              </label>
-
-              {showSourceFileInfo && (
-                <div className='flex flex-col text-sm mt-1'>
-                  <p className='text-[#222222] font-bold'>
-                    NOT PUBLICLY DISPLAYED. Released only after escrow payment.
-                  </p>
-                  <p className='text-[#767676] mt-1'>
-                    Accepted formats: .zip, .ai, .eps, .psd, .pdf (Max 500MB).
-                  </p>
+                <div className='flex items-center gap-2'>
+                  <Paperclip className="w-5 h-5 text-[#3A98BB]" />
+                  <span className='text-[#767676] text-[15px]'>Upload source file</span>
                 </div>
-              )}
+                <p className='text-red-500 text-sm mt-1'>
+                  Supported formats: .zip, .ai, .eps, .psd, .pdf (Max 100MB)
+                </p>
+              </label>
             </div>
           </div>
 
@@ -530,11 +343,14 @@ const License = () => {
           {/* Asking Price */}
           <div className='flex flex-col gap-2'>
             <h3 className='text-lg font-semibold'>Asking Price<span className='text-red-500 ml-0.5'>*</span></h3>
-            <input
-              defaultValue={initialPrice}
-              placeholder='$0.00'
-              className='border-1 border-[#d1d1d1] px-4 py-3 rounded-lg w-full lg:w-96'
-            />
+            <div className='relative w-full lg:w-96'>
+              <span className='absolute left-4 top-1/2 -translate-y-1/2 text-[#222222] font-medium pointer-events-none'>$</span>
+              <input
+                defaultValue={initialPrice}
+                placeholder='0.00'
+                className='border-1 border-[#d1d1d1] pl-8 pr-4 py-3 rounded-lg w-full'
+              />
+            </div>
           </div>
 
           {/* Licensing Option */}
@@ -574,17 +390,7 @@ const License = () => {
                 onValueChange={setConfirmMasterFiles}
               />
               <p className='text-sm font-medium text-[#222222]'>
-                I confirm that the files in &quot;The Vault&quot; are original master files matching the public previews.
-              </p>
-            </div>
-
-            <div className='flex items-start gap-2'>
-              <Checkbox
-                isSelected={confirmWatermarking}
-                onValueChange={setConfirmWatermarking}
-              />
-              <p className='text-sm font-medium text-[#222222]'>
-                I acknowledge that the &quot;Public Preview Gallery&quot; is for display only and uploaded at my own risk (I am responsible for watermarking).
+                I confirm that my uploaded source files are original master files matching the public previews.
               </p>
             </div>
 
@@ -594,9 +400,8 @@ const License = () => {
                 onValueChange={setConfirmOwnership}
               />
               <p className='text-sm font-medium text-[#222222]'>
-                By publishing, you confirm you have the necessary rights and permission to
-                the ownership of this design.{' '}
-                <Link href='#' className='text-blue-600 underline font-normal'>
+                I confirm I own all rights to this design, understand public previews are for display only, and accept responsibility for watermarking public images.{' '}
+                <Link href='/terms-of-service?source=artist#p2-main' className='text-blue-600 underline font-normal'>
                   Learn More
                 </Link>
               </p>

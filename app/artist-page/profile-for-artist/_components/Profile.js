@@ -144,7 +144,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
             </div>
 
             {/* Location */}
-            <div className='flex items-center space-x-2 text-[#767676] text-sm font-medium mt-1'>
+            <div className='w-full flex justify-start items-center space-x-2 text-[#767676] text-sm font-medium mt-1'>
               <IoLocationSharp size={18} />
               <span>Lagos, Nigeria</span>
             </div>

@@ -12,8 +12,10 @@ import {
     Pagination,
 } from "@heroui/react";
 import { Search, ChevronDown, Calendar, Info } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const TransactionTable = () => {
+    const router = useRouter();
     const [filterValue, setFilterValue] = useState("");
     const [selectedType, setSelectedType] = useState("All Types");
     const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
@@ -240,7 +242,10 @@ const TransactionTable = () => {
                 </div>
 
                 {/* Report Button Restored at Far Right */}
-                <button className='flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-[#FFF5F5] border border-[#FFE0E0] rounded-full text-[#FF4D4D] text-sm font-medium hover:bg-[#ffe6e6] whitespace-nowrap h-11 self-start xl:self-center'>
+                <button
+                    onClick={() => router.push('/fashion-designers/transaction-resolution')}
+                    className='flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-[#FFF5F5] border border-[#FFE0E0] rounded-full text-[#FF4D4D] text-sm font-medium hover:bg-[#ffe6e6] whitespace-nowrap h-11 self-start xl:self-center'
+                >
                     <Info className='h-4 w-4' />
                     Report any issue
                 </button>

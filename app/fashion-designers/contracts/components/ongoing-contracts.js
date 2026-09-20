@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   MagnifyingGlassIcon,
   AdjustmentsVerticalIcon,
@@ -61,6 +62,19 @@ const OngoingContracts = ({
     setCurrentContract(contract);
     setShowRejectModal(true);
   };
+
+  const warningMessages = [
+    <>All disputes must be reported while the project status is <span className="font-semibold">&#39;Active&#39;</span>. Once the project deadline passes or is marked <span className="font-semibold">&#39;Completed&#39;</span>, the project is automatically finalised, and payments are released. Please, review all deliverables before the project window closes.</>,
+    <>Need more time? Submit an extension request before the active deadline. Once a project reaches its completion date, it automatically locks and closes out, preventing any further timeline changes.</>
+  ];
+  const [messageIndex, setMessageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMessageIndex((prev) => (prev + 1) % warningMessages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -185,12 +199,28 @@ const OngoingContracts = ({
   return (
     <div className="px-4 lg:px-0">
       {/* ── Warning Banner ── */}
-      <div className="flex items-start gap-2.5 bg-[#FFF4E5] border border-[#FDDCAA] rounded-lg px-4 py-3 mb-5 w-fit max-w-[520px]">
-        <ExclamationTriangleIcon className="w-[18px] h-[18px] text-[#F59E0B] shrink-0 mt-0.5" />
-        <div className="flex flex-col gap-0.5">
-          <p className="text-[13px] text-[#D97706] leading-relaxed">
-            All disputes must be reported while the project status is <span className="font-semibold">&#39;Active&#39;</span>. Once the project deadline passes or is marked <span className="font-semibold">&#39;Completed&#39;</span>, the project is automatically finalised, and payments are released. Please, review all deliverables before the project window closes.
+      <div className="flex items-start gap-2.5 bg-[#FFF4E5] border border-[#FDDCAA] rounded-lg px-4 py-3 mb-5 w-full max-w-[750px] overflow-hidden relative">
+        <div className="flex items-start shrink-0 z-10 bg-[#FFF4E5] pr-2 pt-1.5">
+          <ExclamationTriangleIcon className="w-[18px] h-[18px] text-[#F59E0B]" />
+        </div>
+        <div className="flex-1 w-full relative flex items-start">
+          {/* Invisible placeholder to enforce a consistent container height based on the longest text */}
+          <p className="text-[13.5px] font-medium leading-relaxed pr-2 py-1 opacity-0 pointer-events-none select-none w-full m-0 invisible">
+            {warningMessages[0]}
           </p>
+
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={messageIndex}
+              initial={{ x: 30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -30, opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="text-[13.5px] font-medium text-[#B45309] m-0 w-full leading-relaxed pr-2 py-1 absolute top-0 left-0"
+            >
+              {warningMessages[messageIndex]}
+            </motion.p>
+          </AnimatePresence>
         </div>
       </div>
 

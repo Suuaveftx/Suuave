@@ -223,12 +223,12 @@ const ProjectPage = () => {
         </>
       )}
 
-      {/* Fixed License Your Design Button for Mobile */}
+      {/* Fixed List a Design Button for Mobile */}
       <div className="fixed bottom-24 right-6 z-[9999] lg:hidden">
         <Link
           href="/artist-page/license-your-design"
           className="flex items-center bg-[#EAF9FF] border border-[#73D9FF] text-[#035A7A] rounded-full shadow-2xl p-4 transition-all duration-300 ease-in-out"
-          aria-label="License Your Design"
+          aria-label="List a Design"
         >
           <FiPlus className="w-6 h-6 shrink-0" />
           <span
@@ -239,7 +239,7 @@ const ProjectPage = () => {
               marginLeft: hasScrolled ? '8px' : '0px',
             }}
           >
-            License Your Design
+            List a Design
           </span>
         </Link>
       </div>

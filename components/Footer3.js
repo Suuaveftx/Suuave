@@ -9,8 +9,16 @@ const Footer3 = () => {
   return (
     <footer className='bg-[#12333E] text-white py-8 h-[498px] overflow-y-auto overflow-x-hidden'>
       <div className='container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8'>
-        {/* OUR COMPANY */}
+        {/* OUR COMPANY & LOGO */}
         <div>
+          <div className="flex items-center mb-6">
+            <Image
+              src="/icons/logo.png"
+              alt="Suuave Logo"
+              width={160}
+              height={160}
+            />
+          </div>
           <h3 className='text-lg font-bold mb-4 border-b border-gray-400 pb-1'>
             OUR COMPANY
           </h3>
@@ -39,7 +47,7 @@ const Footer3 = () => {
             POLICIES
           </h3>
           <ul className='space-y-2'>
-            <li>Term & Conditions</li>
+            <li><Link href="/terms-of-service#p1-main">Terms of Service</Link></li>
             <li>Privacy Policy</li>
             <li>Collaboration Policy</li>
           </ul>

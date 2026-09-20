@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   MagnifyingGlassIcon,
   AdjustmentsVerticalIcon,
@@ -19,6 +20,9 @@ import {
   DropdownMenu,
   DropdownItem,
   Pagination,
+  Modal,
+  ModalBody,
+  ModalContent,
 } from '@heroui/react';
 import ChatClientModal from '../../../../components/ChatClientModal';
 import SubmitProjectModal from '../../../../components/SubmitProjectModal';
@@ -27,9 +31,24 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
   const router = useRouter();
   const [search, setSearch] = useState('');
   const [openMenuContract, setOpenMenuContract] = useState(null);
+  const [showExtensionModal, setShowExtensionModal] = useState(false);
+  const [currentContract, setCurrentContract] = useState(null);
   const menuRef = useRef(null);
   const menuButtonRefs = useRef({});
   const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
+
+  const warningMessages = [
+    <>All disputes must be reported while the project status is <span className="font-semibold">&#39;Active&#39;</span>. Once the project deadline passes or is marked <span className="font-semibold">&#39;Completed&#39;</span>, the project is automatically finalised, and payments are released. Please, review all deliverables before the project window closes.</>,
+    <>Need more time? Submit an extension request before the active deadline. Once a project reaches its completion date, it automatically locks and closes out, preventing any further timeline changes.</>
+  ];
+  const [messageIndex, setMessageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMessageIndex((prev) => (prev + 1) % warningMessages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -129,12 +148,28 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
   return (
     <div className="px-4 lg:px-0">
       {/* ── Warning Banner ── */}
-      <div className="flex items-start gap-2.5 bg-[#FFF4E5] border border-[#FDDCAA] rounded-lg px-4 py-3 mb-5 w-fit max-w-[520px]">
-        <ExclamationTriangleIcon className="w-[18px] h-[18px] text-[#F59E0B] shrink-0 mt-0.5" />
-        <div className="flex flex-col gap-0.5">
-          <p className="text-[13px] text-[#D97706] leading-relaxed">
-            All disputes must be reported while the project status is <span className="font-semibold">&#39;Active&#39;</span>. Once the project deadline passes or is marked <span className="font-semibold">&#39;Completed&#39;</span>, the project is automatically finalised, and payments are released. Please, review all deliverables before the project window closes.
+      <div className="flex items-start gap-2.5 bg-[#FFF4E5] border border-[#FDDCAA] rounded-lg px-4 py-3 mb-5 w-full max-w-[750px] overflow-hidden relative">
+        <div className="flex items-start shrink-0 z-10 bg-[#FFF4E5] pr-2 pt-1.5">
+          <ExclamationTriangleIcon className="w-[18px] h-[18px] text-[#F59E0B]" />
+        </div>
+        <div className="flex-1 w-full relative flex items-start">
+          {/* Invisible placeholder to enforce a consistent container height based on the longest text */}
+          <p className="text-[13.5px] font-medium leading-relaxed pr-2 py-1 opacity-0 pointer-events-none select-none w-full m-0 invisible">
+            {warningMessages[0]}
           </p>
+
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={messageIndex}
+              initial={{ x: 30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -30, opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="text-[13.5px] font-medium text-[#B45309] m-0 w-full leading-relaxed pr-2 py-1 absolute top-0 left-0"
+            >
+              {warningMessages[messageIndex]}
+            </motion.p>
+          </AnimatePresence>
         </div>
       </div>
 
@@ -396,7 +431,14 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
                           </Button>
                         </DropdownTrigger>
                         <DropdownMenu aria-label="More Options">
-                          <DropdownItem key="request_extension" className="text-sm font-medium text-[#222222]">
+                          <DropdownItem 
+                            key="request_extension" 
+                            className="text-sm font-medium text-[#222222]"
+                            onPress={() => {
+                              setCurrentContract(contract);
+                              setShowExtensionModal(true);
+                            }}
+                          >
                             Request Extension
                           </DropdownItem>
                           <DropdownItem key="report" className="text-sm font-medium text-red-500 hover:text-red-600">
@@ -442,6 +484,8 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
             className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium border-b border-gray-100 cursor-pointer'
             onClick={(e) => {
               e.stopPropagation();
+              setCurrentContract(openMenuContract);
+              setShowExtensionModal(true);
               setOpenMenuContract(null);
             }}
           >
@@ -459,6 +503,101 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
         </div>,
         document.body
       )}
+
+      {/* Request Extension Modal */}
+      <Modal
+        isOpen={showExtensionModal}
+        onOpenChange={setShowExtensionModal}
+        classNames={{
+          base: 'bg-white w-[90vw] max-w-md p-0',
+          backdrop: 'bg-black/50',
+          closeButton: 'top-3 right-3 text-gray-400 hover:text-gray-600',
+        }}
+        size='md'
+        backdrop='blur'
+        placement='center'
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody className="py-5 px-6">
+                <div className="text-center mb-4">
+                  <h2 className="text-xl font-bold text-[#E68A1D] mb-1 font-satoshi">Request Extension</h2>
+                  <p className="text-xs text-gray-600 font-satoshi">Extend the contract deadline by days.</p>
+                </div>
+
+                <div className="space-y-3">
+                  {/* Current Deadline */}
+                  <div>
+                    <label className="text-xs font-bold text-[#222222] mb-1 block">Current Deadline</label>
+                    <div className="bg-[#F5F5F5] border-0 rounded-lg px-4 py-2 text-xs text-gray-500 w-3/5 font-satoshi">
+                      {currentContract?.EndDate || "20th April, 2026."}
+                    </div>
+                  </div>
+
+                  {/* New Deadline */}
+                  <div>
+                    <label className="text-xs font-bold text-[#222222] mb-1 block">New Deadline</label>
+                    <div className="relative w-3/5">
+                      <Input
+                        type="date"
+                        placeholder="DD/MM/YY"
+                        classNames={{
+                          input: "text-xs font-satoshi text-gray-600",
+                          inputWrapper: "bg-white border border-[#E5E5E5] hover:border-gray-400 focus-within:border-[#3A98BB] shadow-sm rounded-lg h-9 min-h-9",
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Reason */}
+                  <div>
+                    <label className="text-xs font-bold text-[#222222] mb-1 block">Reason</label>
+                    <textarea
+                      placeholder=""
+                      className="w-full min-h-[70px] bg-white border border-[#E5E5E5] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#3A98BB] p-3 text-sm font-satoshi resize-none shadow-sm"
+                    />
+                  </div>
+
+                  {/* Additional Payment */}
+                  <div>
+                    <label className="text-xs font-bold text-[#222222] mb-1 block">Additional Payment</label>
+                    <div className="w-2/5">
+                      <Input
+                        type="number"
+                        placeholder="0.00"
+                        classNames={{
+                          input: "text-xs font-satoshi text-gray-600",
+                          inputWrapper: "bg-white border border-[#E5E5E5] hover:border-gray-400 shadow-sm rounded-lg h-9 min-h-9",
+                        }}
+                      />
+                      <p className="text-[10px] text-gray-400 mt-1 font-satoshi">(Commission: 10%)</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 mt-5">
+                  <Button
+                    className="flex-1 bg-[#EBEBEB] text-[#555555] font-semibold rounded-full border-0 h-10"
+                    onPress={onClose}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full border-0 h-10 shadow-sm"
+                    onPress={() => {
+                      console.log('Extension requested!');
+                      onClose();
+                    }}
+                  >
+                    Send Request
+                  </Button>
+                </div>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
 
       {/* Pagination */}
       {totalPages > 0 && (

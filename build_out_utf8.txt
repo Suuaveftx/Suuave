@@ -1,0 +1,45 @@
+﻿
+> suuave@0.1.0 build
+> next build
+
+   Ôû▓ Next.js 15.1.9
+   - Environments: .env
+
+node.exe : 
+At line:1 char:1
++ & "C:\Program Files\
+nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : 
+NotSpecified: (:    
+String) [], RemoteExc 
+   eption
+    + 
+FullyQualifiedError   
+ Id : 
+NativeCommandErr    or
+ 
+> Build error occurred
+[Error: EINVAL: 
+invalid argument, 
+readlink 'C:\Users\USE
+R\OneDrive\Desktop\New
+SuuaveFtx\Suuave\.next
+\app-path-routes-manif
+est.json'] {
+  errno: -4071,
+  code: 'EINVAL',
+  syscall: 'readlink',
+  path: 'C:\\Users\\US
+ER\\OneDrive\\Desktop\
+\NewSuuaveFtx\\Suuave\
+\.next\\app-path-route
+s-manifest.json'
+}

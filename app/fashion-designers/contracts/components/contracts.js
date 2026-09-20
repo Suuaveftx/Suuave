@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Tabs, Tab } from '@heroui/react';
+import { Tabs, Tab, Modal, ModalContent, ModalBody, Button } from '@heroui/react';
 
 import ContractHeader from './contract-header';
 
@@ -14,6 +14,8 @@ import { ongoingContracts } from '../data';
 import CancelContractModal from './CancelContractModal';
 import MessageModal from './MessageModal';
 import { useDisclosure } from '@heroui/react';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import ExtensionPaymentModal from '@/components/ExtensionPaymentModal';
 
 export default function ContractPage() {
   const searchParams = useSearchParams();
@@ -26,6 +28,12 @@ export default function ContractPage() {
   const { isOpen: isMessageOpen, onOpen: onMessageOpen, onOpenChange: onMessageOpenChange } = useDisclosure();
   const [contractToCancel, setContractToCancel] = useState(null);
   const [selectedArtist, setSelectedArtist] = useState('');
+
+
+  const [showViewExtensionModal, setShowViewExtensionModal] = useState(false);
+  const [extendedContractId, setExtendedContractId] = useState("");
+  const [showExtensionPaymentModal, setShowExtensionPaymentModal] = useState(false);
+  const [showDeclinedExtensionModal, setShowDeclinedExtensionModal] = useState(false);
 
   React.useEffect(() => {
     if (tabParam) {
@@ -94,7 +102,11 @@ export default function ContractPage() {
 
   //handle ongoing contract click
   const handleOngoingClick = (contractId) => {
-    router.push(`/fashion-designers/contracts/ongoing/${contractId}`);
+    if (contractId === '24t64755') {
+      router.push(`/fashion-designers/contracts/ongoing/24t64755?newDeadline=24th%20April%2C%202026&initialDeadline=20th%20April%2C%202026&extendedAt=15%20September%202026`);
+    } else {
+      router.push(`/fashion-designers/contracts/ongoing/${contractId}`);
+    }
   };
 
   /*  const handleContractClick = (contractId) => {
@@ -132,6 +144,9 @@ export default function ContractPage() {
   };
   return (
     <>
+
+
+
       <ContractHeader title='My Contracts' />
       <div className='bg-[#FFFFFF] lg:border lg:border-[#EAEAEA] w-full lg:px-[35px] py-[45px] lg:mt-8 mb-8 rounded-[16px]'>
         <div className='font-satoshi'>
@@ -183,6 +198,9 @@ export default function ContractPage() {
               onMoreOptions={handleMoreOptions}
               sortBy={sortBy}
               onSortChange={setSortBy}
+              onRequestExtension={(contractId) => {
+                setExtendedContractId(contractId);
+              }}
             />
           )}
 
@@ -203,6 +221,131 @@ export default function ContractPage() {
         onOpenChange={onMessageOpenChange}
         artistName={selectedArtist}
       />
+
+      {/* Extension Request View Modal */}
+      <Modal
+        isOpen={showViewExtensionModal}
+        onOpenChange={setShowViewExtensionModal}
+        classNames={{
+          wrapper: 'items-center justify-center',
+          base: 'bg-white w-[90vw] max-w-lg p-0 border-0 rounded-2xl m-0 sm:m-0',
+          backdrop: 'bg-black/50',
+          closeButton: 'top-4 right-4 text-gray-500 hover:text-gray-700 z-10',
+        }}
+        size="lg"
+        backdrop="blur"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              {/* Header Strip */}
+              <div className="bg-[#FFF9E6] px-6 py-5 flex items-center gap-3 relative rounded-t-2xl">
+                <div className="flex items-center justify-center w-10 h-10 bg-[#E5A443] rounded-full shrink-0">
+                  <ExclamationTriangleIcon className="w-5 h-5 text-white" />
+                </div>
+                <h2 className="text-xl font-bold text-[#D97706] font-satoshi tracking-wide">Extension Request</h2>
+              </div>
+
+              <ModalBody className="px-6 py-6 font-satoshi mt-1">
+                <p className="text-[#222222] text-[15px] mb-6">
+                  Client has requested extension of project deadline.
+                </p>
+
+                <div className="flex flex-col gap-5 text-sm">
+                  <div className="grid grid-cols-[190px_1fr] items-center gap-2 md:gap-4">
+                    <span className="font-bold text-[#222222]">New Deadline :</span>
+                    <span className="text-gray-600">24th April, 2026</span>
+                  </div>
+
+                  <div className="grid grid-cols-[190px_1fr] items-start gap-2 md:gap-4">
+                    <span className="font-bold text-[#222222]">Reason :</span>
+                    <span className="text-gray-600">Additional 5 sketches</span>
+                  </div>
+
+                  <div className="grid grid-cols-[190px_1fr] items-center gap-2 md:gap-4">
+                    <span className="font-bold text-[#222222]">Additional Payment Offer :</span>
+                    <div className="flex items-center flex-wrap">
+                      <span className="text-[15px]">N20,000</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 mt-10 mb-1">
+                  <Button
+                    className="flex-1 bg-white border border-[#3A98BB] text-[#222222] font-semibold tracking-wide rounded-full shadow-sm h-11"
+                    onPress={() => {
+                      setShowViewExtensionModal(false);
+                      setShowDeclinedExtensionModal(true);
+                    }}
+                  >
+                    Decline
+                  </Button>
+                  <Button
+                    className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] tracking-wide font-semibold rounded-full border-0 shadow-sm h-11"
+                    onPress={() => {
+                      setShowViewExtensionModal(false);
+                    }}
+                  >
+                    Accept Request
+                  </Button>
+                </div>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+      <ExtensionPaymentModal
+        isOpen={showExtensionPaymentModal}
+        onOpenChange={setShowExtensionPaymentModal}
+        amount="N20,000"
+        contractId={extendedContractId || '24t64755'}
+      />
+      <Modal
+        isOpen={showDeclinedExtensionModal}
+        onOpenChange={setShowDeclinedExtensionModal}
+        classNames={{
+          wrapper: 'items-center justify-center',
+          base: 'bg-white w-[90vw] max-w-lg p-0 border-0 rounded-2xl m-0 sm:m-0',
+          backdrop: 'bg-black/50',
+          closeButton: 'top-4 right-4 text-gray-500 hover:text-gray-700 z-10',
+        }}
+        size="lg"
+        backdrop="blur"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              {/* Header Strip */}
+              <div className="bg-[#FFF0E6] px-6 py-5 flex items-center gap-3 relative rounded-t-2xl">
+                <div className="flex items-center justify-center w-8 h-8 bg-[#E67E41] rounded-full shrink-0">
+                  <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 5L5 9L13 1" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <h2 className="text-xl font-bold text-[#E67E41] font-satoshi tracking-wide">Extension Request Declined</h2>
+              </div>
+
+              <ModalBody className="px-6 py-8 font-satoshi">
+                <p className="text-[#222222] text-[16px] mb-2 font-medium">
+                  Your extension request has been declined by the artist.
+                </p>
+                <p className="text-[#222222] text-[16px] mb-10 font-medium">
+                  You can renegotiate with the artist.
+                </p>
+
+                <div className="flex justify-center">
+                  <Button
+                    className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] tracking-wide font-bold rounded-full border-0 shadow-sm h-11 px-12 min-w-[140px]"
+                    onPress={onClose}
+                  >
+                    Okay
+                  </Button>
+                </div>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </>
   );
 }

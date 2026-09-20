@@ -1,18 +1,26 @@
 'use client';
 import { Card, CardBody, Input } from '@heroui/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import RestartTourCard from './RestartTourCard';
 
-const Toggle = ({ defaultChecked = false }) => {
+const Toggle = ({ defaultChecked = false, disabled = false }) => {
   const [checked, setChecked] = useState(defaultChecked);
+
+  useEffect(() => {
+    setChecked(defaultChecked);
+  }, [defaultChecked]);
 
   return (
     <button
       type='button'
       role='switch'
       aria-checked={checked}
-      onClick={() => setChecked(!checked)}
+      disabled={disabled}
+      onClick={() => {
+        if (!disabled) setChecked(!checked);
+      }}
       className={`relative inline-flex items-center w-11 h-6 rounded-full transition-colors duration-300 focus:outline-none ${checked ? 'bg-[#3A98BB]' : 'bg-[#EF4444]'
-        }`}
+        } ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
     >
       <span
         className={`inline-block w-4 h-4 bg-white rounded-full shadow transition-transform duration-300 ${checked ? 'translate-x-6' : 'translate-x-1'
@@ -39,8 +47,9 @@ const NotificationSettings = () => {
                 <Input
                   defaultValue='Only Important Activities(Jobs,Messages)'
                   className='flex-1 text-[#222222] font-normal'
+                  isReadOnly
                 />
-                <Toggle defaultChecked={false} />
+                <Toggle defaultChecked={true} disabled={true} />
               </div>
             </div>
 
@@ -58,12 +67,16 @@ const NotificationSettings = () => {
                 <Input
                   defaultValue='Only Important Activities (Jobs, Messages)'
                   className='flex-1 text-[#222222] font-normal'
+                  isReadOnly
                 />
-                <Toggle defaultChecked={false} />
+                <Toggle defaultChecked={true} disabled={true} />
               </div>
             </div>
           </CardBody>
         </Card>
+      </div>
+      <div className='w-full mt-6'>
+        <RestartTourCard />
       </div>
     </>
   );

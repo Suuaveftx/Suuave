@@ -61,7 +61,7 @@ export function NavLinks() {
   };
 
   return (
-    <nav className="hidden md:flex items-center gap-9 font-bold h-full">
+    <nav data-tour="navigation" className="hidden md:flex items-center gap-9 font-bold h-full">
       <Link
         href="/fashion-designers"
         className="group text-[#1A1A1A] hover:text-[#B0B0B0] text-[15px] transition-colors relative flex items-center h-full"
@@ -83,6 +83,7 @@ export function NavLinks() {
         </motion.div>
       </Link>
       <Link
+        data-tour="manage-projects"
         href="/fashion-designers/my-projects"
         className="group text-[#1A1A1A] hover:text-[#B0B0B0] text-[15px] transition-colors relative flex items-center h-full"
       >
@@ -103,6 +104,7 @@ export function NavLinks() {
         </motion.div>
       </Link>
       <Link
+        data-tour="manage-contracts"
         href="/fashion-designers/contracts"
         className="group text-[#1A1A1A] hover:text-[#B0B0B0] text-[15px] transition-colors relative flex items-center h-full"
       >
@@ -136,6 +138,7 @@ export function NavLinks() {
         </DropdownMenu>
       </Dropdown> */}
       <Link
+        data-tour="manage-collections"
         href="/fashion-designers/my-collection"
         className="group text-[#1A1A1A] hover:text-[#B0B0B0] text-[15px] transition-colors relative flex items-center h-full"
       >

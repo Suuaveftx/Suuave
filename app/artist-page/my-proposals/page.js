@@ -5,7 +5,7 @@ import PageContainer from "../../../components/layout/PageContainer";
 
 const Page = () => {
   return (
-    <div>
+    <div id="artist-mobile-proposals-tour" data-tour="artist-proposals">
       <PageContainer className="pt-0">
         {/* Mobile Header - outside cards */}
         <div className="flex items-center gap-2 mb-4 lg:hidden">

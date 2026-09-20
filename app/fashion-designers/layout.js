@@ -1,10 +1,11 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import Footer from '../../components/landing-page-components/Footer';
+import Footer from '../about-page/components/Footer';
 import FashionDesignerHeader from './_components/studio-page-components/FashionDesignerHeader';
 import FloatingButton from './_components/FloatingButton';
 import SectionMain from '../../components/layout/SectionMain';
+import { TourProvider } from '../../components/tour/ProductTour';
 import {
   FASHION_ONBOARDING_ROUTES,
   SECTION_SHELL_CLASS,
@@ -26,7 +27,9 @@ export default function Layout({ children }) {
     '/fashion-designers/messages',
     '/fashion-designers/profile',
     '/fashion-designers/transactions',
-    '/fashion-designers/settings'
+    '/fashion-designers/settings',
+    '/fashion-designers/report-dispute',
+    '/fashion-designers/privacy-policy'
   ];
 
   const isDynamicProfileRoute = pathname.match(/^\/fashion-designers\/[^/]+$/);
@@ -34,19 +37,21 @@ export default function Layout({ children }) {
   const isContractInfoRoute = pathname.includes('/contracts/ongoing/') || pathname.includes('/contracts/pending/') || pathname.includes('/contracts/completed/');
 
   return (
-    <>
-      <div className={SECTION_SHELL_CLASS}>
-        {!isOnboarding && (
-          <div className={`${hideMobileHeader || isContractInfoRoute ? 'hidden lg:block' : ''}`}>
-            <FashionDesignerHeader />
-          </div>
-        )}
-        <SectionMain withNavbarOffset={!isOnboarding && !hideMobileHeader} fontClass='font-satoshi'>
-          {children}
-        </SectionMain>
-        {!isOnboarding && <Footer />}
-      </div>
-      {showFloatingButton && !isOnboarding && <FloatingButton />}
-    </>
+    <TourProvider>
+      <>
+        <div className={SECTION_SHELL_CLASS}>
+          {!isOnboarding && (
+            <div className={`${hideMobileHeader || isContractInfoRoute ? 'hidden lg:block' : ''}`}>
+              <FashionDesignerHeader />
+            </div>
+          )}
+          <SectionMain withNavbarOffset={!isOnboarding && !hideMobileHeader} fontClass='font-satoshi'>
+            {children}
+          </SectionMain>
+          {!isOnboarding && <Footer />}
+        </div>
+        {showFloatingButton && !isOnboarding && <FloatingButton />}
+      </>
+    </TourProvider>
   );
 }

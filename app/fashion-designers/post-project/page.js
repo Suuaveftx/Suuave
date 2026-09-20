@@ -178,12 +178,12 @@ const PageContent = () => {
         <Button isIconOnly variant="light" onPress={() => router.back()} className="rounded-full min-w-fit w-11 h-11 bg-transparent">
           <ChevronLeftIcon className="w-6 h-6 text-[#222222]" />
         </Button>
-        <h1 className="text-xl font-bold text-[#222222]">{isEditMode ? "Edit Project" : "Post Project"}</h1>
+        <h1 className="text-xl font-bold text-[#222222]">{isEditMode ? "Edit Project" : "Post a Project"}</h1>
       </div>
 
       {/* Desktop Header */}
       <div className="hidden lg:flex items-center gap-3 mb-6">
-        <p className="font-bold text-2xl">{isEditMode ? "Edit Project" : "Post Project"}</p>
+        <p className="font-bold text-2xl">{isEditMode ? "Edit Project" : "Post a Project"}</p>
       </div>
 
       <Card
@@ -469,7 +469,10 @@ const PageContent = () => {
                       Budget <span className="text-red-500">*</span>
                     </span>
                   }
-                  placeholder="$0.00"
+                  startContent={
+                    <span className="text-[#222222] font-medium text-sm pointer-events-none select-none">$</span>
+                  }
+                  placeholder="0.00"
                   type="text"
                 />
               )}

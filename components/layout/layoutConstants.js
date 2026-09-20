@@ -3,7 +3,7 @@ export const NAVBAR_HEIGHT_PX = 80;
 export const NAVBAR_HEIGHT_CLASS = 'h-[80px]';
 export const NAVBAR_OFFSET_CLASS = 'pt-1'; // 4px margin under the Navbar globally
 export const PAGE_TOP_SPACING_CLASS = 'pt-6 md:pt-7';
-export const SECTION_SHELL_CLASS = 'mx-auto bg-[#DBDBDB]/30 min-h-screen w-full overflow-x-hidden';
+export const SECTION_SHELL_CLASS = 'mx-auto bg-[#DBDBDB]/30 min-h-screen w-full';
 
 export const ARTIST_ONBOARDING_ROUTES = [
   '/artist-page/personal-details',
