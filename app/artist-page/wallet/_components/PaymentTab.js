@@ -1,5 +1,6 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Tabs, Tab, Button } from '@heroui/react';
 import PaymentTable from './PaymentTable';
 import PayoutHistory from './PayoutHistory';
@@ -7,7 +8,19 @@ import { Search, ChevronDown, Calendar, Info, Filter } from 'lucide-react';
 import SearchBar from '../../../../components/Searchbar';
 
 export default function PaymentTabs() {
-  const [selectedTab, setSelectedTab] = useState('earnings');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get('tab') === 'payouts' ? 'payouts' : 'earnings';
+  const [selectedTab, setSelectedTab] = useState(initialTab);
+
+  // Keep tab state synced if URL changes
+  useEffect(() => {
+    const queryTab = searchParams.get('tab');
+    if (queryTab === 'payouts' || queryTab === 'earnings') {
+      setSelectedTab(queryTab);
+    }
+  }, [searchParams]);
+
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
   const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
   const [selectedType, setSelectedType] = useState('All Types');
@@ -234,7 +247,10 @@ export default function PaymentTabs() {
 
           {/* Right Side: Report Button */}
           <div className='flex flex-wrap lg:flex-nowrap gap-4 items-center w-full lg:w-auto mt-4 lg:mt-0 pb-2 lg:pb-0'>
-            <button className='flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-[#FFF5F5] border border-[#FFE0E0] rounded-full text-[#FF4D4D] text-sm font-medium hover:bg-[#ffe6e6] whitespace-nowrap'>
+            <button
+              onClick={() => router.push('/artist-page/transaction-resolution')}
+              className='flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-[#FFF5F5] border border-[#FFE0E0] rounded-full text-[#FF4D4D] text-sm font-medium hover:bg-[#ffe6e6] whitespace-nowrap'
+            >
               <Info className='h-4 w-4' />
               Report Any Issue
             </button>
@@ -312,7 +328,10 @@ export default function PaymentTabs() {
             />
           </div>
           <div className='flex flex-wrap lg:flex-nowrap gap-4 items-center w-full lg:w-auto mt-4 lg:mt-0 pb-2 lg:pb-0'>
-            <button className='flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-[#FFF5F5] border border-[#FFE0E0] rounded-full text-[#FF4D4D] text-sm font-medium hover:bg-[#ffe6e6] whitespace-nowrap'>
+            <button
+              onClick={() => router.push('/artist-page/transaction-resolution')}
+              className='flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-[#FFF5F5] border border-[#FFE0E0] rounded-full text-[#FF4D4D] text-sm font-medium hover:bg-[#ffe6e6] whitespace-nowrap'
+            >
               <Info className='h-4 w-4' />
               Report Any Issue
             </button>

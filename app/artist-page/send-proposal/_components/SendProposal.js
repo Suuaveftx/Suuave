@@ -108,16 +108,19 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
                 <Link href="#" className="text-[#3A98BB]">Learn More</Link>
               </span>
             </div>
-            <Input
-              defaultValue={initialPrice}
-              variant="bordered"
-              radius="md"
-              classNames={{
-                input: 'font-semibold text-[#3A98BB] text-[15px]',
-                inputWrapper: 'border-gray-300 bg-white h-[48px]',
-              }}
-            />
-            <p className="text-[12px] text-[#3A98BB]">You will receive ₦180,000 after work is done.</p>
+            <div className="relative w-full">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#222222] font-medium text-[15px] pointer-events-none select-none z-10">$</span>
+              <Input
+                defaultValue={initialPrice}
+                variant="bordered"
+                radius="md"
+                classNames={{
+                  input: 'font-semibold text-[#3A98BB] text-[15px] pl-6',
+                  inputWrapper: 'border-gray-300 bg-white h-[48px]',
+                }}
+              />
+            </div>
+            <p className="text-[12px] text-[#3A98BB]">You will receive $180,000 after work is done.</p>
           </div>
 
           {/* Duration */}
@@ -212,15 +215,18 @@ const SendProposal = ({ isOpen, onOpen, onOpenChange, handleSubmitProposal, jobI
               <IoMdInformationCircleOutline className="w-4 h-4 text-gray-500" />
               <p className="text-[12px] text-gray-500">10% commission charge applies <span className="text-[#3A98BB] cursor-pointer">Learn more</span></p>
             </div>
-            <Input
-              defaultValue={initialPrice}
-              variant="bordered"
-              radius="md"
-              classNames={{
-                input: 'font-semibold text-[14px]',
-                inputWrapper: 'border-gray-200 bg-white shadow-sm h-[48px]',
-              }}
-            />
+            <div className="relative w-full">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#222222] font-medium text-[14px] pointer-events-none select-none z-10">$</span>
+              <Input
+                defaultValue={initialPrice}
+                variant="bordered"
+                radius="md"
+                classNames={{
+                  input: 'font-semibold text-[14px] pl-6',
+                  inputWrapper: 'border-gray-200 bg-white shadow-sm h-[48px]',
+                }}
+              />
+            </div>
           </div>
 
           {/* Duration */}

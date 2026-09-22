@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { Suspense } from 'react';
 import Payment from './_components/Payment';
 import PaymentAll from './_components/PaymentAll';
 import { ChevronLeft } from 'lucide-react';
@@ -29,7 +29,9 @@ const Page = () => {
 
         {/* PaymentAll Section (Takes up more space) */}
         <div className='px-0 md:px-0'>
-          <PaymentAll />
+          <Suspense fallback={<div>Loading payments...</div>}>
+            <PaymentAll />
+          </Suspense>
         </div>
       </div>
     </PageContainer>

@@ -3,7 +3,7 @@ import { Input } from '@heroui/react';
 import React from 'react';
 import { SearchIcon } from './SearchIcon';
 
-const SearchBar = ({ placeholder = 'Search...', width, className = '', endContent, value, onChange }) => {
+const SearchBar = ({ placeholder = 'Search...', width, className = '', endContent = null, value = '', onChange = () => { } }) => {
   return (
     <div className={`w-full rounded-full  ${className}`}>
       <Input

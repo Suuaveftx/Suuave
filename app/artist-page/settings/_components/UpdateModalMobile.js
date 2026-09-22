@@ -3,6 +3,7 @@ import {
   ModalContent,
   Button,
   useDisclosure,
+  InputOtp,
 } from "@heroui/react";
 import React, { useState, useRef } from "react";
 import PasswordModal from "./PasswordModal";
@@ -11,23 +12,7 @@ const UpdateModalMobile = () => {
   const confirmModal = useDisclosure(); // Confirm Modal
   const passwordModal = useDisclosure(); // Password Modal
 
-  const [otp, setOtp] = useState(new Array(6).fill(""));
-  const inputRefs = useRef([]);
-
-  const handleChange = (value, index) => {
-    if (/^[0-9]?$/.test(value)) {
-      const newOtp = [...otp];
-      newOtp[index] = value;
-      setOtp(newOtp);
-      if (value && index < 5) inputRefs.current[index + 1]?.focus();
-    }
-  };
-
-  const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
-  };
+  const [value, setValue] = useState("");
 
   // Submit inside confirm modal
   const handleSubmit = () => {
@@ -67,18 +52,12 @@ const UpdateModalMobile = () => {
 
               {/* OTP Inputs */}
               <div className="flex justify-center gap-2 mt-[26px]">
-                {otp.map((digit, i) => (
-                  <input
-                    key={i}
-                    type="text"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handleChange(e.target.value, i)}
-                    onKeyDown={(e) => handleKeyDown(e, i)}
-                    ref={(el) => (inputRefs.current[i] = el)}
-                    className="w-10 h-12 border border-[#878787] rounded-md text-center text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-[#9FD2E5]"
-                  />
-                ))}
+                <InputOtp
+                  variant="bordered"
+                  length={6}
+                  value={value}
+                  onValueChange={setValue}
+                />
               </div>
 
               {/* Resend */}

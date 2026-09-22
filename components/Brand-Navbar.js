@@ -227,9 +227,9 @@ const ArtistNavbar = () => {
                     startContent={<HelpCircle className='size-4' />}
                     key='help'
                     as={Link}
-                    href='/artist-page/help'
+                    href='/help-support?source=brand'
                   >
-                    Help and support
+                    Help & Support
                   </DropdownItem>
                   <DropdownItem
                     startContent={<TbLogout2 className='size-4' />}

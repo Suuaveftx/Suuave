@@ -49,23 +49,42 @@ export const CheckoutPage = () => {
     setIsSuccessModalOpen(true);
   };
 
-  const handleBackToHome = () => {
-    setIsSuccessModalOpen(false);
-    // Save license info using Zustand store
-    addLicense(id);
-
-    // Redirect based on exclusivity
-    if (hasCrown) {
-      router.push(`/fashion-designers`);
-    } else {
-      router.push(`/fashion-designers/${id}`);
-    }
-  };
-
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const hasCrown = searchParams.get('crown') === 'true' || searchParams.has('crown');
+  const amountParam = searchParams.get('amount');
+  const isExtension = searchParams.get('type') === 'extension';
+  const titleParam = searchParams.get('title');
+  const displayAmount = amountParam || '$350';
+
+  const initialDeadline = searchParams.get('initialDeadline') || '20th April, 2026';
+  const newDeadline = searchParams.get('newDeadline') || '24th April, 2026';
+  const reason = searchParams.get('reason') || 'Additional 5 sketches';
+  const additionalPayment = amountParam
+    ? (amountParam.startsWith('+') ? amountParam.substring(1) : amountParam)
+    : 'N20,000';
+
+  const handleBackToHome = () => {
+    setIsSuccessModalOpen(false);
+    // Save license info using Zustand store
+    if (!isExtension && id) {
+      addLicense(id);
+    }
+
+    // Redirect based on type / exclusivity
+    if (isExtension) {
+      const contractId = '24t64755'; // Hardcoded as requested
+      // Route to the specific contract page, passing the new deadline so it can be displayed
+      router.push(
+        `/fashion-designers/contracts/ongoing/${contractId}?newDeadline=${encodeURIComponent(newDeadline)}&initialDeadline=${encodeURIComponent(initialDeadline)}&extendedAt=${encodeURIComponent(new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }))}`
+      );
+    } else if (hasCrown) {
+      router.push(`/fashion-designers`);
+    } else {
+      router.push(`/fashion-designers/${id || ''}`);
+    }
+  };
 
   return (
     <div className='mx-auto bg-[#F5F8FA] lg:bg-[#FAFAFA] min-h-screen'>
@@ -124,7 +143,9 @@ export const CheckoutPage = () => {
                 <Info size={14} strokeWidth={3} />
               </div>
               <span className='m-0 p-0 leading-tight text-[13px] md:text-base font-medium'>
-                {hasCrown
+                {isExtension
+                  ? `Make payment to activate the extension request confirmed by the artist.`
+                  : hasCrown
                   ? "Secure full, sole ownership of this design, which will be permanently removed from the marketplace."
                   : "Get Licensing right to the design and use as you desire. All files and specification will be tranferred to you."}
               </span>
@@ -293,15 +314,17 @@ export const CheckoutPage = () => {
                     </div>
                     <div className='flex-1 pr-2'>
                       <h3 className='font-bold text-[13px] md:text-sm text-[#222222] leading-tight mb-1 truncate max-w-[170px] lg:max-w-full'>
-                        Modern Fashion Attire...
+                        {titleParam || (isExtension ? "Contract Extension Request" : "Modern Fashion Attire...")}
                       </h3>
                       <p className='text-[11px] text-[#888888] line-clamp-2 leading-tight'>
-                        Modern Fashion Attire made with authority african...
+                        {isExtension
+                          ? "Contract timeline extension fee"
+                          : "Modern Fashion Attire made with authority african..."}
                       </p>
                     </div>
                   </div>
 
-                  <span className='font-satoshi text-[13px] font-medium'>$350</span>
+                  <span className='font-satoshi text-[13px] font-medium'>{displayAmount}</span>
                 </div>
 
                 <Divider className='my-4' />
@@ -309,7 +332,7 @@ export const CheckoutPage = () => {
                 <div className='space-y-2 mb-4'>
                   <div className='flex justify-between text-sm'>
                     <span className='font-satoshi'>Subtotal</span>
-                    <span className='font-satoshi text-sm'>$350</span>
+                    <span className='font-satoshi text-sm'>{displayAmount}</span>
                   </div>
                 </div>
 
@@ -317,7 +340,7 @@ export const CheckoutPage = () => {
                   <span className='font-bold md:text-2xl text-[14px] text-[#222222]'>
                     Total Amount To Pay :
                   </span>
-                  <span className='text-[15px] font-black text-[#222222]'>$350</span>
+                  <span className='text-[15px] font-black text-[#222222]'>{displayAmount}</span>
                 </div>
 
                 <Divider className='mb-5 hidden lg:block' />
@@ -346,10 +369,10 @@ export const CheckoutPage = () => {
                         Your payment is secure in our{' '}
                         <span className='font-satoshi text-[#3A98BB] '>Escrow</span> until
                         your design assets are successfully delivered. Read our{' '}
-                        <Link href='#' className='font-semibold text-[#3A98BB]'>
-                          Licensing Policy
+                        <Link href='/terms-of-service?source=brand#p2-main' className='font-semibold text-[#3A98BB]'>
+                          Collaboration & Licencing Policy
                         </Link>{' '}
-                        for full details
+                        for full details.
                       </p>
                     </div>
                   </Alert>
@@ -362,35 +385,126 @@ export const CheckoutPage = () => {
         {/* Success Modal */}
         <Modal
           isOpen={isSuccessModalOpen}
-          onClose={() => setIsSuccessModalOpen(false)}
+          onClose={handleBackToHome}
           placement='center'
           backdrop='blur'
           hideCloseButton
-          className='mx-4'
+          classNames={{
+            base: isExtension
+              ? 'max-w-[500px] w-[92vw] bg-white rounded-3xl overflow-hidden shadow-2xl p-0 border border-gray-100'
+              : 'max-w-md mx-4',
+            body: isExtension ? 'p-0' : 'p-8 text-center',
+          }}
         >
-          <ModalContent className='max-w-md'>
-            <ModalBody className='p-8 text-center'>
-              <div className='mb-6'>
-                <div className='w-16 h-16 bg-green-700 rounded-full flex items-center justify-center mx-auto mb-4'>
-                  <CheckCircleIcon size={32} className='text-white' />
+          <ModalContent className={isExtension ? 'p-0 overflow-hidden rounded-3xl' : ''}>
+            {isExtension ? (
+              <div>
+                {/* Header */}
+                <div className='bg-[#EAF9FF] flex items-center justify-between px-6 py-4 border-b border-[#E0F2FA]'>
+                  <div className='flex items-center gap-3'>
+                    <div className='w-8 h-8 rounded-full bg-[#035A7A] flex items-center justify-center flex-shrink-0'>
+                      <svg
+                        width='16'
+                        height='12'
+                        viewBox='0 0 16 12'
+                        fill='none'
+                        xmlns='http://www.w3.org/2000/svg'
+                      >
+                        <path
+                          d='M1.5 6L5.5 10L14.5 1.5'
+                          stroke='white'
+                          strokeWidth='2.5'
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                        />
+                      </svg>
+                    </div>
+                    <h2 className='text-[20px] font-bold text-[#035A7A] font-satoshi'>
+                      Deadline Extended
+                    </h2>
+                  </div>
+                  <button
+                    type='button'
+                    onClick={handleBackToHome}
+                    className='text-gray-400 hover:text-gray-600 transition-colors p-1 -mr-1 cursor-pointer'
+                    aria-label='Close modal'
+                  >
+                    <svg
+                      width='22'
+                      height='22'
+                      viewBox='0 0 24 24'
+                      fill='none'
+                      stroke='currentColor'
+                      strokeWidth='2'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                    >
+                      <path d='M18 6L6 18M6 6l12 12' />
+                    </svg>
+                  </button>
                 </div>
-                <h2 className='text-2xl font-semibold mb-3'>Payment Successful</h2>
-                <p className='text-gray-600 text-sm leading-relaxed font-satoshi'>
-                  {hasCrown
-                    ? 'Complete file containing all specifications and related documents will be sent to your email.'
-                    : 'You can now download the complete file, containing all specifications and related documents.'}
-                </p>
-              </div>
 
-              <Button
-                className='w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-semibold rounded-full border-0 shadow-md mt-4'
-                size='lg'
-                radius='full'
-                onPress={handleBackToHome}
-              >
-                OK
-              </Button>
-            </ModalBody>
+                {/* Body */}
+                <div className='p-6 pt-5 font-satoshi'>
+                  <p className='text-[15px] text-[#333333] mb-6 font-normal'>
+                    The project deadline has been extended.
+                  </p>
+
+                  <div className='space-y-4'>
+                    <div className='grid grid-cols-[180px_1fr] items-baseline text-[15px]'>
+                      <span className='font-bold text-[#222222]'>Initial Deadline :</span>
+                      <span className='text-[#333333]'>{initialDeadline}</span>
+                    </div>
+
+                    <div className='grid grid-cols-[180px_1fr] items-baseline text-[15px]'>
+                      <span className='font-bold text-[#222222]'>New Deadline :</span>
+                      <span className='font-bold text-[#035A7A]'>{newDeadline}</span>
+                    </div>
+
+                    <div className='grid grid-cols-[180px_1fr] items-baseline text-[15px]'>
+                      <span className='font-bold text-[#222222]'>Reason :</span>
+                      <span className='text-[#333333]'>{reason}</span>
+                    </div>
+
+                    <div className='grid grid-cols-[180px_1fr] items-baseline text-[15px]'>
+                      <span className='font-bold text-[#222222]'>Additional Payment :</span>
+                      <span className='text-[#333333]'>{additionalPayment}</span>
+                    </div>
+                  </div>
+
+                  {/* View Contract Button */}
+                  <Button
+                    className='w-full bg-white border border-[#3A98BB] hover:bg-[#F5FBFC] text-[#222222] font-bold text-[16px] h-[50px] rounded-full shadow-none transition-colors mt-8'
+                    onPress={handleBackToHome}
+                  >
+                    View Contract
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <ModalBody className='p-8 text-center'>
+                <div className='mb-6'>
+                  <div className='w-16 h-16 bg-green-700 rounded-full flex items-center justify-center mx-auto mb-4'>
+                    <CheckCircleIcon size={32} className='text-white' />
+                  </div>
+                  <h2 className='text-2xl font-semibold mb-3'>Payment Successful</h2>
+                  <p className='text-gray-600 text-sm leading-relaxed font-satoshi'>
+                    {hasCrown
+                      ? 'Complete file containing all specifications and related documents will be sent to your email.'
+                      : 'You can now download the complete file, containing all specifications and related documents.'}
+                  </p>
+                </div>
+
+                <Button
+                  className='w-full bg-radial from-[#EAF9FF] to-[#CCE7F2] text-[#035A7A] font-semibold rounded-full border-0 shadow-md mt-4'
+                  size='lg'
+                  radius='full'
+                  onPress={handleBackToHome}
+                >
+                  OK
+                </Button>
+              </ModalBody>
+            )}
           </ModalContent>
         </Modal>
       </PageContainer>

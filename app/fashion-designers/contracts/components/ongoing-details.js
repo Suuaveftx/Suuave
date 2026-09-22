@@ -3,6 +3,7 @@
 import React from "react";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   ExclamationTriangleIcon,
   HandThumbUpIcon,
@@ -37,7 +38,14 @@ import { ongoingContracts } from "../data";
 
 export default function OngoingDetailsPage({ params }) {
   const unwrappedParams = React.use(params);
-  const contractId = unwrappedParams?.id || "24t64754"; // fallback for demo
+  const contractId = unwrappedParams?.id || "24t64755"; // fallback for demo
+
+  // Read extension data from URL if coming from checkout "View Contract"
+  const searchParams = useSearchParams();
+  const extendedNewDeadline = searchParams.get('newDeadline');
+  const extendedInitialDeadline = searchParams.get('initialDeadline');
+  const extendedAt = searchParams.get('extendedAt');
+  const isExtended = !!extendedNewDeadline;
 
   // Find the contract in our centralized data
   const contractDetails = ongoingContracts.find(c => c.id === contractId) || ongoingContracts[0];
@@ -62,6 +70,11 @@ export default function OngoingDetailsPage({ params }) {
     ],
     artist: contractDetails.artist,
   };
+
+  if (isExtended) {
+    contractData.isLate = false;
+    contractData.isExpiringSoon = false;
+  }
 
   // Function to get color based on status
   const getStatusColor = (status) => {
@@ -148,6 +161,24 @@ export default function OngoingDetailsPage({ params }) {
                     </div>
                   </div>
 
+                  {/* Deadline Extended Banner */}
+                  {isExtended && (
+                    <div className="flex items-start gap-3 bg-[#EAF9FF] border border-[#CCE7F2] rounded-xl px-4 py-3 mb-5">
+                      <div className="w-5 h-5 rounded-full bg-[#035A7A] flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg width="10" height="8" viewBox="0 0 12 10" fill="none">
+                          <path d="M1 5L4.5 8.5L11 1.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-[#035A7A]">Deadline Extended</p>
+                        <p className="text-xs text-[#035A7A] mt-0.5">
+                          Contract deadline updated from <span className="line-through">{extendedInitialDeadline}</span> to <span className="font-bold">{extendedNewDeadline}</span>
+                          {extendedAt && <span className="text-[#3A98BB]"> · Extended on {extendedAt}</span>}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="flex justify-between items-start">
                     <div className="space-y-4">
                       {[
@@ -166,7 +197,12 @@ export default function OngoingDetailsPage({ params }) {
                         { label: "Role", value: contractData.role },
                         { label: "Budget", value: contractData.budget },
                         { label: "Contract Starts", value: "7th May, 2026" },
-                        { label: "Contract Ends", value: contractDetails.endDate || "12th May, 2026" },
+                        {
+                          label: "Contract Ends",
+                          value: isExtended ? extendedNewDeadline : (contractDetails.endDate || "12th May, 2026"),
+                          isExtended,
+                          originalValue: isExtended ? (contractDetails.endDate || "12th May, 2026") : null,
+                        },
                       ].map((item, index) => (
                         <div
                           key={index}
@@ -200,6 +236,11 @@ export default function OngoingDetailsPage({ params }) {
                                 </span>
                               )}
                             </div>
+                          ) : item.label === "Contract Ends" && item.isExtended ? (
+                            <span className="md:text-md text-sm font-proximanova break-words whitespace-normal flex items-center gap-2 flex-wrap">
+                              <span className="font-semibold text-gray-900">{item.value}</span>
+                              <span className="text-[10px] bg-[#FFA500] text-white px-2 py-0.5 rounded-full font-semibold align-middle whitespace-nowrap">Extended</span>
+                            </span>
                           ) : (
                             <span
                               className={`${item.label === "Contract Number" ? "lg:-mt-4" : ""

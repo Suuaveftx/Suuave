@@ -1,6 +1,6 @@
 'use client';
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Sidebar_MenuCard from './Sidebar-MenuCard';
 import NotificationSettings from './Notification-Settings';
 import SecuritySettings from './Security-Settings';
@@ -23,8 +23,19 @@ const settingsMenu = [
 
 const SettingsPage = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [activeItem, setActiveItem] = useState('notifications');
   const [showSidebar, setShowSidebar] = useState(true); // for mobile
+
+  // Pre-select tab from URL query param e.g. ?tab=security
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    const validTabs = ['notifications', 'security', 'account'];
+    if (tab && validTabs.includes(tab)) {
+      setActiveItem(tab);
+      setShowSidebar(false);
+    }
+  }, [searchParams]);
 
   const handleSetItem = (id) => {
     if (id === 'profile') {
@@ -49,11 +60,19 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className='w-full min-h-[calc(100vh-104px)]'>
+    <div className='w-full min-h-[calc(100vh-104px)] pb-12 pt-6'>
+
       {/* ----- Desktop View ----- */}
-      <div className='hidden sm:flex min-h-full'>
-        {/* Sidebar on Desktop */}
-        <div className='w-64 flex-shrink-0'>
+      {/* 
+        UNIFIED CARD LAYOUT
+        This container wraps both the left sidebar and right content in a single solid card.
+        The left side gets a grey background, the right side gets white.
+        They natively match heights because of flex stretch, leaving no transparent holes.
+      */}
+      <div className='hidden sm:flex min-h-[600px] w-full bg-white shadow-sm rounded-xl overflow-hidden border border-gray-100'>
+
+        {/* Left Sidebar Track */}
+        <div className='w-64 flex-shrink-0 bg-[#fafafa] border-r border-gray-200'>
           <Sidebar_MenuCard
             menuItems={settingsMenu}
             activeItem={activeItem}
@@ -61,8 +80,8 @@ const SettingsPage = () => {
           />
         </div>
 
-        {/* Content on Desktop (fills remaining space) */}
-        <div className='flex p-6 bg-white lg:w-full lg:max-w-[950px] w-full max-w-[3640px]'>
+        {/* Right Content Pane */}
+        <div className='flex-1 p-8 bg-white'>
           {renderActiveComponent()}
         </div>
       </div>

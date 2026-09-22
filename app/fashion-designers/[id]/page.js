@@ -308,7 +308,7 @@ const ProductDetails = ({ params }) => {
                           <p className="text-[11px] text-gray-600 mb-1 leading-snug">
                             Own this design completely and make it uniquely yours.<br />
                             Once purchased, the design is removed from the marketplace and will not be resold.<br />
-                            You gain full rights for personal and commercial use. <Link href="/fashion-designers/licensing-guide" className="text-[#3A98BB] cursor-pointer hover:underline">Learn more...</Link>
+                            You gain full rights for personal and commercial use. <Link href="/terms-of-service?source=brand#p2-main" className="text-[#3A98BB] cursor-pointer hover:underline">Learn more...</Link>
                           </p>
                         </>
                       ) : (
@@ -317,7 +317,7 @@ const ProductDetails = ({ params }) => {
                             You are buying a right to use this design for both personal and commercial use.
                           </p>
                           <p className="text-[11px] text-gray-600 leading-snug">
-                            The Artist retains ownership, and other buyers can purchase and use it too. <Link href="/fashion-designers/licensing-guide" className="text-[#3A98BB] cursor-pointer hover:underline">Learn more...</Link>
+                            The Artist retains ownership, and other buyers can purchase and use it too. <Link href="/terms-of-service?source=brand#p2-main" className="text-[#3A98BB] cursor-pointer hover:underline">Learn more...</Link>
                           </p>
                         </>
                       )}
@@ -577,12 +577,12 @@ const ProductDetails = ({ params }) => {
                         <>
                           Own this design completely and make it uniquely yours.<br />
                           Once purchased, the design is removed from the marketplace and will not be resold.<br />
-                          You gain full rights for personal and commercial use. <Link href="/fashion-designers/licensing-guide" className="text-[#3A98BB] hover:underline" onClick={(e) => e.stopPropagation()}>Learn more...</Link>
+                          You gain full rights for personal and commercial use. <Link href="/terms-of-service?source=brand#p2-main" className="text-[#3A98BB] hover:underline" onClick={(e) => e.stopPropagation()}>Learn more...</Link>
                         </>
                       ) : (
                         <>
                           You are buying a right to use this design for both personal and commercial use.<br />
-                          The Artist retains ownership, and other buyers can purchase and use it too. <Link href="/fashion-designers/licensing-guide" className="text-[#3A98BB] hover:underline" onClick={(e) => e.stopPropagation()}>Learn more...</Link>
+                          The Artist retains ownership, and other buyers can purchase and use it too. <Link href="/terms-of-service?source=brand#p2-main" className="text-[#3A98BB] hover:underline" onClick={(e) => e.stopPropagation()}>Learn more...</Link>
                         </>
                       )}
                     </p>
@@ -743,7 +743,7 @@ function MobileLicenseAccordion({ hasCrown }) {
                 Own this design completely and make it uniquely yours.<br />
                 Once purchased, the design is removed from the marketplace and will not be resold.<br />
                 You gain full rights for personal and commercial use.{' '}
-                <Link href="/fashion-designers/licensing-guide" className="text-[#3A98BB] hover:underline">Learn more...</Link>
+                <Link href="/terms-of-service?source=brand#p2-main" className="text-[#3A98BB] hover:underline">Learn more...</Link>
               </p>
             </>
           ) : (
@@ -753,7 +753,7 @@ function MobileLicenseAccordion({ hasCrown }) {
               </p>
               <p className="text-[11px] text-gray-600">
                 The Artist retains ownership, and other buyers can purchase and use it too.{' '}
-                <Link href="/fashion-designers/licensing-guide" className="text-[#3A98BB] hover:underline">Learn more...</Link>
+                <Link href="/terms-of-service?source=brand#p2-main" className="text-[#3A98BB] hover:underline">Learn more...</Link>
               </p>
             </>
           )

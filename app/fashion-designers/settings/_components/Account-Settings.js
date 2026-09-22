@@ -1,10 +1,20 @@
 'use client';
 import React, { useState } from 'react';
-import { Card, CardBody, RadioGroup, Radio, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@heroui/react';
+import { Card, CardBody, RadioGroup, Radio, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, InputOtp } from '@heroui/react';
 
 const AccountSettings = () => {
-    const [accountType, setAccountType] = useState('fashion-artist');
+    const [accountType, setAccountType] = useState('brand');
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [deleteStep, setDeleteStep] = useState(1);
+    const [otpValue, setOtpValue] = useState('');
+
+    const handleOpenChange = (open) => {
+        if (!open) {
+            setDeleteStep(1);
+            setOtpValue('');
+        }
+        onOpenChange(open);
+    };
 
     return (
         <div className='w-full flex flex-col gap-6'>
@@ -42,10 +52,9 @@ const AccountSettings = () => {
                         >
                             <Radio
                                 value='fashion-artist'
+                                isDisabled
                                 classNames={{
-                                    label: 'text-sm text-[#3A98BB] font-medium',
-                                    wrapper: 'border-[#3A98BB]',
-                                    control: 'bg-[#3A98BB]',
+                                    label: 'text-sm text-[#767676] font-medium',
                                 }}
                             >
                                 Artist
@@ -53,7 +62,9 @@ const AccountSettings = () => {
                             <Radio
                                 value='brand'
                                 classNames={{
-                                    label: 'text-sm text-[#767676] font-medium',
+                                    label: 'text-sm text-[#3A98BB] font-medium',
+                                    wrapper: 'border-[#3A98BB]',
+                                    control: 'bg-[#3A98BB]',
                                 }}
                             >
                                 Brand
@@ -66,7 +77,11 @@ const AccountSettings = () => {
             {/* Delete Account */}
             <Card
                 isPressable
-                onPress={onOpen}
+                onPress={() => {
+                    setDeleteStep(1);
+                    setOtpValue('');
+                    onOpen();
+                }}
                 className='w-full shadow-none border border-[#E9E9E9] rounded-2xl cursor-pointer hover:bg-red-50 transition-colors'
             >
                 <CardBody className='p-5'>
@@ -74,27 +89,76 @@ const AccountSettings = () => {
                 </CardBody>
             </Card>
 
-            {/* Delete Confirmation Modal */}
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement='center'>
+            {/* Delete Modal — 2 Steps */}
+            <Modal isOpen={isOpen} onOpenChange={handleOpenChange} placement='center'>
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className='text-[#222222] font-bold'>Delete Account</ModalHeader>
-                            <ModalBody>
-                                <p className='text-sm text-[#767676]'>
-                                    Are you sure you want to delete your account? This action is
-                                    <span className='text-[#EF4444] font-semibold'> permanent </span>
-                                    and cannot be undone.
-                                </p>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button variant='flat' onPress={onClose} className='text-[#767676]'>
-                                    Cancel
-                                </Button>
-                                <Button color='danger' onPress={onClose}>
-                                    Delete
-                                </Button>
-                            </ModalFooter>
+                            {deleteStep === 1 ? (
+                                /* Step 1 — Confirmation */
+                                <>
+                                    <ModalHeader className='text-[#222222] font-bold'>Delete Account</ModalHeader>
+                                    <ModalBody>
+                                        <p className='text-sm text-[#767676]'>
+                                            Are you sure you want to delete your account? This action is
+                                            <span className='text-[#EF4444] font-semibold'> permanent </span>
+                                            and cannot be undone.
+                                        </p>
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button variant='flat' onPress={onClose} className='text-[#767676]'>
+                                            Cancel
+                                        </Button>
+                                        <Button color='danger' onPress={() => setDeleteStep(2)}>
+                                            Continue
+                                        </Button>
+                                    </ModalFooter>
+                                </>
+                            ) : (
+                                /* Step 2 — OTP Verification */
+                                <>
+                                    <div className='w-full flex justify-center pt-[45px]'>
+                                        <h2 className='text-2xl font-bold text-center'>
+                                            Confirm It&apos;s You
+                                        </h2>
+                                    </div>
+
+                                    <ModalBody className='pb-2'>
+                                        <p className='text-sm text-[#767676] text-center'>
+                                            Kindly enter the six (6) digit code sent to the email address{' '}
+                                            <span className='font-semibold'>czu****cj@gmail.com</span> to delete your account.
+                                        </p>
+
+                                        {/* OTP Inputs */}
+                                        <div className='flex justify-center gap-2 mt-[26px]'>
+                                            <InputOtp
+                                                variant='bordered'
+                                                length={6}
+                                                value={otpValue}
+                                                onValueChange={setOtpValue}
+                                            />
+                                        </div>
+
+                                        {/* Resend */}
+                                        <p className='text-sm text-center text-gray-500 mt-6'>
+                                            Didn&apos;t receive code?{' '}
+                                            <button className='text-[#3A98BB] font-semibold hover:underline'>
+                                                Resend
+                                            </button>
+                                        </p>
+                                    </ModalBody>
+
+                                    {/* Confirm Delete */}
+                                    <div className='flex justify-center mb-[45px] mx-8 mt-4'>
+                                        <Button
+                                            onPress={onClose}
+                                            className='bg-[#EF4444] text-white font-semibold rounded-full px-6 py-2 w-full'
+                                        >
+                                            Confirm Delete
+                                        </Button>
+                                    </div>
+                                </>
+                            )}
                         </>
                     )}
                 </ModalContent>

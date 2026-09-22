@@ -20,6 +20,7 @@ import React, { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import CustomButton from './CustomButton';
+import { TourContext } from './tour/TourContext';
 import {
   ChevronDown,
   Bell,
@@ -45,6 +46,46 @@ const ArtistNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+
+  // ── Tour context: auto-open hamburger for cross-page mobile steps ──
+  const tourCtx = React.useContext(TourContext);
+  const { active, stepIndex, isMobile: tourIsMobile, getActiveSteps } = tourCtx || {};
+
+  React.useEffect(() => {
+    if (!active) return;
+    const steps = getActiveSteps?.();
+    if (!steps) return;
+    const currentStep = steps[stepIndex];
+    if (!currentStep) return;
+
+    const isActuallyMobile = tourIsMobile ?? (typeof window !== 'undefined' && window.innerWidth < 640);
+    if (!isActuallyMobile) return;
+
+    const needsMenu =
+      (currentStep.id === 'artist-mobile-proposals' && !isActive('/artist-page/my-proposals')) ||
+      (currentStep.id === 'artist-mobile-contracts' && !isActive('/artist-page/my-contracts')) ||
+      (currentStep.id === 'artist-mobile-opportunities' && !isActive('/artist-page/project-page'));
+
+    if (needsMenu) {
+      // Scroll to top first so the navbar is visible, then open the menu.
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Short delay so scroll completes before drawer opens
+      setTimeout(() => setIsMenuOpen(true), 200);
+    } else if (
+      ['artist-mobile-messages', 'artist-mobile-notifications', 'artist-mobile-account', 'artist-mobile-navigation'].includes(currentStep.id)
+    ) {
+      setIsMenuOpen(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, stepIndex]);
+
+  // Close drawer when the tour finishes or is dismissed
+  React.useEffect(() => {
+    if (!active && isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
 
   React.useEffect(() => {
     if (isMenuOpen) {
@@ -87,6 +128,7 @@ const ArtistNavbar = () => {
     { label: 'My Proposals', href: '/artist-page/my-proposals', icon: FileText },
     { label: 'My Contracts', href: '/artist-page/my-contracts', icon: FileSignature },
   ];
+
   const handleLogout = async () => {
     await signOut();
     router.push('/auth/login');
@@ -105,9 +147,7 @@ const ArtistNavbar = () => {
           {/* LOGO */}
           <NavbarBrand>
             <div className='flex items-center gap-3'>
-              <Link
-                href='/artist-page'
-              >
+              <Link href='/artist-page'>
                 {/* Mobile only: dolphin logo */}
                 <span className='sm:hidden inline-block w-14 h-14 overflow-hidden -ml-2.5'>
                   <Image
@@ -132,13 +172,22 @@ const ArtistNavbar = () => {
             </div>
           </NavbarBrand>
 
-          {/* MENU */}
+          {/* DESKTOP MENU */}
           <NavbarContent className='hidden sm:flex h-full flex-1' justify='start'>
-            <div className='flex h-full items-center gap-4 xl:gap-9'>
+            <div data-tour="artist-navigation" className='flex h-full items-center gap-4 xl:gap-9'>
               {menuItems.map((item, index) => {
                 const navLink = (
                   <NavbarItem key={`link-${index}`} className='h-full flex items-center'>
                     <Link
+                      data-tour={
+                        item.label === 'Jobs'
+                          ? (!isActive(item.href) ? 'artist-opportunities-nav' : undefined)
+                          : item.label === 'My Proposals'
+                            ? (!isActive(item.href) ? 'artist-proposals-nav' : undefined)
+                            : item.label === 'My Contracts'
+                              ? (!isActive(item.href) ? 'artist-contracts-nav' : undefined)
+                              : undefined
+                      }
                       href={item.href}
                       className={`${textStyle} transition duration-300 relative flex items-center h-full`}
                     >
@@ -167,7 +216,7 @@ const ArtistNavbar = () => {
                       {navLink}
                       <NavbarItem className='hidden lg:flex h-full items-center ml-[64px]'>
                         <CustomButton
-                          text='License Your Design'
+                          text='List a Design'
                           href={'/artist-page/license-your-design'}
                         />
                       </NavbarItem>
@@ -186,8 +235,14 @@ const ArtistNavbar = () => {
               <Notification />
             </NavbarItem>
 
+            {/* MESSAGES */}
             <NavbarItem className='flex'>
-              <Link href='/artist-page/messages'>
+              <Link
+                id="artist-mobile-messages-tour"
+                data-tour="artist-messages"
+                aria-label="Open messages"
+                href='/artist-page/messages'
+              >
                 <Button
                   isIconOnly
                   variant='bordered'
@@ -204,7 +259,12 @@ const ArtistNavbar = () => {
             <NavbarItem className='flex'>
               <Dropdown shouldBlockScroll={false}>
                 <DropdownTrigger>
-                  <button className='flex items-center gap-2 outline-none bg-transparent border-none cursor-pointer p-0'>
+                  <button
+                    id="artist-mobile-account-tour"
+                    data-tour="artist-account"
+                    aria-label="Open account menu"
+                    className='flex items-center gap-2 outline-none bg-transparent border-none cursor-pointer p-0'
+                  >
                     <Avatar
                       src='/dev-images/Avatar.png'
                       className='w-10 h-10 rounded-full border border-gray-200'
@@ -241,9 +301,9 @@ const ArtistNavbar = () => {
                     startContent={<HelpCircle className='size-4' />}
                     key='help'
                     as={Link}
-                    href='/artist-page/help'
+                    href='/help-support?source=artist'
                   >
-                    Help and support
+                    Help & Support
                   </DropdownItem>
                   <DropdownItem
                     startContent={<TbLogout2 className='size-4' />}
@@ -258,7 +318,9 @@ const ArtistNavbar = () => {
               </Dropdown>
             </NavbarItem>
 
+            {/* MOBILE HAMBURGER */}
             <button
+              id="artist-mobile-navigation-tour"
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
               className='sm:hidden flex items-center justify-center border border-gray-200 rounded-full p-2 h-10 w-10 text-gray-600 bg-white z-[9999]'
               onClick={(e) => {
@@ -281,9 +343,16 @@ const ArtistNavbar = () => {
         <div className="NavbarMenu fixed inset-x-0 top-[80px] bottom-0 z-[9999] bg-[#CCE7F2] pt-8 px-6 sm:hidden flex flex-col gap-6 overflow-y-auto shadow-xl">
           {mobileMenuItems.map((item, index) => {
             const Icon = item.icon;
+
+            let mobileLinkId;
+            if (item.label === 'Jobs') mobileLinkId = 'artist-mobile-opportunities-nav';
+            if (item.label === 'My Proposals') mobileLinkId = 'artist-mobile-proposals-nav';
+            if (item.label === 'My Contracts') mobileLinkId = 'artist-mobile-contracts-nav';
+
             return (
               <Link
                 key={index}
+                id={mobileLinkId}
                 className='w-full flex items-center gap-3 transition duration-300 text-[#222222] py-2 text-lg font-satoshi'
                 href={item.href}
                 onClick={() => setIsMenuOpen(false)}

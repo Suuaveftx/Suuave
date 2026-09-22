@@ -35,7 +35,7 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
 
   return (
     <Navbar
-      className={`w-full ${bgColor} font-satoshi ${textStyle} z-40 !static lg:!sticky h-[80px]`}
+      className={`w-full ${bgColor} font-satoshi ${textStyle} z-[60] relative lg:!sticky h-[80px]`}
       classNames={{ wrapper: "w-full max-w-full px-0 h-full" }}
       onMenuOpenChange={setIsMenuOpen}
     >
@@ -62,11 +62,7 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
         </NavbarBrand>
 
         <NavbarContent className="hidden lg:flex gap-4 xl:gap-14 lg:ml-12" justify="center">
-          <NavbarItem>
-            <Link href='/join-waitlist' className={`text-white transition duration-300`}>
-              Join the Waitlist
-            </Link>
-          </NavbarItem>
+
           <NavbarItem>
             <Link href='/about-page' className={`text-white transition duration-300`}>
               About Us
@@ -114,22 +110,15 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
         </NavbarContent>
       </PageContainer>
 
-      <NavbarMenu className="bg-customNavBg pt-8 px-4 overflow-hidden h-fit">
+      <NavbarMenu className="bg-customNavBg pt-8 px-4 overflow-hidden h-fit z-[100]">
         {menuItems.map((item, index) => (
           <NavbarMenuItem className="py-3" key={`${item.title}-${index}`}>
-            <Link className="w-full text-white" href={item.url} size="lg">
+            <Link className="w-full text-white" href={item.url} size="lg" onClick={() => setIsMenuOpen(false)}>
               {item.title}
             </Link>
           </NavbarMenuItem>
         ))}
-        <NavbarMenuItem className="py-6 flex justify-center w-full mt-4">
-          <Link
-            href="/join-waitlist"
-            className="cursor-pointer bg-[radial-gradient(circle,#EAF9FF,#CCE7F2)] font-bold text-base text-[#035A7A] rounded-3xl py-2 px-8 text-center"
-          >
-            Join the Waitlist
-          </Link>
-        </NavbarMenuItem>
+
       </NavbarMenu>
     </Navbar>
   );

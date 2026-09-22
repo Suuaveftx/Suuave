@@ -77,8 +77,8 @@ const ChooseCategory = () => {
             />
             <div>
               <h2 className='text-[22px] font-bold pt-1'>Fashion Artist</h2>
-              <p className='text-gray-500 text-sm mt-2 whitespace-nowrap'>
-                Including 3D Designers, Illustrators, Sketchers, etc.
+              <p className='text-gray-500 text-sm mt-2 whitespace-normal md:whitespace-nowrap'>
+                For illustrators, 3D artists, visual designers, pattern makers, etc.
               </p>
             </div>
           </div>
@@ -110,8 +110,8 @@ const ChooseCategory = () => {
             />
             <div>
               <h2 className='text-[22px] font-bold pt-1'>Fashion Brand</h2>
-              <p className='text-gray-500 text-base mt-1 whitespace-nowrap'>
-                Including Brands, Designers, Clients, etc.
+              <p className='text-gray-500 text-base mt-1 whitespace-normal md:whitespace-nowrap'>
+                Independent Brand, Corporate Brand or Creative/Sourcing Agency
               </p>
             </div>
           </div>

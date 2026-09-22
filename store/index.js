@@ -10,6 +10,7 @@ import { projectSlice } from './project-slice';
 import { licenseSlice } from './license-slice';
 import { proposalSlice } from './proposal-slice';
 import { jobSlice } from './job-slice';
+import { disputeSlice } from './dispute-slice';
 
 export const useAppStore = create(
   persist(
@@ -25,6 +26,7 @@ export const useAppStore = create(
       ...licenseSlice(...val),
       ...proposalSlice(...val),
       ...jobSlice(...val),
+      ...disputeSlice(...val),
     }),
     {
       name: 'suuave-app-storage',

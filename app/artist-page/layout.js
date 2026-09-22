@@ -1,9 +1,10 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import Footer from '../../components/landing-page-components/Footer';
+import Footer from '../about-page/components/Footer';
 import ArtistNavbar from '../../components/ArtistNavbar';
 import SectionMain from '../../components/layout/SectionMain';
+import { TourProvider } from '../../components/tour/ProductTour';
 import {
   ARTIST_ONBOARDING_ROUTES,
   ARTIST_SELF_LAYOUT_PREFIXES,
@@ -24,18 +25,20 @@ export default function ArtistPageLayout({ children }) {
   }
 
   return (
-    <div className={SECTION_SHELL_CLASS}>
-      {/* Conditionally hide Navbar on mobile for specific routes */}
-      <div className={pathname.includes('-contract-information') ? "hidden lg:block" : ""}>
-        {!isOnboarding && <ArtistNavbar />}
+    <TourProvider>
+      <div className={SECTION_SHELL_CLASS}>
+        {/* Conditionally hide Navbar on mobile for specific routes */}
+        <div className={pathname.includes('-contract-information') ? "hidden lg:block" : ""}>
+          {!isOnboarding && <ArtistNavbar />}
+        </div>
+        <SectionMain
+          withNavbarOffset={!isOnboarding}
+          fontClass='font-proximanova'
+        >
+          {children}
+        </SectionMain>
+        {!isOnboarding && <Footer />}
       </div>
-      <SectionMain
-        withNavbarOffset={!isOnboarding}
-        fontClass='font-proximanova'
-      >
-        {children}
-      </SectionMain>
-      {!isOnboarding && <Footer />}
-    </div>
+    </TourProvider>
   );
 }
