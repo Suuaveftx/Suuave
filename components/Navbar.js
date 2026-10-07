@@ -31,6 +31,7 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
     { title: "How It Works", url: "/#howitworks" },
     { title: "FAQs", url: "#" },
     { title: "Blog", url: "#" },
+    { title: "Join Waitlist", url: "/join-waitlist" },
   ];
 
   return (
@@ -83,25 +84,33 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
               Blog
             </Link>
           </NavbarItem>
+          <NavbarItem>
+            <Link href='/join-waitlist' className={`text-white transition duration-300`}>
+              Join Waitlist
+            </Link>
+          </NavbarItem>
         </NavbarContent>
 
         <NavbarContent justify='end' className='gap-4'>
           <NavbarItem className='hidden lg:flex'>
-            <Link href='/auth' className={`text-white transition duration-300`}>
+            <Link href='#' onClick={(e) => e.preventDefault()} className={`text-white transition duration-300`}>
               Login
             </Link>
           </NavbarItem>
           <NavbarItem>
             <Link
-              href="/onboarding"
+              href="#"
+              onClick={(e) => e.preventDefault()}
               className="cursor-pointer hidden lg:block bg-[radial-gradient(circle,#EAF9FF,#CCE7F2)] font-bold text-base text-[#035A7A] rounded-3xl py-2 px-6"
             >
               Get started
             </Link>
           </NavbarItem>
-          <Link href='/auth' className='lg:hidden text-white pr-2'>
-            Login
-          </Link>
+          <NavbarItem className='lg:hidden'>
+            <Link href='#' onClick={(e) => e.preventDefault()} className='text-white pr-2'>
+              Login
+            </Link>
+          </NavbarItem>
           {/* Hamburger Toggle (mobile only, after Login) */}
           <NavbarMenuToggle
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}

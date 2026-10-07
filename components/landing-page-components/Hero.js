@@ -53,7 +53,7 @@ const HeroSection = () => {
           <div className="flex justify-center lg:justify-start lg:pl-14 w-full">
             <CustomButton
               className="w-40 text-lg h-[52px] relative z-50"
-              href="/onboarding/category"
+
             />
           </div>
         </div>

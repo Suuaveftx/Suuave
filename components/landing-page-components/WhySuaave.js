@@ -59,7 +59,7 @@ const WhySuaave = () => {
         <CustomButton
           text="Join 5000+ Members"
           className="shadow-md h-12 mx-auto w-fit"
-          href="/onboarding"
+
         />
       </div>
     </div>
