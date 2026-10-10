@@ -67,7 +67,7 @@ const HeroSection = () => {
           </ScrollParallax>
           <ScrollParallax isAbsolutelyPositioned strength={0.3} zIndex={30}>
             <HeroSlimCard
-              text="COMMUNITY DEVELOPMENT"
+              text="Community Development"
               svg={<SvgCUserIcon className="size-5" />}
               className="absolute right-8 hidden lg:flex"
             />
