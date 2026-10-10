@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardBody, Avatar } from "@heroui/react";
-import Image from "next/image";
+import { Card, CardBody, Avatar, Button } from "@heroui/react";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { PaperClipIcon } from "@heroicons/react/24/outline";
 import { TiLocation } from "react-icons/ti";
 import { FaStar } from "react-icons/fa6";
+import { FiDownload } from "react-icons/fi";
 import PageContainer from "../../../../components/layout/PageContainer";
 
 const contractData = {
@@ -19,12 +19,18 @@ const contractData = {
     timeframe: "7 Days",
     duration: "3 Days",
     status: "Completed",
+    attachedDocuments: [
+        { name: "Doc1534re", type: "document" },
+        { name: "Doc573", type: "legal" },
+    ],
+    submittedWork: {
+        message: "Hello Josh,\nHere is the final submission of the work. Kindly review and if any iteration please let me know. Thanks.",
+        files: [
+            { name: "Look 1.png", size: "1.3mb", image: "/dev-images/fashionImg1.png" },
+            { name: "Look 1.png", size: "1.3mb", image: "/dev-images/fashionImg2.png" },
+        ]
+    }
 };
-
-const attachments = [
-    { name: "Doc1534re", path: "/dev-images/Attach2.png" },
-    { name: "Doc1534re", path: "/dev-images/Attach2.png" },
-];
 
 const clientProfile = {
     name: "Tolu",
@@ -60,7 +66,7 @@ export default function CompletedContract() {
 
             <div className="w-full max-w-6xl mx-auto pb-36 lg:pb-6">
                 <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-0 -mx-4 lg:mx-0">
-                    {/* Left Column - Contract Details & Documents */}
+                    {/* Left Column - Contract Details & Documents & Submitted Work */}
                     <div className="lg:col-span-2 space-y-[6px] lg:space-y-2">
                         {/* Contract Details Card */}
                         <Card className="bg-white border border-gray-200" shadow="none">
@@ -110,22 +116,62 @@ export default function CompletedContract() {
 
                         {/* Attached Documents Card */}
                         <Card className="bg-white" shadow="none">
-                            <CardBody className="p-4 lg:p-6">
-                                <h2 className="md:text-2xl text-[17px] font-semibold lg:font-bold md:mb-2 -mt-2">
+                            <CardBody className="p-6 pb-4">
+                                <h2 className="md:text-2xl text-lg font-semibold md:mb-2 -mt-2">
                                     Attached Documents
                                 </h2>
-                                <div className="mt-2 lg:mt-0">
-                                    {attachments.map((doc, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex flex-col items-start px-0 lg:px-3 md:py-3 py-2 rounded-lg transition-colors cursor-pointer"
-                                        >
-                                            <div className="flex items-center justify-center gap-2">
-                                                <PaperClipIcon className="md:h-5 md:w-5 h-4 w-4 text-[#3A98BB]" />
-                                                <p className="md:text-md text-sm font-proximanova text-[#3A98BB]">
-                                                    {doc.name}
-                                                </p>
+                                {contractData.attachedDocuments.map((doc, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex flex-col items-start px-3 md:py-3 py-2 rounded-lg transition-colors cursor-pointer"
+                                    >
+                                        <div className="flex items-center justify-center gap-2">
+                                            <PaperClipIcon className="md:h-5 md:w-5 h-4 w-4" />
+                                            <p className="md:text-md text-sm font-proximanova text-[#3A98BB]">
+                                                {doc.name}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </CardBody>
+                        </Card>
+
+                        {/* Submitted Work & Files Card */}
+                        <Card className="bg-white mt-[6px] lg:mt-2" shadow="none">
+                            <CardBody className="p-4 lg:p-6 pb-6 lg:pb-8">
+                                <h2 className="md:text-2xl text-lg font-semibold md:mb-6 mb-4">
+                                    Submitted Work
+                                </h2>
+                                <div className="border border-gray-100 rounded-xl p-5 md:p-6 bg-white shadow-sm">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <Avatar
+                                            src={"/dev-images/ArtistProfile.png"}
+                                            className="w-8 h-8 rounded-full"
+                                            name={"Me"}
+                                        />
+                                        <span className="font-bold text-gray-900 text-[15px]">
+                                            Me (Artist)
+                                        </span>
+                                    </div>
+                                    <p className="text-[#333333] text-[14px] font-proximanova leading-relaxed whitespace-pre-wrap">
+                                        {contractData.submittedWork.message}
+                                    </p>
+                                </div>
+
+                                <h2 className="md:text-[19px] text-lg font-semibold text-gray-900 md:mb-4 mb-3 mt-6 md:mt-8">
+                                    Files
+                                </h2>
+                                <div className="flex flex-wrap gap-4">
+                                    {contractData.submittedWork.files.map((file, index) => (
+                                        <div key={index} className="border border-gray-200 rounded-xl p-3 flex items-center gap-4 bg-white hover:border-gray-300 transition-colors w-full sm:w-[240px]">
+                                            <img src={file.image} alt={file.name} className="w-[60px] h-[60px] object-cover rounded-lg flex-shrink-0" />
+                                            <div className="flex-1 overflow-hidden">
+                                                <p className="text-[13px] font-bold text-gray-900 truncate">{file.name}</p>
+                                                <p className="text-[12px] text-gray-500 mt-0.5">{file.size}</p>
                                             </div>
+                                            <button className="text-gray-800 hover:text-black transition-colors flex-shrink-0 mr-2" onClick={() => {}}>
+                                                <FiDownload className="w-[18px] h-[18px]" />
+                                            </button>
                                         </div>
                                     ))}
                                 </div>
@@ -133,8 +179,24 @@ export default function CompletedContract() {
                         </Card>
                     </div>
 
-                    {/* Right Column - Client Info */}
+                    {/* Right Column - Client Info & Actions */}
                     <div className="flex gap-2 flex-col lg:flex-col">
+                        {/* Action Buttons - Desktop Only */}
+                        <Card className="hidden lg:block bg-white border border-gray-200 drop-shadow-md rounded-2xl" shadow="none">
+                            <CardBody className="py-4 lg:py-6 px-6 md:px-8 flex flex-col items-center justify-center gap-4">
+                                <Button
+                                    className="w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] h-[44px] text-[#035A7A] font-semibold rounded-full border-0 shadow-sm text-sm"
+                                    radius="full"
+                                    onPress={() => {
+                                        const returnPath = encodeURIComponent('/artist-page/my-contracts?tab=completed');
+                                        router.push(`/artist-page/rate-review?client=${encodeURIComponent(clientProfile.handle || 'Client')}&contractId=${contractData.contractNumber}&returnUrl=${returnPath}`);
+                                    }}
+                                >
+                                    Rate Client
+                                </Button>
+                            </CardBody>
+                        </Card>
+
                         {/* Client Information Card */}
                         <Card className="bg-white border font-satoshi border-gray-200 mt-[6px] lg:mt-0" shadow="none">
                             <CardBody className="p-4 lg:p-4">
@@ -204,6 +266,22 @@ export default function CompletedContract() {
                             </CardBody>
                         </Card>
                     </div>
+                </div>
+            </div>
+
+            {/* Mobile Fixed Bottom Action Bar */}
+            <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 px-4 py-4 z-50 lg:hidden drop-shadow-xl">
+                <div className="flex flex-row items-center justify-center gap-3 w-full">
+                    <Button
+                        className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] h-[44px] text-[#035A7A] font-semibold rounded-full border-0 shadow-sm text-sm"
+                        radius="full"
+                        onPress={() => {
+                            const returnPath = encodeURIComponent('/artist-page/my-contracts?tab=completed');
+                            router.push(`/artist-page/rate-review?client=${encodeURIComponent(clientProfile.handle || 'Client')}&contractId=${contractData.contractNumber}&returnUrl=${returnPath}`);
+                        }}
+                    >
+                        Rate Client
+                    </Button>
                 </div>
             </div>
         </PageContainer>

@@ -23,6 +23,10 @@ import {
   Alert,
   Checkbox,
   Input,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
 } from "@heroui/react";
 
 import ContractHeader from "./contract-header";
@@ -47,34 +51,33 @@ export default function OngoingDetailsPage({ params }) {
   const extendedAt = searchParams.get('extendedAt');
   const isExtended = !!extendedNewDeadline;
 
-  // Find the contract in our centralized data
-  const contractDetails = ongoingContracts.find(c => c.id === contractId) || ongoingContracts[0];
-
-  // Map our centralized data to the local contractData structure
   const contractData = {
-    jobTitle: contractDetails.title,
-    contractNumber: contractDetails.id,
+    jobTitle: "Modern Fashion Attire Illustration",
+    contractNumber: "24t64754",
     contractType: "Hire",
     role: "Fashion Artist",
-    budget: contractDetails.budget || "₦200,000",
-    timeframe: contractDetails.timeframe || "1 Day",
-    status: contractDetails.status || "Ongoing",
-    isSubmitted: contractDetails.isSubmitted,
-    isLate: contractDetails.isLate,
-    daysLate: contractDetails.daysLate,
-    isExpiringSoon: contractDetails.isExpiringSoon,
-    remainingDays: contractDetails.remainingDays,
+    budget: "₦200,000",
+    timeframe: "Within A Month",
+    status: "Ongoing",
+    isSubmitted: true,
+    isLate: false,
+    daysLate: 0,
+    isExpiringSoon: false,
+    remainingDays: 0,
     attachedDocuments: [
-      { name: "DocTGFile", type: "document" },
-      { name: "DocE75", type: "legal" },
+      { name: "Doc1534re", type: "document" },
+      { name: "Doc573", type: "legal" },
     ],
-    artist: contractDetails.artist,
+    artist: {
+      name: "Tolu",
+      username: "tolu",
+      role: "Fashion Designer",
+      location: "Lagos, Nigeria",
+      rating: 0.0,
+      reviews: 0,
+      avatar: "/contract/designer.jpg",
+    },
   };
-
-  if (isExtended) {
-    contractData.isLate = false;
-    contractData.isExpiringSoon = false;
-  }
 
   // Function to get color based on status
   const getStatusColor = (status) => {
@@ -94,6 +97,7 @@ export default function OngoingDetailsPage({ params }) {
 
   // approval modal implementation
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen: isReviewOpen, onOpen: onReviewOpen, onOpenChange: onReviewOpenChange } = useDisclosure();
 
   const handleApproval = () => {
     // You can trigger an API call or update state here
@@ -139,7 +143,22 @@ export default function OngoingDetailsPage({ params }) {
         <div className="w-full mx-auto pb-36 lg:pb-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-0 -mx-4 lg:mx-0">
             {/* Left Column - Contract Details & Documents */}
-            <div className="lg:col-span-2 space-y-[6px] lg:space-y-2">
+            <div className="lg:col-span-2 space-y-[6px] lg:space-y-4">
+              {/* Banner Notification */}
+              {contractData.isSubmitted && (
+                <div className="flex items-center justify-between bg-[#FAFAFA] border border-[#3A98BB] rounded-[10px] px-4 py-3 md:mb-6 mb-4">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <ExclamationTriangleIcon className="w-5 h-5 text-[#3A98BB] flex-shrink-0" />
+                    <p className="text-[13px] md:text-sm text-[#3A98BB]">
+                      This project has been submitted as completed. Waiting for your approval.
+                    </p>
+                  </div>
+                  <span onClick={onReviewOpen} className="cursor-pointer text-[13px] md:text-sm font-semibold text-[#3A98BB] whitespace-nowrap pl-2">
+                    Click to Review
+                  </span>
+                </div>
+              )}
+
               {/* Contract Details Card */}
               <Card className="bg-white border border-gray-200" shadow="none">
                 <CardBody className="p-4 lg:p-6 pb-8 lg:pb-12">
@@ -150,13 +169,7 @@ export default function OngoingDetailsPage({ params }) {
                       {contractData.isSubmitted ? (
                         <span className="bg-[#E0F2FE] text-[#2563EB] px-3 py-1 rounded-full text-[11px] lg:text-xs font-medium whitespace-nowrap">Waiting Approval</span>
                       ) : (
-                        <span className="border border-[#CCE7F2] text-[#035A7A] px-3 py-1 bg-transparent rounded-full text-[11px] lg:text-xs font-semibold whitespace-nowrap">Ongoing</span>
-                      )}
-                      {contractData.isLate && (
-                        <span className="text-[#E33629] text-[11px] lg:text-xs font-semibold">({contractData.daysLate}d late)</span>
-                      )}
-                      {contractData.isExpiringSoon && (
-                        <span className="text-[#056D16] text-[11px] lg:text-xs font-semibold">({contractData.remainingDays}d left)</span>
+                        <span className="border border-[#279711] text-[#279711] px-3 py-1 bg-transparent rounded-full text-[11px] lg:text-xs font-semibold whitespace-nowrap">Ongoing</span>
                       )}
                     </div>
                   </div>
@@ -182,73 +195,27 @@ export default function OngoingDetailsPage({ params }) {
                   <div className="flex justify-between items-start">
                     <div className="space-y-4">
                       {[
-                        {
-                          label: "Job Title",
-                          value: contractData.jobTitle,
-                        },
-                        {
-                          label: "Status",
-                          value: contractData.status,
-                        },
-                        {
-                          label: "Contract Number",
-                          value: contractData.contractNumber,
-                        },
+                        { label: "Job Title", value: contractData.jobTitle },
+                        { label: "Contract Number", value: contractData.contractNumber },
+                        { label: "Contract Type", value: contractData.contractType },
                         { label: "Role", value: contractData.role },
                         { label: "Budget", value: contractData.budget },
-                        { label: "Contract Starts", value: "7th May, 2026" },
-                        {
-                          label: "Contract Ends",
-                          value: isExtended ? extendedNewDeadline : (contractDetails.endDate || "12th May, 2026"),
-                          isExtended,
-                          originalValue: isExtended ? (contractDetails.endDate || "12th May, 2026") : null,
-                        },
+                        { label: "Contract Duration", value: contractData.timeframe },
                       ].map((item, index) => (
                         <div
                           key={index}
-                          className={`grid grid-cols-[38%_62%] sm:grid-cols-[8rem_1fr] md:gap-4 gap-2 items-start w-full ${item.label === 'Status' ? 'hidden lg:grid' : ''}`}
+                          className={`grid grid-cols-[38%_62%] sm:grid-cols-[8rem_1fr] md:gap-4 gap-2 items-start w-full`}
                         >
                           <span
-                            className={`${item.label === "Status" ? "lg:hidden" : ""
-                              } ${item.label === "Contract Number" ? "lg:-mt-4" : ""
-                              }  md:text-md text-sm mb-1 sm:mb-0 font-light`}
+                            className={`${item.label === "Contract Number" ? "lg:-mt-4" : ""}  md:text-md text-sm mb-1 sm:mb-0 font-light`}
                           >
                             {item.label}
                           </span>
-                          {item.label === "Status" ? (
-                            <div className="flex items-center gap-2 lg:hidden">
-                              <span className="border border-[#D1D1D1] text-[#279711] px-3 py-1 rounded-full text-xs font-medium capitalize whitespace-nowrap">
-                                Ongoing
-                              </span>
-                              {contractData.isSubmitted && (
-                                <span className="bg-[#E0F2FE] text-[#2563EB] px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap">
-                                  Waiting Approval
-                                </span>
-                              )}
-                              {contractData.isLate && (
-                                <span className="text-red-500 text-xs font-semibold">
-                                  ({contractData.daysLate}d late)
-                                </span>
-                              )}
-                              {contractData.isExpiringSoon && (
-                                <span className="text-red-500 text-xs font-semibold">
-                                  ({contractData.remainingDays}d left)
-                                </span>
-                              )}
-                            </div>
-                          ) : item.label === "Contract Ends" && item.isExtended ? (
-                            <span className="md:text-md text-sm font-proximanova break-words whitespace-normal flex items-center gap-2 flex-wrap">
-                              <span className="font-semibold text-gray-900">{item.value}</span>
-                              <span className="text-[10px] bg-[#FFA500] text-white px-2 py-0.5 rounded-full font-semibold align-middle whitespace-nowrap">Extended</span>
-                            </span>
-                          ) : (
-                            <span
-                              className={`${item.label === "Contract Number" ? "lg:-mt-4" : ""
-                                }  md:text-md text-sm font-proximanova break-words whitespace-normal`}
-                            >
-                              {item.value}
-                            </span>
-                          )}
+                          <span
+                            className={`${item.label === "Contract Number" ? "lg:-mt-4" : ""}  md:text-md text-sm font-proximanova break-words whitespace-normal`}
+                          >
+                            {item.value}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -286,10 +253,10 @@ export default function OngoingDetailsPage({ params }) {
             {/* Right Column - Artist Info & Actions */}
             <div className="flex gap-4 flex-col lg:flex-col">
               {/* Desktop Action Buttons */}
-              <Card className="hidden lg:block bg-white border border-gray-200 drop-shadow-md">
-                <CardBody className="py-6 px-12 flex flex-col items-center justify-center gap-6">
+              <Card className="hidden lg:block bg-white border border-gray-200 drop-shadow-md rounded-2xl">
+                <CardBody className="py-6 px-12 flex flex-col items-center justify-center gap-4">
                   <Button
-                    className="w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] py-3 text-[#035A7A] font-medium rounded-full border-0 shadow-sm text-md"
+                    className="w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] h-[44px] text-[#035A7A] font-semibold rounded-full border-0 shadow-sm text-sm"
                     radius="full"
                     onPress={onOpen}
                   >
@@ -297,17 +264,27 @@ export default function OngoingDetailsPage({ params }) {
                   </Button>
 
                   <Button
-                    variant="bordered"
-                    className="w-full bg-transparent py-3 border-2 border-[#CCE7F2] text-[#035A7A] font-medium rounded-full shadow-sm text-md"
+                    className="w-full bg-[#EAEAEA] h-[44px] text-[#222222] font-semibold rounded-full border-0 shadow-sm text-sm"
                     radius="full"
                     onPress={() => contractData.isSubmitted ? setShowRejectModal(true) : null}
                   >
-                    {contractData.isSubmitted ? "Reject" : "Message Artist"}
+                    Reject
                   </Button>
-                  <div className="flex items-center justify-center gap-2 w-full text-[#ef4444] border border-[rgba(229,229,229,0.61)] rounded-full px-6 py-2 cursor-pointer font-medium text-sm">
-                    <IoFlagSharp size={14} color="#ef4444" />
-                    <Link href="#">Report Dispute</Link>
-                  </div>
+
+                  <Dropdown placement="bottom" classNames={{ content: "min-w-[200px]" }}>
+                    <DropdownTrigger>
+                      <Button
+                        className="w-full bg-transparent h-[44px] border-0 text-[#111111] font-semibold rounded-full text-sm"
+                        radius="full"
+                      >
+                        More...
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu aria-label="More Actions">
+                      <DropdownItem key="extension" className="text-sm">Request Extension</DropdownItem>
+                      <DropdownItem key="dispute" className="text-sm text-danger" color="danger">Report Dispute</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
                 </CardBody>
               </Card>
 
@@ -371,30 +348,38 @@ export default function OngoingDetailsPage({ params }) {
       {/* Mobile Action Buttons - outside PageContainer to avoid overflow-x-hidden clipping */}
       <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 px-4 py-4 z-50 lg:hidden drop-shadow-xl">
         <div className="flex flex-col gap-3 w-full">
-          <div className="flex flex-row items-center justify-center gap-3 w-full">
+          <div className="flex flex-row gap-3 w-full">
             <Button
-              variant="bordered"
-              className="flex-1 w-full bg-transparent h-[44px] border border-[#035A7A] text-[#222222] font-semibold rounded-full shadow-sm text-[15px]"
-              radius="full"
-              onPress={() => contractData.isSubmitted ? setShowRejectModal(true) : null}
-            >
-              {contractData.isSubmitted ? "Reject" : "Message Artist"}
-            </Button>
-
-            <Button
-              className="flex-1 w-full bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] h-[44px] text-[#035A7A] font-semibold rounded-full border-0 shadow-sm text-[15px]"
+              className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] h-[44px] text-[#035A7A] font-semibold rounded-full border-0 shadow-sm text-sm"
               radius="full"
               onPress={onOpen}
             >
               Approve Work
             </Button>
+
+            <Button
+              className="flex-1 bg-[#EAEAEA] h-[44px] text-[#222222] font-semibold rounded-full border-0 shadow-sm text-sm"
+              radius="full"
+              onPress={() => contractData.isSubmitted ? setShowRejectModal(true) : null}
+            >
+              Reject
+            </Button>
           </div>
-          <Button
-            className="w-full h-[44px] rounded-full bg-[#FAFAFA] border border-gray-100 text-[#ef4444] font-semibold text-[15px] shadow-sm flex items-center justify-center gap-2"
-            radius="full"
-          >
-            <IoFlagSharp size={16} className="text-[#ef4444]" /> Report Dispute
-          </Button>
+
+          <Dropdown placement="top" classNames={{ content: "w-[calc(100vw-32px)] sm:min-w-[200px]" }}>
+            <DropdownTrigger>
+              <Button
+                className="w-full bg-transparent h-[44px] border-0 text-[#111111] font-semibold rounded-full text-sm"
+                radius="full"
+              >
+                More...
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu aria-label="More Actions">
+              <DropdownItem key="extension" className="text-sm text-center justify-center">Request Extension</DropdownItem>
+              <DropdownItem key="dispute" className="text-sm text-danger text-center justify-center" color="danger">Report Dispute</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </div>
       </div>
       <Modal
@@ -441,6 +426,111 @@ export default function OngoingDetailsPage({ params }) {
                   onPress={handleApproval}
                 >
                   Yes, I approve
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isOpen={isReviewOpen}
+        onOpenChange={onReviewOpenChange}
+        classNames={{
+          base: "bg-white w-[95vw] max-w-3xl",
+          backdrop: "bg-black/50 z-[299]",
+          wrapper: "z-[300]",
+        }}
+        size="3xl"
+        backdrop="blur"
+        placement="center"
+        scrollBehavior="inside"
+        hideCloseButton
+      >
+        <ModalContent className="rounded-3xl overflow-hidden flex flex-col" style={{ maxHeight: '85vh' }}>
+          {(onClose) => (
+            <>
+              {/* Sticky Header */}
+              <div className="px-6 pt-6 pb-5 border-b border-gray-100 flex-shrink-0">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-900 mb-1">SUBMITTED WORK</h2>
+                    <p className="text-sm text-gray-500 font-satoshi">
+                      Artist has submitted the work as completed. Kindly review all files before approval.
+                    </p>
+                  </div>
+                  <button
+                    onClick={onClose}
+                    className="ml-4 flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors text-gray-500 hover:text-gray-800"
+                    aria-label="Close modal"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Scrollable Body */}
+              <ModalBody className="px-6 py-5 overflow-y-auto flex-1">
+                <div className="border border-gray-100 rounded-xl p-5 mb-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Avatar src={contractData.artist.avatar} className="w-8 h-8 rounded-full" />
+                    <span className="font-semibold text-sm text-gray-900">{contractData.artist.name}</span>
+                  </div>
+                  <p className="text-[13.5px] text-gray-800 font-satoshi leading-relaxed">
+                    Hello Josh.<br />
+                    Here is the final submission of the work. Kindly review and if any iteration please let me know. Thanks.
+                  </p>
+                </div>
+
+                <h3 className="text-sm font-semibold text-gray-900 mb-3">Files</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {[
+                    { name: 'Look 1.png', size: '1.3mb', img: '/dev-images/fashionImg1.png' },
+                    { name: 'Look 2.png', size: '1.3mb', img: '/dev-images/fashionImg2.png' },
+                    { name: 'Look 3.png', size: '1.3mb', img: '/dev-images/fashionImg3.png' }
+                  ].map((file, i) => (
+                    <div key={i} className="border border-gray-200 rounded-xl p-3 flex items-center gap-3 bg-white">
+                      <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0">
+                        <img src={file.img} alt={file.name} className="w-full h-full object-cover" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[13px] font-bold text-gray-900 truncate">{file.name}</p>
+                        <p className="text-[11px] text-gray-500">{file.size}</p>
+                      </div>
+                      <button className="flex-shrink-0 p-1">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-700">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                          <polyline points="7 10 12 15 17 10"></polyline>
+                          <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </ModalBody>
+
+              {/* Sticky Footer */}
+              <ModalFooter className="px-6 py-4 border-t border-gray-100 flex-shrink-0 flex flex-wrap gap-3 justify-start">
+                <Button
+                  className="bg-[#F0F0F0] text-[#222222] font-semibold rounded-full px-8 h-[44px]"
+                  onPress={() => { onClose(); setShowRejectModal(true); }}
+                >
+                  Reject
+                </Button>
+                <Button
+                  variant="bordered"
+                  className="bg-transparent border border-[#3A98BB] text-[#222222] font-semibold rounded-full px-8 h-[44px]"
+                >
+                  Request Changes
+                </Button>
+                <Button
+                  className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full px-8 h-[44px] border-0"
+                  onPress={() => { onClose(); onOpen(); }}
+                >
+                  Approve Work
                 </Button>
               </ModalFooter>
             </>

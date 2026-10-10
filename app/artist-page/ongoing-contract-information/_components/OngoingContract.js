@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardBody, Button, Modal, ModalContent, ModalBody, ModalFooter, useDisclosure } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,7 +9,7 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { IoFlagSharp } from "react-icons/io5";
 import { useSearchParams, useRouter } from "next/navigation";
 import ChatClientModal from "../../../../components/ChatClientModal";
-import SubmitProjectModal from "../../../../components/SubmitProjectModal";
+import SubmitWorkModal from "../../../fashion-designers/contracts/components/SubmitWorkModal";
 import { useAppStore } from "@/store";
 
 const contractDetails = {
@@ -49,10 +49,12 @@ export default function OngoingContract() {
     const isWaitingApproval = id === "24t64754-A";
     const router = useRouter();
     const isExtended = searchParams.get('isExtended') === 'true';
+    const isExtensionRequested = searchParams.get('status') === 'Extension Requested' || id === '12m78390-C';
 
     const { reportedDisputes, withdrawDispute } = useAppStore();
     const isDisputed = reportedDisputes[id];
     const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onOpenChange: onWithdrawOpenChange } = useDisclosure();
+    const [showViewExtensionModal, setShowViewExtensionModal] = useState(false);
 
     return (
         <>
@@ -72,21 +74,51 @@ export default function OngoingContract() {
                 <div className="hidden md:flex flex-col lg:flex-row gap-2 lg:gap-6">
                     {/* Left Column */}
                     <div className="flex-1 space-y-2 lg:space-y-6">
+                        {/* Banner Notification */}
+                        {isWaitingApproval && (
+                            <div className="flex items-center justify-between bg-[#FAFAFA] border border-[#3A98BB] rounded-[10px] px-4 py-3 mb-4">
+                                <div className="flex items-center gap-2 md:gap-3">
+                                    <ExclamationTriangleIcon className="w-5 h-5 text-[#3A98BB] flex-shrink-0" />
+                                    <p className="text-[13px] md:text-sm text-[#3A98BB]">
+                                        You have submitted this project as completed. Waiting for client's approval.
+                                    </p>
+                                </div>
+                                <SubmitWorkModal trigger={
+                                    <span className="cursor-pointer text-[13px] md:text-sm font-semibold text-[#3A98BB] whitespace-nowrap pl-2">
+                                        Click to Review
+                                    </span>
+                                } />
+                            </div>
+                        )}
+
+                        {/* Banner Notification - Extension Requested */}
+                        {isExtensionRequested && (
+                            <div className="flex items-center justify-between border border-[#F5A623] bg-[#FFFBF0] text-[#F5A623] px-4 py-3 rounded-[10px] mb-6">
+                                <div className="flex items-center gap-2">
+                                    <ExclamationTriangleIcon className="w-5 h-5 flex-shrink-0" />
+                                    <span className="font-medium text-[13px] md:text-sm">Client has requested for deadline extension</span>
+                                </div>
+                                <span 
+                                    className="font-semibold text-[13px] md:text-sm cursor-pointer hover:underline text-[#F5A623]"
+                                    onClick={() => setShowViewExtensionModal(true)}
+                                >
+                                    Click to View
+                                </span>
+                            </div>
+                        )}
+
                         {/* Contract Details Card */}
                         <Card className="w-full p-4 md:p-6 shadow-sm border border-gray-100 rounded-2xl bg-white">
-                            <div className="hidden md:flex justify-between items-start mb-6 border-b pb-2">
+                            <div className="hidden md:flex justify-between items-start mb-6 border-b border-gray-100 pb-4">
                                 <h2 className="text-xl font-bold">Contract Details </h2>
                                 <div className="flex gap-2 items-center">
-                                    <span className="border border-[#D1D1D1] text-[#279711] px-3 py-1 rounded-full text-xs font-medium">
+                                    <span className="border border-green-200 text-green-600 px-4 py-1 bg-transparent rounded-full text-[12px] font-semibold whitespace-nowrap">
                                         Ongoing
                                     </span>
-                                    {isWaitingApproval ? (
-                                        <span className="inline-flex items-center bg-[#EAF5FB] text-[#3A98BB] text-[11px] font-semibold px-2 rounded-full h-[22px]">
-                                            Waiting Approval
-                                        </span>
-                                    ) : (timeStatus && !isExtended) ? (
-                                        <span className="text-xs font-bold" style={{ color: color }}>{timeStatus}</span>
-                                    ) : null}
+                                    <div className="flex items-center border border-gray-200 rounded-full overflow-hidden text-[12px] font-semibold h-[28px]">
+                                        <span className="px-3 py-1 text-gray-500 border-r border-gray-200 h-full flex items-center">Ends</span>
+                                        <span className="px-3 py-1 text-gray-700 bg-white h-full flex items-center">2 days</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -167,28 +199,47 @@ export default function OngoingContract() {
                     {/* Right Column (Sidebar) */}
                     <div className="w-full lg:w-[350px] space-y-2 lg:space-y-6">
                         {/* Action Buttons Card - Desktop Only */}
-                        <Card className="w-full p-6 shadow-sm border border-gray-100 rounded-2xl hidden md:block">
+                        <Card className="w-full p-6 shadow-sm border border-gray-100 rounded-2xl hidden md:block bg-[#FDFDFD]">
                             <div className="flex flex-col gap-4 items-center">
-                                <div className="[&>button]:w-48 [&>button]:h-12 [&>button]:text-base [&>button]:font-medium [&>button]:bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] [&>button]:text-[#035A7A] [&>button]:rounded-full">
-                                    <SubmitProjectModal />
+                                <div className="w-full">
+                                    <SubmitWorkModal trigger={
+                                      <Button className="w-full h-[46px] text-[15px] font-semibold bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] rounded-full hover:opacity-90 transition-opacity border-0 shadow-sm">
+                                          Submit Project
+                                      </Button>
+                                    } />
                                 </div>
-                                <div className="[&>button]:w-48 [&>button]:h-12 [&>button]:rounded-full [&>button]:border [&>button]:border-[#3A98BB] [&>button]:bg-transparent [&>button]:text-[#222222] [&>button]:font-medium">
-                                    <ChatClientModal clientName={clientProfile.name} />
+                                <div className="w-full">
+                                    <ChatClientModal clientName={clientProfile.name} trigger={
+                                      <Button className="w-full h-[46px] rounded-full border border-gray-300 bg-transparent text-[#222222] font-semibold text-[15px]">
+                                          Chat Client
+                                      </Button>
+                                    } />
                                 </div>
+                                <Button className="w-full h-[46px] rounded-full border border-gray-100 bg-[#FAFAFA] text-[#222222] font-semibold text-[15px] shadow-sm">
+                                    <div className="flex items-center justify-center gap-2 w-full">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                        <span>Request Extension</span>
+                                    </div>
+                                </Button>
                                 {isDisputed ? (
-                                    <div
-                                        className="mt-2 flex gap-2 items-center justify-center border border-[rgba(229,229,229,0.61)] rounded-full px-6 py-2 cursor-pointer w-48 font-medium text-sm text-gray-500 hover:bg-gray-50"
-                                        onClick={() => withdrawDispute(id)}
+                                    <Button
+                                        className="w-full h-[46px] rounded-full border border-gray-100 bg-[#FAFAFA] text-gray-500 font-semibold text-[15px] shadow-sm hover:bg-gray-50"
+                                        onPress={() => withdrawDispute(id)}
                                     >
-                                        Withdraw Dispute
-                                    </div>
+                                        <div className="flex items-center justify-center gap-2 w-full">
+                                            <span>Withdraw Dispute</span>
+                                        </div>
+                                    </Button>
                                 ) : (
-                                    <div className="mt-2 text-[#ef4444] flex gap-2 items-center justify-center border border-[rgba(229,229,229,0.61)] rounded-full px-6 py-2 cursor-pointer w-48 font-medium text-sm">
-                                        <IoFlagSharp size={14} color="#ef4444" />
-                                        <Link href={`/artist-page/report-dispute?contractId=${id}`}>
-                                            Report Dispute
-                                        </Link>
-                                    </div>
+                                    <Button
+                                        className="w-full h-[46px] rounded-full border border-gray-100 bg-[#FAFAFA] text-[#222222] font-semibold text-[15px] shadow-sm"
+                                        onPress={() => router.push(`/artist-page/report-dispute?contractId=${id}`)}
+                                    >
+                                        <div className="flex items-center justify-center gap-2 w-full">
+                                            <IoFlagSharp size={16} className="text-[#222222]" />
+                                            <span>Report</span>
+                                        </div>
+                                    </Button>
                                 )}
                             </div>
                         </Card>
@@ -259,6 +310,23 @@ export default function OngoingContract() {
 
                 {/* ── MOBILE UI IMPLEMENTATION ── */}
                 <div className="flex flex-col md:hidden -mx-4 mt-2 pb-44 w-screen">
+                    {/* Banner Notification */}
+                    {isWaitingApproval && (
+                        <div className="w-full bg-[#FAFAFA] border-y border-[#3A98BB] px-4 py-3 mb-2 flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <ExclamationTriangleIcon className="w-5 h-5 text-[#3A98BB] flex-shrink-0" />
+                                <p className="text-[13px] text-[#3A98BB]">
+                                    You have submitted this project as completed. Waiting for client's approval.
+                                </p>
+                            </div>
+                            <SubmitWorkModal trigger={
+                                <span className="cursor-pointer text-[13px] font-semibold text-[#3A98BB] whitespace-nowrap pl-2">
+                                    Click to Review
+                                </span>
+                            } />
+                        </div>
+                    )}
+
                     {/* Panel 1: Contract Details Card */}
                     <div className="w-full bg-white border-b border-gray-200 px-4 py-5">
                         {/* Header: title + status badges */}
@@ -344,7 +412,7 @@ export default function OngoingContract() {
                                     Chat Client
                                 </Button>
                             } />
-                            <SubmitProjectModal trigger={
+                            <SubmitWorkModal trigger={
                                 <Button
                                     className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] h-[44px] text-[#035A7A] font-semibold rounded-full border-0 shadow-sm text-[15px]"
                                     radius="full"
@@ -419,6 +487,81 @@ export default function OngoingContract() {
                                     Yes, withdraw
                                 </Button>
                             </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+
+            {/* Extension Request View Modal */}
+            <Modal
+                isOpen={showViewExtensionModal}
+                onOpenChange={setShowViewExtensionModal}
+                classNames={{
+                    wrapper: 'items-center justify-center',
+                    base: 'bg-white w-[90vw] max-w-2xl p-0 border-0 rounded-2xl m-0 sm:m-0',
+                    backdrop: 'bg-black/50',
+                    closeButton: 'top-4 right-4 text-gray-500 hover:text-gray-700 z-10',
+                }}
+                size="xl"
+                backdrop="blur"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            {/* Header Strip */}
+                            <div className="bg-[#FFF9E6] px-6 py-5 flex items-center gap-3 relative rounded-t-2xl">
+                                <div className="flex items-center justify-center w-11 h-11 bg-[#E5A443] rounded-full shrink-0 shadow-sm">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M14 2V8H20" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M16 13H8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M16 17H8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M10 9H8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </div>
+                                <h2 className="text-xl font-bold text-[#D97706] font-satoshi tracking-wide">Extension Request</h2>
+                            </div>
+
+                            <ModalBody className="px-6 py-6 font-satoshi mt-1">
+                                <p className="text-[#222222] text-[16px] mb-6">
+                                    Client has requested extension of project deadline.
+                                </p>
+
+                                <div className="flex flex-col gap-6 text-[15px]">
+                                    <div className="grid grid-cols-[210px_1fr] items-center gap-2 md:gap-4">
+                                        <span className="font-bold text-[#222222]">New Deadline :</span>
+                                        <span className="text-[#333333]">24th April, 2026</span>
+                                    </div>
+
+                                    <div className="grid grid-cols-[210px_1fr] items-start gap-2 md:gap-4">
+                                        <span className="font-bold text-[#222222]">Reason :</span>
+                                        <span className="text-[#333333]">Additional 5 sketches</span>
+                                    </div>
+
+                                    <div className="grid grid-cols-[210px_1fr] items-center gap-2 md:gap-4">
+                                        <span className="font-bold text-[#222222]">Additional Payment Offer :</span>
+                                        <div className="flex items-center flex-wrap gap-2">
+                                            <span className="text-[#333333]">+N20,000</span>
+                                            <span className="text-[#035A7A] text-[13px] font-medium">( 10% commission applies)</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-4 mt-12 mb-2">
+                                    <Button
+                                        className="flex-1 bg-white border border-[#3A98BB] text-[#111111] font-bold tracking-wide rounded-full shadow-sm h-[48px] text-[15px]"
+                                        onPress={() => onClose()}
+                                    >
+                                        Decline
+                                    </Button>
+                                    <Button
+                                        className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] tracking-wide font-bold rounded-full border-0 shadow-sm h-[48px] text-[15px]"
+                                        onPress={() => onClose()}
+                                    >
+                                        Accept Request
+                                    </Button>
+                                </div>
+                            </ModalBody>
                         </>
                     )}
                 </ModalContent>

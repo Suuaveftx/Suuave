@@ -9,10 +9,13 @@ const WhySuaave = () => {
   const settings = {
     className: "center",
     centerMode: true,
-    infinite: false,
+    infinite: true,
     centerPadding: "20px",
     slidesToShow: 1,
     speed: 500,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: true,
   };
   return (
     <div className="py-8  bg-customWhite">
@@ -22,8 +25,8 @@ const WhySuaave = () => {
 
       {/* Description */}
       <p className="text-center text-md lg:text-[40px] text-gray-700 mb-10 font-[500] text-[27px]   lg:px-0 px-5">
-        Enjoy unlimited advantages of easy and{" "}
-        <br className="hidden lg:block" /> smooth collaboration process.
+        Built for Seamless Collaboration.{" "}
+        <br className="hidden lg:block" /> Protected at Every Step.
       </p>
 
       {/* Cards Section */}
