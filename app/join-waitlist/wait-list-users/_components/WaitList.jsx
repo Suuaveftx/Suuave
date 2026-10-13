@@ -56,7 +56,7 @@ function WaitList() {
 
               <p className='text-sm capitalize'>Category: {user.category}</p>
               <p className='text-xs text-gray-400'>
-                Joined: {new Date(user.timestamp).toLocaleString()}
+                Joined: {new Date(user.created_at).toLocaleString()}
               </p>
             </Card>
           ))}
