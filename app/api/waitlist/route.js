@@ -4,12 +4,15 @@ import { sql } from '../../../lib/neon';
 export const dynamic = 'force-dynamic';
 
 // GET - Fetch all waitlist entries
-export async function GET() {
+export async function GET(request) {
   try {
-    // ✅ Neon returns an array directly
-    const rows = await sql`SELECT * FROM waitlist ORDER BY created_at DESC`;
+    const { searchParams } = new URL(request.url);
+    if (searchParams.get('ping')) {
+      await sql`SELECT 1`;
+      return NextResponse.json({ ok: true });
+    }
 
-    console.log('Fetched rows:', rows);
+    const rows = await sql`SELECT * FROM waitlist ORDER BY created_at DESC`;
 
     return NextResponse.json(
       { data: rows, count: rows.length, message: 'Success' },
@@ -29,25 +32,37 @@ export async function POST(request) {
   try {
     const { firstName, email, category } = await request.json();
 
-    if (!firstName || !email || !category) {
+    const cleanFirstName = firstName?.trim();
+    const cleanEmail = email?.trim().toLowerCase();
+    const cleanCategory = category?.trim();
+
+    if (!cleanFirstName || !cleanEmail || !cleanCategory) {
       return NextResponse.json({ message: 'All fields are required' }, { status: 400 });
     }
 
-    // Check for duplicates
-    const existing = await sql`SELECT * FROM waitlist WHERE email = ${email}`;
-    if (existing.length > 0) {
+    // Atomic single round-trip check and insert
+    const result = await sql`
+      WITH existing AS (
+        SELECT id FROM waitlist WHERE LOWER(email) = LOWER(${cleanEmail}) LIMIT 1
+      ),
+      inserted AS (
+        INSERT INTO waitlist (first_name, email, category)
+        SELECT ${cleanFirstName}, ${cleanEmail}, ${cleanCategory}
+        WHERE NOT EXISTS (SELECT 1 FROM existing)
+        RETURNING *
+      )
+      SELECT 
+        (SELECT COUNT(*) FROM existing)::int AS is_duplicate,
+        (SELECT row_to_json(inserted.*) FROM inserted) AS data;
+    `;
+
+    const row = result?.[0];
+    if (row?.is_duplicate > 0) {
       return NextResponse.json({ message: 'Email already registered' }, { status: 409 });
     }
 
-    // Insert new record
-    const inserted = await sql`
-      INSERT INTO waitlist (first_name, email, category)
-      VALUES (${firstName}, ${email}, ${category})
-      RETURNING *;
-    `;
-
     return NextResponse.json(
-      { message: 'Successfully added to waitlist', data: inserted[0] },
+      { message: 'Successfully added to waitlist', data: row?.data },
       { status: 201 }
     );
   } catch (error) {

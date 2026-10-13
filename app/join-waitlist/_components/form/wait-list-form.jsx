@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function WaitlistForm() {
   const [formData, setFormData] = useState({
@@ -10,6 +10,12 @@ export default function WaitlistForm() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    // Pre-warm the database connection as soon as the user visits the page
+    // so submitting the form is snappy and responsive
+    fetch('/api/waitlist?ping=1').catch(() => {});
+  }, []);
+
   const validateForm = () => {
     const newErrors = {};
 
@@ -19,7 +25,7 @@ export default function WaitlistForm() {
 
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
       newErrors.email = 'Please enter a valid email';
     }
 
@@ -31,9 +37,13 @@ export default function WaitlistForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (loading) return;
+
     if (validateForm()) {
       setLoading(true);
+      setErrors((prev) => ({ ...prev, submit: '' }));
 
       try {
         const response = await fetch('/api/waitlist', {
@@ -41,24 +51,22 @@ export default function WaitlistForm() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            firstName: formData.firstName.trim(),
+            email: formData.email.trim(),
+            category: formData.category,
+          }),
         });
 
         const data = await response.json();
 
         if (response.ok) {
           setSubmitted(true);
-
-          // Reset form after 3 seconds
-          // setTimeout(() => {
-          //   setFormData({ firstName: '', email: '', category: '' });
-          //   setSubmitted(false);
-          // }, 3000);
         } else {
-          setErrors({ submit: data.message || 'Something went wrong' });
+          setErrors((prev) => ({ ...prev, submit: data.message || 'Something went wrong' }));
         }
       } catch (error) {
-        setErrors({ submit: 'Failed to submit. Please try again.' });
+        setErrors((prev) => ({ ...prev, submit: 'Failed to submit. Please try again.' }));
       } finally {
         setLoading(false);
       }
@@ -128,7 +136,7 @@ export default function WaitlistForm() {
               </p>
             </div>
           ) : (
-            <div className='space-y-5'>
+            <form onSubmit={handleSubmit} noValidate className='space-y-5'>
               <div>
                 <label
                   htmlFor='firstName'
@@ -146,7 +154,7 @@ export default function WaitlistForm() {
                     errors.firstName
                       ? 'border-red-300 bg-red-50'
                       : 'border-gray-300 bg-white'
-                  } focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none`}
+                  } focus:ring-2 focus:ring-[#035A7A] focus:border-transparent transition-all outline-none`}
                   placeholder='Enter your first name'
                 />
                 {errors.firstName && (
@@ -169,7 +177,7 @@ export default function WaitlistForm() {
                   onChange={handleChange}
                   className={`w-full px-4 py-3 rounded-lg border ${
                     errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
-                  } focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none`}
+                  } focus:ring-2 focus:ring-[#035A7A] focus:border-transparent transition-all outline-none`}
                   placeholder='your@email.com'
                 />
                 {errors.email && (
@@ -193,7 +201,7 @@ export default function WaitlistForm() {
                     errors.category
                       ? 'border-red-300 bg-red-50'
                       : 'border-gray-300 bg-white'
-                  } focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none appearance-none cursor-pointer`}
+                  } focus:ring-2 focus:ring-[#035A7A] focus:border-transparent transition-all outline-none appearance-none cursor-pointer`}
                   style={{
                     backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
                     backgroundRepeat: 'no-repeat',
@@ -217,19 +225,45 @@ export default function WaitlistForm() {
               )}
 
               <button
+                type='submit'
                 style={{
                   background: 'radial-gradient(circle at top left, #FFFFFF, #CCE7F2)',
                 }}
-                onClick={handleSubmit}
                 disabled={loading}
-                className='  mx-auto w-full text-lg h-[52px] text-center  text-gray-500 flex items-center justify-center gap-2 font-proximanova font-medium px-6 py-3 rounded-full shadow-md'
+                className='mx-auto w-full text-lg h-[52px] text-center text-[#035A7A] hover:text-[#02445c] flex items-center justify-center gap-2 font-proximanova font-semibold px-6 py-3 rounded-full shadow-md transition-all duration-200 transform active:scale-[0.98] hover:shadow-lg disabled:opacity-75 disabled:cursor-wait cursor-pointer'
               >
-                {loading ? 'Joining...' : 'Join the Waitlist'}
+                {loading ? (
+                  <>
+                    <svg
+                      className='animate-spin h-5 w-5 text-[#035A7A]'
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                    >
+                      <circle
+                        className='opacity-25'
+                        cx='12'
+                        cy='12'
+                        r='10'
+                        stroke='currentColor'
+                        strokeWidth='4'
+                      />
+                      <path
+                        className='opacity-75'
+                        fill='currentColor'
+                        d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+                      />
+                    </svg>
+                    <span>Joining...</span>
+                  </>
+                ) : (
+                  <span>Join the Waitlist</span>
+                )}
               </button>
-            </div>
+            </form>
           )}
 
-          <p className='text-center text-sm text-gray-500 mt-6'>
+          <p className='text-center text-sm text-gray-500 mt-8'>
             We respect your privacy. We will not share your data.
           </p>
           <p className='text-center text-sm text-gray-400 mt-2'>
