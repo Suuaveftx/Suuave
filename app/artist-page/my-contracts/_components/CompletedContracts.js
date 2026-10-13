@@ -1,81 +1,110 @@
 "use client";
-import Link from "next/link";
-import SearchBar from "../../../../components/Searchbar";
-import FilterDropdown from "../../../../components/FilterDropdown";
-import { useState } from "react";
-import { HiOutlineCalendar, HiOutlineCurrencyDollar } from 'react-icons/hi';
-import { Button, Pagination } from '@heroui/react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { useRouter } from 'next/navigation';
+import React, { useState, useMemo } from "react";
+import {
+  Input,
+  Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Pagination,
+} from "@heroui/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { Calendar, CircleDollarSign, Ellipsis } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-
-const data = [
-  {
-    date: "12th May, 2024",
-    project: "Modern Fashion Attire Illustration",
-    client: "SHOALA ADIN",
-    earnings: "$700",
-    status: "Completed",
-  },
-  {
-    date: "25th April, 2024",
-    project: "Eco-Friendly Fabric Pattern",
-    client: "LUX WEAR",
-    earnings: "$1,200",
-    status: "Completed",
-  },
-  {
-    date: "10th March, 2024",
-    project: "Winter Season Lookbook",
-    client: "GLAMOUR CO",
-    earnings: "$2,500",
-    status: "Completed",
-  },
-  {
-    date: "5th February, 2024",
-    project: "Abstract Pattern Pack",
-    client: "TREND SETTERS",
-    earnings: "$1,800",
-    status: "Completed",
-  },
-  {
-    date: "12th January, 2024",
-    project: "Recycled Fiber Textile",
-    client: "GREEN EARTH APPAREL",
-    earnings: "$950",
-    status: "Completed",
-  },
-  {
-    date: "5th December, 2023",
-    project: "Avant Garde Collection Cover",
-    client: "FASHION FORWARD",
-    earnings: "$3,200",
-    status: "Completed",
-  },
-  {
-    date: "20th November, 2023",
-    project: "Virtual Runway Accessories",
-    client: "METAVERSE STYLES",
-    earnings: "$1,500",
-    status: "Completed",
-  },
-];
-
-export default function CompletedContracts({ dateFilter, setDateFilter, dateOptions }) {
+export default function CompletedContracts() {
   const router = useRouter();
-  const [currencyFilter, setCurrencyFilter] = useState('Select Currency');
+  const [search, setSearch] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
+  const [currencyFilter, setCurrencyFilter] = useState("Currency");
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const currencyOptions = ['USD ($)', 'EUR (€)', 'GBP (£)', 'NGN (₦)', 'CAD ($)'];
+  const contracts = useMemo(() => [
+    {
+      id: 1,
+      startDate: "18, June, 2024",
+      endDate: "23, June, 2024",
+      dateValue: new Date("2024-06-23"),
+      project: "Modern Fashion Attire Illustration",
+      client: "SHOALA ADIN",
+      payment: "$700",
+      paymentValue: 700,
+      status: "completed",
+    },
+    {
+      id: 2,
+      startDate: "18, June, 2024",
+      endDate: "23, June, 2024",
+      dateValue: new Date("2024-06-23"),
+      project: "Eco-Friendly Fabric Pattern",
+      client: "LUX WEAR",
+      payment: "$1,200",
+      paymentValue: 1200,
+      status: "completed",
+    },
+    {
+      id: 3,
+      startDate: "18, June, 2024",
+      endDate: "23, June, 2024",
+      dateValue: new Date("2024-06-23"),
+      project: "Winter Season Lookbook",
+      client: "GLAMOUR CO",
+      payment: "$2,500",
+      paymentValue: 2500,
+      status: "completed",
+    },
+    {
+      id: 4,
+      startDate: "10, May, 2024",
+      endDate: "20, May, 2024",
+      dateValue: new Date("2024-05-20"),
+      project: "Abstract Pattern Pack",
+      client: "TREND SETTERS",
+      payment: "$1,800",
+      paymentValue: 1800,
+      status: "completed",
+    },
+    {
+      id: 5,
+      startDate: "1, May, 2024",
+      endDate: "8, May, 2024",
+      dateValue: new Date("2024-05-08"),
+      project: "Recycled Fiber Textile",
+      client: "GREEN EARTH APPAREL",
+      payment: "$950",
+      paymentValue: 950,
+      status: "completed",
+    },
+    {
+      id: 6,
+      startDate: "28, Apr, 2024",
+      endDate: "5, May, 2024",
+      dateValue: new Date("2024-05-05"),
+      project: "Avant Garde Collection Cover",
+      client: "FASHION FORWARD",
+      payment: "$3,200",
+      paymentValue: 3200,
+      status: "completed",
+    },
+    {
+      id: 7,
+      startDate: "1, Nov, 2023",
+      endDate: "20, Nov, 2023",
+      dateValue: new Date("2023-11-20"),
+      project: "Virtual Runway Accessories",
+      client: "METAVERSE STYLES",
+      payment: "$1,500",
+      paymentValue: 1500,
+      status: "completed",
+    },
+  ], []);
 
-  // Date Filter Logic
-  const parseContractDate = (dateStr) => {
-    if (!dateStr) return new Date(0);
-    // Handle YYYY-MM-DD from calendar
-    if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) return new Date(dateStr);
-    // Handle ordinal dates like "18th June, 2024"
-    const normalized = dateStr.replace(/(\d+)(st|nd|rd|th)/, '$1');
-    return new Date(normalized);
-  };
+  const dateOptions = [
+    "Today", "This week", "This month",
+    "Last 3 month", "Last 6 month", "This year", "Calendar",
+  ];
+  const currencyOptions = ["USD ($)", "EUR (€)", "GBP (£)", "NGN (₦)", "CAD ($)"];
 
   const isToday = (date) => {
     const today = new Date();
@@ -91,161 +120,258 @@ export default function CompletedContracts({ dateFilter, setDateFilter, dateOpti
     return diffDays <= days;
   };
 
-  let filteredProjects = data;
+  const filteredAndSortedContracts = useMemo(() => {
+    let filtered = contracts;
 
-  // Filter by Date
-  if (dateFilter) {
-    const now = new Date();
-    filteredProjects = filteredProjects.filter((item) => {
-      const cDate = parseContractDate(item.date);
+    if (search) {
+      filtered = filtered.filter(
+        (c) =>
+          (c.project ?? "").toLowerCase().includes(search.toLowerCase()) ||
+          (c.client ?? "").toLowerCase().includes(search.toLowerCase())
+      );
+    }
 
-      if (dateFilter === 'Today') return isToday(cDate);
-      if (dateFilter === 'This week') return isWithinLastDays(cDate, 7);
-      if (dateFilter === 'This month') {
-        return cDate.getMonth() === now.getMonth() && cDate.getFullYear() === now.getFullYear();
-      }
-      if (dateFilter === 'Last 3 month') return isWithinLastDays(cDate, 90);
-      if (dateFilter === 'Last 6 month') {
-        const sixMonthsAgo = new Date();
-        sixMonthsAgo.setMonth(now.getMonth() - 6);
-        return cDate >= sixMonthsAgo;
-      }
-      if (dateFilter === 'This year') return cDate.getFullYear() === now.getFullYear();
-      if (dateFilter.includes('-')) {
-        // Date from calendar (YYYY-MM-DD)
-        const filterDate = new Date(dateFilter);
-        return cDate.toDateString() === filterDate.toDateString();
-      }
-      return true;
-    });
-  }
+    if (dateFilter) {
+      const now = new Date();
+      filtered = filtered.filter((c) => {
+        const cDate = c.dateValue;
+        if (dateFilter === "Today") return isToday(cDate);
+        if (dateFilter === "This week") return isWithinLastDays(cDate, 7);
+        if (dateFilter === "This month")
+          return cDate.getMonth() === now.getMonth() && cDate.getFullYear() === now.getFullYear();
+        if (dateFilter === "Last 3 month") return isWithinLastDays(cDate, 90);
+        if (dateFilter === "Last 6 month") {
+          const sixMonthsAgo = new Date();
+          sixMonthsAgo.setMonth(now.getMonth() - 6);
+          return cDate >= sixMonthsAgo;
+        }
+        if (dateFilter === "This year") return cDate.getFullYear() === now.getFullYear();
+        return true;
+      });
+    }
 
-  // Pagination calculations
-  const [currentPage, setCurrentPage] = useState(1);
+    if (currencyFilter !== "Currency") {
+      filtered = filtered.filter((c) => {
+        if (currencyFilter === "USD ($)") return c.payment.startsWith("$");
+        if (currencyFilter === "NGN (₦)") return c.payment.startsWith("₦");
+        if (currencyFilter === "EUR (€)") return c.payment.startsWith("€");
+        if (currencyFilter === "GBP (£)") return c.payment.startsWith("£");
+        return true;
+      });
+    }
+
+    return [...filtered].sort((a, b) => b.dateValue - a.dateValue);
+  }, [search, currencyFilter, dateFilter, contracts]);
+
   const itemsPerPage = 5;
-  const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredAndSortedContracts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = filteredProjects.slice(startIndex, endIndex);
+  const currentItems = filteredAndSortedContracts.slice(startIndex, startIndex + itemsPerPage);
+
+  const onSearchChange = (value) => {
+    setSearch(value);
+    setCurrentPage(1);
+  };
 
   return (
-    <>
-      {/* Search & Sort */}
-      <div className="flex items-center justify-between mb-6 lg:mb-8 gap-3 w-full">
-        <div className="flex-1 w-full lg:max-w-[500px]">
-          <SearchBar
-            placeholder="Search Project"
-            className="w-full"
-            endContent={
-              <div className="flex items-center gap-2">
-                <FilterDropdown
-                  label="Select Date"
-                  options={dateOptions}
-                  selectedOption={dateFilter}
-                  setSelectedOption={setDateFilter}
-                  defaultLabel="Select Date"
-                  trigger={
-                    <div className="flex items-center gap-1 cursor-pointer hover:bg-gray-100 p-1.5 rounded-full transition-colors">
-                      <HiOutlineCalendar className='w-5 h-5 text-gray-400' />
-                      <span className='text-[10px] text-gray-400'>▼</span>
-                    </div>
-                  }
-                />
-                <FilterDropdown
-                  label="Currency"
-                  options={currencyOptions}
-                  selectedOption={currencyFilter}
-                  setSelectedOption={setCurrencyFilter}
-                  defaultLabel="Currency"
-                  trigger={
-                    <div className="flex items-center gap-1 cursor-pointer hover:bg-gray-100 p-1.5 rounded-full transition-colors">
-                      <HiOutlineCurrencyDollar className='w-5 h-5 text-gray-400' />
-                      <span className='text-[10px] text-gray-400'>▼</span>
-                    </div>
-                  }
-                />
-              </div>
-            }
-          />
+    <div className="w-full max-w-full mx-auto px-4 lg:px-0">
+      {/* Search and Filter Bar */}
+      <div className="mt-8 pb-4 lg:pb-0">
+        <div className="flex flex-row items-center gap-3 w-full">
+          {/* Search Input */}
+          <div className="flex flex-1 items-center w-full min-w-0">
+            <Input
+              type="text"
+              value={search}
+              onChange={(e) => onSearchChange(e.target.value)}
+              placeholder="Search project"
+              startContent={<MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />}
+              className="w-full md:max-w-md"
+              classNames={{
+                input: "text-sm",
+                inputWrapper:
+                  "border border-gray-300 rounded-full bg-white hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500 pr-2 h-[48px] lg:h-[42px]",
+              }}
+              endContent={
+                <div className="hidden md:flex items-center gap-1">
+                  <Dropdown placement="bottom-end" shouldFlip={false} shouldBlockScroll={false} classNames={{ content: "min-w-[150px]" }}>
+                    <DropdownTrigger>
+                      <Button isIconOnly variant="light" size="sm" className="text-gray-400 hover:text-gray-600 min-w-8 w-8 h-8 rounded-full">
+                        <Calendar size={18} />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label="Date Filter"
+                      onAction={(key) => { setDateFilter(key); setCurrentPage(1); }}
+                      selectedKeys={[dateFilter]}
+                      selectionMode="single"
+                    >
+                      {dateOptions.map((option) => (
+                        <DropdownItem key={option}>{option}</DropdownItem>
+                      ))}
+                      <DropdownItem key="" className="text-danger" color="danger">Reset Date</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+
+                  <Dropdown placement="bottom-end" shouldFlip={false} shouldBlockScroll={false} classNames={{ content: "min-w-[150px]" }}>
+                    <DropdownTrigger>
+                      <Button isIconOnly variant="light" size="sm" className="text-gray-400 hover:text-gray-600 min-w-8 w-8 h-8 rounded-full">
+                        <CircleDollarSign size={18} />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label="Currency Filter"
+                      onAction={(key) => { setCurrencyFilter(key); setCurrentPage(1); }}
+                      selectedKeys={[currencyFilter]}
+                      selectionMode="single"
+                    >
+                      {currencyOptions.map((option) => (
+                        <DropdownItem key={option}>{option}</DropdownItem>
+                      ))}
+                      <DropdownItem key="Currency" className="text-danger" color="danger">Reset Currency</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
+              }
+            />
+          </div>
+
+          {/* Mobile-only filter icon */}
+          <div className="md:hidden shrink-0">
+            <Dropdown placement="bottom-end" shouldFlip={false} shouldBlockScroll={false} classNames={{ content: "min-w-[160px]" }}>
+              <DropdownTrigger>
+                <Button isIconOnly variant="bordered" size="sm" className="w-10 h-10 rounded-full border border-gray-300 bg-white text-gray-500">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="4" y1="6" x2="20" y2="6" />
+                    <line x1="8" y1="12" x2="16" y2="12" />
+                    <line x1="11" y1="18" x2="13" y2="18" />
+                  </svg>
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Mobile Filters"
+                onAction={(key) => {
+                  if (dateOptions.includes(key)) { setDateFilter(key); setCurrentPage(1); }
+                  if (currencyOptions.includes(key)) { setCurrencyFilter(key); setCurrentPage(1); }
+                  if (key === "reset_date") { setDateFilter(""); setCurrentPage(1); }
+                  if (key === "reset_currency") { setCurrencyFilter("Currency"); setCurrentPage(1); }
+                }}
+              >
+                {dateOptions.map((option) => (
+                  <DropdownItem key={option}>{option}</DropdownItem>
+                ))}
+                <DropdownItem key="reset_date" className="text-danger" color="danger">Reset Date</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
         </div>
       </div>
 
-      <div className="lg:hidden space-y-3 mb-6">
-        {currentItems.map((item, index) => (
-          <div
-            key={index}
-            onClick={() => router.push('/artist-page/completed-contract-information')}
-            className="bg-white border border-gray-200 rounded-[12px] px-4 py-4 cursor-pointer hover:bg-gray-50 transition-colors"
-          >
-            <p className="text-[15px] font-bold text-[#3A98BB] truncate mb-1">{item.project}</p>
-            <p className="text-[12px] text-gray-500 mb-1">{item.date}</p>
-            <div className="flex items-center justify-between">
-              <p className="text-[12px] text-[#767676] uppercase">{item.client}</p>
-              <p className="text-[13px] font-semibold text-[#222222]">{item.earnings}</p>
+      {/* Results counter */}
+      {search && (
+        <div className="mb-4 mt-2">
+          <p className="text-sm text-gray-600">
+            Showing {filteredAndSortedContracts.length} of {contracts.length} contracts
+            {search && ` for "${search}"`}
+          </p>
+        </div>
+      )}
+
+      {/* Contract Rows */}
+      <div className="w-full mt-4 flex flex-col gap-3 md:gap-0">
+        {currentItems.length === 0 ? (
+          <div className="text-center py-16">
+            <p className="text-gray-400 text-sm">{search ? `No contracts found matching "${search}"` : "No contracts found"}</p>
+          </div>
+        ) : (
+          currentItems.map((contract, index) => (
+            <div
+              key={contract.id}
+              onClick={() => router.push("/artist-page/completed-contract-information")}
+              className={`
+                flex flex-row items-start justify-between gap-4 cursor-pointer transition-all duration-150
+                bg-white rounded-[12px] border border-[#EAEAEA] px-4 py-4 md:bg-transparent md:rounded-xl md:border-0 md:px-6 md:py-5 md:items-center
+                hover:bg-[#F8F8F8]
+                ${index !== currentItems.length - 1 ? "md:border-b md:border-[#EAEAEA]" : ""}
+              `}
+            >
+              {/* Left: Project info */}
+              <div className="flex flex-col gap-1 min-w-0 flex-1">
+                <p className="text-[14px] md:text-[15px] font-semibold text-[#111111] truncate">
+                  {contract.project}
+                </p>
+                <div className="flex flex-col md:flex-row md:items-center md:gap-4 mt-[2px] gap-[2px]">
+                  <span className="text-[12px] md:text-[13px] text-[#666666]">
+                    <span className="font-medium text-[#444444]">Started - </span>
+                    {contract.startDate}
+                  </span>
+                  <span className="text-[12px] md:text-[13px] text-[#666666]">
+                    <span className="font-medium text-[#444444]">Ended - </span>
+                    {contract.endDate}
+                  </span>
+                </div>
+              </div>
+
+              {/* Right: actions */}
+              <div
+                className="flex flex-row items-center gap-3 shrink-0"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Mobile: three-dot menu */}
+                <div className="md:hidden">
+                  <Dropdown placement="bottom-end" shouldFlip shouldBlockScroll={false} classNames={{ content: "min-w-[160px] rounded-[12px] shadow-lg" }}>
+                    <DropdownTrigger>
+                      <Button isIconOnly variant="light" size="sm" className="text-gray-400 w-9 h-9 rounded-full">
+                        <Ellipsis size={18} />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label="Contract Actions"
+                      onAction={(key) => {
+                        if (key === "rate") {
+                          const returnPath = encodeURIComponent("/artist-page/my-contracts?tab=completed");
+                          router.push(`/artist-page/rate-review?client=${encodeURIComponent(contract.client || "Client")}&contractId=${contract.id}&returnUrl=${returnPath}`);
+                        }
+                      }}
+                    >
+                      <DropdownItem key="rate" className="text-[14px] font-medium text-[#111111] py-3">Rate Client</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
+
+                {/* Desktop: inline button */}
+                <div className="hidden md:flex flex-row items-center gap-3">
+                  <Button
+                    size="sm"
+                    className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full px-5 h-[38px] text-[13px] shadow-none border-0"
+                    onPress={() => {
+                      const returnPath = encodeURIComponent("/artist-page/my-contracts?tab=completed");
+                      router.push(`/artist-page/rate-review?client=${encodeURIComponent(contract.client || "Client")}&contractId=${contract.id}&returnUrl=${returnPath}`);
+                    }}
+                  >
+                    Rate Client
+                  </Button>
+                </div>
+              </div>
             </div>
-            <p className="text-[12px] text-gray-400 mt-1">{item.status}</p>
-          </div>
-        ))}
-        {currentItems.length === 0 && (
-          <div className="text-center py-8">
-            <p className="text-gray-500 text-sm">No completed contracts</p>
-          </div>
+          ))
         )}
       </div>
 
-      {/* Desktop: table */}
-      <div className="hidden lg:block w-full">
-        <div className="w-full bg-white border border-[#EAEAEA] rounded-lg p-6 min-h-[500px] flex flex-col justify-between">
-          <div className="w-full overflow-x-auto">
-            <table className="min-w-[640px] w-full border-collapse">
-              <thead className="border-b border-[#EAEAEA]">
-                <tr>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Date</th>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Project</th>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Client</th>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-[#222222] uppercase tracking-wider">Earnings</th>
-                  <th className="px-6 py-4 text-right text-xs font-bold text-[#222222] uppercase tracking-wider">Status</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white">
-                {currentItems.map((item, index) => (
-                  <tr
-                    key={index}
-                    onClick={() => router.push('/artist-page/completed-contract-information')}
-                    className="border-b border-[#EAEAEA] last:border-none hover:bg-gray-50 active:bg-gray-50 cursor-pointer"
-                  >
-                    <td className="px-6 py-6 text-sm text-[#222222]">{item.date}</td>
-                    <td className="px-6 py-6 text-sm text-[#3A98BB] hover:underline active:opacity-70">
-                      {item.project}
-                    </td>
-                    <td className="px-6 py-6 text-sm text-[#767676] uppercase">{item.client}</td>
-                    <td className="px-6 py-6 text-sm text-[#222222]">{item.earnings}</td>
-                    <td className="px-6 py-6 text-sm text-[#222222] text-right">{item.status}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Pagination */}
-          {
-            totalPages > 0 && (
-              <div className="flex justify-center items-center mt-8 w-full">
-                <Pagination
-                  showControls
-                  total={totalPages}
-                  page={currentPage}
-                  onChange={setCurrentPage}
-                  classNames={{
-                    cursor: "bg-[#3A98BB] text-white",
-                  }}
-                />
-              </div>
-            )
-          }
+      {/* Pagination */}
+      {totalPages > 0 && (
+        <div className="flex justify-center items-center mt-8 w-full">
+          <Pagination
+            showControls
+            total={totalPages}
+            page={currentPage}
+            onChange={setCurrentPage}
+            classNames={{
+              cursor: "bg-[#3A98BB] text-white",
+            }}
+          />
         </div>
-      </div>
-
-    </>
+      )}
+    </div>
   );
 }

@@ -38,7 +38,7 @@ const Footer = ({ source } = {}) => {
   };
 
   return (
-    <footer className="bg-[#223B44] py-12 text-white text-sm relative">
+    <footer className="bg-[#223B44] pt-12 pb-[180px] lg:pb-12 text-white text-sm relative">
       <div className="  px-5 lg:px-8 xl:pl-[68.5px] xl:pr-[66.5px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div className="block mb-8 lg:mb-0">
           <div className="flex items-center mb-4">
@@ -140,7 +140,7 @@ const Footer = ({ source } = {}) => {
       <div className="mt-12 lg:text-center">
         <h6 className="font-semibold text-[#EAEAEA] mb-2 pl-5 lg:pl-0">OUR SOCIALS</h6>
         <div className="border-t border-gray-300 lg:mx-auto w-[90%] py-2 text-center mx-5"></div>
-        <div className="flex lg:justify-center space-x-4 mt-4 pl-5 lg:pl-0">
+        <div className="flex flex-wrap lg:justify-center gap-4 mt-4 px-5 lg:px-0">
           <a
             className="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-white transition-colors"
             target="_blank"
@@ -192,7 +192,7 @@ const Footer = ({ source } = {}) => {
 
       <button
         onClick={scrollToTop}
-        className="absolute bottom-6 right-6 lg:bottom-12 lg:right-12 w-12 h-12 bg-white text-[#223B44] rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors shadow-lg z-50 cursor-pointer"
+        className="absolute bottom-[80px] right-6 lg:bottom-12 lg:right-12 w-12 h-12 bg-white text-[#223B44] rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors shadow-lg z-50 cursor-pointer"
         aria-label="Scroll to top"
       >
         <FaArrowUp className="w-5 h-5" />

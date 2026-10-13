@@ -10,7 +10,6 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Chip,
   useDisclosure,
   Pagination,
 } from '@heroui/react';
@@ -26,7 +25,7 @@ import {
 } from '@heroicons/react/24/outline';
 import ContractHeader from '../../contracts/components/contract-header';
 import { useRouter } from 'next/navigation';
-import ProposalsModal from './ProposalsModal';
+
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 import { useAppStore } from '@/store';
@@ -38,13 +37,11 @@ const MyProjects = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 5;
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     isOpen: isDeleteOpen,
     onOpen: onDeleteOpen,
     onOpenChange: onDeleteOpenChange
   } = useDisclosure();
-  const [selectedProject, setSelectedProject] = useState(null);
   const [projectToDelete, setProjectToDelete] = useState(null);
 
   // Filter projects based on search term
@@ -98,8 +95,7 @@ const MyProjects = () => {
   }, []);
 
   const handleCardClick = (project) => {
-    setSelectedProject(project);
-    onOpen();
+    router.push(`/fashion-designers/my-projects/proposals/${project.id}`);
   };
 
   return (
@@ -354,11 +350,7 @@ const MyProjects = () => {
           )}
         </div>
 
-        <ProposalsModal
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          project={selectedProject}
-        />
+
 
         <DeleteConfirmationModal
           isOpen={isDeleteOpen}

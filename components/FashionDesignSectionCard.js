@@ -1,5 +1,4 @@
 import { Button, Card, CardBody, CardFooter, CardHeader } from "@heroui/react";
-import Link from "next/link";
 import React from "react";
 import { IoArrowForwardOutline } from "react-icons/io5";
 
@@ -13,7 +12,7 @@ const FashionDesignSectionCard = ({ text, title, btnText }) => {
         {`${text}`}
       </CardBody>
       <CardFooter className="justify-end">
-        <Link href="/onboarding">
+        <span>
           <Button
             variant="light"
             className="text-white text-base group-hover:text-black px-0 lg:px-4"
@@ -21,7 +20,7 @@ const FashionDesignSectionCard = ({ text, title, btnText }) => {
           >
             {btnText}
           </Button>
-        </Link>
+        </span>
       </CardFooter>
     </Card>
   );

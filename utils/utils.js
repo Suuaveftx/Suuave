@@ -80,8 +80,8 @@ export const homePageCardData = [
     image: '/dev-images/justice.png',
   },
   {
-    title: 'COMMUNITY DEVELOPMENT',
-    text: 'By standardizing professional interactions, we enable local artistry to integrate seamlessly into the $1.5 trillion global apparel market.',
+    title: 'Community Development',
+    text: 'Connect with a growing global network of creators and brands to discover strategic partnerships, collaborate, and expand your reach.',
     image: '/dev-images/web.png',
   },
 ];

@@ -25,7 +25,7 @@ import {
   ModalContent,
 } from '@heroui/react';
 import ChatClientModal from '../../../../components/ChatClientModal';
-import SubmitProjectModal from '../../../../components/SubmitProjectModal';
+import SubmitWorkModal from '../../../fashion-designers/contracts/components/SubmitWorkModal';
 
 const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
   const router = useRouter();
@@ -75,59 +75,30 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
     {
       title: 'Modern Fashion Attire Illustration',
       id: '24t64754-A',
-      StartDate: '18th June, 2024',
-      EndDate: '20th July, 2024',
-      timeStatus: '(15d left)',
-      badgeColor: '#22C55E',
-      waitingApproval: true,
+      StartDate: '18, June, 2024',
+      EndDate: '23, June, 2024',
+      status: null,
     },
     {
-      title: 'Avant Garde Concept Sketch',
+      title: 'Modern Fashion Attire Illustration',
       id: '98k21456-B',
-      StartDate: '5th July, 2024',
-      EndDate: '15th August, 2024',
-      timeStatus: '(10d late)',
-      badgeColor: '#D32F2F',
+      StartDate: '18, June, 2024',
+      EndDate: '23, June, 2024',
+      status: 'Waiting Approval',
     },
     {
-      title: 'Summer Collection 3D Mockup',
+      title: 'Modern Fashion Attire Illustration',
       id: '12m78390-C',
-      StartDate: '20th August, 2024',
-      EndDate: '30th September, 2024',
-      timeStatus: '(1d left)',
-      badgeColor: '#22C55E',
+      StartDate: '18, June, 2024',
+      EndDate: '23, June, 2024',
+      status: 'Extension Requested',
     },
     {
-      title: 'Elegant Evening Gown Illustration',
+      title: 'Modern Fashion Attire Illustration',
       id: '44f89312-D',
-      StartDate: '1st September, 2024',
-      EndDate: '15th October, 2024',
-      timeStatus: '(14d left)',
-      badgeColor: '#22C55E',
-    },
-    {
-      title: 'Streetwear Graphic Prints',
-      id: '55j92841-E',
-      StartDate: '10th September, 2024',
-      EndDate: '12th November, 2024',
-      timeStatus: '(35d left)',
-      badgeColor: '#22C55E',
-    },
-    {
-      title: 'Modern Abstract Accessories Art',
-      id: '66g34522-F',
-      StartDate: '14th September, 2024',
-      EndDate: '20th November, 2024',
-      timeStatus: '(40d left)',
-      badgeColor: '#22C55E',
-    },
-    {
-      title: 'Luxury Bag Catalog Rendering',
-      id: '77b89182-G',
-      StartDate: '18th September, 2024',
-      EndDate: '5th December, 2024',
-      timeStatus: '(45d left)',
-      badgeColor: '#22C55E',
+      StartDate: '18, June, 2024',
+      EndDate: '23, June, 2024',
+      status: 'Deadline Extended',
     },
   ];
 
@@ -276,8 +247,7 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
                 classNames={{ base: 'overflow-visible' }}
               >
                 <CardBody className="px-4 py-4 overflow-visible">
-                  {/* Hidden trigger for mobile modal popup */}
-                  <SubmitProjectModal
+                  <SubmitWorkModal
                     trigger={
                       <button id={`submit-modal-btn-${contract.id || index}`} style={{ display: 'none' }}>
                         Submit Project
@@ -285,18 +255,16 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
                     }
                   />
 
-                  {/* Title row */}
                   <div className="flex items-start justify-between gap-2 w-full min-w-0 mb-2">
                     <button
                       className="flex-1 min-w-0 text-left"
-                      onClick={() => router.push(`/artist-page/ongoing-contract-information?id=${encodeURIComponent(contract.id || '')}&timeStatus=${encodeURIComponent(contract.timeStatus || '')}&color=${encodeURIComponent(contract.badgeColor || '#3A98BB')}`)}
+                      onClick={() => router.push(`/artist-page/ongoing-contract-information?id=${encodeURIComponent(contract.id || '')}&status=${encodeURIComponent(contract.status || '')}`)}
                     >
-                      <h3 className="text-[15px] font-bold text-[#3A98BB] truncate leading-snug">
+                      <h3 className="text-[15px] font-bold text-[#111111] truncate leading-snug">
                         {contract.title}
                       </h3>
                     </button>
 
-                    {/* Three-dot menu */}
                     <button
                       type='button'
                       ref={(el) => { menuButtonRefs.current[contract.id || index] = el; }}
@@ -321,134 +289,127 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
                     </button>
                   </div>
 
-                  {/* Waiting Approval chip - mobile */}
-                  {contract.waitingApproval && (
+                  {contract.status === 'Waiting Approval' && (
                     <div className="mb-2">
-                      <span className="inline-flex items-center bg-[#EAF5FB] text-[#3A98BB] text-[11px] font-semibold px-2 rounded-full h-[22px]">
+                      <span className="inline-flex items-center bg-[#EAF5FB] text-[#3A98BB] text-[11px] font-semibold px-2 py-0.5 rounded-sm">
                         Waiting Approval
                       </span>
                     </div>
                   )}
+                  {contract.status === 'Extension Requested' && (
+                    <div className="mb-2">
+                      <span className="inline-flex items-center bg-[#FFF4E5] text-[#E68A1D] text-[11px] font-semibold px-2 py-0.5 rounded-sm">
+                        Extension Requested
+                      </span>
+                    </div>
+                  )}
+                  {contract.status === 'Deadline Extended' && (
+                    <div className="mb-2">
+                      <span className="inline-flex items-center bg-[#E6F5EC] text-[#22C55E] text-[11px] font-semibold px-2 py-0.5 rounded-sm">
+                        Deadline Extended
+                      </span>
+                    </div>
+                  )}
 
-                  {/* Date info */}
                   <div
                     className="space-y-1 cursor-pointer"
-                    onClick={() => router.push(`/artist-page/ongoing-contract-information?id=${encodeURIComponent(contract.id || '')}&timeStatus=${encodeURIComponent(contract.timeStatus || '')}&color=${encodeURIComponent(contract.badgeColor || '#3A98BB')}`)}
+                    onClick={() => router.push(`/artist-page/ongoing-contract-information?id=${encodeURIComponent(contract.id || '')}`)}
                   >
                     <div className='flex items-center gap-2 text-[13px]'>
-                      <span className='text-gray-500 font-normal'>Start Date -</span>
-                      <span className='font-semibold text-[#222222]'>{contract.StartDate}</span>
+                      <span className='text-gray-400'>Start Date -</span>
+                      <span className='font-medium text-[#222222]'>{contract.StartDate}</span>
                     </div>
                     <div className='flex items-center gap-2 text-[13px]'>
-                      <span className='text-gray-500 font-normal'>End Date -</span>
-                      <span className='font-semibold text-[#222222]'>{contract.EndDate}</span>
-                      {contract.timeStatus && !contract.waitingApproval && (
-                        <span
-                          className='text-xs font-bold whitespace-nowrap'
-                          style={{ color: contract.badgeColor }}
-                        >
-                          {contract.timeStatus}
-                        </span>
-                      )}
+                      <span className='text-gray-400'>End Date -</span>
+                      <span className='font-medium text-[#222222]'>{contract.EndDate}</span>
                     </div>
                   </div>
                 </CardBody>
               </Card>
             </div>
 
-            {/* ── DESKTOP Card (original layout, unchanged) ── */}
+            {/* ── DESKTOP Card ── */}
             <div
-              className='hidden lg:block bg-white border border-[#EAEAEA] rounded-[10px] p-4 lg:p-6 transition-all hover:bg-gray-50 cursor-pointer'
-              onClick={() => router.push(`/artist-page/ongoing-contract-information?id=${encodeURIComponent(contract.id || '')}&timeStatus=${encodeURIComponent(contract.timeStatus || '')}&color=${encodeURIComponent(contract.badgeColor || '#3A98BB')}`)}
+              className='hidden lg:flex bg-white border border-[#EAEAEA] rounded-[10px] p-5 lg:px-8 lg:py-5 transition-all hover:bg-gray-50 cursor-pointer items-center justify-between'
+              onClick={() => router.push(`/artist-page/ongoing-contract-information?id=${encodeURIComponent(contract.id || '')}`)}
             >
-              <div className='md:px-2 px-1 py-1 overflow-visible'>
-                <div className='flex md:justify-between items-center w-full gap-2 pt-1'>
-                  <div className='flex-1 grid md:grid-cols-[1.5fr_1fr_auto] md:gap-x-4 md:items-center min-w-0'>
-                    <div className='flex flex-col items-start gap-1 mb-1 md:mb-0 w-full min-w-0'>
-                      <div className='flex items-center w-full gap-2 min-w-0'>
-                        <h3 className='font-semibold text-[13px] md:text-[16px] text-[#3A98BB] truncate transition-colors flex-1 min-w-0'>
-                          {contract.title} {contract.id ? `(${contract.id})` : ''}
-                        </h3>
-                      </div>
-                      {contract.waitingApproval && (
-                        <span className="inline-flex items-center bg-[#EAF5FB] text-[#3A98BB] text-[11px] font-semibold px-2 rounded-full h-[22px] mt-0.5">
-                          Waiting Approval
-                        </span>
-                      )}
-                    </div>
+              <div className='flex flex-col items-start gap-1.5 w-[35%] pr-4'>
+                <h3 className='font-bold text-[15px] text-[#111111] truncate w-full'>
+                  {contract.title}
+                </h3>
+                {contract.status === 'Waiting Approval' && (
+                  <span className="inline-flex items-center bg-[#EAF5FB] text-[#3A98BB] text-[11px] font-semibold px-2 py-0.5 rounded-sm">
+                    Waiting Approval
+                  </span>
+                )}
+                {contract.status === 'Extension Requested' && (
+                  <span className="inline-flex items-center bg-[#FFF4E5] text-[#E68A1D] text-[11px] font-semibold px-2 py-0.5 rounded-sm">
+                    Extension Requested
+                  </span>
+                )}
+                {contract.status === 'Deadline Extended' && (
+                  <span className="inline-flex items-center bg-[#E6F5EC] text-[#22C55E] text-[11px] font-semibold px-2 py-0.5 rounded-sm">
+                    Deadline Extended
+                  </span>
+                )}
+              </div>
 
-                    <div className='flex flex-col items-start text-[14px] font-satoshi text-gray-500'>
-                      <div className='mb-1 flex items-center gap-2'>
-                        <span className='text-[14px] flex-shrink-0 w-20 text-gray-500'>Start Date :</span>
-                        <span className='whitespace-nowrap font-semibold text-[#222222]'>{contract.StartDate}</span>
-                      </div>
-                      <div className='flex items-center gap-2'>
-                        <span className='text-[14px] flex-shrink-0 w-20 text-gray-500'>End Date :</span>
-                        <span className='whitespace-nowrap font-semibold text-[#222222]'>{contract.EndDate}</span>
-                        {!contract.waitingApproval && (
-                          <span
-                            className='text-xs font-bold inline-flex items-center whitespace-nowrap ml-1'
-                            style={{ color: contract.badgeColor }}
-                          >
-                            {contract.timeStatus}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Desktop action buttons */}
-                  <div className='hidden md:flex flex-row justify-end items-center gap-3 shrink-0 pl-4 overflow-visible'>
-                    <div className='flex items-center gap-3 shrink-0' onClick={(e) => e.stopPropagation()}>
-                      <SubmitProjectModal
-                        trigger={
-                          <Button
-                            className='bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold rounded-full px-6 h-[42px] border-0 shadow-md'
-                            radius='full'
-                          >
-                            Submit Project
-                          </Button>
-                        }
-                      />
-                      <ChatClientModal
-                        trigger={
-                          <Button
-                            className='bg-white text-[#222222] font-bold rounded-full px-6 h-[42px] border border-[#D1D1D1]'
-                            radius='full'
-                            variant='bordered'
-                          >
-                            Chat Client
-                          </Button>
-                        }
-                      />
-                    </div>
-                    <div className='flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
-                      <span className='text-sm font-proximanova text-gray-500'>More</span>
-                      <Dropdown placement="bottom-end" shouldBlockScroll={false}>
-                        <DropdownTrigger>
-                          <Button isIconOnly variant='light' size='sm' className='bg-transparent border-0 rounded-lg'>
-                            <EllipsisHorizontalIcon className='w-6 h-6 text-gray-400' />
-                          </Button>
-                        </DropdownTrigger>
-                        <DropdownMenu aria-label="More Options">
-                          <DropdownItem 
-                            key="request_extension" 
-                            className="text-sm font-medium text-[#222222]"
-                            onPress={() => {
-                              setCurrentContract(contract);
-                              setShowExtensionModal(true);
-                            }}
-                          >
-                            Request Extension
-                          </DropdownItem>
-                          <DropdownItem key="report" className="text-sm font-medium text-red-500 hover:text-red-600">
-                            Report Dispute
-                          </DropdownItem>
-                        </DropdownMenu>
-                      </Dropdown>
-                    </div>
-                  </div>
+              <div className='flex flex-col items-start text-[13px] font-satoshi w-[25%]'>
+                <div className='flex items-center gap-2 mb-1'>
+                  <span className='text-gray-400'>Start Date -</span>
+                  <span className='font-medium text-[#222222]'>{contract.StartDate}</span>
                 </div>
+                <div className='flex items-center gap-2'>
+                  <span className='text-gray-400'>End Date -</span>
+                  <span className='font-medium text-[#222222]'>{contract.EndDate}</span>
+                </div>
+              </div>
+
+              <div className='flex items-center justify-end gap-4 flex-1' onClick={(e) => e.stopPropagation()}>
+                <SubmitWorkModal
+                  trigger={
+                    <Button
+                      className='bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full h-[40px] border-0 shadow-sm text-sm w-[150px]'
+                      radius='full'
+                    >
+                      {contract.status === 'Waiting Approval' ? 'Resubmit' : 'Submit Project'}
+                    </Button>
+                  }
+                />
+                <ChatClientModal
+                  trigger={
+                    <Button
+                      className='bg-transparent text-[#222222] font-semibold rounded-full h-[40px] border border-gray-300 text-sm w-[130px]'
+                      radius='full'
+                    >
+                      Chat Client
+                    </Button>
+                  }
+                />
+                
+                <Dropdown placement="bottom-end" shouldBlockScroll={false}>
+                  <DropdownTrigger>
+                    <div className='flex items-center justify-end gap-1.5 cursor-pointer w-[70px]'>
+                      <span className='text-sm font-semibold text-[#222222]'>More</span>
+                      <EllipsisHorizontalIcon className='w-5 h-5 text-gray-500' />
+                    </div>
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label="More Options">
+                    <DropdownItem 
+                      key="request_extension" 
+                      className="text-sm font-medium text-[#222222]"
+                      onPress={() => {
+                        setCurrentContract(contract);
+                        setShowExtensionModal(true);
+                      }}
+                    >
+                      Request Extension
+                    </DropdownItem>
+                    <DropdownItem key="report" className="text-sm font-medium text-red-500 hover:text-red-600">
+                      Report Dispute
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
               </div>
             </div>
 

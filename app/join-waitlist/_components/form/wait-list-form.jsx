@@ -85,18 +85,18 @@ export default function WaitlistForm() {
       <div className='w-full max-w-md'>
         <div className='bg-white rounded-2xl shadow-xl p-8 border border-gray-100'>
           <div className='text-center mb-8'>
-            <div className='inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full mb-4'>
+            <div className='inline-flex items-center justify-center w-16 h-16 rounded-full mb-4' style={{ background: 'radial-gradient(circle at top left, #FFFFFF, #CCE7F2)' }}>
               <svg
-                className='w-8 h-8 text-white'
+                className='w-8 h-8'
                 fill='none'
-                stroke='currentColor'
+                stroke='#035A7A'
                 viewBox='0 0 24 24'
               >
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+                  strokeWidth={4}
+                  d='M5 13l4 4L19 7'
                 />
               </svg>
             </div>
@@ -225,13 +225,19 @@ export default function WaitlistForm() {
                 disabled={loading}
                 className='  mx-auto w-full text-lg h-[52px] text-center  text-gray-500 flex items-center justify-center gap-2 font-proximanova font-medium px-6 py-3 rounded-full shadow-md'
               >
-                {loading ? 'Joining...' : 'Join Waitlist'}
+                {loading ? 'Joining...' : 'Join the Waitlist'}
               </button>
             </div>
           )}
 
           <p className='text-center text-sm text-gray-500 mt-6'>
             We respect your privacy. We will not share your data.
+          </p>
+          <p className='text-center text-sm text-gray-400 mt-2'>
+            Send feedback to{' '}
+            <a href='mailto:info@suuave.com' className='text-[#035A7A] hover:underline'>
+              info@suuave.com
+            </a>
           </p>
         </div>
       </div>
