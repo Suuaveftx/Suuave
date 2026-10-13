@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
     // ✅ Neon returns an array directly
-    const rows = await sql`SELECT * FROM waitlist ORDER BY timestamp DESC`;
+    const rows = await sql`SELECT * FROM waitlist ORDER BY created_at DESC`;
 
     console.log('Fetched rows:', rows);
 

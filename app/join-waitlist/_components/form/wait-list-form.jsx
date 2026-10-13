@@ -50,10 +50,10 @@ export default function WaitlistForm() {
           setSubmitted(true);
 
           // Reset form after 3 seconds
-          setTimeout(() => {
-            setFormData({ firstName: '', email: '', category: '' });
-            setSubmitted(false);
-          }, 3000);
+          // setTimeout(() => {
+          //   setFormData({ firstName: '', email: '', category: '' });
+          //   setSubmitted(false);
+          // }, 3000);
         } else {
           setErrors({ submit: data.message || 'Something went wrong' });
         }
@@ -79,19 +79,18 @@ export default function WaitlistForm() {
       }));
     }
   };
-
   return (
     <div className='min-h-screen flex items-center justify-center p-4'>
       <div className='w-full max-w-md'>
         <div className='bg-white rounded-2xl shadow-xl p-8 border border-gray-100'>
           <div className='text-center mb-8'>
-            <div className='inline-flex items-center justify-center w-16 h-16 rounded-full mb-4' style={{ background: 'radial-gradient(circle at top left, #FFFFFF, #CCE7F2)' }}>
-              <svg
-                className='w-8 h-8'
-                fill='none'
-                stroke='#035A7A'
-                viewBox='0 0 24 24'
-              >
+            <div
+              className='inline-flex items-center justify-center w-16 h-16 rounded-full mb-4'
+              style={{
+                background: 'radial-gradient(circle at top left, #FFFFFF, #CCE7F2)',
+              }}
+            >
+              <svg className='w-8 h-8' fill='none' stroke='#035A7A' viewBox='0 0 24 24'>
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
