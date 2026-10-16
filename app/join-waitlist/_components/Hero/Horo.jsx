@@ -27,8 +27,8 @@ const HeroSection = () => {
         </div>
         <div className='lg:pr-14 py-14 relative pr-5 px-5 lg:px-0 lg:mt-0 mt-7'>
           <p className='font-medium mb-10 lg:mb-0 text-[33px] text-white lg:pl-14 pl-0 md:p-2 lg:leading-[60px] leading-[40px] z-30 lg:w-[84%] lg:text-start text-center w-full '>
-            Join Waitlist. The Global Marketplace for Premium{' '}
-            <span className='italic font-[40]'>African</span> Fashion Artistry.
+            Join the Global marketplace for premium{' '}
+            <span className='italic font-[40]'>African</span> fashion Artistry.
           </p>
           <ScrollParallax isAbsolutelyPositioned strength={0.1} zIndex={30}>
             <HeroSlimCard
@@ -71,7 +71,7 @@ const HeroSection = () => {
             />
           </ScrollParallax>
 
-          <p className='text-customGray lg:pl-14 lg:w-[90%] lg:text-[17px] z-30 w-full lg:text-start text-center text-[16.6px]  pl-3 p-2 px-3 '>
+          <p className='text-customGray lg:pl-14 lg:w-[90%] lg:text-[17px] z-30 w-full lg:text-start text-center text-[16.6px] pl-3 p-2 px-3 mt-10 lg:mt-12'>
             The premier B2B marketplace connecting global fashion houses with
             verified African talented artists - from digital patterns to 3D
             couture.
