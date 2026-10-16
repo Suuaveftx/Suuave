@@ -1,0 +1,349 @@
+'use client';
+import { useState, useRef, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Tabs, Tab, Button } from '@heroui/react';
+import PaymentTable from './PaymentTable';
+import PayoutHistory from './PayoutHistory';
+import { Search, ChevronDown, Calendar, Info, Filter } from 'lucide-react';
+import SearchBar from '../../../../components/Searchbar';
+
+export default function PaymentTabs() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get('tab') === 'payouts' ? 'payouts' : 'earnings';
+  const [selectedTab, setSelectedTab] = useState(initialTab);
+
+  // Keep tab state synced if URL changes
+  useEffect(() => {
+    const queryTab = searchParams.get('tab');
+    if (queryTab === 'payouts' || queryTab === 'earnings') {
+      setSelectedTab(queryTab);
+    }
+  }, [searchParams]);
+
+  const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
+  const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
+  const [selectedType, setSelectedType] = useState('All Types');
+  const [customRange, setCustomRange] = useState({ start: '', end: '' });
+  const [payoutSearch, setPayoutSearch] = useState('');
+  const [isPayoutDateDropdownOpen, setIsPayoutDateDropdownOpen] = useState(false);
+  const [payoutFilterState, setPayoutFilterState] = useState({ type: 'none', value: null, label: 'Select Date' });
+  const [payoutCustomRange, setPayoutCustomRange] = useState({ start: '', end: '' });
+
+  const typeDropdownRef = useRef(null);
+  const dateDropdownRef = useRef(null);
+  const payoutDateDropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (typeDropdownRef.current && !typeDropdownRef.current.contains(event.target)) {
+        setIsTypeDropdownOpen(false);
+      }
+      if (dateDropdownRef.current && !dateDropdownRef.current.contains(event.target)) {
+        setIsDateDropdownOpen(false);
+      }
+      if (payoutDateDropdownRef.current && !payoutDateDropdownRef.current.contains(event.target)) {
+        setIsPayoutDateDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Filter state: { type: 'date' | 'range' | 'custom', value: any, label: string }
+  const [filterState, setFilterState] = useState({ type: 'none', value: null, label: 'Select Date' });
+
+  const handleCustomDateChange = (field, value) => {
+    const newRange = { ...customRange, [field]: value };
+    setCustomRange(newRange);
+    if (newRange.start && newRange.end) {
+      setFilterState({
+        type: 'custom',
+        value: newRange,
+        label: `${newRange.start} - ${newRange.end}`
+      });
+    }
+  };
+
+  const handleRangeSelect = (days) => {
+    setFilterState({ type: 'range', value: days, label: `Last ${days} days` });
+    setIsDateDropdownOpen(false);
+  };
+
+  const handleReset = () => {
+    setFilterState({ type: 'none', value: null, label: 'Select Date' });
+    setCustomRange({ start: '', end: '' });
+    setIsDateDropdownOpen(false);
+  };
+
+  const handleTypeSelect = (type) => {
+    setSelectedType(type);
+    setIsTypeDropdownOpen(false);
+  };
+
+  const handleTypeReset = () => {
+    setSelectedType('All Types');
+    setIsTypeDropdownOpen(false);
+  };
+
+  // Payout date filter handlers
+  const handlePayoutRangeSelect = (days) => {
+    setPayoutFilterState({ type: 'range', value: days, label: `Last ${days} days` });
+    setIsPayoutDateDropdownOpen(false);
+  };
+
+  const handlePayoutReset = () => {
+    setPayoutFilterState({ type: 'none', value: null, label: 'Select Date' });
+    setPayoutCustomRange({ start: '', end: '' });
+    setIsPayoutDateDropdownOpen(false);
+  };
+
+  const handlePayoutCustomDateChange = (field, value) => {
+    const newRange = { ...payoutCustomRange, [field]: value };
+    setPayoutCustomRange(newRange);
+    if (newRange.start && newRange.end) {
+      setPayoutFilterState({ type: 'custom', value: newRange, label: `${newRange.start} - ${newRange.end}` });
+    }
+  };
+
+  return (
+    <div className='w-full'>
+      {/* Top Header Section: Tabs + Summary Cards */}
+      <div className='flex flex-col lg:flex-row justify-between items-start lg:items-center relative'>
+        {/* Tabs */}
+        <div className='w-full lg:w-auto'>
+          <Tabs
+            aria-label='Payment Options'
+            selectedKey={selectedTab}
+            onSelectionChange={setSelectedTab}
+            className='!shadow-none p-0 bg-transparent'
+            variant='underlined'
+            classNames={{
+              tabList: "gap-6 w-full relative rounded-none p-0 border-b border-divider",
+              cursor: "w-full bg-[#3A98BB]",
+              tab: "max-w-fit px-0 h-12",
+              tabContent: "group-data-[selected=true]:text-[#3A98BB] text-[#767676] font-bold text-lg"
+            }}
+          >
+            <Tab key='earnings' title='Earning History' />
+            <Tab key='payouts' title='Payout History' />
+          </Tabs>
+        </div>
+
+
+      </div>
+
+      {/* Filter Row (Only for Earning History for now) */}
+      {selectedTab === 'earnings' && (
+        <div className='mt-8 flex flex-col lg:flex-row gap-4 justify-between items-center'>
+
+          {/* Search Bar with Integrated Filters */}
+          <div className='flex-grow max-w-2xl w-full'>
+            <SearchBar
+              placeholder='Search'
+              endContent={
+                <div className='flex items-center gap-3 pr-2'>
+                  {/* All Types Dropdown */}
+                  <div className='relative' ref={typeDropdownRef}>
+                    <button
+                      onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
+                      className='flex items-center gap-1 cursor-pointer hover:bg-gray-100 p-1.5 rounded-full transition-colors'
+                      title='Filter by Type'
+                    >
+                      <Filter className='h-4 w-4 text-gray-400' />
+                      <span className='text-[10px] text-gray-400'>▼</span>
+                    </button>
+
+                    {isTypeDropdownOpen && (
+                      <div className='absolute top-full right-0 mt-2 w-48 bg-white border border-[#E5E5E5] rounded-xl shadow-lg py-2 z-[100] overflow-hidden'>
+                        {selectedType !== 'All Types' && (
+                          <div
+                            onClick={handleTypeReset}
+                            className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB] font-medium border-b border-gray-100'
+                          >
+                            Reset Filter
+                          </div>
+                        )}
+                        <div
+                          onClick={() => handleTypeSelect('Licensing')}
+                          className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'
+                        >
+                          Licensing
+                        </div>
+                        <div
+                          onClick={() => handleTypeSelect('Projects')}
+                          className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'
+                        >
+                          Projects
+                        </div>
+                        <div
+                          onClick={() => handleTypeSelect('Buy more time')}
+                          className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'
+                        >
+                          Buy more time
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Date Dropdown */}
+                  <div className='relative' ref={dateDropdownRef}>
+                    <button
+                      onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
+                      className='flex items-center gap-1 cursor-pointer hover:bg-gray-100 p-1.5 rounded-full transition-colors'
+                      title='Filter by Date'
+                    >
+                      <Calendar className='h-4 w-4 text-gray-400' />
+                      <span className='text-[10px] text-gray-400'>▼</span>
+                    </button>
+
+                    {isDateDropdownOpen && (
+                      <div className='absolute top-full right-0 mt-2 w-72 bg-white border border-[#E5E5E5] rounded-xl shadow-lg z-[100] overflow-hidden'>
+                        <div className='py-2 border-b border-gray-100'>
+                          <div onClick={handleReset} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB] font-medium'>Reset Filter</div>
+                          <div className='border-t border-gray-100 my-1'></div>
+                          <div onClick={() => handleRangeSelect(7)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 7 days</div>
+                          <div onClick={() => handleRangeSelect(14)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 14 days</div>
+                          <div onClick={() => handleRangeSelect(30)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 30 days</div>
+                        </div>
+                        <div className='p-4 bg-gray-50 space-y-3'>
+                          <p className="text-xs font-bold text-[#767676] uppercase tracking-wider">Custom Range</p>
+                          <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-1">
+                              <span className="text-[10px] text-[#888888] ml-1">From</span>
+                              <input
+                                type="date"
+                                value={customRange.start}
+                                onChange={(e) => handleCustomDateChange('start', e.target.value)}
+                                className="w-full border border-[#E5E5E5] rounded-lg p-2 text-sm text-[#555555] focus:outline-none focus:ring-1 focus:ring-[#3A98BB] bg-white h-10"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <span className="text-[10px] text-[#888888] ml-1">To</span>
+                              <input
+                                type="date"
+                                value={customRange.end}
+                                onChange={(e) => handleCustomDateChange('end', e.target.value)}
+                                className="w-full border border-[#E5E5E5] rounded-lg p-2 text-sm text-[#555555] focus:outline-none focus:ring-1 focus:ring-[#3A98BB] bg-white h-10"
+                              />
+                            </div>
+                          </div>
+                          <Button
+                            size="sm"
+                            fullWidth
+                            className="bg-[#3A98BB] text-white font-bold h-10 rounded-lg mt-2 shadow-sm"
+                            onClick={() => setIsDateDropdownOpen(false)}
+                          >
+                            Apply Range
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              }
+            />
+          </div>
+
+          {/* Right Side: Report Button */}
+          <div className='flex flex-wrap lg:flex-nowrap gap-4 items-center w-full lg:w-auto mt-4 lg:mt-0 pb-2 lg:pb-0'>
+            <button
+              onClick={() => router.push('/artist-page/transaction-resolution')}
+              className='flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-[#FFF5F5] border border-[#FFE0E0] rounded-full text-[#FF4D4D] text-sm font-medium hover:bg-[#ffe6e6] whitespace-nowrap'
+            >
+              <Info className='h-4 w-4' />
+              Report Any Issue
+            </button>
+          </div>
+
+        </div>
+      )}
+
+      {/* Payout History filter row */}
+      {selectedTab === 'payouts' && (
+        <div className='mt-8 flex flex-col lg:flex-row gap-4 justify-between items-center'>
+          <div className='flex-grow max-w-2xl w-full'>
+            <SearchBar
+              placeholder='Search by Transaction ID or Status'
+              value={payoutSearch}
+              onChange={(e) => setPayoutSearch(e.target.value)}
+              endContent={
+                <div className='flex items-center gap-3 pr-2'>
+                  {/* Calendar Dropdown */}
+                  <div className='relative' ref={payoutDateDropdownRef}>
+                    <button
+                      onClick={() => setIsPayoutDateDropdownOpen(!isPayoutDateDropdownOpen)}
+                      className='flex items-center gap-1 cursor-pointer hover:bg-gray-100 p-1.5 rounded-full transition-colors'
+                      title='Filter by Date'
+                    >
+                      <Calendar className='h-4 w-4 text-gray-400' />
+                      <span className='text-[10px] text-gray-400'>▼</span>
+                    </button>
+
+                    {isPayoutDateDropdownOpen && (
+                      <div className='absolute top-full right-0 mt-2 w-72 bg-white border border-[#E5E5E5] rounded-xl shadow-lg z-[100] overflow-hidden'>
+                        <div className='py-2 border-b border-gray-100'>
+                          <div onClick={handlePayoutReset} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB] font-medium'>Reset Filter</div>
+                          <div className='border-t border-gray-100 my-1'></div>
+                          <div onClick={() => handlePayoutRangeSelect(7)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 7 days</div>
+                          <div onClick={() => handlePayoutRangeSelect(14)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 14 days</div>
+                          <div onClick={() => handlePayoutRangeSelect(30)} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Last 30 days</div>
+                        </div>
+                        <div className='p-4 bg-gray-50 space-y-3'>
+                          <p className="text-xs font-bold text-[#767676] uppercase tracking-wider">Custom Range</p>
+                          <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-1">
+                              <span className="text-[10px] text-[#888888] ml-1">From</span>
+                              <input
+                                type="date"
+                                value={payoutCustomRange.start}
+                                onChange={(e) => handlePayoutCustomDateChange('start', e.target.value)}
+                                className="w-full border border-[#E5E5E5] rounded-lg p-2 text-sm text-[#555555] focus:outline-none focus:ring-1 focus:ring-[#3A98BB] bg-white h-10"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <span className="text-[10px] text-[#888888] ml-1">To</span>
+                              <input
+                                type="date"
+                                value={payoutCustomRange.end}
+                                onChange={(e) => handlePayoutCustomDateChange('end', e.target.value)}
+                                className="w-full border border-[#E5E5E5] rounded-lg p-2 text-sm text-[#555555] focus:outline-none focus:ring-1 focus:ring-[#3A98BB] bg-white h-10"
+                              />
+                            </div>
+                          </div>
+                          <Button
+                            size="sm"
+                            fullWidth
+                            className="bg-[#3A98BB] text-white font-bold h-10 rounded-lg mt-2 shadow-sm"
+                            onClick={() => setIsPayoutDateDropdownOpen(false)}
+                          >
+                            Apply Range
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              }
+            />
+          </div>
+          <div className='flex flex-wrap lg:flex-nowrap gap-4 items-center w-full lg:w-auto mt-4 lg:mt-0 pb-2 lg:pb-0'>
+            <button
+              onClick={() => router.push('/artist-page/transaction-resolution')}
+              className='flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-[#FFF5F5] border border-[#FFE0E0] rounded-full text-[#FF4D4D] text-sm font-medium hover:bg-[#ffe6e6] whitespace-nowrap'
+            >
+              <Info className='h-4 w-4' />
+              Report Any Issue
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Content Area */}
+      <div className='mt-6'>
+        {selectedTab === 'earnings' && <PaymentTable filterType={filterState.type} filterValue={filterState.value} />}
+        {selectedTab === 'payouts' && <PayoutHistory search={payoutSearch} filterType={payoutFilterState.type} filterValue={payoutFilterState.value} />}
+      </div>
+    </div>
+  );
+}

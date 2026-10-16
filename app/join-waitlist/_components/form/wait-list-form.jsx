@@ -1,0 +1,279 @@
+import React, { useState, useEffect } from 'react';
+
+export default function WaitlistForm() {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    email: '',
+    category: '',
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Pre-warm the database connection as soon as the user visits the page
+    // so submitting the form is snappy and responsive
+    fetch('/api/waitlist?ping=1').catch(() => {});
+  }, []);
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = 'First name is required';
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      newErrors.email = 'Please enter a valid email';
+    }
+
+    if (!formData.category) {
+      newErrors.category = 'Please select a category';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (loading) return;
+
+    if (validateForm()) {
+      setLoading(true);
+      setErrors((prev) => ({ ...prev, submit: '' }));
+
+      try {
+        const response = await fetch('/api/waitlist', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            firstName: formData.firstName.trim(),
+            email: formData.email.trim(),
+            category: formData.category,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setSubmitted(true);
+        } else {
+          setErrors((prev) => ({ ...prev, submit: data.message || 'Something went wrong' }));
+        }
+      } catch (error) {
+        setErrors((prev) => ({ ...prev, submit: 'Failed to submit. Please try again.' }));
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: '',
+      }));
+    }
+  };
+  return (
+    <div className='min-h-screen flex items-center justify-center p-4'>
+      <div className='w-full max-w-md'>
+        <div className='bg-white rounded-2xl shadow-xl p-8 border border-gray-100'>
+          <div className='text-center mb-8'>
+            <div
+              className='inline-flex items-center justify-center w-16 h-16 rounded-full mb-4'
+              style={{
+                background: 'radial-gradient(circle at top left, #FFFFFF, #CCE7F2)',
+              }}
+            >
+              <svg className='w-8 h-8' fill='none' stroke='#035A7A' viewBox='0 0 24 24'>
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={4}
+                  d='M5 13l4 4L19 7'
+                />
+              </svg>
+            </div>
+            <h1 className='text-3xl font-bold text-gray-900 mb-2'>Join the Waitlist</h1>
+            <p className='text-gray-600'>Be the first to know when we launch</p>
+          </div>
+
+          {submitted ? (
+            <div className='bg-green-50 border border-green-200 rounded-lg p-6 text-center'>
+              <div className='inline-flex items-center justify-center w-12 h-12 bg-green-100 rounded-full mb-3'>
+                <svg
+                  className='w-6 h-6 text-green-600'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M5 13l4 4L19 7'
+                  />
+                </svg>
+              </div>
+              <h3 className='text-lg font-semibold text-green-900 mb-1'>
+                You are on the list!
+              </h3>
+              <p className='text-green-700 text-sm'>
+                We will notify you as soon as we launch.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} noValidate className='space-y-5'>
+              <div>
+                <label
+                  htmlFor='firstName'
+                  className='block text-sm font-medium text-gray-700 mb-2'
+                >
+                  First Name
+                </label>
+                <input
+                  type='text'
+                  id='firstName'
+                  name='firstName'
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className={`w-full px-4 py-3 rounded-lg border ${
+                    errors.firstName
+                      ? 'border-red-300 bg-red-50'
+                      : 'border-gray-300 bg-white'
+                  } focus:ring-2 focus:ring-[#035A7A] focus:border-transparent transition-all outline-none`}
+                  placeholder='Enter your first name'
+                />
+                {errors.firstName && (
+                  <p className='mt-1 text-sm text-red-600'>{errors.firstName}</p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor='email'
+                  className='block text-sm font-medium text-gray-700 mb-2'
+                >
+                  Email Address
+                </label>
+                <input
+                  type='email'
+                  id='email'
+                  name='email'
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={`w-full px-4 py-3 rounded-lg border ${
+                    errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white'
+                  } focus:ring-2 focus:ring-[#035A7A] focus:border-transparent transition-all outline-none`}
+                  placeholder='your@email.com'
+                />
+                {errors.email && (
+                  <p className='mt-1 text-sm text-red-600'>{errors.email}</p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor='category'
+                  className='block text-sm font-medium text-gray-700 mb-2'
+                >
+                  I am a (an)...
+                </label>
+                <select
+                  id='category'
+                  name='category'
+                  value={formData.category}
+                  onChange={handleChange}
+                  className={`w-full px-4 py-3 rounded-lg border ${
+                    errors.category
+                      ? 'border-red-300 bg-red-50'
+                      : 'border-gray-300 bg-white'
+                  } focus:ring-2 focus:ring-[#035A7A] focus:border-transparent transition-all outline-none appearance-none cursor-pointer`}
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'right 0.75rem center',
+                    backgroundSize: '1.5rem',
+                  }}
+                >
+                  <option value=''>Select a category</option>
+                  <option value='brand'>Brand</option>
+                  <option value='artist'>Artist</option>
+                </select>
+                {errors.category && (
+                  <p className='mt-1 text-sm text-red-600'>{errors.category}</p>
+                )}
+              </div>
+
+              {errors.submit && (
+                <div className='bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-700'>
+                  {errors.submit}
+                </div>
+              )}
+
+              <button
+                type='submit'
+                style={{
+                  background: 'radial-gradient(circle at top left, #FFFFFF, #CCE7F2)',
+                }}
+                disabled={loading}
+                className='mx-auto w-full text-lg h-[52px] text-center text-[#035A7A] hover:text-[#02445c] flex items-center justify-center gap-2 font-proximanova font-semibold px-6 py-3 rounded-full shadow-md transition-all duration-200 transform active:scale-[0.98] hover:shadow-lg disabled:opacity-75 disabled:cursor-wait cursor-pointer'
+              >
+                {loading ? (
+                  <>
+                    <svg
+                      className='animate-spin h-5 w-5 text-[#035A7A]'
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                    >
+                      <circle
+                        className='opacity-25'
+                        cx='12'
+                        cy='12'
+                        r='10'
+                        stroke='currentColor'
+                        strokeWidth='4'
+                      />
+                      <path
+                        className='opacity-75'
+                        fill='currentColor'
+                        d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+                      />
+                    </svg>
+                    <span>Joining...</span>
+                  </>
+                ) : (
+                  <span>Join the Waitlist</span>
+                )}
+              </button>
+            </form>
+          )}
+
+          <p className='text-center text-sm text-gray-500 mt-8'>
+            We respect your privacy. We will not share your data.
+          </p>
+          <p className='text-center text-sm text-gray-400 mt-2'>
+            Send feedback to{' '}
+            <a href='mailto:info@suuave.com' className='text-[#035A7A] hover:underline'>
+              info@suuave.com
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

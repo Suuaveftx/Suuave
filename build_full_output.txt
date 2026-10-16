@@ -1,0 +1,38 @@
+﻿
+> suuave@0.1.0 build
+> next build
+
+   Ôû▓ Next.js 15.1.9
+   - Environments: .env
+
+node.exe : 
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (:  
+  String) [], RemoteExc   
+ eption
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+> Build error occurred
+[Error: EINVAL: invalid 
+argument, readlink 'C:\Use
+rs\USER\OneDrive\Desktop\N
+ewSuuaveFtx\Suuave\.next\s
+erver\app\api\auth'] {
+  errno: -4071,
+  code: 'EINVAL',
+  syscall: 'readlink',
+  path: 'C:\\Users\\USER\\
+OneDrive\\Desktop\\NewSuua
+veFtx\\Suuave\\.next\\serv
+er\\app\\api\\auth'
+}
