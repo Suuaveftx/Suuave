@@ -10,8 +10,8 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Chip,
   useDisclosure,
+  Pagination,
 } from '@heroui/react';
 
 import {
@@ -25,133 +25,23 @@ import {
 } from '@heroicons/react/24/outline';
 import ContractHeader from '../../contracts/components/contract-header';
 import { useRouter } from 'next/navigation';
-import ProposalsModal from './ProposalsModal';
+
 import DeleteConfirmationModal from './DeleteConfirmationModal';
+
+import { useAppStore } from '@/store';
 
 const MyProjects = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
-  const [projects, setProjects] = useState([
-    {
-      id: 1,
-      title: 'Modern Fashion Attire Illustration Classic .....',
-      date: '25-06-2024',
-      status: 'Active',
-      proposals: 3,
-      replies: 0,
-      hired: 0,
-    },
-    {
-      id: 2,
-      title: 'Modern Fashion Attire Illustration Classic....',
-      date: '25-06-2024',
-      status: 'Active',
-      proposals: 3,
-      replies: 0,
-      hired: 0,
-    },
-    {
-      id: 3,
-      title: 'Modern Fashion Attire Illustration Classic....',
-      date: '25-06-2024',
-      status: 'Active',
-      proposals: 3,
-      replies: 0,
-      hired: 0,
-    },
-    {
-      id: 4,
-      title: 'Modern Fashion Attire Illustration Classic....',
-      date: '25-06-2024',
-      status: 'Active',
-      proposals: 3,
-      replies: 0,
-      hired: 0,
-    },
-    {
-      id: 5,
-      title: 'Modern Fashion Attire Illustration Classic....',
-      date: '25-06-2024',
-      status: 'Active',
-      proposals: 3,
-      replies: 0,
-      hired: 0,
-    },
-    {
-      id: 6,
-      title: 'Second Project Example Fashion Classic....',
-      date: '26-06-2024',
-      status: 'Completed',
-      proposals: 10,
-      replies: 4,
-      hired: 1,
-    },
-    {
-      id: 7,
-      title: 'Third Project Example Fashion Classic....',
-      date: '27-06-2024',
-      status: 'Active',
-      proposals: 5,
-      replies: 1,
-      hired: 0,
-    },
-    {
-      id: 8,
-      title: 'Fourth Project Example Fashion Classic....',
-      date: '28-06-2024',
-      status: 'On Hold',
-      proposals: 2,
-      replies: 0,
-      hired: 0,
-    },
-    {
-      id: 9,
-      title: 'Fifth Project Example Fashion Classic....',
-      date: '29-06-2024',
-      status: 'Active',
-      proposals: 8,
-      replies: 3,
-      hired: 2,
-    },
-    {
-      id: 10,
-      title: 'Sixth Project Example Fashion Classic....',
-      date: '30-06-2024',
-      status: 'Active',
-      proposals: 6,
-      replies: 2,
-      hired: 0,
-    },
-    {
-      id: 11,
-      title: 'Seventh Project Example Fashion Classic....',
-      date: '01-07-2024',
-      status: 'Completed',
-      proposals: 12,
-      replies: 5,
-      hired: 3,
-    },
-    {
-      id: 12,
-      title: 'Eighth Project Example Fashion Classic....',
-      date: '02-07-2024',
-      status: 'Active',
-      proposals: 9,
-      replies: 4,
-      hired: 1,
-    },
-  ]);
+  const { projects, deleteProject, setEditProject } = useAppStore();
 
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 5;
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     isOpen: isDeleteOpen,
     onOpen: onDeleteOpen,
     onOpenChange: onDeleteOpenChange
   } = useDisclosure();
-  const [selectedProject, setSelectedProject] = useState(null);
   const [projectToDelete, setProjectToDelete] = useState(null);
 
   // Filter projects based on search term
@@ -170,8 +60,13 @@ const MyProjects = () => {
 
   const handleEditProject = (project) => {
     console.log("Navigating to edit project:", project);
-    localStorage.setItem('editProject', JSON.stringify(project));
+    setEditProject(project);
     router.push('/fashion-designers/post-project?edit=true');
+  };
+
+  const handleDeleteProject = (id) => {
+    deleteProject(id);
+    onDeleteOpenChange(false);
   };
 
   const openDeleteModal = (e, project) => {
@@ -182,14 +77,6 @@ const MyProjects = () => {
     onDeleteOpen();
   };
 
-  // Handle pagination buttons
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev));
-  };
 
   const [isMobileView, setIsMobileView] = useState(false);
 
@@ -208,19 +95,35 @@ const MyProjects = () => {
   }, []);
 
   const handleCardClick = (project) => {
-    setSelectedProject(project);
-    onOpen();
+    router.push(`/fashion-designers/my-projects/proposals/${project.id}`);
   };
 
   return (
     <>
-      <div className='min-h-screen max-w-[86.5rem] mx-auto'>
-        <div className='  '>
+      <div className='min-h-screen w-full pb-24 lg:pb-0 px-4 lg:mx-auto lg:px-0 pt-4 lg:pt-8'>
+        <div className=''>
           {/* Header */}
-          <ContractHeader title='My Projects' />
+          {/* Desktop Header */}
+          <div className="hidden lg:flex w-full items-center mb-6">
+            <h1 className="text-[28px] font-satoshi font-bold text-[#222222] leading-none">
+              My Projects
+            </h1>
+          </div>
+
+          <div className="lg:hidden flex items-center gap-1 mb-4 mt-2 -ml-3">
+            <Button
+              isIconOnly
+              variant='light'
+              onPress={() => router.back()}
+              className='min-w-fit flex items-center justify-center p-1 rounded-full w-[40px] h-[40px] bg-transparent'
+            >
+              <ChevronLeftIcon className='w-5 h-5 text-[#878787]' />
+            </Button>
+            <h1 className='text-[20px] font-semibold text-[#111111]'>My Projects</h1>
+          </div>
 
           {/* Search Bar */}
-          <div className='mb-8 w-full px-4 lg:px-10'>
+          <div className='mb-6 lg:mb-8 w-full'>
             <Input
               placeholder='Search'
               value={searchTerm}
@@ -229,19 +132,19 @@ const MyProjects = () => {
                 setCurrentPage(1); // reset to first page on new search
               }}
               startContent={<MagnifyingGlassIcon className='w-5 h-5 text-gray-400' />}
-              className='max-w-[50rem]'
+              className='w-full'
               variant='bordered'
               radius='full'
               size="lg"
               classNames={{
-                input: "text-md",
-                inputWrapper: "border-[#E1E1E1] bg-white h-14 px-6 shadow-sm"
+                input: "text-[15px]",
+                inputWrapper: "border-[#E1E1E1] bg-white h-12 px-5 shadow-sm"
               }}
             />
           </div>
 
           {/* Projects List */}
-          <div className='space-y-4 w-full px-4 lg:px-10'>
+          <div className='space-y-4 w-full'>
             {currentProjects.length === 0 ? (
               <p className='text-gray-500 text-center py-20'>No projects found.</p>
             ) : (
@@ -253,8 +156,9 @@ const MyProjects = () => {
                   <Card
                     className='w-full border shadow-none group-hover:shadow-md transition-shadow'
                   >
-                    <CardBody className='p-5 sm:p-8 font-satoshi'>
-                      <div className='flex flex-col gap-4'>
+                    <CardBody className='p-4 lg:p-8 font-satoshi'>
+                      {/* --- Desktop Layout --- */}
+                      <div className='hidden lg:flex flex-col gap-4'>
                         {/* Top Row: Title and Multi-options button */}
                         <div className='flex items-start justify-between gap-4'>
                           <div
@@ -269,17 +173,27 @@ const MyProjects = () => {
                           <div className="flex items-center gap-3 shrink-0">
                             {/* Proposals badge for desktop */}
                             <div
-                              className='hidden sm:flex gap-2 items-center border border-[#96D2E1] rounded-full px-4 sm:px-5 py-1.5 bg-[#F9FEFF] cursor-pointer'
+                              className='flex gap-2 items-center border border-[#E1E1E1] rounded-full px-4 sm:px-5 py-1.5 bg-white cursor-pointer hover:bg-gray-50 transition-colors'
                               onClick={() => handleCardClick(project)}
                             >
-                              <span className='text-[#3A98BB] font-bold text-sm sm:text-md'>
-                                {project.proposals}
+                              <span className='text-[#3A98BB] font-semibold text-sm sm:text-md'>
+                                {project.proposals || 0}
                               </span>
                               <span className='text-[#767676] text-xs sm:text-sm'>Proposals</span>
                             </div>
 
+                            {/* Hired badge for desktop */}
+                            <div
+                              className='flex gap-2 items-center border border-[#E1E1E1] rounded-full px-4 sm:px-5 py-1.5 bg-white cursor-pointer hover:bg-gray-50 transition-colors'
+                            >
+                              <span className='text-[#767676] font-semibold text-sm sm:text-md'>
+                                {project.hired || 0}
+                              </span>
+                              <span className='text-[#767676] text-xs sm:text-sm'>Hired</span>
+                            </div>
+
                             <div onClick={(e) => e.stopPropagation()} className="shrink-0">
-                              <Dropdown placement="bottom-end">
+                              <Dropdown placement="bottom-end" shouldBlockScroll={false}>
                                 <DropdownTrigger>
                                   <Button
                                     variant='bordered'
@@ -318,19 +232,6 @@ const MyProjects = () => {
                           </div>
                         </div>
 
-                        {/* Stats Row (Proposals) - Mobile Only */}
-                        <div className='flex sm:hidden items-center gap-4'>
-                          <div
-                            className='flex gap-2 items-center border border-[#96D2E1] rounded-full px-4 sm:px-5 py-1.5 bg-[#F9FEFF] cursor-pointer'
-                            onClick={() => handleCardClick(project)}
-                          >
-                            <span className='text-[#3A98BB] font-bold text-sm sm:text-md'>
-                              {project.proposals}
-                            </span>
-                            <span className='text-[#767676] text-xs sm:text-sm'>Proposals</span>
-                          </div>
-                        </div>
-
                         {/* Info Lines */}
                         <div
                           className='flex flex-col gap-2 cursor-pointer'
@@ -347,6 +248,85 @@ const MyProjects = () => {
                           </div>
                         </div>
                       </div>
+
+                      {/* --- Mobile Layout --- */}
+                      <div className='flex lg:hidden flex-col gap-[14px]'>
+                        {/* Top Row */}
+                        <div className='flex items-start justify-between gap-4 w-full'>
+                          <div
+                            className="flex-1 min-w-0 cursor-pointer pr-2"
+                            onClick={() => handleCardClick(project)}
+                          >
+                            <h3 className='text-[15px] sm:text-lg font-bold text-[#111111] leading-snug break-words line-clamp-2'>
+                              {project?.title || "Modern Fashion Attire Illustration"}
+                            </h3>
+                          </div>
+
+                          <div onClick={(e) => e.stopPropagation()} className="shrink-0 flex items-center">
+                            <Dropdown placement="bottom-end" shouldBlockScroll={false}>
+                              <DropdownTrigger>
+                                <Button
+                                  variant='bordered'
+                                  isIconOnly
+                                  size='sm'
+                                  className='border border-gray-200 rounded-full w-[32px] h-[32px] min-w-[32px] min-h-[32px] bg-white flex items-center justify-center p-0'
+                                >
+                                  <EllipsisHorizontalIcon className='w-5 h-5 text-gray-400' />
+                                </Button>
+                              </DropdownTrigger>
+                              <DropdownMenu
+                                className='w-[140px]'
+                                aria-label='Project actions'
+                                onAction={(key) => {
+                                  if (key === 'edit') handleEditProject(project);
+                                  if (key === 'delete') openDeleteModal(null, project);
+                                }}
+                              >
+                                <DropdownItem
+                                  key='edit'
+                                  startContent={<PencilIcon className='w-4 h-4' />}
+                                >
+                                  Edit
+                                </DropdownItem>
+                                <DropdownItem
+                                  key='delete'
+                                  className='text-danger'
+                                  color='danger'
+                                  startContent={<TrashIcon className='w-4 h-4' />}
+                                >
+                                  Delete
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </Dropdown>
+                          </div>
+                        </div>
+
+                        {/* Details Grid */}
+                        <div
+                          className="flex flex-col gap-3 cursor-pointer mt-1"
+                          onClick={() => handleCardClick(project)}
+                        >
+                          <div className='flex justify-between items-center text-[15px]'>
+                            <span className="text-[#767676]">Posted :</span>
+                            <span className='text-[#222222]'>{project.date}</span>
+                          </div>
+
+                          <div className='flex justify-between items-center text-[15px]'>
+                            <span className="text-[#767676]">Job Status :</span>
+                            <span className="text-[#056D16]">{project.status}</span>
+                          </div>
+
+                          <div className='flex justify-between items-center text-[15px]'>
+                            <span className="text-[#767676]">Proposals</span>
+                            <span className="text-[#3A98BB] font-medium">{project.proposals || 0}</span>
+                          </div>
+
+                          <div className='flex justify-between items-center text-[15px]'>
+                            <span className="text-[#767676]">Hired</span>
+                            <span className="text-[#222222] font-medium">{project.hired || 0}</span>
+                          </div>
+                        </div>
+                      </div>
                     </CardBody>
                   </Card>
                 </div>
@@ -355,53 +335,22 @@ const MyProjects = () => {
           </div>
 
           {/* Pagination */}
-          <div className='max-w-[61.25rem] mx-auto'>
-            <div className='flex items-center justify-center gap-2 mt-6 mb-20'>
-              <div className='flex items-center gap-2'>
-                <span className='text-sm text-gray-600 mr-4'>
-                  {totalProjects === 0
-                    ? '0 - 0 of 0'
-                    : `${indexOfFirstProject + 1} - ${indexOfLastProject > totalProjects
-                      ? totalProjects
-                      : indexOfLastProject
-                    } of ${totalProjects}`}
-                </span>
-
-                {/* Previous button */}
-                <Button
-                  isIconOnly
-                  variant='flat'
-                  size='sm'
-                  radius='none'
-                  disabled={currentPage === 1}
-                  onPress={handlePrevPage}
-                  className='min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer'
-                >
-                  <ChevronLeftIcon className='h-4 w-4' />
-                </Button>
-
-                {/* Next button */}
-                <Button
-                  isIconOnly
-                  variant='flat'
-                  size='sm'
-                  radius='none'
-                  onPress={handleNextPage}
-                  disabled={currentPage === totalPages || totalProjects === 0}
-                  className='min-w-8 h-8 text-gray-500 hover:text-gray-700 disabled:text-gray-300 cursor-pointer -ml-2'
-                >
-                  <ChevronRightIcon className='h-4 w-4' />
-                </Button>
-              </div>
+          {totalPages > 0 && (
+            <div className="flex justify-center items-center mt-8 mb-20 w-full max-w-[61.25rem] mx-auto">
+              <Pagination
+                showControls
+                total={totalPages}
+                page={currentPage}
+                onChange={setCurrentPage}
+                classNames={{
+                  cursor: "bg-[#3A98BB] text-white",
+                }}
+              />
             </div>
-          </div>
+          )}
         </div>
 
-        <ProposalsModal
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          project={selectedProject}
-        />
+
 
         <DeleteConfirmationModal
           isOpen={isDeleteOpen}

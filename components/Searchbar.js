@@ -3,7 +3,7 @@ import { Input } from '@heroui/react';
 import React from 'react';
 import { SearchIcon } from './SearchIcon';
 
-const SearchBar = ({ placeholder = 'Search...', width, className = '', endContent }) => {
+const SearchBar = ({ placeholder = 'Search...', width, className = '', endContent = null, value = '', onChange = () => { } }) => {
   return (
     <div className={`w-full rounded-full  ${className}`}>
       <Input
@@ -12,13 +12,15 @@ const SearchBar = ({ placeholder = 'Search...', width, className = '', endConten
           mainWrapper: 'h-full',
           input: 'text-small',
           inputWrapper:
-            'w-full h-full font-normal text-default-500 bg-[#FAFAFA] rounded-full px-6 py-0 outline-none',
+            'w-full h-full font-normal text-default-500 bg-[#FAFAFA] rounded-full px-6 py-0 outline-none shadow-md border border-gray-100',
         }}
         placeholder={placeholder}
         size='sm'
         startContent={<SearchIcon size={18} />}
         endContent={endContent}
         type='search'
+        value={value}
+        onChange={onChange}
       />
     </div>
   );

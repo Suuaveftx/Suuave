@@ -4,9 +4,13 @@ import { Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { useAppStore } from "@/store";
+
 export default function LicenseFlow({ productId }) {
   const router = useRouter();
   const [currentProductId] = useState(productId);
+
+  const { addLicense } = useAppStore();
 
   const completeLicense = () => {
     if (!currentProductId) {
@@ -14,17 +18,8 @@ export default function LicenseFlow({ productId }) {
       return;
     }
 
-    try {
-      const storedLicenses = localStorage.getItem("licenses");
-      const licenses = storedLicenses ? JSON.parse(storedLicenses) : {};
-
-      licenses[currentProductId] = true;
-      localStorage.setItem("licenses", JSON.stringify(licenses));
-
-      router.push(`/fashion-designers/${currentProductId}`);
-    } catch (error) {
-      console.error("Failed to save license:", error);
-    }
+    addLicense(currentProductId);
+    router.push(`/fashion-designers/${currentProductId}`);
   };
 
   if (!currentProductId) {

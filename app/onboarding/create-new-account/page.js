@@ -3,7 +3,7 @@
 import CreateAccount from './_components/Create-Account';
 import Image from 'next/image';
 import BackButton from '../../../components/BackButton';
-import { useAppStore } from '../../../store';
+import { useAppStore } from '@/store';
 import { redirect } from 'next/navigation';
 const Page = () => {
   const category = useAppStore((state) => state.activeCategory);

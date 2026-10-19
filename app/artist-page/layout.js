@@ -1,18 +1,44 @@
-import React from 'react';
-import { requireAuth } from '../../lib/protected-routes';
-import { Roles } from '../../utils/enum';
-import { getServerSession } from '../../lib/get-session';
-import { redirect } from 'next/navigation';
+'use client';
 
-async function ProjectPageLayout({ children }) {
-  const session = await getServerSession();
-  const user = session?.user;
+import { usePathname } from 'next/navigation';
+import Footer from '../about-page/components/Footer';
+import ArtistNavbar from '../../components/ArtistNavbar';
+import SectionMain from '../../components/layout/SectionMain';
+import { TourProvider } from '../../components/tour/ProductTour';
+import {
+  ARTIST_ONBOARDING_ROUTES,
+  ARTIST_SELF_LAYOUT_PREFIXES,
+  SECTION_SHELL_CLASS,
+} from '../../components/layout/layoutConstants';
 
-  if (!user) {
-    redirect('/auth/login');
+export default function ArtistPageLayout({ children }) {
+  const pathname = usePathname();
+  const usesSelfLayout = ARTIST_SELF_LAYOUT_PREFIXES.some((route) =>
+    pathname.startsWith(route)
+  );
+  const isOnboarding = ARTIST_ONBOARDING_ROUTES.some((route) =>
+    pathname.startsWith(route)
+  );
+
+  if (usesSelfLayout) {
+    return children;
   }
-  await requireAuth(Roles.artist);
-  return <>{children}</>;
-}
 
-export default ProjectPageLayout;
+  return (
+    <TourProvider>
+      <div className={SECTION_SHELL_CLASS}>
+        {/* Conditionally hide Navbar on mobile for specific routes */}
+        <div className={pathname.includes('-contract-information') ? "hidden lg:block" : ""}>
+          {!isOnboarding && <ArtistNavbar />}
+        </div>
+        <SectionMain
+          withNavbarOffset={!isOnboarding}
+          fontClass='font-proximanova'
+        >
+          {children}
+        </SectionMain>
+        {!isOnboarding && <Footer />}
+      </div>
+    </TourProvider>
+  );
+}

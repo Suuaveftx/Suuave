@@ -5,7 +5,11 @@ import Footer from '../about-page/components/Footer';
 const Page = () => {
   return (
     <>
-      <CustomNavbar bgColor='bg-[#012D3E]' />
+      <CustomNavbar
+        bgColor='bg-[#012D3E]'
+        mobileLogo="/dev-images/LogoMark.png"
+        desktopLogo="/dev-images/SuaaveTxtWhite.png"
+      />
       <div className=' bg-[#FAFAFA] flex flex-col items-center font-proximanova p-3 md:p-14 '>
         <h1 className=' text-[#222222] font-bold text-2xl text-center tracking-wide mt-5'>
           PARTNER WITH US

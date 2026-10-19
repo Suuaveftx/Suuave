@@ -124,7 +124,7 @@ const Login = () => {
 
         {/* Desktop View: Everything Inside the Container */}
         <div
-          className='relative flex flex-col justify-center items-center bg-white shadow-[0px_4px_16px_0px_rgba(0,0,0,0.15)] w-full py-[45px] px-5 lg:px-10 sm:mt-0 mt-[30px] md:w-[90%]'
+          className='relative flex flex-col justify-center items-center bg-white shadow-[0px_4px_16px_0px_rgba(0,0,0,0.15)] w-full py-[45px] px-5 lg:px-10 sm:mt-0 mt-[50px] md:w-[90%]'
           style={{ borderRadius: '16px' }}
         >
           {/* Desktop: Logo Centered */}

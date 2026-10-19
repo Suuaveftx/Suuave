@@ -5,14 +5,15 @@ import PostBudgets from './_components/PostBudgets';
 import BtnProposals from '../../../components/BtnProposals';
 import Abouttheclient from '../../../components/Abouttheclient';
 import PostDesignStyle from './_components/PostDesignStyle';
+import PageContainer from '../../../components/layout/PageContainer';
 
 const Page = () => {
   return (
-    <div className="grid grid-cols-10">
+    <PageContainer className="grid grid-cols-10 gap-8" withTopSpacing>
       {/* Job Details (70%) */}
       <div className="lg:col-span-7 col-span-10">
         <PostDetailsPage />
-        <div className='lg:hidden w-screen max-w-[100%] mb-8'>
+        <div className='lg:hidden w-full max-w-full mb-8'>
           <BtnProposals
             sendText="View Proposals"
             saveText="Withdraw Proposals"
@@ -34,7 +35,7 @@ const Page = () => {
           <Abouttheclient />
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }
 

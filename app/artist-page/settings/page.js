@@ -1,10 +1,15 @@
 import React from 'react';
 import SettingsPage from './_components/Settings-Page';
+import PageContainer from '../../../components/layout/PageContainer';
 
 const Page = () => {
   return (
-    <div className='flex gap-8 mt-2 w-full min-h-screen bg-[#F1F1F1] scrollbar-hide'>
-      <SettingsPage />
+    <div className='w-full min-h-screen pb-20'>
+      <PageContainer>
+        <div className='flex gap-8 mt-0 md:mt-4'>
+          <SettingsPage />
+        </div>
+      </PageContainer>
     </div>
   );
 };

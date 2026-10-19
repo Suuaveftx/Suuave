@@ -10,7 +10,7 @@ import ConfirmationCode from '../../_components/confirmation-code/confirmation-c
 import { requestResetPassword, sendVerificationEmail } from '../../../actions/services';
 import { hashEmail } from '../../../../utils/hash';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useAppStore } from '../../../../store';
+import { useAppStore } from '@/store';
 import { useCountdown } from '../../../../utils/useCountdown';
 
 const ForgotPassword = () => {

@@ -53,23 +53,10 @@ export default function RetainCheckout() {
     return (
         <div className='mx-auto bg-[#FAFAFA] min-h-screen'>
             <FashionDesignerHeader />
-            <div className='max-w-6xl mx-auto px-4 lg:px-6' style={{ paddingTop: '40px', paddingBottom: '80px' }}>
+            <div className='w-full mx-auto' style={{ paddingTop: '40px', paddingBottom: '80px' }}>
                 <div className='flex items-center gap-1 md:gap-4 mb-10'>
-                    <Button
-                        isIconOnly
-                        variant='light'
-                        className='md:hidden -ml-3 text-black'
-                        onPress={() => {
-                            if (returnUrl) {
-                                router.push(decodeURIComponent(returnUrl));
-                            } else {
-                                router.push('/fashion-designers/contracts');
-                            }
-                        }}
-                    >
-                        <ChevronLeft size={24} />
-                    </Button>
-                    <h1 className='text-[32px] font-black text-black font-satoshi'>Checkout</h1>
+
+                    <h1 className='text-[28px] font-black text-black font-satoshi'>Checkout</h1>
                 </div>
 
                 <div className='grid grid-cols-1 lg:grid-cols-[1fr_0.45fr] gap-8 mt-6'>

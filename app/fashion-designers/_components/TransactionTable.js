@@ -9,14 +9,19 @@ import {
     TableRow,
     TableCell,
     Button,
+    Pagination,
 } from "@heroui/react";
 import { Search, ChevronDown, Calendar, Info } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const TransactionTable = () => {
+    const router = useRouter();
     const [filterValue, setFilterValue] = useState("");
     const [selectedType, setSelectedType] = useState("All Types");
     const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
     const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
 
     // Filter state: { type: 'range' | 'custom', value: any, label: string }
     const [dateFilter, setDateFilter] = useState({ type: 'none', value: null, label: 'Select Date' });
@@ -67,53 +72,18 @@ const TransactionTable = () => {
         setIsDateDropdownOpen(false);
     };
 
-    const transactions = [
-        {
-            id: 1,
-            date: "2024-11-01T12:32:34",
-            dateTime: "01-11-2024 / 12:32.34",
-            transaction: "Project",
-            description: "Project ID 231 (Wedding gown design)",
+    const transactions = Array.from({ length: 50 }, (_, i) => {
+        const trTypes = ["Project", "Refund", "Licensing", "Retainer"];
+        return {
+            id: i + 1,
+            date: `2024-11-${String((i % 30) + 1).padStart(2, '0')}T12:32:34`,
+            dateTime: `${String((i % 30) + 1).padStart(2, '0')}-11-2024 / 12:32.34`,
+            transaction: trTypes[i % trTypes.length],
+            description: `Project ID ${231 + i} (Wedding gown design)`,
             amount: "N150,000",
             status: "Successful",
-        },
-        {
-            id: 2,
-            date: "2024-11-01T12:32:34",
-            dateTime: "01-11-2024 / 12:32.34",
-            transaction: "Refund",
-            description: "Project ID 231 (Wedding gown design)",
-            amount: "N150,000",
-            status: "Successful",
-        },
-        {
-            id: 3,
-            date: "2024-11-02T12:32:34",
-            dateTime: "02-11-2024 / 12:32.34",
-            transaction: "Licensing",
-            description: "Project ID 231 (Wedding gown design)",
-            amount: "N150,000",
-            status: "Successful",
-        },
-        {
-            id: 4,
-            date: "2024-11-03T12:32:34",
-            dateTime: "03-11-2024 / 12:32.34",
-            transaction: "Project",
-            description: "Project ID 231 (Wedding gown design)",
-            amount: "N150,000",
-            status: "Successful",
-        },
-        {
-            id: 5,
-            date: "2024-11-04T12:32:34",
-            dateTime: "04-11-2024 / 12:32.34",
-            transaction: "Refund",
-            description: "Project ID 231 (Wedding gown design)",
-            amount: "N150,000",
-            status: "Successful",
-        },
-    ];
+        };
+    });
 
     const filteredTransactions = transactions.filter((item) => {
         // Search filter
@@ -147,6 +117,17 @@ const TransactionTable = () => {
 
         return matchesSearch && matchesType && matchesDate;
     });
+
+    // Pagination
+    const totalPages = Math.max(1, Math.ceil(filteredTransactions.length / itemsPerPage));
+    const paginatedTransactions = filteredTransactions.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    // Reset page when filters change
+    const handleSearchChange = (val) => { setFilterValue(val); setCurrentPage(1); };
+    const handleTypeSelectWithReset = (type) => { handleTypeSelect(type); setCurrentPage(1); };
 
     const columns = [
         { name: "Date/Time", uid: "dateTime" },
@@ -197,7 +178,7 @@ const TransactionTable = () => {
                         <input
                             type='text'
                             value={filterValue}
-                            onChange={(e) => setFilterValue(e.target.value)}
+                            onChange={(e) => handleSearchChange(e.target.value)}
                             placeholder='Search'
                             className='block w-full pl-11 pr-24 py-3 bg-white border border-[#E5E5E5] rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-[#3A98BB] placeholder-gray-400 h-12 shadow-sm'
                         />
@@ -222,6 +203,7 @@ const TransactionTable = () => {
                                         <div onClick={() => handleTypeSelect('Project')} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Project</div>
                                         <div onClick={() => handleTypeSelect('Refund')} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Refund</div>
                                         <div onClick={() => handleTypeSelect('Licensing')} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Licensing</div>
+                                        <div onClick={() => handleTypeSelect('Retainer')} className='px-4 py-2 hover:bg-gray-50 cursor-pointer text-[#555555] text-sm hover:text-[#3A98BB]'>Retainer</div>
                                     </div>
                                 )}
                             </div>
@@ -260,7 +242,10 @@ const TransactionTable = () => {
                 </div>
 
                 {/* Report Button Restored at Far Right */}
-                <button className='flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-[#FFF5F5] border border-[#FFE0E0] rounded-full text-[#FF4D4D] text-sm font-medium hover:bg-[#ffe6e6] whitespace-nowrap h-11 self-start xl:self-center'>
+                <button
+                    onClick={() => router.push('/fashion-designers/transaction-resolution')}
+                    className='flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-[#FFF5F5] border border-[#FFE0E0] rounded-full text-[#FF4D4D] text-sm font-medium hover:bg-[#ffe6e6] whitespace-nowrap h-11 self-start xl:self-center'
+                >
                     <Info className='h-4 w-4' />
                     Report any issue
                 </button>
@@ -287,7 +272,7 @@ const TransactionTable = () => {
                             </TableColumn>
                         )}
                     </TableHeader>
-                    <TableBody items={filteredTransactions}>
+                    <TableBody items={paginatedTransactions}>
                         {(item) => (
                             <TableRow key={item.id}>
                                 {(columnKey) => (
@@ -303,7 +288,7 @@ const TransactionTable = () => {
 
             {/* Mobile Card View */}
             <div className="md:hidden flex flex-col gap-4">
-                {filteredTransactions.map((item) => (
+                {paginatedTransactions.map((item) => (
                     <div key={item.id} className="bg-white rounded-2xl p-5 shadow-sm border border-[#F0F0F0] space-y-4">
                         <div className="flex justify-between items-start">
                             <div className="space-y-1">
@@ -331,16 +316,16 @@ const TransactionTable = () => {
                 )}
             </div>
 
-            <div className="flex justify-center items-center gap-4 mt-4">
-                <span className="text-sm text-[#555555]">1 - 5 of 12</span>
-                <div className="flex gap-2">
-                    <Button isIconOnly variant="bordered" size="sm" className="min-w-10 h-10 rounded-md border-[#E5E5E5] bg-[#F5F5F5]/50">
-                        <ChevronDown className="rotate-90 size-4 text-[#555555]" />
-                    </Button>
-                    <Button isIconOnly variant="bordered" size="sm" className="min-w-10 h-10 rounded-md border-[#E5E5E5] bg-[#F5F5F5]/50">
-                        <ChevronDown className="-rotate-90 size-4 text-[#555555]" />
-                    </Button>
-                </div>
+            <div className="flex justify-center items-center mt-6 mb-2">
+                <Pagination
+                    showControls
+                    total={totalPages}
+                    page={currentPage}
+                    onChange={setCurrentPage}
+                    classNames={{
+                        cursor: "bg-[#3A98BB] text-white",
+                    }}
+                />
             </div>
         </div>
     );

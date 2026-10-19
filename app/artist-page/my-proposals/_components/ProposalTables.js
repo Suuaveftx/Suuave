@@ -1,9 +1,9 @@
 'use client';
 import React, { useState } from 'react';
-import { TrashIcon, ChevronLeftIcon } from '@heroicons/react/24/outline';
+import { TrashIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import PaginationTab from '../../../../components/Pagination';
+import { Pagination } from '@heroui/react';
 import DeleteConfirmationModal from '../../../fashion-designers/my-projects/components/DeleteConfirmationModal';
 import { useDisclosure } from '@heroui/react';
 
@@ -63,19 +63,16 @@ const ProposalTables = () => {
 
   return (
     <div>
-      {/* Title */}
-      <div className="w-[90%] border-b-2 text-left mb-[21px] ml-5 lg:ml-16">
+      {/* Title - desktop only */}
+      <div className="hidden lg:block w-full border-b-2 text-left mb-[21px]">
         <div className="flex items-center gap-2 mt-8 pb-1">
-          <button onClick={() => router.push("/artist-page/project-page")} className="flex items-center">
-            <ChevronLeftIcon className="w-6 h-6" />
-          </button>
-          <h1 className="text-[32px] font-bold">My Proposals</h1>
+          <h1 className="text-[28px] font-bold">My Proposals</h1>
         </div>
       </div>
 
       {/* Table */}
       <section className="w-full">
-        <div className="bg-[#FAFAFA] w-full max-w-6xl lg:ml-16 lg:px-8 lg:pt-4 lg:pb-8 rounded-2xl mb-10">
+        <div className="bg-[#FAFAFA] w-full lg:px-8 lg:pt-4 lg:pb-8 rounded-2xl mb-10 border border-[#EAEAEA]">
           {/* Header Row */}
           <div className="grid grid-cols-3 font-bold px-8 py-4 border-b">
             <h4 className="text-left">Job Posts</h4>
@@ -130,41 +127,22 @@ const ProposalTables = () => {
               );
             })}
           </div>
-
-          {/* Pagination Controls */}
-          {/* <div className="flex justify-center items-center mt-6 gap-4">
-            <button
-              onClick={handlePrev}
-              disabled={currentPage === 1}
-              className={`px-4 py-2 rounded-lg border border-gray-300 ${
-                currentPage === 1
-                  ? 'text-gray-400 cursor-not-allowed bg-gray-100'
-                  : 'text-[#3A98BB] hover:bg-[#E0F4FB]'
-              }`}
-            >
-              Previous
-            </button>
-
-            <span className="text-gray-700">
-              Page {currentPage} of {totalPages}
-            </span>
-
-            <button
-              onClick={handleNext}
-              disabled={currentPage === totalPages}
-              className={`px-4 py-2 rounded-lg border border-gray-300 ${
-                currentPage === totalPages
-                  ? 'text-gray-400 cursor-not-allowed bg-gray-100'
-                  : 'text-[#3A98BB] hover:bg-[#E0F4FB]'
-              }`}
-            >
-              Next
-            </button>
-          </div> */}
-          <div className='w-full flex justify-center items-center mt-6'>
-            <PaginationTab />
-          </div>
         </div>
+
+        {/* Pagination – outside the card */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center mt-6 mb-16 w-full">
+            <Pagination
+              showControls
+              total={totalPages}
+              page={currentPage}
+              onChange={setCurrentPage}
+              classNames={{
+                cursor: "bg-[#3A98BB] text-white",
+              }}
+            />
+          </div>
+        )}
       </section>
 
       <DeleteConfirmationModal

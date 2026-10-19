@@ -1,11 +1,39 @@
 'use client';
-import { Card, CardBody, Input, Switch } from '@heroui/react';
+import { Card, CardBody, Input } from '@heroui/react';
+import { useState, useEffect } from 'react';
+import RestartTourCard from './RestartTourCard';
+
+const Toggle = ({ defaultChecked = false, disabled = false }) => {
+  const [checked, setChecked] = useState(defaultChecked);
+
+  useEffect(() => {
+    setChecked(defaultChecked);
+  }, [defaultChecked]);
+
+  return (
+    <button
+      type='button'
+      role='switch'
+      aria-checked={checked}
+      disabled={disabled}
+      onClick={() => {
+        if (!disabled) setChecked(!checked);
+      }}
+      className={`relative inline-flex items-center w-11 h-6 rounded-full transition-colors duration-300 focus:outline-none ${checked ? 'bg-[#3A98BB]' : 'bg-[#EF4444]'
+        } ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+    >
+      <span
+        className={`inline-block w-4 h-4 bg-white rounded-full shadow transition-transform duration-300 ${checked ? 'translate-x-6' : 'translate-x-1'
+          }`}
+      />
+    </button>
+  );
+};
 
 const NotificationSettings = () => {
   return (
     <>
       <div className='w-full'>
-
         <Card className='w-full sm:w-4/5 p-4 bg-[#F9F9F9] shadow-md rounded-lg'>
           <CardBody className='space-y-4'>
             {/* Email Notification */}
@@ -13,61 +41,42 @@ const NotificationSettings = () => {
               <label className='text-2xl font-medium'>Email</label>
               <div className='flex items-center space-x-3'>
                 <Input defaultValue='All Activities' className='flex-1' />
-                <label className='relative inline-flex items-center cursor-pointer'>
-                  <input type='checkbox' className='sr-only peer' />
-                  <div className='w-11 h-6 bg-[#CCE7F2] peer-checked:bg-[#3A98BB] rounded-full relative'>
-                    {/* Circle (Toggle) */}
-                    <div className='absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5'></div>
-                  </div>
-                </label>
+                <Toggle defaultChecked={true} />
               </div>
               <div className='flex items-center space-x-3'>
                 <Input
                   defaultValue='Only Important Activities(Jobs,Messages)'
-                  className='flex-1  text-[#222222] font-normal'
+                  className='flex-1 text-[#222222] font-normal'
+                  isReadOnly
                 />
-                <label className='relative inline-flex items-center cursor-pointer'>
-                  <input type='checkbox' className='sr-only peer' />
-                  <div className='w-11 h-6 bg-[#FF5757] peer-checked:bg-[#4A90E2] rounded-full relative'>
-                    {/* Circle (Toggle) */}
-                    <div className='absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5'></div>
-                  </div>
-                </label>
+                <Toggle defaultChecked={true} disabled={true} />
               </div>
             </div>
 
-            {/* Important Activities Notification */}
+            {/* SMS Notification */}
             <div className='space-y-2'>
               <label className='text-2xl font-medium'>SMS</label>
               <div className='flex items-center space-x-3'>
                 <Input
                   defaultValue='All Activities'
-                  className='flex-1  text-[#222222] font-normal'
+                  className='flex-1 text-[#222222] font-normal'
                 />
-                <label className='relative inline-flex items-center cursor-pointer'>
-                  <input type='checkbox' className='sr-only peer' />
-                  <div className='w-11 h-6 bg-[#CCE7F2] peer-checked:bg-[#3A98BB] rounded-full relative'>
-                    {/* Circle (Toggle) */}
-                    <div className='absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5'></div>
-                  </div>
-                </label>
+                <Toggle defaultChecked={true} />
               </div>
               <div className='flex items-center space-x-3'>
                 <Input
                   defaultValue='Only Important Activities (Jobs, Messages)'
                   className='flex-1 text-[#222222] font-normal'
+                  isReadOnly
                 />
-                <label className='relative inline-flex items-center cursor-pointer'>
-                  <input type='checkbox' className='sr-only peer' />
-                  <div className='w-11 h-6 bg-[#FF5757] peer-checked:bg-[#4A90E2] rounded-full relative'>
-                    {/* Circle (Toggle) */}
-                    <div className='absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5'></div>
-                  </div>
-                </label>
+                <Toggle defaultChecked={true} disabled={true} />
               </div>
             </div>
           </CardBody>
         </Card>
+      </div>
+      <div className='w-full mt-6'>
+        <RestartTourCard />
       </div>
     </>
   );

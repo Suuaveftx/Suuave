@@ -10,14 +10,17 @@ import {
 } from "@heroui/react";
 import { Paperclip } from "lucide-react";
 
-const UploadModal = ({ onUpload }) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+const UploadModal = ({ onUpload, isOpen: externalIsOpen, onOpenChange: externalOnOpenChange }) => {
+  const { isOpen: internalIsOpen, onOpen, onOpenChange: internalOnOpenChange } = useDisclosure();
+
+  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+  const onOpenChange = externalOnOpenChange || internalOnOpenChange;
 
   const handleSend = (onClose) => {
     if (onUpload) {
       onUpload({
         id: Date.now(),
-        title: 'New Work Sample', // Mock title
+        title: 'New Work Sample',
       });
     }
     onClose();
@@ -25,9 +28,11 @@ const UploadModal = ({ onUpload }) => {
 
   return (
     <>
-      <Button onPress={onOpen} className="rounded-full bg-transparent border-1 border-[#3A98BB]">
-        Add More
-      </Button>
+      {externalIsOpen === undefined && (
+        <Button onPress={onOpen} className="rounded-full bg-transparent border-1 border-[#3A98BB]">
+          Add More
+        </Button>
+      )}
       <Modal isOpen={isOpen} placement="center" onOpenChange={onOpenChange}>
         <ModalContent>
           {({ onClose }) => ( // Ensure correct function usage here

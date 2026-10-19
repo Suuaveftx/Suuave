@@ -9,11 +9,8 @@ const Sidebar_MenuCard = ({ menuItems, activeItem, setActiveItem }) => {
   return (
     <div
       className='
-        h-screen  p-0 bg-[#fafafa] shadow-md
-        w-full       /* full width on mobile */
-        sm:w-64      /* fixed width on desktop */
+        h-full w-full p-0 
         m-0 sm:m-0
-        sm:rounded-lg
       '
     >
       {/* Mobile Header */}

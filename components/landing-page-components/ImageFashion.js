@@ -169,7 +169,7 @@ const ImageFashion = () => {
           Begin your journey to success.
         </p>
         <div className="flex items-center w-fit gap-2 mt-4 cursor-pointer text-[#CCE7F2] font-medium hover:underline">
-          <Link href="/onboarding" className="no-underline hover:no-underline">
+          <Link href="#" onClick={(e) => e.preventDefault()} className="no-underline hover:no-underline">
             Get Started
           </Link>
           <IoArrowForwardOutline />

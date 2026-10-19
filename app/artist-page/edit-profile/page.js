@@ -1,17 +1,16 @@
 "use client";
-import Image from "next/image";
-import { useState } from "react";
-import PersonalDetail from "./_components/PersonalDetail";
-import Profile from "./_components/Profile";
+import React, { useState } from "react";
+import PersonalDetail from "../personal-details/_components/PersonalDetail";
+import PersonalInformation from "../personal-details/_components/PersonalInformation";
+import AwardsCertification from "../personal-details/_components/AwardsCertification";
+import Profile from "../personal-details/_components/Profile";
+import { useForm, FormProvider } from "react-hook-form";
 
 export default function Page() {
   const [selected, setSelected] = useState("PersonalDetail");
   const [preview, setPreview] = useState("/dev-images/profile.png");
-  const [previewPortfolio, setPreviewPortfolio] = useState(null);
-  const [previewAwardCertificate, setPreviewAwardCertificate] = useState(null);
 
   // image preview handler
-
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -19,85 +18,131 @@ export default function Page() {
     }
   };
 
-  const uploadedPortfolio = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPreviewPortfolio(URL.createObjectURL(file));
-    }
-  };
+  const [step, setStep] = useState(1);
+  const [hoveredField, setHoveredField] = useState(null);
 
-  const uploadedAwardCertificate = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPreviewAwardCertificate(URL.createObjectURL(file));
-    }
-  };
-
-  // Personal details state
-
-  const [formData, setFormData] = useState({
-    fullName: "",
-    username: "",
-    email: "",
-    nationality: new Set([]),
-    phoneCode: new Set([]),
-    phoneNumber: "",
-    currentCity: "",
-    language: new Set([]),
-    day: new Set([]),
-    month: new Set([]),
-    year: new Set([]),
-    about: "",
-    skill: "",
-    companyName: "",
-    portfolioLink: "",
-    uploadedPortfolio: "",
-    availability: false,
-    nameofAwardCertificate: "",
-    awardedIssuedBy: "",
-    uploadCertificateAward: "",
+  // Personal details form
+  const methods = useForm({
+    defaultValues: {
+      fullName: "Ocean Clara",
+      username: "ocean_clara",
+      email: "ocean@suuave.com",
+      nationality: new Set(["Nigeria"]),
+      countryOfResidence: new Set(["Nigeria"]),
+      phoneCode: new Set(["+234"]),
+      phoneNumber: "8000000000",
+      currentCity: "Lagos",
+      language: new Set(["English"]),
+      dob: "1995-05-15",
+      about: "Sorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex.",
+      skill: "Fashion Artist | 3D Illustrator",
+      companyName: "Ocean Avenue",
+      portfolioLink: "https://behance.net/oceanclara",
+      availability: true,
+      awards: [
+        {
+          name: "Excellence in 3D Design 2023",
+          issuedBy: "Recognition for outstanding contribution to digital fashion",
+          previews: ["/dev-images/Awards.png"]
+        }
+      ],
+    },
+    mode: "onChange"
   });
+
+  const { watch, setValue } = methods;
+  const formData = watch();
+  const setFormData = (updates) => {
+    Object.entries(updates).forEach(([key, value]) => {
+      setValue(key, value);
+    });
+  };
+
   return (
     <>
-      <div className="md:hidden pt-10 px-6 bg-[#F9F9F9]">
-        <h1 className="text-[32px] font-bold text-[#222222] font-proximanova">Personal Details</h1>
-      </div>
+      <FormProvider {...methods}>
 
-      <div className="flex flex-col md:flex-row px-5 md:px-10">
-        {/* profile view and button switch */}
+        <div className="flex flex-col md:flex-row px-5 md:px-10 pt-2 md:gap-32">
+          {/* profile view and button switch */}
+          <Profile
+            setSelected={setSelected}
+            selected={selected}
+            className="hidden md:flex"
+            preview={preview}
+            handleImageChange={handleImageChange}
+            hoveredField={hoveredField}
+            step={step}
+            setStep={setStep}
+          />
 
-        <Profile
-          setSelected={setSelected}
-          formData={formData}
-          setFormData={setFormData}
-          selected={selected}
-          className="hidden md:flex"
-          preview={preview}
-          handleImageChange={handleImageChange}
-        />
+          {/* Conditionally show content */}
+          <div className="flex-1 mt-5 md:mt-6">
+            {selected === "PersonalDetail" && (
+              <>
+                <Profile
+                  setSelected={setSelected}
+                  selected={selected}
+                  className="flex md:hidden"
+                  preview={preview}
+                  handleImageChange={handleImageChange}
+                  hoveredField={hoveredField}
+                  step={step}
+                  setStep={setStep}
+                />
+                <PersonalDetail
+                  setSelected={setSelected}
+                  setHoveredField={setHoveredField}
+                  isEdit={true}
+                  submitHref="/artist-page/profile-for-artist"
+                />
+              </>
+            )}
 
-        {/* Conditionally show content */}
-        {selected === "PersonalDetail" && (
-          <>
-            <Profile
-              setSelected={setSelected}
-              formData={formData}
-              setFormData={setFormData}
-              selected={selected}
-              className="flex md:hidden"
-              preview={preview}
-              handleImageChange={handleImageChange}
-            />
-            <PersonalDetail
-              setSelected={setSelected}
-              formData={formData}
-              setFormData={setFormData}
-            />
-          </>
-        )}
+            {selected === "ProfessionalInformation" && (
+              <>
+                <Profile
+                  setSelected={setSelected}
+                  selected={selected}
+                  className="flex md:hidden"
+                  preview={preview}
+                  handleImageChange={handleImageChange}
+                  hoveredField={hoveredField}
+                  step={step}
+                  setStep={setStep}
+                />
+                <PersonalInformation
+                  setSelected={setSelected}
+                  setHoveredField={setHoveredField}
+                  setStep={setStep}
+                  isEdit={true}
+                  submitHref="/artist-page/profile-for-artist"
+                />
+              </>
+            )}
 
-
-      </div>
+            {selected === "Awards/Certifications" && (
+              <>
+                <Profile
+                  setSelected={setSelected}
+                  selected={selected}
+                  className="flex md:hidden"
+                  preview={preview}
+                  handleImageChange={handleImageChange}
+                  hoveredField={hoveredField}
+                  step={step}
+                  setStep={setStep}
+                />
+                <AwardsCertification
+                  setSelected={setSelected}
+                  setHoveredField={setHoveredField}
+                  isEdit={true}
+                  submitHref="/artist-page/profile-for-artist"
+                />
+              </>
+            )}
+          </div>
+        </div>
+      </FormProvider>
     </>
   );
 }

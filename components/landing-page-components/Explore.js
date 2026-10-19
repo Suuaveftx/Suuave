@@ -34,7 +34,7 @@ const ExploreComponent = () => {
             <CustomButton
               text="Explore More"
               className="mt-8"
-              href="/onboarding/category"
+
             />
           </div>
         </div>
@@ -81,7 +81,7 @@ const ExploreComponent = () => {
           <CustomButton
             text="Explore More"
             className="mt-4 w-44 h-14 font-semibold text-lg items-center"
-            href="/onboarding/category"
+
           />
         </div>
       </div>

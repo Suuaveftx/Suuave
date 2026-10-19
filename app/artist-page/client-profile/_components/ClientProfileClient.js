@@ -4,6 +4,7 @@ import RatingStar from "../../../fashion-designers/_components/RatingStar";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import PageContainer from "@/components/layout/PageContainer";
 
 
 const reviews = [
@@ -29,6 +30,8 @@ const reviews = [
 
 const fullText = `Sorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel bibendum lorem. Morbi convallis convallis diam sit amet lacinia. Aliquam in elementum tellus. Curabitur tempor quis eros tempus lacinia. Nam bibendum pellentesque quam a convallis. Sed ut vulputate nisi. Integer in felis sed leo vestibulum venenatis. Suspendisse quis arcu sem. Aenean feugiat ex eu vestibulum vestibulum. Morbi a eleifend magna. Nam metus lacus, porttitor eu mauris a, blandit ultrices nibh. Mauris sit amet magna non ligula vestibul`;
 
+import { useAppStore } from "@/store";
+
 const ClientProfileClient = () => {
     const router = useRouter();
     const [isMobile, setIsMobile] = useState(false);
@@ -37,12 +40,13 @@ const ClientProfileClient = () => {
     const [titleValue, setTitleValue] = useState(
         "Designer/Brand"
     );
-    const [userRole, setUserRole] = useState(null);
+
+    const { activeCategory } = useAppStore();
+    const [userRole, setUserRole] = useState(activeCategory);
 
     useEffect(() => {
-        const role = localStorage.getItem('activeCategory');
-        setUserRole(role);
-    }, []);
+        setUserRole(activeCategory);
+    }, [activeCategory]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -66,24 +70,24 @@ const ClientProfileClient = () => {
     }, [isMobile, showFull, words]);
 
     return (
-        <div className=" bg-[#F1F1F1] md:px-12 pb-20">
+        <PageContainer className="pb-20" withTopSpacing>
             {/* Header */}
             <div className=" md:hidden font-satoshi">
                 <button
-                    className="flex items-center gap-3 px-4 py-2"
+                    className="flex items-center gap-3 px-2 py-2 text-2xl font-bold"
                     onClick={() => router.push("/artist-page/project-page")}
                 >
                     <Image
                         src="/collectionImage/icons/arrow-left.svg"
                         alt="icon"
-                        width={24}
-                        height={24}
+                        width={30}
+                        height={30}
                     />
                     Profile
                 </button>
             </div>
             {/* User details  */}
-            <div className="mt-3 flex flex-col py-5 bg-[#F9F9F9] px-5 rounded-t-lg md:justify-between md:mt-20 md:flex-row md:items-start md:gap-4 items-center p-4 text-[#222222] font-satoshi">
+            <div className="flex flex-col py-5 bg-[#F9F9F9] px-5 rounded-t-lg md:justify-between md:flex-row md:items-start md:gap-4 items-center p-4 text-[#222222] font-satoshi">
                 <div className=" flex flex-col items-center md:flex-row md:items-start md:gap-3">
                     <div className="flex flex-col items-end w-20 h-20 rounded-full md:w-28 md:h-28 relative">
                         {/* Image Preview */}
@@ -205,7 +209,7 @@ const ClientProfileClient = () => {
                     ))}
                 </div>
             </section>
-        </div>
+        </PageContainer>
     );
 };
 

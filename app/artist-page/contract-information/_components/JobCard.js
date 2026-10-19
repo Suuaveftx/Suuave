@@ -23,13 +23,13 @@ const jobDetails = {
 export default function JobCard() {
   return (
     <div className="flex flex-col p-6">
-      <Card className="w-full h-[100vh] p-4 shadow-lg border-1 border-[#D3D3D3]">
+      <Card className="w-full p-4 shadow-lg border-1 border-[#D3D3D3]">
         <CardBody className="space-y-4">
           {/* Mapping through job details */}
           {jobDetails.details.map((item, index) => (
-            <div key={index} className="flex gap-8">
-              <h5 className="font-semibold">{item.label} -</h5>
-              <span className="text-gray-600">{item.value}</span>
+            <div key={index} className="grid grid-cols-[38%_62%] sm:grid-cols-[8rem_1fr] gap-2 sm:gap-4 items-start">
+              <span className="text-sm font-light text-gray-500">{item.label}</span>
+              <span className="text-sm font-proximanova break-words whitespace-normal">{item.value}</span>
             </div>
           ))}
 

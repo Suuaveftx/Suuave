@@ -29,6 +29,7 @@ export function UserActions() {
 
   const handleLogout = async () => {
     await signOut();
+    router.push('/auth/login');
   };
   return (
     <div className='flex items-center gap-6 font-satoshi'>
@@ -43,7 +44,7 @@ export function UserActions() {
           Post Project
         </Button> */}
         <Button
-          className='rounded-full px-9 py-2 shadow-md font-proximanova font-semibold items-center justify-center gap-2 lg:flex hidden border border-neutral-400'
+          className='rounded-full px-9 py-2 shadow-md font-proximanova font-semibold items-center justify-center gap-2 lg:flex hidden'
           style={{
             color: '#035A7A',
             background: 'radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)',

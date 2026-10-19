@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { maskEmail } from '../../../../utils/mask-email';
-import { useAppStore } from '../../../../store';
+import { useAppStore } from '@/store';
 
 function ConfirmationCode({ email }) {
   const [value, setValue] = React.useState('');

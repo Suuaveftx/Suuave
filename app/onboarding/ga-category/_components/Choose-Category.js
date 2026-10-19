@@ -7,7 +7,7 @@ import CustomButton from '../../../../components/CustomButton';
 import { Alert, addToast } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import { getActiveCategory } from '../../../../utils/utils';
-import { useAppStore } from '../../../../store';
+import { useAppStore } from '@/store';
 import { authClient } from '../../../../lib/auth-client';
 // import { Roles } from '@suuaveftx/prisma-shared';
 
@@ -124,8 +124,8 @@ const ChooseCategory = ({ user }) => {
             />
             <div>
               <h2 className='text-[22px] font-bold pt-1'>Fashion Brand</h2>
-              <p className='text-gray-500 text-base mt-1 whitespace-nowrap'>
-                Including Brands, Designers, Clients, etc.
+              <p className='text-gray-500 text-base mt-1 whitespace-normal md:whitespace-nowrap'>
+                Independent Brand, Corporate Brand or Creative/Sourcing Agency
               </p>
             </div>
           </div>

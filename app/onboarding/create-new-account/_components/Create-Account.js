@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import { EyeIcon, EyeOff } from 'lucide-react';
 
 import { useAppStore } from '../../../../store';
-import { sendVerificationEmail, signUp } from '../../../actions/services';
+import { signUp } from '../../../actions/services';
 import { useRouter } from 'next/navigation';
 import { PROVIDERS } from '../../../../utils/constants';
 import { authClient } from '../../../../lib/auth-client';
@@ -49,20 +49,9 @@ const CreateAccount = () => {
         });
         return;
       }
-      // Handle success
-      // console.log('Signup successful:', result.data);
-      const verificationData = await sendVerificationEmail(
-        result.data.user.email,
-        'email-verification'
-      );
-      if (!verificationData.success) {
-        addToast({
-          title: 'Verification email failed',
-          description: verificationData.error || 'Failed to send verification email.',
-          color: 'secondary',
-        });
-        return;
-      }
+      // Handle success — better-auth automatically sends the OTP email via
+      // signUpEmail() when overrideDefaultEmailVerification: true, so no
+      // manual sendVerificationEmail() call is needed here.
       addToast({
         title: 'Signup successful',
         description: 'Signup successful. Please verify your email.',
@@ -85,7 +74,7 @@ const CreateAccount = () => {
   const handleSocialLogin = async (provider) => {
     await authClient.signIn.social({
       provider: provider,
-      callbackURL: '/auth/re_3VLEV5wq_Pxbep5U3J4ALWJG3NJnBmtxT',
+      callbackURL: '/auth/callback',
     });
   };
   return (
@@ -222,9 +211,9 @@ const CreateAccount = () => {
             onChange={() => setTerms(!terms)}
           />
           By creating account, I agree to Suuave <br className='lg:hidden' />
-          <b className='text-[#035A7A] ml-10 lg:ml-0  cursor-pointer'>
-            Terms and conditions
-          </b>
+          <Link href='/terms-of-service' className='text-[#035A7A] ml-10 lg:ml-0 cursor-pointer font-bold'>
+            Terms of Service and Collaboration & Licensing Policy
+          </Link>
         </span>
         {/* <Link
           href='email-confirmation'

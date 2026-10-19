@@ -10,6 +10,8 @@ import {
 } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import ProposalActive from "./_components/ProposalActive";
+import PageContainer from "../../../components/layout/PageContainer";
+
 const Page = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
@@ -50,40 +52,47 @@ const Page = () => {
   };
 
   return (
-    <div className="grid grid-cols-10 gap-2">
-      {" "}
-      {/* reduced from gap-4 to gap-2 */}
-      {/* Main Content */}
-      <div className="lg:col-span-7 col-span-10">
-        <ProposalActive
-          handleSubmitProposal={handleSubmitProposal}
-          handleWithdrawProposal={handleWithdrawProposal}
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-        />
+    <PageContainer className="pb-20 pt-4 md:pt-7 font-satoshi">
+      {/* Mobile Header - outside cards */}
+      <div className="flex items-center gap-2 mb-4 lg:hidden">
+        <h1 className="text-[20px] font-bold text-[#222222]">Proposal Details</h1>
       </div>
-      {/* Sidebar */}
-      <div className="col-span-10 lg:col-span-3 lg:mt-20 flex flex-col">
-        <div className="hidden lg:flex mb-2 lg:mb-4">
-          {" "}
-          {/* tighter spacing */}
-          <BtnProposals
-            sendText="Edit Proposal"
-            saveText="Withdraw Proposal"
-            showSaveIcon={false}
+
+      <div className='bg-white rounded-3xl px-2 py-6 lg:p-0 lg:bg-transparent lg:rounded-none grid grid-cols-1 lg:grid-cols-10 gap-x-8 gap-y-4 pt-4 pb-4 lg:pb-0 mt-2 mb-32 lg:mb-10 shadow-sm lg:shadow-none'>
+        {/* reduced from gap-4 to gap-2 */}
+        {/* Main Content */}
+        <div className="lg:col-span-7 col-span-10">
+          <ProposalActive
             handleSubmitProposal={handleSubmitProposal}
-            handleViewProposal={handleSubmitProposal}
             handleWithdrawProposal={handleWithdrawProposal}
-            proposalSubmitted={true}
             isOpen={isOpen}
             onOpenChange={onOpenChange}
           />
-
         </div>
-        <div>
-          {" "}
-          {/* tighter spacing */}
-          <Abouttheclient />
+        {/* Sidebar */}
+        <div className="col-span-10 lg:col-span-3 lg:mt-20 flex flex-col">
+          <div className="hidden lg:flex mb-2 lg:mb-4">
+            {" "}
+            {/* tighter spacing */}
+            <BtnProposals
+              sendText="Edit Proposal"
+              saveText="Withdraw Proposal"
+              showSaveIcon={false}
+              handleSubmitProposal={handleSubmitProposal}
+              handleViewProposal={handleSubmitProposal}
+              handleWithdrawProposal={handleWithdrawProposal}
+              proposalSubmitted={true}
+              isOpen={isOpen}
+              onOpenChange={onOpenChange}
+            />
+
+          </div>
+          <div>
+            {" "}
+            {/* tighter spacing */}
+            <Abouttheclient />
+          </div>
+
         </div>
 
       </div>
@@ -96,7 +105,7 @@ const Page = () => {
         message="Are you sure you want to withdraw your proposal? This action cannot be undone."
         confirmButtonText="Yes"
       />
-    </div>
+    </PageContainer>
   );
 };
 

@@ -17,7 +17,7 @@ const Banner = () => {
         </h1>
         <CustomButton
           text="Enter the Marketplace"
-          href="/onboarding"
+
           className="w-fit px-8 h-14 font-semibold text-lg"
         />
       </div>

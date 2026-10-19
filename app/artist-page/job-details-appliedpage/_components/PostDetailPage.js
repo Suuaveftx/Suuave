@@ -6,10 +6,10 @@ const PostDetailsPage = () => {
   return (
     <>
       <section className='lg:mb-[29.34px] lg:mt-[45px]'>
-        <h1 className='ml-16 font-bold text-2xl border-b lg:flex hidden'>Job Details</h1>
+        <h1 className='font-bold text-2xl border-b lg:flex hidden w-full'>Job Details</h1>
       </section>
       <section>
-        <div className='bg-[#FAFAFA] lg:px-8 lg:py-8 lg:pb-[42px] lg:mx-16 rounded-2xl lg:w-screen lg:max-w-[85%] lg:h-auto w-full max-w-[100%] px-4 pt-8 pb-6 mt-[19px]'>
+        <div className='bg-[#FAFAFA] lg:px-8 lg:py-8 lg:pb-[42px] rounded-2xl w-full px-4 pt-8 pb-6 mt-[19px] border border-[#EAEAEA]'>
           <div className='text-sm text-[#767676] tracking-[0.33px] flex justify-between lg:mb-8 mb-4'>
             <div className='lg:flex hidden'>
               <span>Posted 2 days ago</span>
@@ -25,7 +25,7 @@ const PostDetailsPage = () => {
               </div>
             </div>
           </div>
-          <div className='lg:font-bold lg:text-[22px] lg:w-screen lg:max-w-[100%] w-full max-w-[100%]'>
+          <div className='lg:font-bold lg:text-[22px] w-full'>
             <div className='flex items-center gap-6'>
               <h4 className='font-bold text-[32px] leading-tight whitespace-normal'>
                 Modern Fashion Attire Illustration
@@ -42,7 +42,7 @@ const PostDetailsPage = () => {
                 Applied
               </div>
             </div>
-            <div className='lg:mt-7 mt-4 text-[#222222] lg:w-screen lg:max-w-[100%]'>
+            <div className='lg:mt-7 mt-4 text-[#222222] w-full'>
               <h5 className='text-base font-normal lg:flex hidden'>Job Description</h5>
               <span className='text-base font-normal tracking-[0.33px] whitespace-normal'>
                 We are seeking a talented and creative Fashion Illustrator to collaborate

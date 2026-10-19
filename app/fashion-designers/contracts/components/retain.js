@@ -21,15 +21,7 @@ export default function RetainArtist() {
           <CardBody className='p-10 space-y-8'>
             <div>
               <div className='flex items-center gap-3 mb-6'>
-                <Button
-                  isIconOnly
-                  variant='light'
-                  size='sm'
-                  className='md:hidden -ml-2'
-                  onClick={() => window.history.back()}
-                >
-                  <ChevronLeftIcon className='w-6 h-6 text-[#222222]' />
-                </Button>
+
                 <h2 className='text-2xl font-bold text-[#222222]'>Retain Artist</h2>
               </div>
 

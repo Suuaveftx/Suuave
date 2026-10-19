@@ -9,7 +9,6 @@ export function Providers({ children }) {
         placement='bottom-right'
         toastProps={{
           variant: 'solid',
-
           timeout: 3000,
           shouldShowTimeoutProgress: true,
         }}

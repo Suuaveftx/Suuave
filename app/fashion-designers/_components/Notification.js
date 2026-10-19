@@ -66,6 +66,9 @@ const Notification = () => {
       >
         <PopoverTrigger>
           <Button
+            data-tour="notifications"
+            data-tour-mobile="mobile-notifications"
+            aria-label="View notifications"
             isIconOnly
             variant="bordered"
             radius="full"

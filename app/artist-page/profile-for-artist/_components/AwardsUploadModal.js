@@ -10,21 +10,26 @@ import {
 } from "@heroui/react";
 import { Paperclip } from "lucide-react";
 
-const AwardUploadModal = ({ onUpload }) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+const AwardUploadModal = ({ onUpload, isOpen: externalIsOpen, onOpenChange: externalOnOpenChange }) => {
+  const { isOpen: internalIsOpen, onOpen, onOpenChange: internalOnOpenChange } = useDisclosure();
+
+  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+  const onOpenChange = externalOnOpenChange || internalOnOpenChange;
 
   const handleSend = (onClose) => {
     if (onUpload) {
-      onUpload('/dev-images/Awards.png'); // Mock image path
+      onUpload('/dev-images/Awards.png');
     }
     onClose();
   };
 
   return (
     <>
-      <Button onPress={onOpen} className="rounded-full bg-transparent border-1 border-[#3A98BB]">
-        Add More
-      </Button>
+      {externalIsOpen === undefined && (
+        <Button onPress={onOpen} className="rounded-full bg-transparent border-1 border-[#3A98BB]">
+          Add More
+        </Button>
+      )}
       <Modal isOpen={isOpen} placement="center" onOpenChange={onOpenChange}>
         <ModalContent>
           {({ onClose }) => ( // Ensure correct function usage here

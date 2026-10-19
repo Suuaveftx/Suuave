@@ -8,9 +8,9 @@ const Gallery = ({ details }) => {
   const { images, title } = details;
 
   return (
-    <div className="flex items-start gap-3 justify-between w-[50%] ">
+    <div className="flex items-start gap-3 justify-between w-full">
       {/* Main Display Area */}
-      <div className="  w-[70%] ">
+      <div className="flex-1 min-w-0">
         {/* Main Image */}
         <Image
           src={images[selectedIndex]}
@@ -19,7 +19,7 @@ const Gallery = ({ details }) => {
           width={0}
           height={0}
         />
-        <p className="text-[#222222] font-satoshi mt-3 font-bold text-base w-[400px]">
+        <p className="text-[#222222] font-satoshi mt-3 font-bold text-base w-full break-words">
           {title}
         </p>
       </div>
@@ -34,11 +34,10 @@ const Gallery = ({ details }) => {
             <Image
               src={image}
               alt={`thumbnail ${index + 1}`}
-              className={`${
-                selectedIndex === index
+              className={`${selectedIndex === index
                   ? "ring-2 ring-[#3A98BB] scale-105"
                   : "opacity-60 hover:opacity-80"
-              } rounded-[8px] w-full h-full object-cover object-center  transition-all duration-300 `}
+                } rounded-[8px] w-full h-full object-cover object-center  transition-all duration-300 `}
               width={0}
               height={0}
             />
