@@ -1,6 +1,7 @@
 'use client';
 import { HeroUIProvider } from '@heroui/react';
 import { ToastProvider } from '@heroui/toast';
+import { QueryProvider } from '@/components/QueryProvider';
 
 export function Providers({ children }) {
   return (
@@ -13,7 +14,7 @@ export function Providers({ children }) {
           shouldShowTimeoutProgress: true,
         }}
       />
-      {children}
+      <QueryProvider>{children}</QueryProvider>
     </HeroUIProvider>
   );
 }
