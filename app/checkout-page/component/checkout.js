@@ -35,7 +35,7 @@ export const CheckoutPage = () => {
   const [selectedCountry, setSelectedCountry] = useState('Nigeria');
   const [paymentMethod, setPaymentMethod] = useState('credit');
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-
+  // Hello RAYMOUND, MAHMUD PLEASE DONT DO THIS.
   const { addLicense } = useAppStore();
 
   const countries = [
@@ -62,7 +62,9 @@ export const CheckoutPage = () => {
   const newDeadline = searchParams.get('newDeadline') || '24th April, 2026';
   const reason = searchParams.get('reason') || 'Additional 5 sketches';
   const additionalPayment = amountParam
-    ? (amountParam.startsWith('+') ? amountParam.substring(1) : amountParam)
+    ? amountParam.startsWith('+')
+      ? amountParam.substring(1)
+      : amountParam
     : 'N20,000';
 
   const handleBackToHome = () => {
@@ -100,8 +102,17 @@ export const CheckoutPage = () => {
             className='min-w-fit flex items-center justify-center p-1 rounded-full w-10 h-10 bg-transparent text-gray-500'
             onPress={() => router.back()}
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 18l-6-6 6-6" />
+            <svg
+              width='24'
+              height='24'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+            >
+              <path d='M15 18l-6-6 6-6' />
             </svg>
           </Button>
           <h1 className='text-[20px] font-semibold text-[#222222]'>Checkout</h1>
@@ -124,7 +135,7 @@ export const CheckoutPage = () => {
               fontWeight: 900,
               fontSize: '32px',
               color: '#000000',
-              lineHeight: '1.2'
+              lineHeight: '1.2',
             }}
           >
             Checkout
@@ -146,8 +157,8 @@ export const CheckoutPage = () => {
                 {isExtension
                   ? `Make payment to activate the extension request confirmed by the artist.`
                   : hasCrown
-                  ? "Secure full, sole ownership of this design, which will be permanently removed from the marketplace."
-                  : "Get Licensing right to the design and use as you desire. All files and specification will be tranferred to you."}
+                    ? 'Secure full, sole ownership of this design, which will be permanently removed from the marketplace.'
+                    : 'Get Licensing right to the design and use as you desire. All files and specification will be tranferred to you.'}
               </span>
             </div>
           }
@@ -163,16 +174,22 @@ export const CheckoutPage = () => {
             {/* Billing Information */}
             <Card className='shadow-none lg:shadow-md border border-[#EAEAEA] lg:border-2 lg:border-gray-200 rounded-xl lg:rounded-2xl'>
               <CardBody className='p-4 md:p-6'>
-                <h2 className='text-base md:text-lg font-bold mb-4 text-[#222222]'>Billing Information</h2>
+                <h2 className='text-base md:text-lg font-bold mb-4 text-[#222222]'>
+                  Billing Information
+                </h2>
 
                 <div className='space-y-4'>
                   <div>
-                    <label className='block text-sm font-bold text-[#222222] mb-1.5'>Full Name</label>
+                    <label className='block text-sm font-bold text-[#222222] mb-1.5'>
+                      Full Name
+                    </label>
                     <Input
                       placeholder='Name on card'
                       variant='bordered'
                       className='w-full'
-                      classNames={{ inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]' }}
+                      classNames={{
+                        inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]',
+                      }}
                     />
                   </div>
 
@@ -261,7 +278,9 @@ export const CheckoutPage = () => {
                         placeholder='0000 0000 0000 0000'
                         variant='bordered'
                         endContent={<CreditCard size={20} className='text-gray-400' />}
-                        classNames={{ inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]' }}
+                        classNames={{
+                          inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]',
+                        }}
                       />
                     </div>
 
@@ -269,7 +288,13 @@ export const CheckoutPage = () => {
                       <label className='block text-sm font-bold text-[#222222] mb-1.5'>
                         Name On Card
                       </label>
-                      <Input placeholder='Name on card' variant='bordered' classNames={{ inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]' }} />
+                      <Input
+                        placeholder='Name on card'
+                        variant='bordered'
+                        classNames={{
+                          inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]',
+                        }}
+                      />
                     </div>
 
                     <div className='grid grid-cols-2 gap-4'>
@@ -277,11 +302,25 @@ export const CheckoutPage = () => {
                         <label className='block text-sm font-bold text-[#222222] mb-1.5'>
                           Expiry Date
                         </label>
-                        <Input placeholder='DD/YY' variant='bordered' classNames={{ inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]' }} />
+                        <Input
+                          placeholder='DD/YY'
+                          variant='bordered'
+                          classNames={{
+                            inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]',
+                          }}
+                        />
                       </div>
                       <div>
-                        <label className='block text-sm font-bold text-[#222222] mb-1.5'>CVV</label>
-                        <Input placeholder='XXX' variant='bordered' classNames={{ inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]' }} />
+                        <label className='block text-sm font-bold text-[#222222] mb-1.5'>
+                          CVV
+                        </label>
+                        <Input
+                          placeholder='XXX'
+                          variant='bordered'
+                          classNames={{
+                            inputWrapper: 'rounded-lg border-[#EAEAEA] h-[48px]',
+                          }}
+                        />
                       </div>
                     </div>
                   </div>
@@ -314,17 +353,22 @@ export const CheckoutPage = () => {
                     </div>
                     <div className='flex-1 pr-2'>
                       <h3 className='font-bold text-[13px] md:text-sm text-[#222222] leading-tight mb-1 truncate max-w-[170px] lg:max-w-full'>
-                        {titleParam || (isExtension ? "Contract Extension Request" : "Modern Fashion Attire...")}
+                        {titleParam ||
+                          (isExtension
+                            ? 'Contract Extension Request'
+                            : 'Modern Fashion Attire...')}
                       </h3>
                       <p className='text-[11px] text-[#888888] line-clamp-2 leading-tight'>
                         {isExtension
-                          ? "Contract timeline extension fee"
-                          : "Modern Fashion Attire made with authority african..."}
+                          ? 'Contract timeline extension fee'
+                          : 'Modern Fashion Attire made with authority african...'}
                       </p>
                     </div>
                   </div>
 
-                  <span className='font-satoshi text-[13px] font-medium'>{displayAmount}</span>
+                  <span className='font-satoshi text-[13px] font-medium'>
+                    {displayAmount}
+                  </span>
                 </div>
 
                 <Divider className='my-4' />
@@ -340,7 +384,9 @@ export const CheckoutPage = () => {
                   <span className='font-bold md:text-2xl text-[14px] text-[#222222]'>
                     Total Amount To Pay :
                   </span>
-                  <span className='text-[15px] font-black text-[#222222]'>{displayAmount}</span>
+                  <span className='text-[15px] font-black text-[#222222]'>
+                    {displayAmount}
+                  </span>
                 </div>
 
                 <Divider className='mb-5 hidden lg:block' />
@@ -369,7 +415,10 @@ export const CheckoutPage = () => {
                         Your payment is secure in our{' '}
                         <span className='font-satoshi text-[#3A98BB] '>Escrow</span> until
                         your design assets are successfully delivered. Read our{' '}
-                        <Link href='/terms-of-service?source=brand#p2-main' className='font-semibold text-[#3A98BB]'>
+                        <Link
+                          href='/terms-of-service?source=brand#p2-main'
+                          className='font-semibold text-[#3A98BB]'
+                        >
                           Collaboration & Licencing Policy
                         </Link>{' '}
                         for full details.
@@ -467,7 +516,9 @@ export const CheckoutPage = () => {
                     </div>
 
                     <div className='grid grid-cols-[180px_1fr] items-baseline text-[15px]'>
-                      <span className='font-bold text-[#222222]'>Additional Payment :</span>
+                      <span className='font-bold text-[#222222]'>
+                        Additional Payment :
+                      </span>
                       <span className='text-[#333333]'>{additionalPayment}</span>
                     </div>
                   </div>
