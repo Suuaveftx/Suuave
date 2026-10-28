@@ -93,21 +93,20 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
 
         <NavbarContent justify='end' className='gap-4'>
           <NavbarItem className='hidden lg:flex'>
-            <Link href='#' onClick={(e) => e.preventDefault()} className={`text-white transition duration-300`}>
+            <Link href='/auth/login-options' className={`text-white transition duration-300`}>
               Login
             </Link>
           </NavbarItem>
           <NavbarItem>
             <Link
-              href="#"
-              onClick={(e) => e.preventDefault()}
+              href="/onboarding"
               className="cursor-pointer hidden lg:block bg-[radial-gradient(circle,#EAF9FF,#CCE7F2)] font-bold text-base text-[#035A7A] rounded-3xl py-2 px-6"
             >
               Get started
             </Link>
           </NavbarItem>
           <NavbarItem className='lg:hidden'>
-            <Link href='#' onClick={(e) => e.preventDefault()} className='text-white pr-2'>
+            <Link href='/auth/login-options' className='text-white pr-2'>
               Login
             </Link>
           </NavbarItem>
