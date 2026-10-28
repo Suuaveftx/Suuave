@@ -10,6 +10,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import EditOccupationModal from './EditOccupationModal';
 import EditAboutModal from './EditAboutModal';
+import { useGetArtistProfile } from '../queries/artist-profile-queries';
 
 
 
@@ -28,6 +29,10 @@ const ProfileArtist = ({ isVisitor = false }) => {
   const [tempAboutValue, setTempAboutValue] = useState(fullText);
   const fileInputRef = useRef(null);
   const router = useRouter();
+  const {data: artistProfile, isLoading: loadingProfile} = useGetArtistProfile()
+
+  console.log(artistProfile);
+  
 
   const handleRetainArtist = () => {
     const returnPath = encodeURIComponent('/artist-page/profile-for-artist');
@@ -67,6 +72,8 @@ const ProfileArtist = ({ isVisitor = false }) => {
     const storageKey = userRole === 'brand' ? 'brand_title' : 'artist_occupation';
     localStorage.setItem(storageKey, newOccupation);
   };
+
+
 
   return (
     <div
