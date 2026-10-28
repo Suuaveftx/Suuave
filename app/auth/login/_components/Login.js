@@ -9,7 +9,6 @@ import Link from 'next/link';
 import BackButton from '../../../../components/BackButton';
 import { useForm } from 'react-hook-form';
 import { addToast, Button } from '@heroui/react';
-import { signInWithEmailAndPassword, signInWithGoogle } from '../../../actions/services';
 import { useRoleRedirect } from '../../../../hooks/useRoleRedirect';
 import { authClient } from '../../../../lib/auth-client';
 import { PROVIDERS } from '../../../../utils/constants';
@@ -38,27 +37,29 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const result = await signInWithEmailAndPassword(data.email, data.password);
-      console.log('Login result:', result);
-      if (result.success) {
-        // Redirect or perform other actions upon successful login
-        if (result.data.user.emailVerified) {
-          redirectUser(result.data.user.role);
+      const { data: sessionData, error } = await authClient.signIn.email({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (sessionData?.user) {
+        if (sessionData.user.emailVerified) {
+          redirectUser(sessionData.user.role);
         } else {
           router.push(
             `/onboarding/email-confirmation?email=${encodeURIComponent(data.email)}`
           );
         }
       } else {
-        // Handle login failure (e.g., show error message to user)
-        if (result.error === 'email not verified') {
+        const errorMessage = error?.message || 'Unable to sign in.';
+        if (errorMessage.toLowerCase().includes('email not verified')) {
           router.push(
             `/onboarding/email-confirmation?email=${encodeURIComponent(data.email)}`
           );
         } else {
           addToast({
             title: 'Login Failed',
-            description: `Login failed: ${result.error}`,
+            description: `Login failed: ${errorMessage}`,
             color: 'danger',
           });
         }
