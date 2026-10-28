@@ -28,6 +28,9 @@ const PageContent = () => {
 
   const [action, setAction] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [fileValidationError, setFileValidationError] = useState('');
+  const [skillError, setSkillError] = useState('');
+  const [designStyleError, setDesignStyleError] = useState('');
   const fileInputRef = useRef(null);
 
   const [previewAwardUrl, setPreviewAwardUrl] = useState(null);
@@ -40,6 +43,7 @@ const PageContent = () => {
       designStyles: [],
       projectBudget: '',
       projectTimeframe: '',
+      projectCurrency: 'USD',
     },
   });
 
@@ -191,22 +195,48 @@ const PageContent = () => {
         designStyles: parsedStyles,
         projectBudget: editProject.budget || '',
         projectTimeframe: editProject.timeframe || '',
+        projectCurrency: editProject.currency || 'USD',
       });
     }
   }, [isEditMode, editProject, reset]);
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-    const newFiles = files.map((file) => ({
+    const invalidFiles = files.filter((file) => file.size > 5 * 1024 * 1024);
+    const validFiles = files.filter((file) => file.size <= 5 * 1024 * 1024);
+    const newFiles = validFiles.map((file) => ({
       name: file.name,
       size: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
       originalFile: file,
     }));
     setSelectedFiles((prev) => [...prev, ...newFiles]);
+    setFileValidationError(
+      invalidFiles.length
+        ? `${invalidFiles.map((file) => file.name).join(', ')} exceeds the 5 MB per-file limit.`
+        : ''
+    );
+    e.target.value = '';
   };
 
   const removeFile = (index) => {
     setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+    setFileValidationError('');
+  };
+
+  const addSkill = (skill) => {
+    if (!skill) return;
+    if (!formData.fashionDesignerSkills.includes(skill)) {
+      setValue('fashionDesignerSkills', [...formData.fashionDesignerSkills, skill]);
+    }
+    setSkillError('');
+  };
+
+  const addDesignStyle = (style) => {
+    if (!style) return;
+    if (!formData.designStyles.includes(style)) {
+      setValue('designStyles', [...formData.designStyles, style]);
+    }
+    setDesignStyleError('');
   };
 
   const onReset = () => {
@@ -216,6 +246,9 @@ const PageContent = () => {
     setSkillSuggestion('');
     setCurrentSkillInput('');
     setSelectedFiles([]);
+    setFileValidationError('');
+    setSkillError('');
+    setDesignStyleError('');
     reset({
       projectTitle: '',
       projectDetails: '',
@@ -223,17 +256,28 @@ const PageContent = () => {
       designStyles: [],
       projectBudget: '',
       projectTimeframe: '',
+      projectCurrency: 'USD',
     });
     if (isEditMode) clearEditProject();
   };
 
   const onSubmit = (data) => {
+    if (!data.fashionDesignerSkills.length) {
+      setSkillError('Add at least one required skill.');
+      return;
+    }
+    if (!data.designStyles.length) {
+      setDesignStyleError('Add at least one design style.');
+      return;
+    }
+
     const dataToSave = {
       title: data.projectTitle,
       description: data.projectDetails,
       skills: data.fashionDesignerSkills,
       style: data.designStyles,
       budget: Number(data.projectBudget),
+      currency: data.projectCurrency,
       timeframe: data.projectTimeframe,
       referenceFiles: selectedFiles.map((f) => f.name),
     };
@@ -284,7 +328,19 @@ const PageContent = () => {
             <Controller
               name='projectTitle'
               control={control}
-              rules={{ required: 'Please enter a title' }}
+              rules={{
+                required: 'Please enter a title',
+                validate: (value) =>
+                  value.trim().length >= 10 || 'Title must be at least 10 characters',
+                minLength: {
+                  value: 10,
+                  message: 'Title must be at least 10 characters',
+                },
+                maxLength: {
+                  value: 200,
+                  message: 'Title must be 200 characters or fewer',
+                },
+              }}
               render={({ field, fieldState }) => (
                 <Input
                   {...field}
@@ -300,6 +356,7 @@ const PageContent = () => {
                   placeholder='Type the title of the project'
                   labelPlacement='outside'
                   type='text'
+                  maxLength={200}
                   classNames={responsiveClasses}
                 />
               )}
@@ -307,7 +364,20 @@ const PageContent = () => {
             <Controller
               name='projectDetails'
               control={control}
-              rules={{ required: 'Please enter a description' }}
+              rules={{
+                required: 'Please enter a description',
+                validate: (value) =>
+                  value.trim().length >= 50 ||
+                  'Description must be at least 50 characters',
+                minLength: {
+                  value: 50,
+                  message: 'Description must be at least 50 characters',
+                },
+                maxLength: {
+                  value: 5000,
+                  message: 'Description must be 5,000 characters or fewer',
+                },
+              }}
               render={({ field, fieldState }) => (
                 <Textarea
                   {...field}
@@ -325,14 +395,19 @@ const PageContent = () => {
                     </span>
                   }
                   placeholder='Describe the project details'
+                  maxLength={5000}
                 />
               )}
             />
 
             <div className='flex flex-col gap-3'>
               <label className='text-sm font-bold text-[#222222]'>
-                Reference Image (Optional)
+                Reference Materials (Optional)
               </label>
+              <p className='text-xs text-[#767676]'>
+                Each file must be 5 MB or smaller. The upload endpoint currently documents images
+                and PDFs; PDF acceptance should be confirmed with the API team.
+              </p>
               <div className='flex flex-wrap gap-4'>
                 <input
                   type='file'
@@ -340,6 +415,7 @@ const PageContent = () => {
                   onChange={handleFileChange}
                   className='hidden'
                   multiple
+                  accept='image/*,.pdf'
                 />
                 <Button
                   variant='bordered'
@@ -378,6 +454,11 @@ const PageContent = () => {
                   ))}
                 </div>
               </div>
+              {fileValidationError && (
+                <p role='alert' className='text-sm text-red-600'>
+                  {fileValidationError}
+                </p>
+              )}
             </div>
             <div className='flex flex-col gap-2 relative w-full'>
               <label className='font-semibold lg:font-bold text-[14px] lg:text-sm text-[#222222] pb-1 lg:pb-0'>
@@ -414,26 +495,13 @@ const PageContent = () => {
                   onKeyDown={(e) => {
                     if ((e.key === 'Tab' || e.key === 'ArrowRight') && skillSuggestion) {
                       e.preventDefault();
-                      if (!formData.fashionDesignerSkills.includes(skillSuggestion)) {
-                        setValue('fashionDesignerSkills', [
-                          ...formData.fashionDesignerSkills,
-                          skillSuggestion,
-                        ]);
-                      }
+                      addSkill(skillSuggestion);
                       setCurrentSkillInput('');
                       setSkillSuggestion('');
                     } else if (e.key === 'Enter') {
                       e.preventDefault();
                       const skillToAdd = skillSuggestion || currentSkillInput.trim();
-                      if (
-                        skillToAdd &&
-                        !formData.fashionDesignerSkills.includes(skillToAdd)
-                      ) {
-                        setValue('fashionDesignerSkills', [
-                          ...formData.fashionDesignerSkills,
-                          skillToAdd,
-                        ]);
-                      }
+                      addSkill(skillToAdd);
                       setCurrentSkillInput('');
                       setSkillSuggestion('');
                     }
@@ -443,10 +511,7 @@ const PageContent = () => {
                       currentSkillInput.trim() &&
                       !formData.fashionDesignerSkills.includes(currentSkillInput.trim())
                     ) {
-                      setValue('fashionDesignerSkills', [
-                        ...formData.fashionDesignerSkills,
-                        currentSkillInput.trim(),
-                      ]);
+                      addSkill(currentSkillInput.trim());
                     }
                     setCurrentSkillInput('');
                     setSkillSuggestion('');
@@ -490,6 +555,11 @@ const PageContent = () => {
                   ))}
                 </div>
               )}
+              {skillError && (
+                <p role='alert' className='text-sm text-red-600'>
+                  {skillError}
+                </p>
+              )}
             </div>
 
             <div className='flex flex-col gap-2 relative w-full'>
@@ -530,20 +600,13 @@ const PageContent = () => {
                   onKeyDown={(e) => {
                     if ((e.key === 'Tab' || e.key === 'ArrowRight') && designSuggestion) {
                       e.preventDefault();
-                      if (!formData.designStyles.includes(designSuggestion)) {
-                        setValue('designStyles', [
-                          ...formData.designStyles,
-                          designSuggestion,
-                        ]);
-                      }
+                      addDesignStyle(designSuggestion);
                       setCurrentDesignInput('');
                       setDesignSuggestion('');
                     } else if (e.key === 'Enter') {
                       e.preventDefault();
                       const styleToAdd = designSuggestion || currentDesignInput.trim();
-                      if (styleToAdd && !formData.designStyles.includes(styleToAdd)) {
-                        setValue('designStyles', [...formData.designStyles, styleToAdd]);
-                      }
+                      addDesignStyle(styleToAdd);
                       setCurrentDesignInput('');
                       setDesignSuggestion('');
                     }
@@ -553,10 +616,7 @@ const PageContent = () => {
                       currentDesignInput.trim() &&
                       !formData.designStyles.includes(currentDesignInput.trim())
                     ) {
-                      setValue('designStyles', [
-                        ...formData.designStyles,
-                        currentDesignInput.trim(),
-                      ]);
+                      addDesignStyle(currentDesignInput.trim());
                     }
                     setCurrentDesignInput('');
                     setDesignSuggestion('');
@@ -600,7 +660,35 @@ const PageContent = () => {
                   ))}
                 </div>
               )}
+              {designStyleError && (
+                <p role='alert' className='text-sm text-red-600'>
+                  {designStyleError}
+                </p>
+              )}
             </div>
+            <Controller
+              name='projectCurrency'
+              control={control}
+              rules={{ required: 'Please select a currency' }}
+              render={({ field, fieldState }) => (
+                <Select
+                  label='Currency'
+                  labelPlacement='outside'
+                  variant='bordered'
+                  radius='sm'
+                  classNames={responsiveClasses}
+                  selectedKeys={field.value ? [field.value] : []}
+                  onSelectionChange={(keys) => field.onChange(Array.from(keys)[0] || '')}
+                  onBlur={field.onBlur}
+                  errorMessage={fieldState.error?.message}
+                  isInvalid={!!fieldState.error}
+                >
+                  {['USD', 'NGN', 'EUR', 'GBP'].map((currency) => (
+                    <SelectItem key={currency}>{currency}</SelectItem>
+                  ))}
+                </Select>
+              )}
+            />
             <Controller
               name='projectBudget'
               control={control}
@@ -631,7 +719,7 @@ const PageContent = () => {
                   }
                   startContent={
                     <span className='text-[#222222] font-medium text-sm pointer-events-none select-none'>
-                      $
+                      {formData.projectCurrency}
                     </span>
                   }
                   placeholder='0.00'
@@ -709,6 +797,11 @@ const PageContent = () => {
                 {isEditMode ? 'Update' : 'Publish Project'}
               </Button>
             </div>
+            {!isEditMode && (
+              <p className='text-xs text-[#767676]'>
+                You can publish up to 10 projects per day.
+              </p>
+            )}
           </Form>
         </CardBody>
       </Card>
