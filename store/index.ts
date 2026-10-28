@@ -6,7 +6,7 @@ import { bookmarkSlice } from './bookmark-slice';
 import { uiSlice } from './ui-slice';
 import { awardsSlice } from './awards-slice';
 import { vaultSlice } from './vault-slice';
-import { projectSlice } from './project-slice';
+import { projectSlice } from '../app/projects/slice/project-slice';
 import { licenseSlice } from './license-slice';
 import { proposalSlice } from './proposal-slice';
 import { jobSlice } from './job-slice';
