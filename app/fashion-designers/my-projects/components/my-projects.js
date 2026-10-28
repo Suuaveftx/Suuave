@@ -28,12 +28,12 @@ import { useRouter } from 'next/navigation';
 
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
-import { useAppStore } from '@/store';
+import { useProjectManagement } from '@/app/projects/selectors/project-selectors';
 
 const MyProjects = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
-  const { projects, deleteProject, setEditProject } = useAppStore();
+  const { projects, deleteProject, setEditProject } = useProjectManagement();
 
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 5;

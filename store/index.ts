@@ -11,17 +11,7 @@ import { licenseSlice } from './license-slice';
 import { proposalSlice } from './proposal-slice';
 import { jobSlice } from './job-slice';
 import { disputeSlice } from './dispute-slice';
-
-type Project = {
-  id: number;
-  title: string;
-  date: string;
-  status: string;
-  proposals: number;
-  replies: number;
-  hired: number;
-  [key: string]: unknown;
-};
+import type { Project } from '../app/projects/types/project-types';
 
 type Award = {
   name: string;
@@ -37,7 +27,7 @@ type VaultFile = {
 
 type Proposal = Record<string, unknown>;
 
-type AppStore = {
+export type AppStore = {
   activeCategory: string;
   artistOccupation: string;
   setActiveCategory: (category: string) => void;

@@ -2,12 +2,13 @@
 import React from "react";
 import { Paperclip } from "lucide-react";
 import { useAppStore } from "@/store";
+import { selectProjects } from "@/app/projects/selectors/project-selectors";
 
 const ReferenceImage = ({ jobId }) => {
     const [hasReference, setHasReference] = React.useState(false);
     const [attachments, setAttachments] = React.useState([]);
 
-    const { projects } = useAppStore();
+    const projects = useAppStore(selectProjects);
 
     React.useEffect(() => {
         // Get the most recently posted project

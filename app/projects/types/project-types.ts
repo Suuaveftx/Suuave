@@ -1,80 +1,135 @@
-export type ProjectId = string | number;
-
-export type ProjectStatus =
-  | 'draft'
-  | 'active'
-  | 'closed'
-  | 'completed'
-  | 'archived'
-  | 'Draft'
-  | 'Active'
-  | 'Closed'
-  | 'Completed'
-  | 'Archived';
-
-export type ProjectReference = {
-  id?: ProjectId;
-  name: string;
-  size?: number | string;
-  type?: string;
-  url?: string;
-};
-
 export type Project = {
-  id: ProjectId;
+  id: number;
   title: string;
-  description?: string;
-  brief?: string;
-  skills: string[];
-  style?: string[];
-  budget?: number | string;
-  timeframe?: string | number;
-  date?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  status: ProjectStatus;
+  date: string;
+  status: string;
   proposals: number;
-  proposalCount?: number;
-  replies?: number;
-  hired?: number;
-  referenceFiles?: ProjectReference[];
-  ownerId?: string;
-  owner?: {
-    id: string;
-    name?: string;
-    username?: string;
-  };
+  replies: number;
+  hired: number;
+  [key: string]: unknown;
 };
 
-export type CreateProjectInput = {
+export type ProjectId = string;
+
+export type ProjectStatus = 'open' | 'in_progress' | 'completed' | 'cancelled';
+
+export type ProjectCurrency = 'USD' | 'EUR' | 'GBP' | 'NGN';
+
+export type ProjectFilter = 'recently' | 'open' | 'closed';
+
+export type ProjectUser = {
+  userId: string;
+  name: string;
+  verified: boolean;
+  avatar: string;
+};
+
+export type ProjectApiModel = {
+  projectId: ProjectId;
   title: string;
   description: string;
-  skills: string[];
-  style: string[];
-  budget: number | string;
-  timeframe: string | number;
-  referenceFiles?: ProjectReference[];
+  budget: number;
+  currency: ProjectCurrency;
+  duration: string;
+  skillsRequired: string[];
+  postedAt: string;
+  status: ProjectStatus;
+  user: ProjectUser;
+  proposalsCount: number;
+  isSaved: boolean;
 };
-
-export type UpdateProjectInput = Partial<CreateProjectInput>;
 
 export type ProjectListParams = {
   page?: number;
-  pageSize?: number;
+  limit?: number;
+  filter?: ProjectFilter;
   search?: string;
-  status?: ProjectStatus;
-  recency?: string;
 };
 
-export type ProjectListResponse = {
-  projects: Project[];
-  page: number;
-  pageSize: number;
-  total: number;
+export type ProjectPagination = {
+  currentPage: number;
+  limit: number;
+  totalProjects: number;
   totalPages: number;
 };
 
-export type ProjectPermissionError = {
-  status: 401 | 403;
+export type ProjectApiResponse<T> = {
+  success: boolean;
   message: string;
+  data: T;
+};
+
+export type ProjectsApiResponse = ProjectApiResponse<{
+  projects: ProjectApiModel[];
+  pagination: ProjectPagination;
+}>;
+
+export type ProjectDetailApiResponse =
+  | ProjectApiResponse<ProjectApiModel>
+  | ProjectApiResponse<ProjectApiResponse<ProjectApiModel>>;
+
+export type CreateProjectRequest = {
+  title: string;
+  description?: string;
+  budget: number;
+  currency: ProjectCurrency;
+  duration?: string;
+  skillsRequired: string[];
+  referenceImages?: string[];
+};
+
+export type CreateProjectResponse = ProjectApiResponse<{
+  projectId: ProjectId;
+  title: string;
+  status: ProjectStatus;
+  postedAt: string;
+  postedBy: {
+    userId: string;
+    name: string;
+    location: string;
+  };
+}>;
+
+export type UpdateProjectRequest = {
+  title?: string;
+  description?: string;
+  budget?: number;
+  status?: ProjectStatus;
+};
+
+export type DeleteProjectResponse = ProjectApiResponse<{
+  projectId: ProjectId;
+  deletedAt: string;
+}>;
+
+export type ToggleSaveProjectResponse = ProjectApiResponse<{
+  projectId: ProjectId;
+  isSaved: boolean;
+}>;
+
+export type ProjectFile = {
+  id: string;
+  filename: string;
+  original_filename: string;
+  size: number;
+  content_type: string;
+  storage_url: string;
+  storage_provider: string;
+  storage_key: string;
+  fileable_type: 'project';
+  fileable_id: ProjectId;
+  metadata: Record<string, unknown>;
+  uploaded_by: string;
+};
+
+export type ProjectFileUploadResponse = ProjectApiResponse<ProjectFile>;
+
+export type ProjectApiError = {
+  success: false;
+  message: string;
+  error?: string;
+  errors?: Array<{
+    field: string;
+    message: string;
+  }>;
 };
