@@ -1,51 +1,37 @@
-'use client'
-import React from 'react'
-import { HiOutlineCash } from "react-icons/hi";
-import { FaRegClock } from "react-icons/fa6";
+'use client';
 
-const Budgets = () => {
+import React from 'react';
+import { HiOutlineCash } from 'react-icons/hi';
+import { FaRegClock } from 'react-icons/fa6';
+
+const Budgets = ({ project }) => {
+  const budget = new Intl.NumberFormat(undefined, {
+    style: 'currency',
+    currency: project.currency,
+    maximumFractionDigits: 0,
+  }).format(project.budget);
+
   return (
-    <>
-      {/* Mobile View */}
-      <div className='lg:hidden bg-white p-5 rounded-[18px] border border-[#ECECEC] shadow-[0_1px_8px_rgba(0,0,0,0.04)] mb-4'>
-        <h4 className='font-bold text-[15px] text-[#2E2E2E] mb-3'>Budget And Timeframe</h4>
-        <div className='flex flex-col gap-2'>
-          <div className='flex items-center gap-2'>
-            <HiOutlineCash className='w-[18px] h-[18px] text-[#757575]' />
-            <span className='text-[14px] text-[#757575]'>Budget -</span>
-            <span className='font-bold text-[#3A98BB] text-[15px]'>N200,000</span>
-          </div>
-          <div className='flex items-center gap-2'>
-            <FaRegClock className='w-[18px] h-[18px] text-[#757575]' />
-            <span className='text-[14px] text-[#757575]'>Timeframe -</span>
-            <span className='font-medium text-[#2E2E2E] text-[15px]'>2 Days</span>
-          </div>
+    <section className="mb-4 rounded-[18px] border border-[#ECECEC] bg-white p-5 shadow-[0_1px_8px_rgba(0,0,0,0.04)] lg:mt-4 lg:rounded-2xl lg:border-[#EAEAEA] lg:bg-[#FAFAFA] lg:px-8 lg:py-8 lg:shadow-none">
+      <h2 className="mb-3 text-[15px] font-bold text-[#2E2E2E] lg:text-[22px]">
+        Budget and timeline
+      </h2>
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-2">
+          <HiOutlineCash className="h-[18px] w-[18px] text-[#757575]" />
+          <span className="text-sm text-[#757575]">Budget:</span>
+          <span className="font-bold text-[#3A98BB]">{budget}</span>
         </div>
-      </div>
-
-      {/* Desktop View (Preserved) */}
-      <div className='hidden lg:flex flex-col gap-4 w-full bg-[#FAFAFA] border border-[#EAEAEA] lg:px-8 px-4 py-8 lg:mt-4 mt-[22px] rounded-2xl lg:mb-[92.82px] mb-[3px]'>
-        <h4 className='font-bold text-[22px] text-[#222222] lg:flex hidden'>Budget And Timeframe</h4>
-        <div >
-          <div className='flex items-center gap-2'>
-            <div className='flex gap-2 items-center'>
-              <HiOutlineCash color='#878787' />
-              <span className='text-lg text-[#767676]'>Budget -</span>
-            </div>
-            <span className='font-bold text-base text-[#3A98BB] tracking-[0.33px]'>N200,000</span>
+        {project.duration && (
+          <div className="flex items-center gap-2">
+            <FaRegClock className="h-[18px] w-[18px] text-[#757575]" />
+            <span className="text-sm text-[#757575]">Timeline:</span>
+            <span className="font-medium text-[#2E2E2E]">{project.duration}</span>
           </div>
-
-          <div className='flex items-center gap-2 lg:mt-4'>
-            <div className='flex gap-2 items-center'>
-              <FaRegClock color='#878787' />
-              <span className='text-lg text-[#767676]'>Timeframe -</span>
-            </div>
-            <span className='font-normal text-base text-[#222222]'>2 Days</span>
-          </div>
-        </div>
+        )}
       </div>
-    </>
-  )
-}
+    </section>
+  );
+};
 
-export default Budgets
+export default Budgets;

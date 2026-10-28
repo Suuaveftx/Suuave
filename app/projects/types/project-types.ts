@@ -18,25 +18,25 @@ export type ProjectCurrency = 'USD' | 'EUR' | 'GBP' | 'NGN';
 export type ProjectFilter = 'recently' | 'open' | 'closed';
 
 export type ProjectUser = {
-  userId: string;
-  name: string;
-  verified: boolean;
-  avatar: string;
+  userId?: string;
+  name?: string;
+  verified?: boolean;
+  avatar?: string;
 };
 
 export type ProjectApiModel = {
   projectId: ProjectId;
   title: string;
-  description: string;
+  description?: string;
   budget: number;
   currency: ProjectCurrency;
-  duration: string;
-  skillsRequired: string[];
-  postedAt: string;
+  duration?: string;
+  skillsRequired?: string[];
+  postedAt?: string;
   status: ProjectStatus;
-  user: ProjectUser;
-  proposalsCount: number;
-  isSaved: boolean;
+  user?: ProjectUser;
+  proposalsCount?: number;
+  isSaved?: boolean;
 };
 
 export type ProjectListParams = {

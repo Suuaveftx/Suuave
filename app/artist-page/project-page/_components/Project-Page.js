@@ -16,6 +16,21 @@ const FILTERS = [
   { value: 'closed', label: 'Closed' },
 ];
 
+const getStatusClassName = (status) => {
+  switch (status) {
+    case 'open':
+      return 'text-green-700';
+    case 'in_progress':
+      return 'text-blue-700';
+    case 'completed':
+      return 'text-gray-600';
+    case 'cancelled':
+      return 'text-red-700';
+    default:
+      return 'text-gray-600';
+  }
+};
+
 const ProjectPage = ({ search = '' }) => {
   const [filter, setFilter] = useState('recently');
   const [page, setPage] = useState(1);
@@ -147,7 +162,7 @@ const ProjectPage = ({ search = '' }) => {
               </div>
               <p className="text-xs leading-4 text-[#878787]">
                 Project status:{' '}
-                <span className="font-medium capitalize text-green-700">
+                <span className={`font-medium capitalize ${getStatusClassName(project.status)}`}>
                   {project.status.replace('_', ' ')}
                 </span>
               </p>
@@ -158,12 +173,12 @@ const ProjectPage = ({ search = '' }) => {
                 <h2 className="mt-2 text-lg font-bold text-[#222222]">{project.title}</h2>
               </Link>
               <p className="mt-1 text-sm text-gray-500">
-                {new Date(project.postedAt).toLocaleDateString()}
+                {project.postedAt ? new Date(project.postedAt).toLocaleDateString() : ''}
                 {project.user?.name ? ` · ${project.user.name}` : ''}
               </p>
               <p className="mt-3 text-sm text-[#727272] line-clamp-3">{project.description}</p>
               <div className="mt-4 flex flex-wrap gap-2">
-                {project.skillsRequired.map((skill) => (
+                {(project.skillsRequired ?? []).map((skill) => (
                   <span
                     key={skill}
                     className="rounded-full bg-[#F0F0F0] px-3 py-1 text-sm text-[#767676]"
@@ -181,7 +196,7 @@ const ProjectPage = ({ search = '' }) => {
                   }).format(project.budget)}
                 </p>
                 <p className="text-sm text-gray-500">
-                  {project.proposalsCount} proposals
+                  {project.proposalsCount ?? 0} proposals
                 </p>
               </div>
             </article>

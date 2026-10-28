@@ -1,249 +1,229 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
-import JobDetailsPage from './_components/JobDetailsPage';
-import BtnProposals from '../../../components/BtnProposals';
-import Abouttheclient from '../../../components/Abouttheclient';
-import Budgets from './_components/Budgets';
-import DesignStyle from './_components/DesignStyle';
-import SkillRequirement from './_components/SkillRequirement';
-import ReferenceImage from './_components/ReferenceImage';
-import ProposalPopUp from '../send-proposal/_components/ProposalPopUp';
-import DeleteConfirmationModal from '../../fashion-designers/my-projects/components/DeleteConfirmationModal';
+import React, { Suspense } from 'react';
+import Link from 'next/link';
 import { useDisclosure } from '@heroui/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import PageContainer from '../../../components/layout/PageContainer';
+import DeleteConfirmationModal from '../../fashion-designers/my-projects/components/DeleteConfirmationModal';
+import JobDetailsPage from './_components/JobDetailsPage';
+import Budgets from './_components/Budgets';
+import SkillRequirement from './_components/SkillRequirement';
+import { useProject, useToggleSaveProject } from '@/app/projects/queries/projects.queries';
+import { getProjectApiErrorMessage } from '@/app/projects/api/projects';
 import { useAppStore } from '@/store';
+import { useProjectProposalState } from '@/app/projects/selectors/project-selectors';
 
 const JobDetailsPageContent = () => {
   const router = useRouter();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const searchParams = useSearchParams();
+  const projectId = searchParams.get('id');
+  const projectQuery = useProject(projectId);
+  const saveMutation = useToggleSaveProject();
+  const { activeProposals, proposalActive } = useProjectProposalState();
   const {
     isOpen: isWithdrawModalOpen,
     onOpen: onWithdrawModalOpen,
     onOpenChange: onWithdrawModalOpenChange,
   } = useDisclosure();
 
-  const searchParams = useSearchParams();
-  const jobId = searchParams.get('id');
-
-  // This is not performace frienddly avoid this parttern. follow as i instructed in team groud and in read me.
-  const { savedJobs, toggleSaveJob, activeProposals, clearProposals } = useAppStore();
-
+  const project = projectQuery.data;
   const proposalSubmitted =
-    !!activeProposals[jobId] || (jobId === null && useAppStore.getState().proposalActive);
-  const isSaved = savedJobs.includes(jobId);
+    Boolean(activeProposals[projectId]) || (!projectId && proposalActive);
+  const isPermissionDenied =
+    projectQuery.error?.response?.status === 401 ||
+    projectQuery.error?.response?.status === 403;
+  const isNotFound = projectQuery.error?.response?.status === 404 || !projectId;
+  const isUnavailable = projectQuery.error?.response?.status >= 500;
 
-  const handleBookmark = () => {
-    if (!jobId) return;
-    toggleSaveJob(jobId);
+  const handleSaveProject = () => {
+    if (projectId) saveMutation.mutate(projectId);
   };
 
   const handleSubmitProposal = () => {
-    router.push(`/artist-page/send-proposal?id=${jobId}`);
+    if (projectId) router.push(`/artist-page/send-proposal?id=${encodeURIComponent(projectId)}`);
   };
 
   const confirmWithdrawProposal = () => {
-    if (jobId) {
+    if (projectId) {
       useAppStore.setState((state) => {
-        const newProposals = { ...state.activeProposals };
-        delete newProposals[jobId];
-        return { activeProposals: newProposals };
+        const activeProposals = { ...state.activeProposals };
+        delete activeProposals[projectId];
+        return { activeProposals };
       });
     } else {
       useAppStore.setState({ proposalActive: false });
     }
   };
 
-  const handleWithdrawProposal = () => {
-    onWithdrawModalOpen();
-  };
+  if (projectQuery.isPending && projectId) {
+    return (
+      <PageContainer className="pb-20 pt-6">
+        <div className="animate-pulse space-y-4" aria-label="Loading project details">
+          <div className="h-8 w-64 rounded bg-gray-200" />
+          <div className="h-48 rounded-2xl bg-gray-200" />
+          <div className="h-28 rounded-2xl bg-gray-200" />
+        </div>
+      </PageContainer>
+    );
+  }
 
-  const handleViewProposal = () => {
-    router.push('/artist-page/proposal-active');
-  };
+  if (projectQuery.isError || !project) {
+    const heading = isNotFound
+      ? 'Project not found'
+      : isPermissionDenied
+        ? 'You do not have permission to view this project'
+        : isUnavailable
+          ? 'This project is temporarily unavailable'
+          : 'We could not load this project';
+
+    return (
+      <PageContainer className="pb-20 pt-6">
+        <div className="rounded-2xl border border-[#EAEAEA] bg-white px-6 py-12 text-center">
+          <h1 className="text-xl font-bold text-[#222222]">{heading}</h1>
+          {projectQuery.error && (
+            <p className="mt-2 text-sm text-gray-600">
+              {getProjectApiErrorMessage(projectQuery.error)}
+            </p>
+          )}
+          {!isNotFound && !isPermissionDenied && (
+            <button
+              type="button"
+              onClick={() => projectQuery.refetch()}
+              className="mt-5 rounded-full bg-[#035A7A] px-5 py-2 text-sm font-semibold text-white"
+            >
+              Try again
+            </button>
+          )}
+          <Link
+            href="/artist-page/project-page"
+            className="mt-5 inline-block text-sm font-semibold text-[#035A7A] underline"
+          >
+            Back to projects
+          </Link>
+        </div>
+      </PageContainer>
+    );
+  }
 
   return (
-    <div className='lg:bg-transparent'>
-      {/* ─── MOBILE PIXEL PERFECT LAYOUT ─── */}
-      <div className='block lg:hidden w-full overflow-x-hidden relative pb-[84px] min-h-screen px-4 -mt-[80px] pt-[88px]'>
-        {/* Page heading */}
-        <div className='flex items-center gap-2 mb-2'>
-          <h1 className='text-[28px] font-bold text-[#222222]'>Job Details</h1>
-        </div>
-
-        {/* Job card + content */}
-        <div className='flex flex-col gap-4 w-full pt-2'>
-          <JobDetailsPage
-            proposalSubmitted={proposalSubmitted}
-            handleSubmitProposal={handleSubmitProposal}
-            handleViewProposal={handleViewProposal}
-            handleWithdrawProposal={handleWithdrawProposal}
-            jobId={jobId}
-            isSaved={isSaved}
-            handleBookmark={handleBookmark}
-          />
-          <ReferenceImage jobId={jobId} />
-          <DesignStyle />
-          <SkillRequirement />
-          <Budgets />
-          <Abouttheclient />
-        </div>
-
-        {/* Sticky CTA - Figma matched */}
-        <div className='fixed bottom-0 left-0 w-full bg-white border-t border-[#ECECEC] px-4 py-4 z-50 flex items-center gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]'>
-          {proposalSubmitted ? (
-            <>
-              <button
-                onClick={handleWithdrawProposal}
-                className='flex-1 flex items-center justify-center border-2 border-[#146C94] text-[#146C94] font-bold text-[15px] py-3.5 rounded-full bg-white h-[52px]'
-              >
-                Withdraw Proposal
-              </button>
-              <button
-                onClick={handleViewProposal}
-                className='flex-1 flex items-center justify-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold text-[15px] py-3.5 rounded-full shadow-[0_4px_14px_rgba(110,193,228,0.4)] h-[52px]'
-              >
-                View Proposal
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                onClick={handleBookmark}
-                className='flex-1 flex items-center justify-center gap-2 border-2 border-[#035A7A] text-[#035A7A] font-bold text-[15px] py-3.5 rounded-full bg-white h-[52px]'
-              >
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill={isSaved ? '#035A7A' : 'none'}
-                  viewBox='0 0 24 24'
-                  strokeWidth={2}
-                  stroke='#035A7A'
-                  className='w-5 h-5'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z'
-                  />
-                </svg>
-                {isSaved ? 'Saved' : 'Save Post'}
-              </button>
-              <button
-                onClick={handleSubmitProposal}
-                className='flex-1 flex items-center justify-center bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold text-[15px] py-3.5 rounded-full shadow-[0_4px_14px_rgba(110,193,228,0.4)] h-[52px]'
-              >
-                Send Proposal
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* ─── DESKTOP LEGACY LAYOUT ─── */}
-      <div className='hidden lg:block'>
-        <PageContainer className='pb-20 pt-4 md:pt-7'>
-          <section className='lg:mb-[29.34px] lg:mt-4'>
-            <div className='border-b-2 text-left w-full'>
-              <h1 className='font-bold text-2xl'>Job Details</h1>
-            </div>
-          </section>
-
-          <div className='grid grid-cols-10 gap-8 mt-4 lg:mt-4'>
-            {/* Job Details (70%) */}
-            <div className='lg:col-span-7 col-span-10'>
-              <JobDetailsPage
-                proposalSubmitted={proposalSubmitted}
-                handleSubmitProposal={handleSubmitProposal}
-                handleViewProposal={handleViewProposal}
-                handleWithdrawProposal={handleWithdrawProposal}
-                jobId={jobId}
-                isSaved={isSaved}
-                handleBookmark={handleBookmark}
-              />
-              <div className='hidden w-full max-w-full mb-8'>
-                <BtnProposals
-                  handleSubmitProposal={handleSubmitProposal}
-                  handleViewProposal={handleViewProposal}
-                  handleWithdrawProposal={handleWithdrawProposal}
-                  handleSave={handleBookmark}
-                  proposalSubmitted={proposalSubmitted}
-                  isSaved={isSaved}
-                  isOpen={isOpen}
-                  onOpenChange={onOpenChange}
-                  saveText={
-                    proposalSubmitted
-                      ? 'Withdraw Proposal'
-                      : isSaved
-                        ? 'Saved'
-                        : 'Save Job'
-                  }
-                  sendText={proposalSubmitted ? 'View Proposal' : 'Send Proposal'}
-                />
-              </div>
-              <div className='hidden lg:flex lg:flex-col mt-6'>
-                <ReferenceImage jobId={jobId} />
-              </div>
-              <div className='hidden lg:flex lg:flex-col mt-6'>
-                <DesignStyle />
-              </div>
-              <div className='hidden lg:flex lg:flex-col mt-6'>
-                <SkillRequirement />
-              </div>
-              <div className='hidden lg:flex lg:flex-col mt-6'>
-                <Budgets />
-              </div>
-            </div>
-
-            {/* Button Proposals (30%) */}
-            <div className='col-span-10 lg:col-span-3 flex flex-col'>
-              <div className='lg:flex hidden lg:mb-[30px] mb-3'>
-                <BtnProposals
-                  handleSubmitProposal={handleSubmitProposal}
-                  handleViewProposal={handleViewProposal}
-                  handleWithdrawProposal={handleWithdrawProposal}
-                  handleSave={handleBookmark}
-                  proposalSubmitted={proposalSubmitted}
-                  isSaved={isSaved}
-                  isOpen={isOpen}
-                  onOpenChange={onOpenChange}
-                  saveText={
-                    proposalSubmitted
-                      ? 'Withdraw Proposal'
-                      : isSaved
-                        ? 'Saved'
-                        : 'Save Job'
-                  }
-                  sendText={proposalSubmitted ? 'View Proposal' : 'Send Proposal'}
-                />
-                <ProposalPopUp isOpen={isOpen} onOpenChange={onOpenChange} />
-              </div>
-              <div className='lg:mt-[30px] mt-3'>
-                <Abouttheclient />
-              </div>
-            </div>
-
-            <DeleteConfirmationModal
-              isOpen={isWithdrawModalOpen}
-              onOpenChange={onWithdrawModalOpenChange}
-              onConfirm={confirmWithdrawProposal}
-              title='Withdraw Proposal?'
-              message='Are you sure you want to withdraw your proposal? This action cannot be undone.'
-              confirmButtonText='Yes'
-            />
+    <div className="lg:bg-transparent">
+      <PageContainer className="pb-28 pt-5 lg:pb-20 lg:pt-7">
+        <h1 className="mb-5 border-b-2 pb-3 text-2xl font-bold text-[#222222]">
+          Project Details
+        </h1>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-10 lg:gap-8">
+          <div className="space-y-4 lg:col-span-7">
+            <JobDetailsPage project={project} />
+            <Budgets project={project} />
+            <SkillRequirement project={project} />
+            <section className="rounded-[18px] border border-[#ECECEC] bg-white p-5 lg:rounded-2xl lg:border-[#EAEAEA] lg:bg-[#FAFAFA] lg:p-6">
+              <h2 className="font-bold text-[#222222]">About the client</h2>
+              {project.user?.name && (
+                <p className="mt-2 text-sm text-[#444444]">{project.user.name}</p>
+              )}
+              {project.user?.verified && (
+                <p className="mt-1 text-sm text-green-700">Verified client</p>
+              )}
+            </section>
           </div>
-        </PageContainer>
+
+          <aside className="hidden flex-col gap-3 lg:col-span-3 lg:flex">
+            <button
+              type="button"
+              disabled={saveMutation.isPending}
+              onClick={handleSaveProject}
+              className="rounded-full border-2 border-[#035A7A] px-5 py-3 font-semibold text-[#035A7A] disabled:opacity-50"
+            >
+              {saveMutation.isPending ? 'Saving…' : project.isSaved ? 'Unsave project' : 'Save project'}
+            </button>
+            {proposalSubmitted ? (
+              <>
+                <button
+                  type="button"
+                  onClick={onWithdrawModalOpen}
+                  className="rounded-full border-2 border-[#146C94] px-5 py-3 font-semibold text-[#146C94]"
+                >
+                  Withdraw proposal
+                </button>
+                <Link
+                  href="/artist-page/proposal-active"
+                  className="rounded-full bg-[#EAF9FF] px-5 py-3 text-center font-semibold text-[#035A7A]"
+                >
+                  View proposal
+                </Link>
+              </>
+            ) : (
+              <button
+                type="button"
+                onClick={handleSubmitProposal}
+                className="rounded-full bg-[#EAF9FF] px-5 py-3 font-semibold text-[#035A7A]"
+              >
+                Send proposal
+              </button>
+            )}
+          </aside>
+        </div>
+        {saveMutation.isError && (
+          <p role="alert" className="mt-4 text-sm text-red-600">
+            {getProjectApiErrorMessage(saveMutation.error)}
+          </p>
+        )}
+        <DeleteConfirmationModal
+          isOpen={isWithdrawModalOpen}
+          onOpenChange={onWithdrawModalOpenChange}
+          onConfirm={confirmWithdrawProposal}
+          title="Withdraw proposal?"
+          message="Are you sure you want to withdraw your proposal? This action cannot be undone."
+          confirmButtonText="Yes"
+        />
+      </PageContainer>
+
+      <div className="fixed bottom-0 left-0 z-50 flex w-full items-center gap-3 border-t border-[#ECECEC] bg-white px-4 py-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] lg:hidden">
+        {proposalSubmitted ? (
+          <>
+            <button
+              type="button"
+              onClick={onWithdrawModalOpen}
+              className="h-[52px] flex-1 rounded-full border-2 border-[#146C94] font-bold text-[#146C94]"
+            >
+              Withdraw proposal
+            </button>
+            <Link
+              href="/artist-page/proposal-active"
+              className="flex h-[52px] flex-1 items-center justify-center rounded-full bg-[#EAF9FF] font-bold text-[#035A7A]"
+            >
+              View proposal
+            </Link>
+          </>
+        ) : (
+          <>
+            <button
+              type="button"
+              disabled={saveMutation.isPending}
+              onClick={handleSaveProject}
+              className="h-[52px] flex-1 rounded-full border-2 border-[#035A7A] font-bold text-[#035A7A] disabled:opacity-50"
+            >
+              {project.isSaved ? 'Saved' : 'Save project'}
+            </button>
+            <button
+              type="button"
+              onClick={handleSubmitProposal}
+              className="h-[52px] flex-1 rounded-full bg-[#EAF9FF] font-bold text-[#035A7A]"
+            >
+              Send proposal
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
 };
 
-const Page = () => {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <JobDetailsPageContent />
-    </Suspense>
-  );
-};
+const Page = () => (
+  <Suspense fallback={<div className="p-8">Loading project…</div>}>
+    <JobDetailsPageContent />
+  </Suspense>
+);
 
 export default Page;

@@ -17,7 +17,15 @@ export const selectProjectManagement = (state: AppStore) => ({
   setEditProject: state.setEditProject,
 });
 
+export const selectProjectProposalState = (state: AppStore) => ({
+  activeProposals: state.activeProposals,
+  proposalActive: state.proposalActive,
+});
+
 export const useProjectEditor = () => useAppStore(useShallow(selectProjectEditor));
 
 export const useProjectManagement = () =>
   useAppStore(useShallow(selectProjectManagement));
+
+export const useProjectProposalState = () =>
+  useAppStore(useShallow(selectProjectProposalState));
