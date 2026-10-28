@@ -16,21 +16,43 @@ import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useRef, useState, useEffect, Suspense } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import axios from 'axios';
 
 import { useProjectEditor } from '@/app/projects/selectors/project-selectors';
 import PageContainer from '@/components/layout/PageContainer';
+import {
+  useCreateProject,
+  useProject,
+  useUpdateProject,
+  useUploadProjectReference,
+} from '@/app/projects/queries/projects.queries';
+import { getProjectApiErrorMessage } from '@/app/projects/api/projects';
 
 const PageContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isEditMode = searchParams?.get('edit') === 'true';
-  const { addProject, updateProject, editProject, clearEditProject } = useProjectEditor();
+  const projectId = searchParams?.get('id');
+  const { updateProject, editProject, clearEditProject } = useProjectEditor();
+  const isApiEditMode = isEditMode && Boolean(projectId);
+  const {
+    data: apiProject,
+    isPending: isApiProjectPending,
+    error: apiProjectError,
+  } = useProject(isApiEditMode ? projectId : null);
+  const createProjectMutation = useCreateProject();
+  const updateProjectMutation = useUpdateProject();
+  const uploadReferenceMutation = useUploadProjectReference();
 
   const [action, setAction] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileValidationError, setFileValidationError] = useState('');
   const [skillError, setSkillError] = useState('');
   const [designStyleError, setDesignStyleError] = useState('');
+  const [submissionError, setSubmissionError] = useState('');
+  const [createdProjectId, setCreatedProjectId] = useState(null);
+  const [uploadedReferenceCount, setUploadedReferenceCount] = useState(0);
+  const [isUploadingReferences, setIsUploadingReferences] = useState(false);
   const fileInputRef = useRef(null);
 
   const [previewAwardUrl, setPreviewAwardUrl] = useState(null);
@@ -44,6 +66,7 @@ const PageContent = () => {
       projectBudget: '',
       projectTimeframe: '',
       projectCurrency: 'USD',
+      projectStatus: 'open',
     },
   });
 
@@ -172,33 +195,36 @@ const PageContent = () => {
   ];
 
   useEffect(() => {
-    if (isEditMode && editProject) {
+    const projectToEdit = isApiEditMode ? apiProject : editProject;
+    if (isEditMode && projectToEdit) {
+      const skills = isApiEditMode
+        ? apiProject.skillsRequired ?? []
+        : editProject.skills;
+      const style = isApiEditMode ? [] : editProject.style;
       let parsedSkills = [];
-      if (Array.isArray(editProject.skills)) {
-        parsedSkills = editProject.skills;
-      } else if (
-        typeof editProject.skills === 'string' &&
-        editProject.skills.length > 0
-      ) {
-        parsedSkills = editProject.skills.split(',').map((s) => s.trim());
+      if (Array.isArray(skills)) {
+        parsedSkills = skills;
+      } else if (typeof skills === 'string' && skills.length > 0) {
+        parsedSkills = skills.split(',').map((s) => s.trim());
       }
       let parsedStyles = [];
-      if (Array.isArray(editProject.style)) {
-        parsedStyles = editProject.style;
-      } else if (typeof editProject.style === 'string' && editProject.style.length > 0) {
-        parsedStyles = editProject.style.split(',').map((s) => s.trim());
+      if (Array.isArray(style)) {
+        parsedStyles = style;
+      } else if (typeof style === 'string' && style.length > 0) {
+        parsedStyles = style.split(',').map((s) => s.trim());
       }
       reset({
-        projectTitle: editProject.title || '',
-        projectDetails: editProject.description || '',
+        projectTitle: projectToEdit.title || '',
+        projectDetails: projectToEdit.description || '',
         fashionDesignerSkills: parsedSkills,
         designStyles: parsedStyles,
-        projectBudget: editProject.budget || '',
-        projectTimeframe: editProject.timeframe || '',
-        projectCurrency: editProject.currency || 'USD',
+        projectBudget: projectToEdit.budget || '',
+        projectTimeframe: isApiEditMode ? '' : projectToEdit.timeframe || '',
+        projectCurrency: projectToEdit.currency || 'USD',
+        projectStatus: projectToEdit.status || 'open',
       });
     }
-  }, [isEditMode, editProject, reset]);
+  }, [isEditMode, isApiEditMode, apiProject, editProject, reset]);
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -249,6 +275,9 @@ const PageContent = () => {
     setFileValidationError('');
     setSkillError('');
     setDesignStyleError('');
+    setSubmissionError('');
+    setCreatedProjectId(null);
+    setUploadedReferenceCount(0);
     reset({
       projectTitle: '',
       projectDetails: '',
@@ -257,16 +286,23 @@ const PageContent = () => {
       projectBudget: '',
       projectTimeframe: '',
       projectCurrency: 'USD',
+      projectStatus: 'open',
     });
-    if (isEditMode) clearEditProject();
+    if (isEditMode && !isApiEditMode) clearEditProject();
   };
 
-  const onSubmit = (data) => {
-    if (!data.fashionDesignerSkills.length) {
+  const onSubmit = async (data) => {
+    setSubmissionError('');
+    if (isEditMode && (isApiEditMode ? !apiProject : !editProject)) {
+      setSubmissionError('This project could not be loaded. Return to My Projects and try again.');
+      return;
+    }
+    if (fileValidationError) return;
+    if (!isApiEditMode && !data.fashionDesignerSkills.length) {
       setSkillError('Add at least one required skill.');
       return;
     }
-    if (!data.designStyles.length) {
+    if (!isApiEditMode && !data.designStyles.length) {
       setDesignStyleError('Add at least one design style.');
       return;
     }
@@ -282,13 +318,64 @@ const PageContent = () => {
       referenceFiles: selectedFiles.map((f) => f.name),
     };
 
+    if (isApiEditMode) {
+      try {
+        await updateProjectMutation.mutateAsync({
+          projectId: apiProject.projectId,
+          input: {
+            title: dataToSave.title,
+            description: dataToSave.description,
+            budget: dataToSave.budget,
+            status: data.projectStatus,
+          },
+        });
+        clearEditProject();
+        router.push('/fashion-designers/my-projects?updated=true');
+      } catch (error) {
+        setSubmissionError(getProjectApiErrorMessage(error));
+      }
+      return;
+    }
+
     if (isEditMode && editProject) {
       updateProject(editProject.id, dataToSave);
       clearEditProject();
-    } else {
-      addProject(dataToSave);
+      router.push('/fashion-designers/my-projects');
+      return;
     }
-    router.push('/fashion-designers/my-projects');
+
+    try {
+      let projectId = createdProjectId;
+      if (!projectId) {
+        const createdProject = await createProjectMutation.mutateAsync({
+          title: dataToSave.title.trim(),
+          description: dataToSave.description.trim(),
+          skillsRequired: dataToSave.skills,
+          budget: dataToSave.budget,
+          currency: dataToSave.currency,
+          duration: `${dataToSave.timeframe} days`,
+        });
+        projectId = createdProject.projectId;
+        setCreatedProjectId(projectId);
+      }
+
+      setIsUploadingReferences(true);
+      for (let index = uploadedReferenceCount; index < selectedFiles.length; index += 1) {
+        await uploadReferenceMutation.mutateAsync({
+          file: selectedFiles[index].originalFile,
+          projectId,
+        });
+        setUploadedReferenceCount(index + 1);
+      }
+
+      setCreatedProjectId(null);
+      setUploadedReferenceCount(0);
+      router.push('/fashion-designers/my-projects?created=true');
+    } catch (error) {
+      setSubmissionError(getProjectApiErrorMessage(error));
+    } finally {
+      setIsUploadingReferences(false);
+    }
   };
 
   return (
@@ -325,6 +412,45 @@ const PageContent = () => {
             onReset={onReset}
             onSubmit={handleSubmit(onSubmit)}
           >
+            {isApiEditMode && (
+              <p className='w-full rounded-lg bg-blue-50 p-3 text-sm text-blue-800'>
+                The current API supports editing the title, brief, budget, and status only.
+                Skills, design style, currency, timeline, and reference materials cannot be updated
+                here.
+              </p>
+            )}
+            {isApiEditMode && isApiProjectPending && (
+              <p role='status' className='w-full text-sm text-gray-600'>
+                Loading project details...
+              </p>
+            )}
+            {isApiEditMode && apiProjectError && (
+              <p role='alert' className='w-full text-sm text-red-600'>
+                {axios.isAxiosError(apiProjectError) && apiProjectError.response?.status === 403
+                  ? 'You do not have permission to edit this project.'
+                  : axios.isAxiosError(apiProjectError) && apiProjectError.response?.status === 404
+                    ? 'This project is unavailable or no longer exists.'
+                    : getProjectApiErrorMessage(apiProjectError)}
+              </p>
+            )}
+            {!isEditMode && (
+              <p className='w-full rounded-lg bg-amber-50 p-3 text-sm text-amber-800'>
+                The current Projects API schema does not include design style. Your selection
+                will not be published until the API supports this field.
+              </p>
+            )}
+            {submissionError && (
+              <p role='alert' className='w-full text-sm text-red-600'>
+                {submissionError}
+              </p>
+            )}
+            {isEditMode &&
+              !isApiEditMode &&
+              !editProject && (
+              <p role='alert' className='w-full text-sm text-red-600'>
+                This project could not be loaded. Return to My Projects and try again.
+              </p>
+              )}
             <Controller
               name='projectTitle'
               control={control}
@@ -344,6 +470,7 @@ const PageContent = () => {
               render={({ field, fieldState }) => (
                 <Input
                   {...field}
+                  isDisabled={Boolean(createdProjectId)}
                   errorMessage={fieldState.error?.message}
                   isInvalid={!!fieldState.error}
                   label={
@@ -381,6 +508,7 @@ const PageContent = () => {
               render={({ field, fieldState }) => (
                 <Textarea
                   {...field}
+                  isDisabled={Boolean(createdProjectId)}
                   labelPlacement='outside'
                   classNames={responsiveClasses}
                   radius='sm'
@@ -416,11 +544,13 @@ const PageContent = () => {
                   className='hidden'
                   multiple
                   accept='image/*,.pdf'
+                  disabled={isApiEditMode || Boolean(createdProjectId)}
                 />
                 <Button
                   variant='bordered'
                   radius='sm'
                   onPress={() => fileInputRef.current.click()}
+                  isDisabled={isApiEditMode || Boolean(createdProjectId)}
                   className='lg:w-fit w-full sm:w-1/2  border-1 border-[#EAEAEA] lg:border-[#d1d1d1] font-medium lg:font-medium text-gray-400 lg:text-default-foreground min-h-[52px] lg:min-h-10 !rounded-xl lg:!rounded-sm shadow-none'
                   startContent={<Paperclip className='w-4 h-4 text-gray-500' />}
                 >
@@ -446,6 +576,7 @@ const PageContent = () => {
                       <button
                         type='button'
                         onClick={() => removeFile(index)}
+                        disabled={Boolean(createdProjectId)}
                         className='absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-200 rounded-full transition-colors'
                       >
                         <X className='w-4 h-4 text-gray-400' />
@@ -476,6 +607,7 @@ const PageContent = () => {
                       : 'Add another skill...'
                   }
                   className='w-full border-1 border-[#EAEAEA] lg:border-[#d1d1d1] !rounded-2xl lg:!rounded-lg px-4 lg:px-3 lg:py-2 py-0 text-[15px] lg:text-base min-h-[52px] lg:min-h-10 focus:outline-none focus:border-[#3A98BB] relative z-10 bg-transparent font-satoshi placeholder:text-[#9CA3AF]'
+                  disabled={isApiEditMode || Boolean(createdProjectId)}
                   onChange={(e) => {
                     const val = e.target.value;
                     setCurrentSkillInput(val);
@@ -547,6 +679,7 @@ const PageContent = () => {
                             formData.fashionDesignerSkills.filter((_, i) => i !== index)
                           )
                         }
+                        disabled={isApiEditMode || Boolean(createdProjectId)}
                         className='text-gray-400 hover:text-red-500 transition-colors ml-1'
                       >
                         <X size={14} />
@@ -575,6 +708,7 @@ const PageContent = () => {
                   type='text'
                   name='currentDesignInput'
                   value={currentDesignInput}
+                  disabled={isApiEditMode || Boolean(createdProjectId)}
                   placeholder={
                     formData.designStyles.length === 0
                       ? 'Type a design style and press Enter...'
@@ -652,6 +786,7 @@ const PageContent = () => {
                             formData.designStyles.filter((_, i) => i !== index)
                           )
                         }
+                        disabled={isApiEditMode || Boolean(createdProjectId)}
                         className='text-gray-400 hover:text-red-500 transition-colors ml-1'
                       >
                         <X size={14} />
@@ -680,6 +815,7 @@ const PageContent = () => {
                   selectedKeys={field.value ? [field.value] : []}
                   onSelectionChange={(keys) => field.onChange(Array.from(keys)[0] || '')}
                   onBlur={field.onBlur}
+                  isDisabled={isApiEditMode || Boolean(createdProjectId)}
                   errorMessage={fieldState.error?.message}
                   isInvalid={!!fieldState.error}
                 >
@@ -705,6 +841,7 @@ const PageContent = () => {
               render={({ field, fieldState }) => (
                 <Input
                   {...field}
+                  isDisabled={Boolean(createdProjectId)}
                   variant='bordered'
                   radius='sm'
                   labelPlacement='outside'
@@ -736,15 +873,48 @@ const PageContent = () => {
               )}
             />
 
+            {isApiEditMode && (
+              <Controller
+                name='projectStatus'
+                control={control}
+                rules={{ required: 'Please select a project status' }}
+                render={({ field, fieldState }) => (
+                  <Select
+                    label='Project Status'
+                    labelPlacement='outside'
+                    variant='bordered'
+                    radius='sm'
+                    classNames={responsiveClasses}
+                    selectedKeys={field.value ? [field.value] : []}
+                    onSelectionChange={(keys) =>
+                      field.onChange(Array.from(keys)[0] || '')
+                    }
+                    onBlur={field.onBlur}
+                    isDisabled={Boolean(createdProjectId)}
+                    errorMessage={fieldState.error?.message}
+                    isInvalid={!!fieldState.error}
+                  >
+                    {['open', 'in_progress', 'completed', 'cancelled'].map((status) => (
+                      <SelectItem key={status}>{status.replace('_', ' ')}</SelectItem>
+                    ))}
+                  </Select>
+                )}
+              />
+            )}
+
             <Controller
               name='projectTimeframe'
               control={control}
-              rules={{
-                required: 'Please enter a timeframe',
-                validate: (value) =>
-                  (/^[1-9]\d*$/.test(String(value)) && Number(value) > 0) ||
-                  'Timeframe must be a positive whole number of days',
-              }}
+              rules={
+                isApiEditMode
+                  ? {}
+                  : {
+                      required: 'Please enter a timeframe',
+                      validate: (value) =>
+                        (/^[1-9]\d*$/.test(String(value)) && Number(value) > 0) ||
+                        'Timeframe must be a positive whole number of days',
+                    }
+              }
               render={({ field, fieldState }) => (
                 <Input
                   {...field}
@@ -753,6 +923,7 @@ const PageContent = () => {
                   labelPlacement='outside'
                   classNames={responsiveClasses}
                   className='lg:w-96 w-full'
+                  isDisabled={isApiEditMode || Boolean(createdProjectId)}
                   errorMessage={fieldState.error?.message}
                   isInvalid={!!fieldState.error}
                   label={
@@ -777,6 +948,7 @@ const PageContent = () => {
             <div className='flex items-center lg:justify-start justify-between gap-3 lg:gap-2 w-full lg:w-48 pt-4 lg:pt-0'>
               <Button
                 type='reset'
+                isDisabled={Boolean(createdProjectId)}
                 size='sm'
                 radius='full'
                 variant='flat'
@@ -786,6 +958,22 @@ const PageContent = () => {
               </Button>
               <Button
                 type='submit'
+                isLoading={
+                  createProjectMutation.isPending ||
+                  updateProjectMutation.isPending ||
+                  uploadReferenceMutation.isPending ||
+                  isUploadingReferences
+                }
+                isDisabled={
+                  (isEditMode &&
+                    (isApiEditMode
+                      ? !apiProject || isApiProjectPending || Boolean(apiProjectError)
+                      : !editProject)) ||
+                  createProjectMutation.isPending ||
+                  updateProjectMutation.isPending ||
+                  uploadReferenceMutation.isPending ||
+                  isUploadingReferences
+                }
                 size='sm'
                 radius='full'
                 variant='outlined'
@@ -794,7 +982,11 @@ const PageContent = () => {
                   background: 'radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)',
                 }}
               >
-                {isEditMode ? 'Update' : 'Publish Project'}
+                {isEditMode
+                  ? 'Update'
+                  : createdProjectId
+                    ? 'Retry Reference Uploads'
+                    : 'Publish Project'}
               </Button>
             </div>
             {!isEditMode && (
