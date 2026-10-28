@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { authClient } from './auth-client';
 
 const apiBaseURL =
   process.env.NEXT_PUBLIC_APP_PRODUCTION_URL || process.env.NEXT_PUBLIC_APP_STAGING_URL;
@@ -12,13 +13,22 @@ export const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use(
-  (config) => {
+  async (config) => {
     if (!config.baseURL && !apiBaseURL) {
       return Promise.reject(
         new Error(
           'API base URL is not configured. Set NEXT_PUBLIC_API_URL or the environment-specific API URL.'
         )
       );
+    }
+
+    if (typeof window !== 'undefined') {
+      const { data: sessionData } = await authClient.getSession();
+      const sessionToken = sessionData?.session?.token;
+
+      if (sessionToken) {
+        config.headers.set('Authorization', `Bearer ${sessionToken}`);
+      }
     }
 
     config.headers.set('Accept', 'application/json');
