@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Navbar,
   NavbarBrand,
@@ -9,13 +9,17 @@ import {
   NavbarMenuItem,
   NavbarMenu,
   Link,
-} from "@heroui/react";
-import NextLink from "next/link";
+} from '@heroui/react';
+import NextLink from 'next/link';
 import React, { useEffect } from 'react';
 import PageContainer from './layout/PageContainer';
 
-const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desktopLogo = "/dev-images/SuuaveTxt.png" }) => {
-  const [textStyle, setTextStyle] = React.useState("text-white");
+const CustomNavbar = ({
+  bgColor,
+  mobileLogo = '/dev-images/logomobile.png',
+  desktopLogo = '/dev-images/SuuaveTxt.png',
+}) => {
+  const [textStyle, setTextStyle] = React.useState('text-white');
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   useEffect(() => {
@@ -27,29 +31,35 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
   }, [isMenuOpen]);
 
   const menuItems = [
-    { title: "About Us", url: "/about-page" },
-    { title: "How It Works", url: "/#howitworks" },
-    { title: "FAQs", url: "#" },
-    { title: "Blog", url: "#" },
-    { title: "Join Waitlist", url: "/join-waitlist" },
+    { title: 'About Us', url: '/about-page' },
+    { title: 'How It Works', url: '/#howitworks' },
+    { title: 'FAQs', url: '#' },
+    { title: 'Blog', url: '#' },
+    { title: 'Join Waitlist', url: '/join-waitlist' },
   ];
 
   return (
     <Navbar
       className={`w-full ${bgColor} font-satoshi ${textStyle} z-[60] relative lg:!sticky h-[80px]`}
-      classNames={{ wrapper: "w-full max-w-full px-0 h-full" }}
+      classNames={{ wrapper: 'w-full max-w-full px-0 h-full' }}
       onMenuOpenChange={setIsMenuOpen}
     >
-      <PageContainer className="flex items-center justify-between w-full h-full">
-        <NavbarBrand className="lg:justify-start justify-start max-w-fit -ml-4 lg:ml-0">
-          <Link href='/' className="flex items-center">
+      <PageContainer className='flex items-center justify-between w-full h-full'>
+        <NavbarBrand className='lg:justify-start justify-start max-w-fit -ml-4 lg:ml-0'>
+          <Link href='/' className='flex items-center'>
             {/* Mobile Logo */}
-            <span className="lg:hidden flex items-center overflow-hidden w-[110px] h-14">
+            <span className='lg:hidden flex items-center overflow-hidden w-[110px] h-14'>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={mobileLogo}
                 alt='Logo'
-                style={{ width: '140px', height: '140px', objectFit: 'contain', objectPosition: 'left center', flexShrink: 0 }}
+                style={{
+                  width: '140px',
+                  height: '140px',
+                  objectFit: 'contain',
+                  objectPosition: 'left center',
+                  flexShrink: 0,
+                }}
               />
             </span>
             {/* Desktop Logo */}
@@ -62,8 +72,10 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
           </Link>
         </NavbarBrand>
 
-        <NavbarContent className="hidden lg:flex gap-4 xl:gap-14 lg:ml-12" justify="center">
-
+        <NavbarContent
+          className='hidden lg:flex gap-4 xl:gap-14 lg:ml-12'
+          justify='center'
+        >
           <NavbarItem>
             <Link href='/about-page' className={`text-white transition duration-300`}>
               About Us
@@ -93,40 +105,44 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
 
         <NavbarContent justify='end' className='gap-4'>
           <NavbarItem className='hidden lg:flex'>
-            <Link href='/auth/login-options' className={`text-white transition duration-300`}>
+            <Link href='#' className={`text-white transition duration-300`}>
               Login
             </Link>
           </NavbarItem>
           <NavbarItem>
             <Link
-              href="/onboarding"
-              className="cursor-pointer hidden lg:block bg-[radial-gradient(circle,#EAF9FF,#CCE7F2)] font-bold text-base text-[#035A7A] rounded-3xl py-2 px-6"
+              href='#'
+              className='cursor-pointer hidden lg:block bg-[radial-gradient(circle,#EAF9FF,#CCE7F2)] font-bold text-base text-[#035A7A] rounded-3xl py-2 px-6'
             >
               Get started
             </Link>
           </NavbarItem>
           <NavbarItem className='lg:hidden'>
-            <Link href='/auth/login-options' className='text-white pr-2'>
+            <Link href='#' className='text-white pr-2'>
               Login
             </Link>
           </NavbarItem>
           {/* Hamburger Toggle (mobile only, after Login) */}
           <NavbarMenuToggle
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            className="lg:hidden text-white font-bold text-lg size-6"
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            className='lg:hidden text-white font-bold text-lg size-6'
           />
         </NavbarContent>
       </PageContainer>
 
-      <NavbarMenu className="bg-customNavBg pt-8 px-4 overflow-hidden h-fit z-[100]">
+      <NavbarMenu className='bg-customNavBg pt-8 px-4 overflow-hidden h-fit z-[100]'>
         {menuItems.map((item, index) => (
-          <NavbarMenuItem className="py-3" key={`${item.title}-${index}`}>
-            <Link className="w-full text-white" href={item.url} size="lg" onClick={() => setIsMenuOpen(false)}>
+          <NavbarMenuItem className='py-3' key={`${item.title}-${index}`}>
+            <Link
+              className='w-full text-white'
+              href={item.url}
+              size='lg'
+              onClick={() => setIsMenuOpen(false)}
+            >
               {item.title}
             </Link>
           </NavbarMenuItem>
         ))}
-
       </NavbarMenu>
     </Navbar>
   );

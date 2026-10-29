@@ -30,6 +30,18 @@ const getStatusClassName = (status) => {
 
 const JobDetailsPage = ({ project }) => {
   const [shareMessage, setShareMessage] = useState('');
+  const references = [
+    ...(Array.isArray(project.images) ? project.images : []).map((url) => ({
+      url,
+      name: 'Project reference',
+      contentType: 'image',
+    })),
+    ...(Array.isArray(project.files) ? project.files : []).map((file) => ({
+      url: file.storage_url || file.url,
+      name: file.original_filename || file.filename || 'Project reference',
+      contentType: file.content_type || '',
+    })),
+  ].filter((reference) => reference.url);
 
   const handleShare = async () => {
     try {
@@ -52,34 +64,36 @@ const JobDetailsPage = ({ project }) => {
   };
 
   return (
-    <article className="rounded-[18px] border border-[#ECECEC] bg-white p-5 shadow-[0_1px_8px_rgba(0,0,0,0.04)] lg:rounded-2xl lg:border-[#EAEAEA] lg:bg-[#FAFAFA] lg:p-8 lg:shadow-none">
-      <div className="mb-4 flex items-start justify-between gap-4">
+    <article className='rounded-[18px] border border-[#ECECEC] bg-white p-5 shadow-[0_1px_8px_rgba(0,0,0,0.04)] lg:rounded-2xl lg:border-[#EAEAEA] lg:bg-[#FAFAFA] lg:p-8 lg:shadow-none'>
+      <div className='mb-4 flex items-start justify-between gap-4'>
         <div>
-          <p className="text-sm text-[#767676]">
+          <p className='text-sm text-[#767676]'>
             Project status:{' '}
-            <span className={`font-semibold capitalize ${getStatusClassName(project.status)}`}>
+            <span
+              className={`font-semibold capitalize ${getStatusClassName(project.status)}`}
+            >
               {project.status.replaceAll('_', ' ')}
             </span>
           </p>
-          <h1 className="mt-2 text-[22px] font-bold leading-tight text-[#222222] lg:text-2xl">
+          <h1 className='mt-2 text-[22px] font-bold leading-tight text-[#222222] lg:text-2xl'>
             {project.title}
           </h1>
           {project.postedAt && (
-            <p className="mt-2 text-sm text-[#767676]">
+            <p className='mt-2 text-sm text-[#767676]'>
               Posted {formatDate(project.postedAt)}
             </p>
           )}
         </div>
-        <div className="flex shrink-0 flex-col items-end gap-2">
+        <div className='flex shrink-0 flex-col items-end gap-2'>
           <button
-            type="button"
+            type='button'
             onClick={handleShare}
-            className="rounded-full border border-[#EAEAEA] px-4 py-2 text-sm font-medium text-[#035A7A] hover:bg-[#EFF8FB]"
+            className='rounded-full border border-[#EAEAEA] px-4 py-2 text-sm font-medium text-[#035A7A] hover:bg-[#EFF8FB]'
           >
             Share
           </button>
           {shareMessage && (
-            <span role="status" className="text-xs text-gray-600">
+            <span role='status' className='text-xs text-gray-600'>
               {shareMessage}
             </span>
           )}
@@ -87,11 +101,51 @@ const JobDetailsPage = ({ project }) => {
       </div>
 
       <section>
-        <h2 className="text-base font-semibold text-[#222222]">Project brief</h2>
-        <p className="mt-2 whitespace-pre-wrap text-[15px] leading-7 text-[#444444]">
+        <h2 className='text-base font-semibold text-[#222222]'>Project brief</h2>
+        <p className='mt-2 whitespace-pre-wrap text-[15px] leading-7 text-[#444444]'>
           {project.description || 'No project brief was provided.'}
         </p>
       </section>
+
+      {references.length > 0 && (
+        <section className='mt-6'>
+          <h2 className='text-base font-semibold text-[#222222]'>Reference materials</h2>
+          <div className='mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3'>
+            {references.map((reference) => {
+              const isImage =
+                reference.contentType.startsWith('image/') ||
+                reference.contentType === 'image' ||
+                /\.(avif|gif|jpe?g|png|webp)$/i.test(reference.url);
+
+              return isImage ? (
+                <a
+                  key={reference.url}
+                  href={reference.url}
+                  target='_blank'
+                  rel='noreferrer'
+                  className='overflow-hidden rounded-lg border border-[#EAEAEA]'
+                >
+                  <img
+                    src={reference.url}
+                    alt={reference.name}
+                    className='aspect-square w-full object-cover'
+                  />
+                </a>
+              ) : (
+                <a
+                  key={reference.url}
+                  href={reference.url}
+                  target='_blank'
+                  rel='noreferrer'
+                  className='rounded-lg border border-[#EAEAEA] p-3 text-sm text-[#035A7A] underline'
+                >
+                  {reference.name}
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      )}
     </article>
   );
 };

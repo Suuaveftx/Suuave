@@ -11,7 +11,7 @@ import {
   CardBody,
 } from '@heroui/react';
 import React from 'react';
-import { ArrowLeft, Paperclip, X } from 'lucide-react';
+import { Paperclip, X } from 'lucide-react';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useRef, useState, useEffect, Suspense } from 'react';
@@ -57,7 +57,7 @@ const PageContent = () => {
 
   const [previewAwardUrl, setPreviewAwardUrl] = useState(null);
 
-  const { control, handleSubmit, setValue, watch, reset } = useForm({
+  const { control, handleSubmit, setValue, setError, watch, reset } = useForm({
     defaultValues: {
       projectTitle: '',
       projectDetails: '',
@@ -65,6 +65,7 @@ const PageContent = () => {
       designStyles: [],
       projectBudget: '',
       projectTimeframe: '',
+      durationType: 'days',
       projectCurrency: 'USD',
       projectStatus: 'open',
     },
@@ -188,17 +189,11 @@ const PageContent = () => {
     { label: 'Romantic', key: 'romantic' },
   ];
 
-  const projectTimeframe = [
-    { label: '1 Day', key: '1day' },
-    { label: '2 Days', key: '2days' },
-    { label: '3 Days', key: '3days' },
-  ];
-
   useEffect(() => {
     const projectToEdit = isApiEditMode ? apiProject : editProject;
     if (isEditMode && projectToEdit) {
       const skills = isApiEditMode
-        ? apiProject.skillsRequired ?? []
+        ? (apiProject.skillsRequired ?? [])
         : editProject.skills;
       const style = isApiEditMode ? [] : editProject.style;
       let parsedSkills = [];
@@ -285,16 +280,58 @@ const PageContent = () => {
       designStyles: [],
       projectBudget: '',
       projectTimeframe: '',
+      durationType: 'days',
       projectCurrency: 'USD',
       projectStatus: 'open',
     });
     if (isEditMode && !isApiEditMode) clearEditProject();
   };
 
+  const showSubmissionError = (error) => {
+    const apiErrors = axios.isAxiosError(error) ? error.response?.data?.errors : null;
+    if (!Array.isArray(apiErrors) || apiErrors.length === 0) {
+      setSubmissionError(
+        'We could not publish the project. Please check the form and try again.'
+      );
+      return;
+    }
+
+    let hasMappedError = false;
+    apiErrors.forEach(({ field }) => {
+      const fieldMap = {
+        title: ['projectTitle', 'Title must be at least 10 characters.'],
+        description: ['projectDetails', 'Description must be at least 50 characters.'],
+        skillsRequired: ['fashionDesignerSkills', 'Add at least one required skill.'],
+        designStyle: ['designStyles', 'Add at least one design style.'],
+        budget: ['projectBudget', 'Budget must be at least 1,000.'],
+        durationType: ['durationType', 'Select a timeframe unit.'],
+        projectTimeframe: ['projectTimeframe', 'Enter a valid timeframe.'],
+        currency: ['projectCurrency', 'Select a currency.'],
+      };
+      const mappedField = fieldMap[field];
+      if (!mappedField) return;
+
+      hasMappedError = true;
+      if (mappedField[0] === 'fashionDesignerSkills') setSkillError(mappedField[1]);
+      if (mappedField[0] === 'designStyles') setDesignStyleError(mappedField[1]);
+      if (!['fashionDesignerSkills', 'designStyles'].includes(mappedField[0])) {
+        setError(mappedField[0], { type: 'server', message: mappedField[1] });
+      }
+    });
+
+    if (!hasMappedError) {
+      setSubmissionError(
+        'Some project details could not be accepted. Please review the form.'
+      );
+    }
+  };
+
   const onSubmit = async (data) => {
     setSubmissionError('');
     if (isEditMode && (isApiEditMode ? !apiProject : !editProject)) {
-      setSubmissionError('This project could not be loaded. Return to My Projects and try again.');
+      setSubmissionError(
+        'This project could not be loaded. Return to My Projects and try again.'
+      );
       return;
     }
     if (fileValidationError) return;
@@ -314,7 +351,8 @@ const PageContent = () => {
       style: data.designStyles,
       budget: Number(data.projectBudget),
       currency: data.projectCurrency,
-      timeframe: data.projectTimeframe,
+      timeframe: Number(data.projectTimeframe),
+      durationType: data.durationType,
       referenceFiles: selectedFiles.map((f) => f.name),
     };
 
@@ -344,16 +382,18 @@ const PageContent = () => {
       return;
     }
 
+    let projectId = createdProjectId;
     try {
-      let projectId = createdProjectId;
       if (!projectId) {
         const createdProject = await createProjectMutation.mutateAsync({
           title: dataToSave.title.trim(),
           description: dataToSave.description.trim(),
           skillsRequired: dataToSave.skills,
+          designStyle: dataToSave.style,
           budget: dataToSave.budget,
           currency: dataToSave.currency,
-          duration: `${dataToSave.timeframe} days`,
+          durationType: dataToSave.durationType,
+          projectTimeframe: dataToSave.timeframe,
         });
         projectId = createdProject.projectId;
         setCreatedProjectId(projectId);
@@ -372,7 +412,13 @@ const PageContent = () => {
       setUploadedReferenceCount(0);
       router.push('/fashion-designers/my-projects?created=true');
     } catch (error) {
-      setSubmissionError(getProjectApiErrorMessage(error));
+      if (projectId) {
+        setSubmissionError(
+          'Your project was created, but the reference upload did not finish. You can retry the upload.'
+        );
+      } else {
+        showSubmissionError(error);
+      }
     } finally {
       setIsUploadingReferences(false);
     }
@@ -414,9 +460,8 @@ const PageContent = () => {
           >
             {isApiEditMode && (
               <p className='w-full rounded-lg bg-blue-50 p-3 text-sm text-blue-800'>
-                The current API supports editing the title, brief, budget, and status only.
-                Skills, design style, currency, timeline, and reference materials cannot be updated
-                here.
+                After publishing, you can currently update only the title, brief, budget,
+                and status. Other project details cannot be changed yet.
               </p>
             )}
             {isApiEditMode && isApiProjectPending && (
@@ -426,17 +471,13 @@ const PageContent = () => {
             )}
             {isApiEditMode && apiProjectError && (
               <p role='alert' className='w-full text-sm text-red-600'>
-                {axios.isAxiosError(apiProjectError) && apiProjectError.response?.status === 403
+                {axios.isAxiosError(apiProjectError) &&
+                apiProjectError.response?.status === 403
                   ? 'You do not have permission to edit this project.'
-                  : axios.isAxiosError(apiProjectError) && apiProjectError.response?.status === 404
+                  : axios.isAxiosError(apiProjectError) &&
+                      apiProjectError.response?.status === 404
                     ? 'This project is unavailable or no longer exists.'
                     : getProjectApiErrorMessage(apiProjectError)}
-              </p>
-            )}
-            {!isEditMode && (
-              <p className='w-full rounded-lg bg-amber-50 p-3 text-sm text-amber-800'>
-                The current Projects API schema does not include design style. Your selection
-                will not be published until the API supports this field.
               </p>
             )}
             {submissionError && (
@@ -444,13 +485,11 @@ const PageContent = () => {
                 {submissionError}
               </p>
             )}
-            {isEditMode &&
-              !isApiEditMode &&
-              !editProject && (
+            {isEditMode && !isApiEditMode && !editProject && (
               <p role='alert' className='w-full text-sm text-red-600'>
                 This project could not be loaded. Return to My Projects and try again.
               </p>
-              )}
+            )}
             <Controller
               name='projectTitle'
               control={control}
@@ -532,10 +571,7 @@ const PageContent = () => {
               <label className='text-sm font-bold text-[#222222]'>
                 Reference Materials (Optional)
               </label>
-              <p className='text-xs text-[#767676]'>
-                Each file must be 5 MB or smaller. The upload endpoint currently documents images
-                and PDFs; PDF acceptance should be confirmed with the API team.
-              </p>
+              <p className='text-xs text-[#767676]'>Each file must be 5 MB or smaller.</p>
               <div className='flex flex-wrap gap-4'>
                 <input
                   type='file'
@@ -831,12 +867,12 @@ const PageContent = () => {
               rules={{
                 required: 'Please enter a budget',
                 min: {
-                  value: 100,
-                  message: 'Budget must be at least 100',
+                  value: 1000,
+                  message: 'Budget must be at least 1,000',
                 },
                 validate: (value) =>
-                  (Number.isFinite(Number(value)) && Number(value) >= 100) ||
-                  'Enter a valid budget of at least 100',
+                  (Number.isFinite(Number(value)) && Number(value) >= 1000) ||
+                  'Enter a valid budget of at least 1,000',
               }}
               render={({ field, fieldState }) => (
                 <Input
@@ -862,7 +898,7 @@ const PageContent = () => {
                   placeholder='0.00'
                   type='number'
                   inputMode='decimal'
-                  min={100}
+                  min={1000}
                   step='0.01'
                   onKeyDown={(event) => {
                     if (['e', 'E', '+', '-'].includes(event.key)) {
@@ -901,6 +937,31 @@ const PageContent = () => {
                 )}
               />
             )}
+
+            <Controller
+              name='durationType'
+              control={control}
+              rules={isApiEditMode ? {} : { required: 'Please select a timeframe unit' }}
+              render={({ field, fieldState }) => (
+                <Select
+                  label='Timeframe Unit'
+                  labelPlacement='outside'
+                  variant='bordered'
+                  radius='sm'
+                  classNames={responsiveClasses}
+                  selectedKeys={field.value ? [field.value] : []}
+                  onSelectionChange={(keys) => field.onChange(Array.from(keys)[0] || '')}
+                  onBlur={field.onBlur}
+                  isDisabled={isApiEditMode || Boolean(createdProjectId)}
+                  errorMessage={fieldState.error?.message}
+                  isInvalid={!!fieldState.error}
+                >
+                  {['days', 'weeks', 'months', 'years'].map((unit) => (
+                    <SelectItem key={unit}>{unit}</SelectItem>
+                  ))}
+                </Select>
+              )}
+            />
 
             <Controller
               name='projectTimeframe'

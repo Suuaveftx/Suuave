@@ -8,6 +8,7 @@ import { Alert, addToast } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import { getActiveCategory } from '../../../../utils/utils';
 import { useAppStore } from '@/store';
+import { authClient } from '../../../../lib/auth-client';
 // import { Roles } from '@suuaveftx/prisma-shared';
 
 const ChooseCategory = () => {
@@ -15,6 +16,8 @@ const ChooseCategory = () => {
   // const selectedCategory = getActiveCategory();
   const activeCategory = useAppStore((state) => state.activeCategory);
   const setActiveCategory = useAppStore((state) => state.setActiveCategory);
+  const { data: session } = authClient.useSession();
+  const [isSavingRole, setIsSavingRole] = useState(false);
 
   console.log('THESelected Category from State:', activeCategory);
   const router = useRouter();
@@ -23,7 +26,7 @@ const ChooseCategory = () => {
     setActiveCategory(category);
   };
 
-  const submitCategory = () => {
+  const submitCategory = async () => {
     if (!activeCategory) {
       addToast({
         title: 'Warning',
@@ -32,6 +35,37 @@ const ChooseCategory = () => {
       });
       return;
     }
+
+    if (session?.user) {
+      setIsSavingRole(true);
+      const { error } = await authClient.updateUser({ role: activeCategory });
+      setIsSavingRole(false);
+
+      if (error) {
+        addToast({
+          title: 'Unable to finish setup',
+          description: 'We could not save your account type. Please try again.',
+          color: 'danger',
+        });
+        return;
+      }
+
+      const { data: updatedSession } = await authClient.getSession();
+      if (updatedSession?.user?.role !== activeCategory) {
+        addToast({
+          title: 'Unable to finish setup',
+          description: 'Your account type was not saved. Please contact support.',
+          color: 'danger',
+        });
+        return;
+      }
+
+      window.location.assign(
+        activeCategory === 'artist' ? '/artist-page' : '/fashion-designers'
+      );
+      return;
+    }
+
     router.push('/onboarding/create-new-account');
   };
 
@@ -122,6 +156,7 @@ const ChooseCategory = () => {
         <button
           // text='Continue'
           onClick={submitCategory}
+          disabled={isSavingRole}
           // disabled={!activeCategory}
           className={`text-[#035A7A] rounded-3xl cursor-pointer px-20 py-3 mt-4 text-center bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] transition-opacity ${
             !activeCategory
@@ -129,7 +164,7 @@ const ChooseCategory = () => {
               : 'opacity-100 hover:opacity-90'
           }`}
         >
-          Continue
+          {isSavingRole ? 'Saving...' : 'Continue'}
         </button>
       </div>
     </div>

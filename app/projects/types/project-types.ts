@@ -16,6 +16,7 @@ export type ProjectStatus = 'open' | 'in_progress' | 'completed' | 'cancelled';
 export type ProjectCurrency = 'USD' | 'EUR' | 'GBP' | 'NGN';
 
 export type ProjectFilter = 'recently' | 'open' | 'closed';
+export type ProjectDurationType = 'days' | 'weeks' | 'months' | 'years';
 
 export type ProjectUser = {
   userId?: string;
@@ -37,6 +38,8 @@ export type ProjectApiModel = {
   user?: ProjectUser;
   proposalsCount?: number;
   isSaved?: boolean;
+  images?: string[];
+  files?: ProjectFile[];
 };
 
 export type ProjectListParams = {
@@ -75,6 +78,9 @@ export type CreateProjectRequest = {
   currency: ProjectCurrency;
   duration?: string;
   skillsRequired: string[];
+  designStyle: string[];
+  durationType: ProjectDurationType;
+  projectTimeframe: number;
   referenceImages?: string[];
 };
 

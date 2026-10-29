@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createProject,
   deleteProject,
@@ -13,8 +9,10 @@ import {
   uploadProjectReference,
   type UploadProjectReferenceInput,
 } from '../api/projects';
+import type { ProjectListResult } from '../api/projects';
 import type {
   CreateProjectRequest,
+  Project,
   ProjectId,
   ProjectListParams,
   UpdateProjectRequest,
@@ -32,6 +30,7 @@ export function useProjects(params: ProjectListParams = {}) {
   return useQuery({
     queryKey: projectQueryKeys.list(params),
     queryFn: () => listProjects(params),
+    placeholderData: (previousData) => previousData,
   });
 }
 
@@ -56,7 +55,8 @@ export function useCreateProject() {
 
   return useMutation({
     mutationFn: (input: CreateProjectRequest) => createProject(input),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: projectQueryKeys.lists() }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: projectQueryKeys.lists() }),
   });
 }
 
@@ -64,8 +64,13 @@ export function useUpdateProject() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ projectId, input }: { projectId: ProjectId; input: UpdateProjectRequest }) =>
-      updateProject(projectId, input),
+    mutationFn: ({
+      projectId,
+      input,
+    }: {
+      projectId: ProjectId;
+      input: UpdateProjectRequest;
+    }) => updateProject(projectId, input),
     onSuccess: (_data, variables) =>
       Promise.all([
         queryClient.invalidateQueries({ queryKey: projectQueryKeys.lists() }),
@@ -81,9 +86,41 @@ export function useDeleteProject() {
 
   return useMutation({
     mutationFn: (projectId: ProjectId) => deleteProject(projectId),
-    onSuccess: (_data, projectId) =>
+    onMutate: async (projectId) => {
+      await queryClient.cancelQueries({ queryKey: projectQueryKeys.lists() });
+      const previousLists = queryClient.getQueriesData<ProjectListResult>({
+        queryKey: projectQueryKeys.lists(),
+      });
+
+      previousLists.forEach(([queryKey, data]) => {
+        const projectList = data as ProjectListResult | undefined;
+        if (!projectList?.projects) return;
+
+        queryClient.setQueryData<ProjectListResult>(queryKey, {
+          ...projectList,
+          projects: projectList.projects.filter(
+            (project) => project.projectId !== projectId
+          ),
+          pagination: {
+            ...projectList.pagination,
+            totalProjects: Math.max(0, projectList.pagination.totalProjects - 1),
+          },
+        });
+      });
+
+      return { previousLists };
+    },
+    onError: (_error, _projectId, context) => {
+      context?.previousLists?.forEach(([queryKey, data]) => {
+        queryClient.setQueryData(queryKey, data);
+      });
+    },
+    onSettled: (_data, _error, projectId) =>
       Promise.all([
-        queryClient.invalidateQueries({ queryKey: projectQueryKeys.lists() }),
+        queryClient.invalidateQueries({
+          queryKey: projectQueryKeys.lists(),
+          refetchType: 'none',
+        }),
         queryClient.removeQueries({ queryKey: projectQueryKeys.detail(projectId) }),
       ]),
   });
@@ -94,7 +131,52 @@ export function useToggleSaveProject() {
 
   return useMutation({
     mutationFn: (projectId: ProjectId) => toggleSaveProject(projectId),
-    onSuccess: (_data, projectId) =>
+    onMutate: async (projectId) => {
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: projectQueryKeys.lists() }),
+        queryClient.cancelQueries({ queryKey: projectQueryKeys.detail(projectId) }),
+      ]);
+
+      const previousLists = queryClient.getQueriesData({
+        queryKey: projectQueryKeys.lists(),
+      });
+      const previousDetail = queryClient.getQueryData<Project>(
+        projectQueryKeys.detail(projectId)
+      );
+
+      previousLists.forEach(([queryKey, data]) => {
+        const projectList = data as ProjectListResult | undefined;
+        if (!projectList?.projects) return;
+
+        queryClient.setQueryData<ProjectListResult>(queryKey, {
+          ...projectList,
+          projects: projectList.projects.map((project) =>
+            project.projectId === projectId
+              ? { ...project, isSaved: !project.isSaved }
+              : project
+          ),
+        });
+      });
+
+      if (previousDetail) {
+        queryClient.setQueryData<Project>(projectQueryKeys.detail(projectId), {
+          ...previousDetail,
+          isSaved: !previousDetail.isSaved,
+        });
+      }
+
+      return { previousLists, previousDetail };
+    },
+    onError: (_error, projectId, context) => {
+      context?.previousLists?.forEach(([queryKey, data]) => {
+        queryClient.setQueryData(queryKey, data);
+      });
+      queryClient.setQueryData(
+        projectQueryKeys.detail(projectId),
+        context?.previousDetail
+      );
+    },
+    onSettled: (_data, _error, projectId) =>
       Promise.all([
         queryClient.invalidateQueries({ queryKey: projectQueryKeys.lists() }),
         queryClient.invalidateQueries({

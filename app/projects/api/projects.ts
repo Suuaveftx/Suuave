@@ -28,8 +28,12 @@ export type UploadProjectReferenceInput = {
   projectId: ProjectId;
 };
 
-export async function listProjects(params: ProjectListParams = {}): Promise<ProjectListResult> {
-  const response = await apiClient.get<ProjectsApiResponse>(PROJECTS_ENDPOINT, { params });
+export async function listProjects(
+  params: ProjectListParams = {}
+): Promise<ProjectListResult> {
+  const response = await apiClient.get<ProjectsApiResponse>(PROJECTS_ENDPOINT, {
+    params,
+  });
   return response.data.data;
 }
 
@@ -60,7 +64,9 @@ export async function updateProject(
   await apiClient.patch(`${PROJECTS_ENDPOINT}/${encodeURIComponent(projectId)}`, input);
 }
 
-export async function deleteProject(projectId: ProjectId): Promise<DeleteProjectResponse['data']> {
+export async function deleteProject(
+  projectId: ProjectId
+): Promise<DeleteProjectResponse['data']> {
   const response = await apiClient.delete<DeleteProjectResponse>(
     `${PROJECTS_ENDPOINT}/${encodeURIComponent(projectId)}`
   );
@@ -82,8 +88,8 @@ export async function uploadProjectReference({
 }: UploadProjectReferenceInput): Promise<ProjectFileUploadResponse['data']> {
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('fileable_type', 'project');
-  formData.append('fileable_id', projectId);
+  formData.append('fileableType', 'project');
+  formData.append('fileableId', projectId);
 
   const response = await apiClient.post<ProjectFileUploadResponse>(
     '/api/v1/files/upload',

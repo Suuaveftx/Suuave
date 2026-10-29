@@ -74,7 +74,7 @@ const CreateAccount = () => {
   const handleSocialLogin = async (provider) => {
     await authClient.signIn.social({
       provider: provider,
-      callbackURL: '/auth/callback',
+      callbackURL: '/onboarding/category',
     });
   };
   return (
@@ -211,7 +211,10 @@ const CreateAccount = () => {
             onChange={() => setTerms(!terms)}
           />
           By creating account, I agree to Suuave <br className='lg:hidden' />
-          <Link href='/terms-of-service' className='text-[#035A7A] ml-10 lg:ml-0 cursor-pointer font-bold'>
+          <Link
+            href='/terms-of-service'
+            className='text-[#035A7A] ml-10 lg:ml-0 cursor-pointer font-bold'
+          >
             Terms of Service and Collaboration & Licensing Policy
           </Link>
         </span>

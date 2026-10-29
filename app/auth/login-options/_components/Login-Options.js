@@ -9,7 +9,7 @@ const LoginOptions = () => {
   const handleSocialLogin = async (provider) => {
     await authClient.signIn.social({
       provider: provider,
-      callbackURL: '/auth/re_3VLEV5wq_Pxbep5U3J4ALWJG3NJnBmtxT',
+      callbackURL: '/auth/login-options',
     });
   };
   return (

@@ -38,6 +38,12 @@ const ProjectPage = ({ search = '' }) => {
   const projectsQuery = useProjects(params);
   const saveMutation = useToggleSaveProject();
   const projects = projectsQuery.data?.projects ?? [];
+  const visibleProjects =
+    filter === 'closed'
+      ? projects.filter((project) => ['completed', 'cancelled'].includes(project.status))
+      : filter === 'open'
+        ? projects.filter((project) => project.status === 'open')
+        : projects;
   const pagination = projectsQuery.data?.pagination;
 
   useEffect(() => {
@@ -47,6 +53,11 @@ const ProjectPage = ({ search = '' }) => {
   const changeFilter = (nextFilter) => {
     setFilter(nextFilter);
     setPage(1);
+  };
+
+  const changePage = (nextPage) => {
+    if (projectsQuery.isFetching) return;
+    setPage(Math.min(Math.max(1, nextPage), pagination?.totalPages ?? nextPage));
   };
 
   const shareProject = async (projectId, title) => {
@@ -63,16 +74,23 @@ const ProjectPage = ({ search = '' }) => {
   const statusCode = queryError?.response?.status;
   const isPermissionDenied = statusCode === 401 || statusCode === 403;
   const isUnavailable = statusCode >= 500;
+  const saveErrorStatus = saveMutation.error?.response?.status;
+  const saveErrorMessage =
+    saveErrorStatus === 401
+      ? 'Please sign in with an artist account to save projects.'
+      : saveErrorStatus === 403
+        ? 'Only artist accounts can save projects.'
+        : getProjectApiErrorMessage(saveMutation.error);
 
   return (
-    <section className="w-full max-w-full overflow-x-hidden pb-6">
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b mb-4">
-        <div className="flex gap-4" role="tablist" aria-label="Project filters">
+    <section className='w-full max-w-full overflow-x-hidden pb-6'>
+      <div className='flex flex-wrap items-center justify-between gap-4 border-b mb-4'>
+        <div className='flex gap-4' role='tablist' aria-label='Project filters'>
           {FILTERS.map(({ value, label }) => (
             <button
               key={value}
-              type="button"
-              role="tab"
+              type='button'
+              role='tab'
               aria-selected={filter === value}
               onClick={() => changeFilter(value)}
               className={`px-1 py-2 ${
@@ -85,117 +103,127 @@ const ProjectPage = ({ search = '' }) => {
             </button>
           ))}
         </div>
-        <span className="text-sm text-gray-500">
+        <span className='text-sm text-gray-500'>
           {pagination ? `${pagination.totalProjects} projects` : ''}
         </span>
       </div>
 
       {projectsQuery.isPending ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4" aria-label="Loading projects">
+        <div
+          className='grid grid-cols-1 lg:grid-cols-2 gap-4'
+          aria-label='Loading projects'
+        >
           {Array.from({ length: 6 }, (_, index) => (
             <div
               key={index}
-              className="animate-pulse px-4 py-6 bg-white border border-[#EAEAEA] rounded-2xl shadow-sm mt-2"
+              className='animate-pulse px-4 py-6 bg-white border border-[#EAEAEA] rounded-2xl shadow-sm mt-2'
             >
-              <div className="h-4 w-20 bg-gray-200 rounded mb-3" />
-              <div className="h-5 w-3/4 bg-gray-200 rounded mb-3" />
-              <div className="h-3 w-1/2 bg-gray-200 rounded mb-5" />
-              <div className="h-16 w-full bg-gray-200 rounded mb-4" />
-              <div className="h-4 w-28 bg-gray-200 rounded" />
+              <div className='h-4 w-20 bg-gray-200 rounded mb-3' />
+              <div className='h-5 w-3/4 bg-gray-200 rounded mb-3' />
+              <div className='h-3 w-1/2 bg-gray-200 rounded mb-5' />
+              <div className='h-16 w-full bg-gray-200 rounded mb-4' />
+              <div className='h-4 w-28 bg-gray-200 rounded' />
             </div>
           ))}
         </div>
       ) : projectsQuery.isError ? (
-        <div className="rounded-2xl border border-red-200 bg-red-50 px-6 py-10 text-center">
-          <h2 className="font-semibold text-[#222222]">
+        <div className='rounded-2xl border border-red-200 bg-red-50 px-6 py-10 text-center'>
+          <h2 className='font-semibold text-[#222222]'>
             {isPermissionDenied
               ? 'You do not have permission to browse projects'
               : isUnavailable
                 ? 'Projects are temporarily unavailable'
                 : 'We could not load projects'}
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className='mt-2 text-sm text-gray-600'>
             {getProjectApiErrorMessage(queryError)}
           </p>
           {!isPermissionDenied && (
             <button
-              type="button"
+              type='button'
               onClick={() => projectsQuery.refetch()}
-              className="mt-4 rounded-full bg-[#035A7A] px-5 py-2 text-sm font-semibold text-white"
+              className='mt-4 rounded-full bg-[#035A7A] px-5 py-2 text-sm font-semibold text-white'
             >
               Try again
             </button>
           )}
         </div>
-      ) : projects.length === 0 ? (
-        <div className="rounded-2xl border border-[#EAEAEA] bg-white px-6 py-14 text-center">
-          <h2 className="font-semibold text-[#222222]">No projects found</h2>
-          <p className="mt-2 text-sm text-gray-500">
+      ) : visibleProjects.length === 0 ? (
+        <div className='rounded-2xl border border-[#EAEAEA] bg-white px-6 py-14 text-center'>
+          <h2 className='font-semibold text-[#222222]'>No projects found</h2>
+          <p className='mt-2 text-sm text-gray-500'>
             Try a different search or filter to find projects.
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {projects.map((project) => (
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+          {visibleProjects.map((project) => (
             <article
               key={project.projectId}
-              className="relative mt-2 rounded-2xl border border-[#EAEAEA] bg-white px-4 py-6 shadow-sm transition-shadow hover:shadow-md"
+              className='relative mt-2 rounded-2xl border border-[#EAEAEA] bg-white px-4 py-6 shadow-sm transition-shadow hover:shadow-md'
             >
-              <div className="absolute right-4 top-4 flex gap-3">
+              <div className='absolute right-4 top-4 flex gap-3'>
                 <button
-                  type="button"
+                  type='button'
                   aria-label={`Share ${project.title}`}
                   onClick={() => shareProject(project.projectId, project.title)}
-                  className="rounded-full p-2 text-gray-500 hover:bg-gray-100"
+                  className='rounded-full p-2 text-gray-500 hover:bg-gray-100'
                 >
                   <FaShareAlt />
                 </button>
                 <button
-                  type="button"
-                  aria-label={project.isSaved ? `Unsave ${project.title}` : `Save ${project.title}`}
+                  type='button'
+                  aria-label={
+                    project.isSaved ? `Unsave ${project.title}` : `Save ${project.title}`
+                  }
                   disabled={saveMutation.isPending}
                   onClick={() => saveMutation.mutate(project.projectId)}
-                  className="rounded-full p-2 text-[#3A98BB] hover:bg-gray-100 disabled:opacity-50"
+                  className='rounded-full p-2 text-[#3A98BB] hover:bg-gray-100 disabled:opacity-50'
                 >
                   {project.isSaved ? <FaBookmark /> : <FaRegBookmark />}
                 </button>
               </div>
-              <p className="text-xs leading-4 text-[#878787]">
+              <p className='text-xs leading-4 text-[#878787]'>
                 Project status:{' '}
-                <span className={`font-medium capitalize ${getStatusClassName(project.status)}`}>
+                <span
+                  className={`font-medium capitalize ${getStatusClassName(project.status)}`}
+                >
                   {project.status.replace('_', ' ')}
                 </span>
               </p>
               <Link
                 href={`/artist-page/job-details-page?id=${encodeURIComponent(project.projectId)}`}
-                className="block pr-16 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3A98BB]"
+                className='block pr-16 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3A98BB]'
               >
-                <h2 className="mt-2 text-lg font-bold text-[#222222]">{project.title}</h2>
+                <h2 className='mt-2 text-lg font-bold text-[#222222]'>{project.title}</h2>
               </Link>
-              <p className="mt-1 text-sm text-gray-500">
+              <p className='mt-1 text-sm text-gray-500'>
                 {project.postedAt ? new Date(project.postedAt).toLocaleDateString() : ''}
                 {project.user?.name ? ` · ${project.user.name}` : ''}
               </p>
-              <p className="mt-3 text-sm text-[#727272] line-clamp-3">{project.description}</p>
-              <div className="mt-4 flex flex-wrap gap-2">
+              <p className='mt-3 text-sm text-[#727272] line-clamp-3'>
+                {project.description}
+              </p>
+              <div className='mt-4 flex flex-wrap gap-2'>
                 {(project.skillsRequired ?? []).map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-full bg-[#F0F0F0] px-3 py-1 text-sm text-[#767676]"
+                    className='rounded-full bg-[#F0F0F0] px-3 py-1 text-sm text-[#767676]'
                   >
                     {skill}
                   </span>
                 ))}
               </div>
-              <div className="mt-4 flex items-center justify-between gap-3">
-                <p className="font-semibold text-gray-800">
-                  Budget: {new Intl.NumberFormat(undefined, {
+              <div className='mt-4 flex items-center justify-between gap-3'>
+                <p className='font-semibold text-gray-800'>
+                  Budget:{' '}
+                  {new Intl.NumberFormat(undefined, {
                     style: 'currency',
                     currency: project.currency,
                     maximumFractionDigits: 0,
                   }).format(project.budget)}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className='text-sm text-gray-500'>
                   {project.proposalsCount ?? 0} proposals
                 </p>
               </div>
@@ -204,24 +232,27 @@ const ProjectPage = ({ search = '' }) => {
         </div>
       )}
 
-      {pagination && pagination.totalPages > 1 && (
-        <nav className="mt-8 flex items-center justify-center gap-4" aria-label="Project pages">
+      {pagination && pagination.totalPages > 1 && visibleProjects.length > 0 && (
+        <nav
+          className='mt-8 flex items-center justify-center gap-4'
+          aria-label='Project pages'
+        >
           <button
-            type="button"
+            type='button'
             disabled={page <= 1 || projectsQuery.isFetching}
-            onClick={() => setPage((current) => Math.max(1, current - 1))}
-            className="rounded border px-4 py-2 text-sm disabled:opacity-40"
+            onClick={() => changePage(page - 1)}
+            className='rounded border px-4 py-2 text-sm disabled:opacity-40'
           >
             Previous
           </button>
-          <span className="text-sm text-gray-600">
+          <span className='text-sm text-gray-600'>
             Page {pagination.currentPage} of {pagination.totalPages}
           </span>
           <button
-            type="button"
+            type='button'
             disabled={page >= pagination.totalPages || projectsQuery.isFetching}
-            onClick={() => setPage((current) => Math.min(pagination.totalPages, current + 1))}
-            className="rounded border px-4 py-2 text-sm disabled:opacity-40"
+            onClick={() => changePage(page + 1)}
+            className='rounded border px-4 py-2 text-sm disabled:opacity-40'
           >
             Next
           </button>
@@ -229,18 +260,18 @@ const ProjectPage = ({ search = '' }) => {
       )}
 
       {saveMutation.isError && (
-        <p role="alert" className="mt-4 text-center text-sm text-red-600">
-          {getProjectApiErrorMessage(saveMutation.error)}
+        <p role='alert' className='mt-4 text-center text-sm text-red-600'>
+          {saveErrorMessage}
         </p>
       )}
 
-      <div className="fixed bottom-24 right-6 z-[9999] lg:hidden">
+      <div className='fixed bottom-24 right-6 z-[9999] lg:hidden'>
         <Link
-          href="/artist-page/license-your-design"
-          className="flex items-center rounded-full border border-[#73D9FF] bg-[#EAF9FF] p-4 text-[#035A7A] shadow-2xl"
-          aria-label="List a Design"
+          href='/artist-page/license-your-design'
+          className='flex items-center rounded-full border border-[#73D9FF] bg-[#EAF9FF] p-4 text-[#035A7A] shadow-2xl'
+          aria-label='List a Design'
         >
-          <FiPlus className="h-6 w-6 shrink-0" />
+          <FiPlus className='h-6 w-6 shrink-0' />
         </Link>
       </div>
     </section>

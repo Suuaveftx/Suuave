@@ -21,19 +21,18 @@ import {
   TrashIcon,
   PencilIcon,
   ChevronLeftIcon,
+  XMarkIcon,
 } from '@heroicons/react/24/outline';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
-import {
-  useDeleteProject,
-  useProjects,
-} from '@/app/projects/queries/projects.queries';
+import { useDeleteProject, useProjects } from '@/app/projects/queries/projects.queries';
 import { getProjectApiErrorMessage } from '@/app/projects/api/projects';
 
 const MyProjects = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -47,25 +46,38 @@ const MyProjects = () => {
   } = useProjects({
     page: currentPage,
     limit: projectsPerPage,
+    filter: 'recently',
     ...(debouncedSearch ? { search: debouncedSearch } : {}),
   });
   const deleteProjectMutation = useDeleteProject();
   const [actionError, setActionError] = useState('');
   const [actionSuccess, setActionSuccess] = useState('');
+  const [isSuccessMessageVisible, setIsSuccessMessageVisible] = useState(true);
   const {
     isOpen: isDeleteOpen,
     onOpen: onDeleteOpen,
-    onOpenChange: onDeleteOpenChange
+    onOpenChange: onDeleteOpenChange,
   } = useDisclosure();
   const [projectToDelete, setProjectToDelete] = useState(null);
 
   const currentProjects = projectList?.projects ?? [];
   const totalPages = projectList?.pagination.totalPages ?? 0;
-  const successMessage = searchParams.get('created')
-    ? 'Project published successfully.'
-    : searchParams.get('updated')
-      ? 'Project updated successfully.'
-      : '';
+  const successMessage = !isSuccessMessageVisible
+    ? ''
+    : searchParams.get('created')
+      ? 'Project published successfully.'
+      : searchParams.get('updated')
+        ? 'Project updated successfully.'
+        : '';
+
+  const dismissSuccessMessage = () => {
+    setIsSuccessMessageVisible(false);
+    const nextParams = new URLSearchParams(searchParams.toString());
+    nextParams.delete('created');
+    nextParams.delete('updated');
+    const query = nextParams.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  };
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => setDebouncedSearch(searchTerm.trim()), 300);
@@ -106,7 +118,6 @@ const MyProjects = () => {
     onDeleteOpen();
   };
 
-
   const handleCardClick = (project) => {
     router.push(
       `/fashion-designers/my-projects/proposals/${encodeURIComponent(project.projectId)}`
@@ -119,13 +130,13 @@ const MyProjects = () => {
         <div className=''>
           {/* Header */}
           {/* Desktop Header */}
-          <div className="hidden lg:flex w-full items-center mb-6">
-            <h1 className="text-[28px] font-satoshi font-bold text-[#222222] leading-none">
+          <div className='hidden lg:flex w-full items-center mb-6'>
+            <h1 className='text-[28px] font-satoshi font-bold text-[#222222] leading-none'>
               My Projects
             </h1>
           </div>
 
-          <div className="lg:hidden flex items-center gap-1 mb-4 mt-2 -ml-3">
+          <div className='lg:hidden flex items-center gap-1 mb-4 mt-2 -ml-3'>
             <Button
               isIconOnly
               variant='light'
@@ -150,18 +161,27 @@ const MyProjects = () => {
               className='w-full'
               variant='bordered'
               radius='full'
-              size="lg"
+              size='lg'
               classNames={{
-                input: "text-[15px]",
-                inputWrapper: "border-[#E1E1E1] bg-white h-12 px-5 shadow-sm"
+                input: 'text-[15px]',
+                inputWrapper: 'border-[#E1E1E1] bg-white h-12 px-5 shadow-sm',
               }}
             />
           </div>
 
           {successMessage && (
-            <p role='status' className='mb-4 text-sm text-green-700'>
-              {successMessage}
-            </p>
+            <div className='mb-4 flex items-center justify-between gap-3 text-sm text-green-700'>
+              <p role='status'>{successMessage}</p>
+              <Button
+                isIconOnly
+                aria-label='Dismiss success message'
+                variant='light'
+                size='sm'
+                onPress={dismissSuccessMessage}
+              >
+                <XMarkIcon className='h-5 w-5' />
+              </Button>
+            </div>
           )}
           {actionError && (
             <p role='alert' className='mb-4 text-sm text-red-600'>
@@ -169,15 +189,25 @@ const MyProjects = () => {
             </p>
           )}
           {actionSuccess && (
-            <p role='status' className='mb-4 text-sm text-green-700'>
-              {actionSuccess}
-            </p>
+            <div className='mb-4 flex items-center justify-between gap-3 text-sm text-green-700'>
+              <p role='status'>{actionSuccess}</p>
+              <Button
+                isIconOnly
+                aria-label='Dismiss success message'
+                variant='light'
+                size='sm'
+                onPress={() => setActionSuccess('')}
+              >
+                <XMarkIcon className='h-5 w-5' />
+              </Button>
+            </div>
           )}
           {projectsError && (
             <div role='alert' className='py-6 text-center text-sm text-red-600'>
               {axios.isAxiosError(projectsError) && projectsError.response?.status === 403
                 ? 'You do not have permission to view these projects.'
-                : axios.isAxiosError(projectsError) && projectsError.response?.status === 404
+                : axios.isAxiosError(projectsError) &&
+                    projectsError.response?.status === 404
                   ? 'Projects are currently unavailable.'
                   : getProjectApiErrorMessage(projectsError)}
             </div>
@@ -194,20 +224,15 @@ const MyProjects = () => {
               <p className='text-gray-500 text-center py-20'>No projects found.</p>
             ) : (
               currentProjects.map((project) => (
-                <div
-                  key={project.projectId}
-                  className='w-full group'
-                >
-                  <Card
-                    className='w-full border shadow-none group-hover:shadow-md transition-shadow'
-                  >
+                <div key={project.projectId} className='w-full group'>
+                  <Card className='w-full border shadow-none group-hover:shadow-md transition-shadow'>
                     <CardBody className='p-4 lg:p-8 font-satoshi'>
                       {/* --- Desktop Layout --- */}
                       <div className='hidden lg:flex flex-col gap-4'>
                         {/* Top Row: Title and Multi-options button */}
                         <div className='flex items-start justify-between gap-4'>
                           <div
-                            className="flex-1 cursor-pointer"
+                            className='flex-1 cursor-pointer'
                             onClick={() => handleCardClick(project)}
                           >
                             <h3 className='text-lg sm:text-xl font-bold text-[#222222] leading-tight'>
@@ -215,7 +240,7 @@ const MyProjects = () => {
                             </h3>
                           </div>
 
-                          <div className="flex items-center gap-3 shrink-0">
+                          <div className='flex items-center gap-3 shrink-0'>
                             {/* Proposals badge for desktop */}
                             <div
                               className='flex gap-2 items-center border border-[#E1E1E1] rounded-full px-4 sm:px-5 py-1.5 bg-white cursor-pointer hover:bg-gray-50 transition-colors'
@@ -224,11 +249,16 @@ const MyProjects = () => {
                               <span className='text-[#3A98BB] font-semibold text-sm sm:text-md'>
                                 {project.proposalsCount ?? '—'}
                               </span>
-                              <span className='text-[#767676] text-xs sm:text-sm'>Proposals</span>
+                              <span className='text-[#767676] text-xs sm:text-sm'>
+                                Proposals
+                              </span>
                             </div>
 
-                            <div onClick={(e) => e.stopPropagation()} className="shrink-0">
-                              <Dropdown placement="bottom-end" shouldBlockScroll={false}>
+                            <div
+                              onClick={(e) => e.stopPropagation()}
+                              className='shrink-0'
+                            >
+                              <Dropdown placement='bottom-end' shouldBlockScroll={false}>
                                 <DropdownTrigger>
                                   <Button
                                     variant='bordered'
@@ -273,7 +303,7 @@ const MyProjects = () => {
                           onClick={() => handleCardClick(project)}
                         >
                           <div className='flex items-center gap-2 text-md'>
-                            <span className="text-[#222222]">Posted :</span>
+                            <span className='text-[#222222]'>Posted :</span>
                             <span className='text-[#767676]'>
                               {project.postedAt
                                 ? new Date(project.postedAt).toLocaleDateString()
@@ -282,11 +312,13 @@ const MyProjects = () => {
                           </div>
 
                           <div className='flex items-center gap-2 text-md'>
-                            <span className="text-[#222222]">Status :</span>
-                            <span className="text-[#056D16] font-medium">{project.status}</span>
+                            <span className='text-[#222222]'>Status :</span>
+                            <span className='text-[#056D16] font-medium'>
+                              {project.status}
+                            </span>
                           </div>
                           <div className='flex items-center gap-2 text-md'>
-                            <span className="text-[#222222]">Budget :</span>
+                            <span className='text-[#222222]'>Budget :</span>
                             <span className='text-[#767676]'>
                               {project.currency} {project.budget.toLocaleString()}
                             </span>
@@ -299,7 +331,10 @@ const MyProjects = () => {
                           {!!project.skillsRequired?.length && (
                             <div className='flex flex-wrap gap-2'>
                               {project.skillsRequired.map((skill) => (
-                                <span key={skill} className='rounded-full bg-gray-100 px-3 py-1 text-xs'>
+                                <span
+                                  key={skill}
+                                  className='rounded-full bg-gray-100 px-3 py-1 text-xs'
+                                >
                                   {skill}
                                 </span>
                               ))}
@@ -313,7 +348,7 @@ const MyProjects = () => {
                         {/* Top Row */}
                         <div className='flex items-start justify-between gap-4 w-full'>
                           <div
-                            className="flex-1 min-w-0 cursor-pointer pr-2"
+                            className='flex-1 min-w-0 cursor-pointer pr-2'
                             onClick={() => handleCardClick(project)}
                           >
                             <h3 className='text-[15px] sm:text-lg font-bold text-[#111111] leading-snug break-words line-clamp-2'>
@@ -321,8 +356,11 @@ const MyProjects = () => {
                             </h3>
                           </div>
 
-                          <div onClick={(e) => e.stopPropagation()} className="shrink-0 flex items-center">
-                            <Dropdown placement="bottom-end" shouldBlockScroll={false}>
+                          <div
+                            onClick={(e) => e.stopPropagation()}
+                            className='shrink-0 flex items-center'
+                          >
+                            <Dropdown placement='bottom-end' shouldBlockScroll={false}>
                               <DropdownTrigger>
                                 <Button
                                   variant='bordered'
@@ -362,11 +400,11 @@ const MyProjects = () => {
 
                         {/* Details Grid */}
                         <div
-                          className="flex flex-col gap-3 cursor-pointer mt-1"
+                          className='flex flex-col gap-3 cursor-pointer mt-1'
                           onClick={() => handleCardClick(project)}
                         >
                           <div className='flex justify-between items-center text-[15px]'>
-                            <span className="text-[#767676]">Posted :</span>
+                            <span className='text-[#767676]'>Posted :</span>
                             <span className='text-[#222222]'>
                               {project.postedAt
                                 ? new Date(project.postedAt).toLocaleDateString()
@@ -375,18 +413,20 @@ const MyProjects = () => {
                           </div>
 
                           <div className='flex justify-between items-center text-[15px]'>
-                            <span className="text-[#767676]">Job Status :</span>
-                            <span className="text-[#056D16]">{project.status}</span>
+                            <span className='text-[#767676]'>Job Status :</span>
+                            <span className='text-[#056D16]'>{project.status}</span>
                           </div>
 
                           <div className='flex justify-between items-center text-[15px]'>
-                            <span className="text-[#767676]">Proposals</span>
-                            <span className="text-[#3A98BB] font-medium">{project.proposalsCount ?? '—'}</span>
+                            <span className='text-[#767676]'>Proposals</span>
+                            <span className='text-[#3A98BB] font-medium'>
+                              {project.proposalsCount ?? '—'}
+                            </span>
                           </div>
 
                           <div className='flex justify-between items-center text-[15px]'>
-                            <span className="text-[#767676]">Budget</span>
-                            <span className="text-[#222222] font-medium">
+                            <span className='text-[#767676]'>Budget</span>
+                            <span className='text-[#222222] font-medium'>
                               {project.currency} {project.budget.toLocaleString()}
                             </span>
                           </div>
@@ -398,7 +438,10 @@ const MyProjects = () => {
                           {!!project.skillsRequired?.length && (
                             <div className='flex flex-wrap gap-2'>
                               {project.skillsRequired.map((skill) => (
-                                <span key={skill} className='rounded-full bg-gray-100 px-3 py-1 text-xs'>
+                                <span
+                                  key={skill}
+                                  className='rounded-full bg-gray-100 px-3 py-1 text-xs'
+                                >
                                   {skill}
                                 </span>
                               ))}
@@ -415,30 +458,30 @@ const MyProjects = () => {
 
           {/* Pagination */}
           {totalPages > 1 && !projectsError && (
-            <div className="flex justify-center items-center mt-8 mb-20 w-full max-w-[61.25rem] mx-auto">
+            <div className='flex justify-center items-center mt-8 mb-20 w-full max-w-[61.25rem] mx-auto'>
               <Pagination
                 showControls
                 total={totalPages}
                 page={currentPage}
-                onChange={setCurrentPage}
+                onChange={(nextPage) => setCurrentPage(Number(nextPage))}
                 classNames={{
-                  cursor: "bg-[#3A98BB] text-white",
+                  cursor: 'bg-[#3A98BB] text-white',
                 }}
               />
             </div>
           )}
         </div>
 
-
-
         <DeleteConfirmationModal
           isOpen={isDeleteOpen}
           onOpenChange={onDeleteOpenChange}
           onConfirm={() => handleDeleteProject(projectToDelete?.projectId)}
           projectTitle={projectToDelete?.title}
-          confirmButtonText={deleteProjectMutation.isPending ? 'Deleting...' : 'Yes, Delete'}
+          confirmButtonText={
+            deleteProjectMutation.isPending ? 'Deleting...' : 'Yes, Delete'
+          }
         />
-      </div >
+      </div>
     </>
   );
 };
