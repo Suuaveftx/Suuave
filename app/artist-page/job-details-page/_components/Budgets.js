@@ -3,6 +3,7 @@
 import React from 'react';
 import { HiOutlineCash } from 'react-icons/hi';
 import { FaRegClock } from 'react-icons/fa6';
+import { formatProjectTimeline } from '@/app/projects/utils/project-formatters';
 
 const Budgets = ({ project }) => {
   const budget = new Intl.NumberFormat(undefined, {
@@ -22,11 +23,13 @@ const Budgets = ({ project }) => {
           <span className="text-sm text-[#757575]">Budget:</span>
           <span className="font-bold text-[#3A98BB]">{budget}</span>
         </div>
-        {project.duration && (
+        {formatProjectTimeline(project) && (
           <div className="flex items-center gap-2">
             <FaRegClock className="h-[18px] w-[18px] text-[#757575]" />
             <span className="text-sm text-[#757575]">Timeline:</span>
-            <span className="font-medium text-[#2E2E2E]">{project.duration}</span>
+            <span className="font-medium text-[#2E2E2E]">
+              {formatProjectTimeline(project)}
+            </span>
           </div>
         )}
       </div>

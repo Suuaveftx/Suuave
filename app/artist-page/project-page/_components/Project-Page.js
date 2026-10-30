@@ -9,6 +9,7 @@ import {
   useToggleSaveProject,
 } from '@/app/projects/queries/projects.queries';
 import { getProjectApiErrorMessage } from '@/app/projects/api/projects';
+import { formatProjectTimeline } from '@/app/projects/utils/project-formatters';
 
 const FILTERS = [
   { value: 'recently', label: 'Recently' },
@@ -34,17 +35,29 @@ const getStatusClassName = (status) => {
 const ProjectPage = ({ search = '' }) => {
   const [filter, setFilter] = useState('recently');
   const [page, setPage] = useState(1);
-  const params = { page, limit: 10, filter, search: search.trim() || undefined };
+  const apiFilter = filter === 'saved' ? 'recently' : filter;
+  const params = {
+    page,
+    limit: filter === 'saved' ? 100 : 10,
+    filter: apiFilter,
+    search: search.trim() || undefined,
+  };
   const projectsQuery = useProjects(params);
   const saveMutation = useToggleSaveProject();
   const projects = projectsQuery.data?.projects ?? [];
   const visibleProjects =
-    filter === 'closed'
+    filter === 'saved'
+      ? projects.filter((project) => project.isSaved)
+      : filter === 'closed'
       ? projects.filter((project) => ['completed', 'cancelled'].includes(project.status))
       : filter === 'open'
         ? projects.filter((project) => project.status === 'open')
         : projects;
   const pagination = projectsQuery.data?.pagination;
+  const savedCount =
+    filter === 'saved'
+      ? visibleProjects.length
+      : projects.filter((project) => project.isSaved).length;
 
   useEffect(() => {
     setPage(1);
@@ -86,7 +99,8 @@ const ProjectPage = ({ search = '' }) => {
     <section className='w-full max-w-full overflow-x-hidden pb-6'>
       <div className='flex flex-wrap items-center justify-between gap-4 border-b mb-4'>
         <div className='flex gap-4' role='tablist' aria-label='Project filters'>
-          {FILTERS.map(({ value, label }) => (
+          {[...FILTERS, { value: 'saved', label: `Saved (${savedCount})` }].map(
+            ({ value, label }) => (
             <button
               key={value}
               type='button'
@@ -101,10 +115,15 @@ const ProjectPage = ({ search = '' }) => {
             >
               {label}
             </button>
-          ))}
+            )
+          )}
         </div>
         <span className='text-sm text-gray-500'>
-          {pagination ? `${pagination.totalProjects} projects` : ''}
+          {filter === 'saved'
+            ? `${visibleProjects.length} projects`
+            : pagination
+              ? `${pagination.totalProjects} projects`
+              : ''}
         </span>
       </div>
 
@@ -160,13 +179,31 @@ const ProjectPage = ({ search = '' }) => {
           {visibleProjects.map((project) => (
             <article
               key={project.projectId}
-              className='relative mt-2 rounded-2xl border border-[#EAEAEA] bg-white px-4 py-6 shadow-sm transition-shadow hover:shadow-md'
+              role='link'
+              tabIndex={0}
+              onClick={() =>
+                window.location.assign(
+                  `/artist-page/job-details-page?id=${encodeURIComponent(project.projectId)}`
+                )
+              }
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  window.location.assign(
+                    `/artist-page/job-details-page?id=${encodeURIComponent(project.projectId)}`
+                  );
+                }
+              }}
+              className='relative mt-2 flex min-h-[360px] cursor-pointer flex-col rounded-2xl border border-[#EAEAEA] bg-white px-4 py-6 shadow-sm transition-shadow hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3A98BB]'
             >
               <div className='absolute right-4 top-4 flex gap-3'>
                 <button
                   type='button'
                   aria-label={`Share ${project.title}`}
-                  onClick={() => shareProject(project.projectId, project.title)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    shareProject(project.projectId, project.title);
+                  }}
                   className='rounded-full p-2 text-gray-500 hover:bg-gray-100'
                 >
                   <FaShareAlt />
@@ -177,7 +214,10 @@ const ProjectPage = ({ search = '' }) => {
                     project.isSaved ? `Unsave ${project.title}` : `Save ${project.title}`
                   }
                   disabled={saveMutation.isPending}
-                  onClick={() => saveMutation.mutate(project.projectId)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    saveMutation.mutate(project.projectId);
+                  }}
                   className='rounded-full p-2 text-[#3A98BB] hover:bg-gray-100 disabled:opacity-50'
                 >
                   {project.isSaved ? <FaBookmark /> : <FaRegBookmark />}
@@ -204,7 +244,23 @@ const ProjectPage = ({ search = '' }) => {
               <p className='mt-3 text-sm text-[#727272] line-clamp-3'>
                 {project.description}
               </p>
-              <div className='mt-4 flex flex-wrap gap-2'>
+              {project.description?.length > 180 && (
+                <span className='mt-1 inline-block text-sm font-semibold text-[#035A7A]'>
+                  Read more
+                </span>
+              )}
+              {formatProjectTimeline(project) && (
+                <p className='mt-2 text-sm text-gray-500'>
+                  Timeline: {formatProjectTimeline(project)}
+                </p>
+              )}
+              <div className='mt-auto pt-4'>
+                {formatProjectTimeline(project) && (
+                  <p className='mb-3 text-sm text-gray-500'>
+                    Timeline: {formatProjectTimeline(project)}
+                  </p>
+                )}
+                <div className='flex min-h-[32px] flex-wrap gap-2'>
                 {(project.skillsRequired ?? []).map((skill) => (
                   <span
                     key={skill}
@@ -213,19 +269,20 @@ const ProjectPage = ({ search = '' }) => {
                     {skill}
                   </span>
                 ))}
-              </div>
-              <div className='mt-4 flex items-center justify-between gap-3'>
-                <p className='font-semibold text-gray-800'>
-                  Budget:{' '}
-                  {new Intl.NumberFormat(undefined, {
-                    style: 'currency',
-                    currency: project.currency,
-                    maximumFractionDigits: 0,
-                  }).format(project.budget)}
-                </p>
-                <p className='text-sm text-gray-500'>
-                  {project.proposalsCount ?? 0} proposals
-                </p>
+                </div>
+                <div className='mt-4 flex items-center justify-between gap-3'>
+                  <p className='font-semibold text-gray-800'>
+                    Budget:{' '}
+                    {new Intl.NumberFormat(undefined, {
+                      style: 'currency',
+                      currency: project.currency,
+                      maximumFractionDigits: 0,
+                    }).format(project.budget)}
+                  </p>
+                  <p className='text-sm text-gray-500'>
+                    {project.proposalsCount ?? 0} proposals
+                  </p>
+                </div>
               </div>
             </article>
           ))}

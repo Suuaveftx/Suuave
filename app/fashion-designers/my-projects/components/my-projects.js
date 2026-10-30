@@ -324,9 +324,16 @@ const MyProjects = () => {
                             </span>
                           </div>
                           {project.description && (
-                            <p className='line-clamp-2 text-sm text-[#767676]'>
-                              {project.description}
-                            </p>
+                            <>
+                              <p className='line-clamp-2 text-sm text-[#767676]'>
+                                {project.description}
+                              </p>
+                              {project.description.length > 140 && (
+                                <span className='text-sm font-semibold text-[#035A7A]'>
+                                  Read more
+                                </span>
+                              )}
+                            </>
                           )}
                           {!!project.skillsRequired?.length && (
                             <div className='flex flex-wrap gap-2'>
@@ -431,9 +438,16 @@ const MyProjects = () => {
                             </span>
                           </div>
                           {project.description && (
-                            <p className='line-clamp-2 text-sm text-[#767676]'>
-                              {project.description}
-                            </p>
+                            <>
+                              <p className='line-clamp-2 text-sm text-[#767676]'>
+                                {project.description}
+                              </p>
+                              {project.description.length > 140 && (
+                                <span className='text-sm font-semibold text-[#035A7A]'>
+                                  Read more
+                                </span>
+                              )}
+                            </>
                           )}
                           {!!project.skillsRequired?.length && (
                             <div className='flex flex-wrap gap-2'>

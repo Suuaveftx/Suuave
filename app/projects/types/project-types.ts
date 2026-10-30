@@ -32,7 +32,14 @@ export type ProjectApiModel = {
   budget: number;
   currency: ProjectCurrency;
   duration?: string;
+  durationType?: ProjectDurationType;
+  duration_type?: ProjectDurationType;
+  projectTimeframe?: number;
+  project_timeframe?: number;
+  timeframe?: number;
   skillsRequired?: string[];
+  designStyle?: string[];
+  referenceImages?: string[];
   postedAt?: string;
   status: ProjectStatus;
   user?: ProjectUser;

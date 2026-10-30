@@ -9,10 +9,16 @@ import DeleteConfirmationModal from '../../fashion-designers/my-projects/compone
 import JobDetailsPage from './_components/JobDetailsPage';
 import Budgets from './_components/Budgets';
 import SkillRequirement from './_components/SkillRequirement';
-import { useProject, useToggleSaveProject } from '@/app/projects/queries/projects.queries';
+import DesignStyle from './_components/DesignStyle';
+import ReferenceImage from './_components/ReferenceImage';
+import {
+  useProject,
+  useToggleSaveProject,
+} from '@/app/projects/queries/projects.queries';
 import { getProjectApiErrorMessage } from '@/app/projects/api/projects';
 import { useAppStore } from '@/store';
 import { useProjectProposalState } from '@/app/projects/selectors/project-selectors';
+import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 
 const JobDetailsPageContent = () => {
   const router = useRouter();
@@ -41,7 +47,8 @@ const JobDetailsPageContent = () => {
   };
 
   const handleSubmitProposal = () => {
-    if (projectId) router.push(`/artist-page/send-proposal?id=${encodeURIComponent(projectId)}`);
+    if (projectId)
+      router.push(`/artist-page/send-proposal?id=${encodeURIComponent(projectId)}`);
   };
 
   const confirmWithdrawProposal = () => {
@@ -58,11 +65,11 @@ const JobDetailsPageContent = () => {
 
   if (projectQuery.isPending && projectId) {
     return (
-      <PageContainer className="pb-20 pt-6">
-        <div className="animate-pulse space-y-4" aria-label="Loading project details">
-          <div className="h-8 w-64 rounded bg-gray-200" />
-          <div className="h-48 rounded-2xl bg-gray-200" />
-          <div className="h-28 rounded-2xl bg-gray-200" />
+      <PageContainer className='pb-20 pt-6'>
+        <div className='animate-pulse space-y-4' aria-label='Loading project details'>
+          <div className='h-8 w-64 rounded bg-gray-200' />
+          <div className='h-48 rounded-2xl bg-gray-200' />
+          <div className='h-28 rounded-2xl bg-gray-200' />
         </div>
       </PageContainer>
     );
@@ -78,26 +85,26 @@ const JobDetailsPageContent = () => {
           : 'We could not load this project';
 
     return (
-      <PageContainer className="pb-20 pt-6">
-        <div className="rounded-2xl border border-[#EAEAEA] bg-white px-6 py-12 text-center">
-          <h1 className="text-xl font-bold text-[#222222]">{heading}</h1>
+      <PageContainer className='pb-20 pt-6'>
+        <div className='rounded-2xl border border-[#EAEAEA] bg-white px-6 py-12 text-center'>
+          <h1 className='text-xl font-bold text-[#222222]'>{heading}</h1>
           {projectQuery.error && (
-            <p className="mt-2 text-sm text-gray-600">
+            <p className='mt-2 text-sm text-gray-600'>
               {getProjectApiErrorMessage(projectQuery.error)}
             </p>
           )}
           {!isNotFound && !isPermissionDenied && (
             <button
-              type="button"
+              type='button'
               onClick={() => projectQuery.refetch()}
-              className="mt-5 rounded-full bg-[#035A7A] px-5 py-2 text-sm font-semibold text-white"
+              className='mt-5 rounded-full bg-[#035A7A] px-5 py-2 text-sm font-semibold text-white'
             >
               Try again
             </button>
           )}
           <Link
-            href="/artist-page/project-page"
-            className="mt-5 inline-block text-sm font-semibold text-[#035A7A] underline"
+            href='/artist-page/project-page'
+            className='mt-5 inline-block text-sm font-semibold text-[#035A7A] underline'
           >
             Back to projects
           </Link>
@@ -107,57 +114,68 @@ const JobDetailsPageContent = () => {
   }
 
   return (
-    <div className="lg:bg-transparent">
-      <PageContainer className="pb-28 pt-5 lg:pb-20 lg:pt-7">
-        <h1 className="mb-5 border-b-2 pb-3 text-2xl font-bold text-[#222222]">
+    <div className='lg:bg-transparent'>
+      <PageContainer className='pb-28 pt-5 lg:pb-20 lg:pt-7'>
+        <h1 className='mb-5 border-b-2 pb-3 text-2xl font-bold text-[#222222]'>
           Project Details
         </h1>
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-10 lg:gap-8">
-          <div className="space-y-4 lg:col-span-7">
+        <div className='grid grid-cols-1 gap-6 lg:grid-cols-10 lg:gap-8'>
+          <div className='space-y-4 lg:col-span-7'>
             <JobDetailsPage project={project} />
-            <Budgets project={project} />
+            <ReferenceImage project={project} />
+            <DesignStyle project={project} />
             <SkillRequirement project={project} />
-            <section className="rounded-[18px] border border-[#ECECEC] bg-white p-5 lg:rounded-2xl lg:border-[#EAEAEA] lg:bg-[#FAFAFA] lg:p-6">
-              <h2 className="font-bold text-[#222222]">About the client</h2>
+            <Budgets project={project} />
+
+            <section className='rounded-[18px] border border-[#ECECEC] bg-white p-5 lg:rounded-2xl lg:border-[#EAEAEA] lg:bg-[#FAFAFA] lg:p-6'>
+              <h2 className='font-bold text-[#222222]'>About the client</h2>
               {project.user?.name && (
-                <p className="mt-2 text-sm text-[#444444]">{project.user.name}</p>
+                <p className='mt-2 text-sm text-[#444444]'>{project.user.name}</p>
               )}
               {project.user?.verified && (
-                <p className="mt-1 text-sm text-green-700">Verified client</p>
+                <p className='mt-1 text-sm text-green-700'>Verified client</p>
               )}
             </section>
           </div>
 
-          <aside className="hidden flex-col gap-3 lg:col-span-3 lg:flex">
+          <aside className='hidden flex-col gap-3 lg:col-span-3 lg:flex'>
             <button
-              type="button"
+              type='button'
               disabled={saveMutation.isPending}
               onClick={handleSaveProject}
-              className="rounded-full border-2 border-[#035A7A] px-5 py-3 font-semibold text-[#035A7A] disabled:opacity-50"
+              className='rounded-full border-2 border-[#035A7A] px-5 py-3 font-semibold text-[#035A7A] disabled:opacity-50'
             >
-              {saveMutation.isPending ? 'Saving…' : project.isSaved ? 'Unsave project' : 'Save project'}
+              {project.isSaved ? (
+                <span className='flex items-center justify-center gap-2'>
+                  <IoBookmark className='h-5 w-5' /> Saved
+                </span>
+              ) : (
+                <span className='flex items-center justify-center gap-2'>
+                  <IoBookmarkOutline className='h-5 w-5' /> Save project
+                </span>
+              )}
             </button>
             {proposalSubmitted ? (
               <>
                 <button
-                  type="button"
+                  type='button'
                   onClick={onWithdrawModalOpen}
-                  className="rounded-full border-2 border-[#146C94] px-5 py-3 font-semibold text-[#146C94]"
+                  className='rounded-full border-2 border-[#146C94] px-5 py-3 font-semibold text-[#146C94]'
                 >
                   Withdraw proposal
                 </button>
                 <Link
-                  href="/artist-page/proposal-active"
-                  className="rounded-full bg-[#EAF9FF] px-5 py-3 text-center font-semibold text-[#035A7A]"
+                  href='/artist-page/proposal-active'
+                  className='rounded-full bg-[#EAF9FF] px-5 py-3 text-center font-semibold text-[#035A7A]'
                 >
                   View proposal
                 </Link>
               </>
             ) : (
               <button
-                type="button"
+                type='button'
                 onClick={handleSubmitProposal}
-                className="rounded-full bg-[#EAF9FF] px-5 py-3 font-semibold text-[#035A7A]"
+                className='rounded-full bg-[#EAF9FF] px-5 py-3 font-semibold text-[#035A7A]'
               >
                 Send proposal
               </button>
@@ -165,7 +183,7 @@ const JobDetailsPageContent = () => {
           </aside>
         </div>
         {saveMutation.isError && (
-          <p role="alert" className="mt-4 text-sm text-red-600">
+          <p role='alert' className='mt-4 text-sm text-red-600'>
             {getProjectApiErrorMessage(saveMutation.error)}
           </p>
         )}
@@ -173,25 +191,25 @@ const JobDetailsPageContent = () => {
           isOpen={isWithdrawModalOpen}
           onOpenChange={onWithdrawModalOpenChange}
           onConfirm={confirmWithdrawProposal}
-          title="Withdraw proposal?"
-          message="Are you sure you want to withdraw your proposal? This action cannot be undone."
-          confirmButtonText="Yes"
+          title='Withdraw proposal?'
+          message='Are you sure you want to withdraw your proposal? This action cannot be undone.'
+          confirmButtonText='Yes'
         />
       </PageContainer>
 
-      <div className="fixed bottom-0 left-0 z-50 flex w-full items-center gap-3 border-t border-[#ECECEC] bg-white px-4 py-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] lg:hidden">
+      <div className='fixed bottom-0 left-0 z-50 flex w-full items-center gap-3 border-t border-[#ECECEC] bg-white px-4 py-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] lg:hidden'>
         {proposalSubmitted ? (
           <>
             <button
-              type="button"
+              type='button'
               onClick={onWithdrawModalOpen}
-              className="h-[52px] flex-1 rounded-full border-2 border-[#146C94] font-bold text-[#146C94]"
+              className='h-[52px] flex-1 rounded-full border-2 border-[#146C94] font-bold text-[#146C94]'
             >
               Withdraw proposal
             </button>
             <Link
-              href="/artist-page/proposal-active"
-              className="flex h-[52px] flex-1 items-center justify-center rounded-full bg-[#EAF9FF] font-bold text-[#035A7A]"
+              href='/artist-page/proposal-active'
+              className='flex h-[52px] flex-1 items-center justify-center rounded-full bg-[#EAF9FF] font-bold text-[#035A7A]'
             >
               View proposal
             </Link>
@@ -199,17 +217,25 @@ const JobDetailsPageContent = () => {
         ) : (
           <>
             <button
-              type="button"
+              type='button'
               disabled={saveMutation.isPending}
               onClick={handleSaveProject}
-              className="h-[52px] flex-1 rounded-full border-2 border-[#035A7A] font-bold text-[#035A7A] disabled:opacity-50"
+              className='h-[52px] flex-1 rounded-full border-2 border-[#035A7A] font-bold text-[#035A7A] disabled:opacity-50'
             >
-              {project.isSaved ? 'Saved' : 'Save project'}
+              {project.isSaved ? (
+                <span className='flex items-center justify-center gap-2'>
+                  <IoBookmark className='h-5 w-5' /> Saved
+                </span>
+              ) : (
+                <span className='flex items-center justify-center gap-2'>
+                  <IoBookmarkOutline className='h-5 w-5' /> Save project
+                </span>
+              )}
             </button>
             <button
-              type="button"
+              type='button'
               onClick={handleSubmitProposal}
-              className="h-[52px] flex-1 rounded-full bg-[#EAF9FF] font-bold text-[#035A7A]"
+              className='h-[52px] flex-1 rounded-full bg-[#EAF9FF] font-bold text-[#035A7A]'
             >
               Send proposal
             </button>
@@ -221,7 +247,7 @@ const JobDetailsPageContent = () => {
 };
 
 const Page = () => (
-  <Suspense fallback={<div className="p-8">Loading project…</div>}>
+  <Suspense fallback={<div className='p-8'>Loading project…</div>}>
     <JobDetailsPageContent />
   </Suspense>
 );

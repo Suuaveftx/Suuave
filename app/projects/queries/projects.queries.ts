@@ -143,18 +143,56 @@ export function useToggleSaveProject() {
       const previousDetail = queryClient.getQueryData<Project>(
         projectQueryKeys.detail(projectId)
       );
+      const currentSavedState =
+        previousDetail?.isSaved ??
+        previousLists
+          .map(([, data]) => (data as ProjectListResult | undefined)?.projects)
+          .flat()
+          .find((project) => project?.projectId === projectId)?.isSaved ??
+        false;
 
       previousLists.forEach(([queryKey, data]) => {
         const projectList = data as ProjectListResult | undefined;
         if (!projectList?.projects) return;
+        const queryParams = queryKey[2];
+        const isSavedList =
+          typeof queryParams === 'object' &&
+          queryParams !== null &&
+          'filter' in queryParams &&
+          queryParams.filter === 'saved';
+        const currentProject = projectList.projects.find(
+          (project) => project.projectId === projectId
+        );
+        const nextIsSaved = !currentSavedState;
+
+        const nextProjects =
+          isSavedList && currentProject && !nextIsSaved
+            ? projectList.projects.filter((project) => project.projectId !== projectId)
+            : projectList.projects.map((project) =>
+                project.projectId === projectId
+                  ? { ...project, isSaved: nextIsSaved }
+                  : project
+              );
+        const nextTotalProjects =
+          isSavedList && !currentProject && nextIsSaved
+            ? projectList.pagination.totalProjects + 1
+            : isSavedList && currentProject && !nextIsSaved
+              ? Math.max(0, projectList.pagination.totalProjects - 1)
+              : projectList.pagination.totalProjects;
 
         queryClient.setQueryData<ProjectListResult>(queryKey, {
           ...projectList,
-          projects: projectList.projects.map((project) =>
-            project.projectId === projectId
-              ? { ...project, isSaved: !project.isSaved }
-              : project
-          ),
+          projects: nextProjects,
+          pagination: isSavedList && nextTotalProjects !== projectList.pagination.totalProjects
+            ? {
+                ...projectList.pagination,
+                totalProjects: nextTotalProjects,
+                totalPages: Math.max(
+                  1,
+                  Math.ceil(nextTotalProjects / projectList.pagination.limit)
+                ),
+              }
+            : projectList.pagination,
         });
       });
 
@@ -176,11 +214,71 @@ export function useToggleSaveProject() {
         context?.previousDetail
       );
     },
+    onSuccess: (savedProject, projectId) => {
+      const currentLists = queryClient.getQueriesData<ProjectListResult>({
+        queryKey: projectQueryKeys.lists(),
+      });
+      currentLists.forEach(([queryKey, data]) => {
+        if (!data) return;
+        const queryParams = queryKey[2];
+        const isSavedList =
+          typeof queryParams === 'object' &&
+          queryParams !== null &&
+          'filter' in queryParams &&
+          queryParams.filter === 'saved';
+        const containsProject = data.projects.some(
+          (project) => project.projectId === projectId
+        );
+        if (isSavedList && !savedProject.isSaved && containsProject) {
+          const projects = data.projects.filter(
+            (project) => project.projectId !== projectId
+          );
+          queryClient.setQueryData<ProjectListResult>(queryKey, {
+            ...data,
+            projects,
+            pagination: {
+              ...data.pagination,
+              totalProjects: Math.max(0, data.pagination.totalProjects - 1),
+              totalPages: Math.max(
+                1,
+                Math.ceil(
+                  Math.max(0, data.pagination.totalProjects - 1) /
+                    data.pagination.limit
+                )
+              ),
+            },
+          });
+          return;
+        }
+        queryClient.setQueryData<ProjectListResult>(queryKey, {
+          ...data,
+          projects: data.projects.map((project) =>
+            project.projectId === projectId
+              ? { ...project, isSaved: savedProject.isSaved }
+              : project
+          ),
+        });
+      });
+      queryClient.setQueryData<Project>(
+        projectQueryKeys.detail(projectId),
+        (data) =>
+          data
+            ? {
+                ...data,
+                isSaved: savedProject.isSaved,
+              }
+            : data
+      );
+    },
     onSettled: (_data, _error, projectId) =>
       Promise.all([
-        queryClient.invalidateQueries({ queryKey: projectQueryKeys.lists() }),
+        queryClient.invalidateQueries({
+          queryKey: projectQueryKeys.lists(),
+          refetchType: 'none',
+        }),
         queryClient.invalidateQueries({
           queryKey: projectQueryKeys.detail(projectId),
+          refetchType: 'none',
         }),
       ]),
   });
