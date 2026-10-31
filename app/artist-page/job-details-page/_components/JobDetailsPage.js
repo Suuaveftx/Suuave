@@ -30,27 +30,6 @@ const getStatusClassName = (status) => {
 
 const JobDetailsPage = ({ project }) => {
   const [shareMessage, setShareMessage] = useState('');
-  const references = [
-    ...(Array.isArray(project.referenceImages) ? project.referenceImages : []).map((url) => ({
-      url,
-      name: 'Project reference',
-      contentType: 'image',
-    })),
-    ...(Array.isArray(project.referenceFiles) ? project.referenceFiles : []).map((file) => ({
-      url: typeof file === 'string' ? file : file.storage_url || file.url,
-      name:
-        typeof file === 'string'
-          ? 'Project reference'
-          : file.original_filename || file.filename || 'Project reference',
-      contentType: typeof file === 'string' ? 'image' : file.content_type || '',
-    })),
-    ...(Array.isArray(project.files) ? project.files : []).map((file) => ({
-      url: file.storage_url || file.url,
-      name: file.original_filename || file.filename || 'Project reference',
-      contentType: file.content_type || '',
-    })),
-  ].filter((reference) => reference.url);
-
   const handleShare = async () => {
     try {
       if (navigator.share) {
@@ -124,48 +103,6 @@ const JobDetailsPage = ({ project }) => {
           {project.description || 'No project brief was provided.'}
         </p>
       </section>
-
-      {/* Reference materials */}
-      {references.length > 0 && (
-        <section className='mt-6'>
-          <h2 className='text-base font-semibold text-[#222222]'>Reference materials</h2>
-
-          <div className='mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3'>
-            {references.map((reference) => {
-              const isImage =
-                reference.contentType.startsWith('image/') ||
-                reference.contentType === 'image' ||
-                /\.(avif|gif|jpe?g|png|webp)$/i.test(reference.url);
-
-              return isImage ? (
-                <a
-                  key={reference.url}
-                  href={reference.url}
-                  target='_blank'
-                  rel='noreferrer'
-                  className='overflow-hidden rounded-lg border border-[#EAEAEA]'
-                >
-                  <img
-                    src={reference.url}
-                    alt={reference.name}
-                    className='aspect-square w-full object-cover'
-                  />
-                </a>
-              ) : (
-                <a
-                  key={reference.url}
-                  href={reference.url}
-                  target='_blank'
-                  rel='noreferrer'
-                  className='rounded-lg border border-[#EAEAEA] p-3 text-sm text-[#035A7A] underline'
-                >
-                  {reference.name}
-                </a>
-              );
-            })}
-          </div>
-        </section>
-      )}
     </article>
   );
 };

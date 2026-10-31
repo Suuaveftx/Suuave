@@ -34,6 +34,39 @@ export function useProjects(params: ProjectListParams = {}) {
   });
 }
 
+const MAX_PAGE_SIZE = 50; // backend rejects limit > 50
+const MAX_PAGES = 20; // safety cap
+
+/**
+ * Loads EVERY page of a project list (50 per request) and returns them as one list.
+ * Stored under the lists() key prefix with { projects, pagination } shape, so
+ * useToggleSaveProject keeps its isSaved values in sync automatically.
+ */
+export function useAllProjects(params: Omit<ProjectListParams, 'page' | 'limit'> = {}) {
+  return useQuery({
+    queryKey: [...projectQueryKeys.lists(), { ...params, limit: MAX_PAGE_SIZE, scope: 'all' }],
+    queryFn: async (): Promise<ProjectListResult> => {
+      const first = await listProjects({ ...params, page: 1, limit: MAX_PAGE_SIZE });
+      const lastPage = Math.min(first.pagination.totalPages, MAX_PAGES);
+      const rest = await Promise.all(
+        Array.from({ length: Math.max(0, lastPage - 1) }, (_, i) =>
+          listProjects({ ...params, page: i + 2, limit: MAX_PAGE_SIZE })
+        )
+      );
+      const projects = [first, ...rest].flatMap((result) => result.projects);
+      return {
+        projects,
+        pagination: {
+          ...first.pagination,
+          currentPage: 1,
+          limit: Math.max(1, projects.length),
+          totalPages: 1,
+        },
+      };
+    },
+  });
+}
+
 export function useProject(projectId: ProjectId | null | undefined) {
   return useQuery({
     queryKey: projectId

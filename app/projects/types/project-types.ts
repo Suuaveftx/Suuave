@@ -15,7 +15,7 @@ export type ProjectStatus = 'open' | 'in_progress' | 'completed' | 'cancelled';
 
 export type ProjectCurrency = 'USD' | 'EUR' | 'GBP' | 'NGN';
 
-export type ProjectFilter = 'recently' | 'open' | 'closed';
+export type ProjectFilter = 'recently' | 'open' | 'closed' | 'saved';
 export type ProjectDurationType = 'days' | 'weeks' | 'months' | 'years';
 
 export type ProjectUser = {
@@ -61,6 +61,7 @@ export type ProjectPagination = {
   limit: number;
   totalProjects: number;
   totalPages: number;
+  savedCount?: number;
 };
 
 export type ProjectApiResponse<T> = {

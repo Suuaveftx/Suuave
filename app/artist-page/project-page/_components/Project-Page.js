@@ -1,10 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { FaBookmark, FaRegBookmark, FaShareAlt } from 'react-icons/fa';
 import { FiPlus } from 'react-icons/fi';
 import {
+  useAllProjects,
   useProjects,
   useToggleSaveProject,
 } from '@/app/projects/queries/projects.queries';
@@ -32,32 +34,64 @@ const getStatusClassName = (status) => {
   }
 };
 
+const PAGE_SIZE = 10;
+
 const ProjectPage = ({ search = '' }) => {
+  const router = useRouter();
   const [filter, setFilter] = useState('recently');
   const [page, setPage] = useState(1);
-  const apiFilter = filter === 'saved' ? 'recently' : filter;
-  const params = {
+  const isSavedTab = filter === 'saved';
+
+  // Paged list for the Recently / Open / Closed tabs (limit must be <= 50)
+  const projectsQuery = useProjects({
     page,
-    limit: filter === 'saved' ? 100 : 10,
-    filter: apiFilter,
+    limit: PAGE_SIZE,
+    filter: isSavedTab ? 'recently' : filter,
     search: search.trim() || undefined,
-  };
-  const projectsQuery = useProjects(params);
+  });
+  // Every project (all pages) -> used for the Saved tab and the Saved (n) count
+  const allProjectsQuery = useAllProjects({ filter: 'recently' });
   const saveMutation = useToggleSaveProject();
+
+  const savedProjects = (allProjectsQuery.data?.projects ?? []).filter(
+    (project) => project.isSaved
+  );
+  const savedCount = savedProjects.length;
+
+  const searchTerm = search.trim().toLowerCase();
+  const savedVisible = searchTerm
+    ? savedProjects.filter((project) =>
+        `${project.title} ${project.description ?? ''}`.toLowerCase().includes(searchTerm)
+      )
+    : savedProjects;
+
+  // Saved tab: paginate the saved list in the browser, 10 per page
+  const savedTotalPages = Math.max(1, Math.ceil(savedVisible.length / PAGE_SIZE));
+  const savedPage = Math.min(page, savedTotalPages);
+  const savedPageItems = savedVisible.slice(
+    (savedPage - 1) * PAGE_SIZE,
+    savedPage * PAGE_SIZE
+  );
+
   const projects = projectsQuery.data?.projects ?? [];
-  const visibleProjects =
-    filter === 'saved'
-      ? projects.filter((project) => project.isSaved)
-      : filter === 'closed'
+  const visibleProjects = isSavedTab
+    ? savedPageItems
+    : filter === 'closed'
       ? projects.filter((project) => ['completed', 'cancelled'].includes(project.status))
       : filter === 'open'
         ? projects.filter((project) => project.status === 'open')
         : projects;
-  const pagination = projectsQuery.data?.pagination;
-  const savedCount =
-    filter === 'saved'
-      ? visibleProjects.length
-      : projects.filter((project) => project.isSaved).length;
+  const pagination = isSavedTab
+    ? {
+        currentPage: savedPage,
+        totalPages: savedTotalPages,
+        totalProjects: savedVisible.length,
+      }
+    : projectsQuery.data?.pagination;
+  const isPageLoading = !isSavedTab && projectsQuery.isFetching;
+
+  // The query that drives loading / error UI for the active tab
+  const activeQuery = isSavedTab ? allProjectsQuery : projectsQuery;
 
   useEffect(() => {
     setPage(1);
@@ -69,7 +103,7 @@ const ProjectPage = ({ search = '' }) => {
   };
 
   const changePage = (nextPage) => {
-    if (projectsQuery.isFetching) return;
+    if (isPageLoading) return;
     setPage(Math.min(Math.max(1, nextPage), pagination?.totalPages ?? nextPage));
   };
 
@@ -83,7 +117,7 @@ const ProjectPage = ({ search = '' }) => {
     await navigator.clipboard.writeText(url);
   };
 
-  const queryError = projectsQuery.error;
+  const queryError = activeQuery.error;
   const statusCode = queryError?.response?.status;
   const isPermissionDenied = statusCode === 401 || statusCode === 403;
   const isUnavailable = statusCode >= 500;
@@ -99,8 +133,13 @@ const ProjectPage = ({ search = '' }) => {
     <section className='w-full max-w-full overflow-x-hidden pb-6'>
       <div className='flex flex-wrap items-center justify-between gap-4 border-b mb-4'>
         <div className='flex gap-4' role='tablist' aria-label='Project filters'>
-          {[...FILTERS, { value: 'saved', label: `Saved (${savedCount})` }].map(
-            ({ value, label }) => (
+          {[
+            ...FILTERS,
+            {
+              value: 'saved',
+              label: allProjectsQuery.isSuccess ? `Saved (${savedCount})` : 'Saved',
+            },
+          ].map(({ value, label }) => (
             <button
               key={value}
               type='button'
@@ -115,19 +154,14 @@ const ProjectPage = ({ search = '' }) => {
             >
               {label}
             </button>
-            )
-          )}
+          ))}
         </div>
         <span className='text-sm text-gray-500'>
-          {filter === 'saved'
-            ? `${visibleProjects.length} projects`
-            : pagination
-              ? `${pagination.totalProjects} projects`
-              : ''}
+          {pagination ? `${pagination.totalProjects} projects` : ''}
         </span>
       </div>
 
-      {projectsQuery.isPending ? (
+      {activeQuery.isPending ? (
         <div
           className='grid grid-cols-1 lg:grid-cols-2 gap-4'
           aria-label='Loading projects'
@@ -145,7 +179,7 @@ const ProjectPage = ({ search = '' }) => {
             </div>
           ))}
         </div>
-      ) : projectsQuery.isError ? (
+      ) : activeQuery.isError ? (
         <div className='rounded-2xl border border-red-200 bg-red-50 px-6 py-10 text-center'>
           <h2 className='font-semibold text-[#222222]'>
             {isPermissionDenied
@@ -160,7 +194,7 @@ const ProjectPage = ({ search = '' }) => {
           {!isPermissionDenied && (
             <button
               type='button'
-              onClick={() => projectsQuery.refetch()}
+              onClick={() => activeQuery.refetch()}
               className='mt-4 rounded-full bg-[#035A7A] px-5 py-2 text-sm font-semibold text-white'
             >
               Try again
@@ -182,14 +216,14 @@ const ProjectPage = ({ search = '' }) => {
               role='link'
               tabIndex={0}
               onClick={() =>
-                window.location.assign(
+                router.push(
                   `/artist-page/job-details-page?id=${encodeURIComponent(project.projectId)}`
                 )
               }
               onKeyDown={(event) => {
                 if (event.key === 'Enter' || event.key === ' ') {
                   event.preventDefault();
-                  window.location.assign(
+                  router.push(
                     `/artist-page/job-details-page?id=${encodeURIComponent(project.projectId)}`
                   );
                 }
@@ -249,26 +283,22 @@ const ProjectPage = ({ search = '' }) => {
                   Read more
                 </span>
               )}
-              {formatProjectTimeline(project) && (
-                <p className='mt-2 text-sm text-gray-500'>
-                  Timeline: {formatProjectTimeline(project)}
-                </p>
-              )}
+
               <div className='mt-auto pt-4'>
                 {formatProjectTimeline(project) && (
                   <p className='mb-3 text-sm text-gray-500'>
-                    Timeline: {formatProjectTimeline(project)}
+                    Timeframe - {formatProjectTimeline(project)}
                   </p>
                 )}
                 <div className='flex min-h-[32px] flex-wrap gap-2'>
-                {(project.skillsRequired ?? []).map((skill) => (
-                  <span
-                    key={skill}
-                    className='rounded-full bg-[#F0F0F0] px-3 py-1 text-sm text-[#767676]'
-                  >
-                    {skill}
-                  </span>
-                ))}
+                  {(project.skillsRequired ?? []).map((skill) => (
+                    <span
+                      key={skill}
+                      className='rounded-full bg-[#F0F0F0] px-3 py-1 text-sm text-[#767676]'
+                    >
+                      {skill}
+                    </span>
+                  ))}
                 </div>
                 <div className='mt-4 flex items-center justify-between gap-3'>
                   <p className='font-semibold text-gray-800'>
@@ -296,8 +326,8 @@ const ProjectPage = ({ search = '' }) => {
         >
           <button
             type='button'
-            disabled={page <= 1 || projectsQuery.isFetching}
-            onClick={() => changePage(page - 1)}
+            disabled={pagination.currentPage <= 1 || isPageLoading}
+            onClick={() => changePage(pagination.currentPage - 1)}
             className='rounded border px-4 py-2 text-sm disabled:opacity-40'
           >
             Previous
@@ -307,8 +337,8 @@ const ProjectPage = ({ search = '' }) => {
           </span>
           <button
             type='button'
-            disabled={page >= pagination.totalPages || projectsQuery.isFetching}
-            onClick={() => changePage(page + 1)}
+            disabled={pagination.currentPage >= pagination.totalPages || isPageLoading}
+            onClick={() => changePage(pagination.currentPage + 1)}
             className='rounded border px-4 py-2 text-sm disabled:opacity-40'
           >
             Next
