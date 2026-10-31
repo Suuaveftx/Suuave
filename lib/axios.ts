@@ -1,19 +1,17 @@
 import axios from 'axios';
 
-const apiBaseURL =
-  process.env.NEXT_PUBLIC_APP_PRODUCTION_URL || process.env.NEXT_PUBLIC_APP_STAGING_URL;
-
 export const apiClient = axios.create({
-  baseURL: apiBaseURL,
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
+    Accept: 'application/json',
   },
 });
 
 apiClient.interceptors.request.use(
   (config) => {
-    if (!config.baseURL && !apiBaseURL) {
+    if (!config.baseURL) {
       return Promise.reject(
         new Error(
           'API base URL is not configured. Set NEXT_PUBLIC_API_URL or the environment-specific API URL.'
