@@ -1,5 +1,5 @@
 'use client';
-import React, { use } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import SearchBar from '../../../components/Searchbar';
 import ProjectPage from './_components/Project-Page';
@@ -10,6 +10,14 @@ import { useRouter } from 'next/navigation';
 import PageContainer from '../../../components/layout/PageContainer';
 
 const Page = () => {
+  const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => setDebouncedSearch(search), 300);
+    return () => clearTimeout(timeoutId);
+  }, [search]);
+
   // const router = useRouter();
   // const { data: session } = authClient.useSession(); // Note: Better Auth uses useSession() for hooks
   // const user = session?.user;
@@ -28,12 +36,16 @@ const Page = () => {
 
         <div className='flex justify-center w-full mt-6'>
           <div className='w-full'>
-            <SearchBar placeholder='Search Jobs' />
+            <SearchBar
+              placeholder='Search Projects'
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+            />
           </div>
         </div>
 
         <div className='mt-6 mb-20'>
-          <ProjectPage />
+          <ProjectPage search={debouncedSearch} />
         </div>
       </PageContainer>
     </>

@@ -1,45 +1,27 @@
-'use client'
-import React from 'react'
-import CustomButton from '../../../../components/CustomButton'
+'use client';
 
-const SkillRequirement = () => {
-  return (
-    <>
-      {/* Mobile View */}
-      <div className='lg:hidden bg-white p-5 rounded-[18px] border border-[#ECECEC] shadow-[0_1px_8px_rgba(0,0,0,0.04)] mb-4'>
-        <h4 className='font-bold text-[15px] text-[#2E2E2E] mb-3'>Skills Requirement</h4>
-        <div className='flex flex-wrap gap-2'>
-          <div className='bg-[#F6F6F6] px-4 py-2 rounded-full text-[#757575] text-[13px] font-medium'>
-            3D Artist
-          </div>
-          <div className='bg-[#F6F6F6] px-4 py-2 rounded-full text-[#757575] text-[13px] font-medium'>
-            Concept Artist
-          </div>
-          <div className='bg-[#F6F6F6] px-4 py-2 rounded-full text-[#757575] text-[13px] font-medium'>
-            Storyboard
-          </div>
-        </div>
-      </div>
+import React from 'react';
 
-      {/* Desktop View (Preserved) */}
-      <div className='hidden lg:block w-full bg-[#FAFAFA] border border-[#EAEAEA] font-bold px-8 py-6 mt-4 lg:text-[22px] rounded-2xl'>
-        <div className='lg:mb-4 text-[#222222]'>
-          <h4 className='tracking-[0.33px]'>Skill Requirement</h4>
-        </div>
-        <div className='flex flex-wrap gap-[11px] mt-4 w-full max-w-[60%]'>
-          <div className='bg-[#F0F0F0] px-[10px] py-2 rounded-[32px] max-w-full lg:max-w-[40%] flex-1 min-w-[120px] flex justify-center items-center text-[#222222] text-sm font-normal opacity-50 pointer-events-none cursor-not-allowed'>
-            3D Artist
-          </div>
-          <div className='bg-[#F0F0F0] px-[10px] py-2 rounded-[32px] max-w-full lg:max-w-[40%] flex-1 min-w-[120px] flex justify-center items-center text-[#222222] text-sm font-normal opacity-50 pointer-events-none cursor-not-allowed'>
-            Concept Artist
-          </div>
-          <div className='bg-[#F0F0F0] px-[10px] py-2 rounded-[32px] max-w-full flex-1 min-w-[120px] flex justify-center items-center text-[#222222] text-sm font-normal opacity-50 pointer-events-none cursor-not-allowed'>
-            Storyboard
-          </div>
-        </div>
-      </div>
-    </>
-  )
-}
+const SkillRequirement = ({ project }) => (
+  <section className="mb-4 rounded-[18px] border border-[#ECECEC] bg-white p-5 shadow-[0_1px_8px_rgba(0,0,0,0.04)] lg:mt-4 lg:rounded-2xl lg:border-[#EAEAEA] lg:bg-[#FAFAFA] lg:px-8 lg:py-6 lg:shadow-none">
+    <h2 className="mb-3 text-[15px] font-bold text-[#2E2E2E] lg:text-[22px]">
+      Required skills
+    </h2>
+    {project.skillsRequired?.length ? (
+      <ul className="flex flex-wrap gap-2">
+        {project.skillsRequired.map((skill) => (
+          <li
+            key={skill}
+            className="rounded-full bg-[#F0F0F0] px-3 py-2 text-sm text-[#444444]"
+          >
+            {skill}
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p className="text-sm text-[#767676]">No required skills were listed.</p>
+    )}
+  </section>
+);
 
 export default SkillRequirement;
