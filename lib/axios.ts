@@ -1,0 +1,47 @@
+import axios from 'axios';
+
+export const apiClient = axios.create({
+  baseURL: '/api/backend',
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  },
+});
+
+apiClient.interceptors.request.use(
+  (config) => {
+    if (!config.baseURL) {
+      return Promise.reject(
+        new Error(
+          'API base URL is not configured. Set NEXT_PUBLIC_API_URL or the environment-specific API URL.'
+        )
+      );
+    }
+
+    config.headers.set('Accept', 'application/json');
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+apiClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error: unknown) => {
+    const originalRequest = axios.isAxiosError(error) ? error.config : undefined;
+    if (
+      originalRequest &&
+      axios.isAxiosError(error) &&
+      error.response?.status === 401 &&
+      typeof window !== 'undefined' &&
+      window.location.pathname !== '/auth/login-options'
+    ) {
+      window.location.href = '/auth/login-options';
+    }
+    return Promise.reject(error);
+  }
+);
