@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Force HeroUI modals above sticky/fixed navbars */
+[data-overlay-container="true"] {
+  z-index: 9999 !important;
+}
+
 /* Hide scrollbar utility */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

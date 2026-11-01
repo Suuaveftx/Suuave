@@ -3,7 +3,7 @@
 import React from "react";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   ExclamationTriangleIcon,
   HandThumbUpIcon,
@@ -36,6 +36,7 @@ import { IoFlagSharp } from "react-icons/io5";
 import Link from "next/link";
 import SubmitModal from "../../../../components/SubmitModal";
 import PageContainer from "../../../../components/layout/PageContainer";
+import { useAppStore } from '@/store';
 
 
 import { ongoingContracts } from "../data";
@@ -43,23 +44,29 @@ import { ongoingContracts } from "../data";
 export default function OngoingDetailsPage({ params }) {
   const unwrappedParams = React.use(params);
   const contractId = unwrappedParams?.id || "24t64755"; // fallback for demo
+  const router = useRouter();
 
   // Read extension data from URL if coming from checkout "View Contract"
   const searchParams = useSearchParams();
   const extendedNewDeadline = searchParams.get('newDeadline');
   const extendedInitialDeadline = searchParams.get('initialDeadline');
   const extendedAt = searchParams.get('extendedAt');
-  const isExtended = !!extendedNewDeadline;
+  const contractStatus = searchParams.get('status');
+  const isExtended = !!extendedNewDeadline || searchParams.get('isExtended') === 'true' || contractStatus === 'Deadline Extended';
+  const isWaitingApproval = contractStatus === 'Waiting Approval';
+  const isExtensionRequested = contractStatus === 'Extension Requested';
 
   const contractData = {
     jobTitle: "Modern Fashion Attire Illustration",
-    contractNumber: "24t64754",
+    contractNumber: contractId || "24t64754",
     contractType: "Hire",
     role: "Fashion Artist",
     budget: "₦200,000",
     timeframe: "Within A Month",
-    status: "Ongoing",
-    isSubmitted: true,
+    startDate: "18th June, 2024",
+    endDate: isExtended ? (extendedNewDeadline || "24th April, 2026") : "25th June, 2024",
+    status: contractStatus || "Ongoing",
+    isSubmitted: isWaitingApproval,
     isLate: false,
     daysLate: 0,
     isExpiringSoon: false,
@@ -79,21 +86,6 @@ export default function OngoingDetailsPage({ params }) {
     },
   };
 
-  // Function to get color based on status
-  const getStatusColor = (status) => {
-    switch (status.toLowerCase()) {
-      case "pending":
-        return "text-[#035A7A] bg-[#F2F9FB]";
-      case "ongoing":
-        return "text-[#2563EB] bg-[#E0F2FE]";
-      case "completed":
-        return "text-[#279711] bg-[#ECFDF5]";
-      case "waiting approval":
-        return "text-[#2563EB] bg-[#E0F2FE]";
-      default:
-        return "default";
-    }
-  };
 
   // approval modal implementation
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -124,6 +116,17 @@ export default function OngoingDetailsPage({ params }) {
 
   const [selectedReason, setSelectedReason] = useState("");
 
+  const { reportedDisputes, withdrawDispute } = useAppStore();
+  const isDisputed = reportedDisputes[contractId] || reportedDisputes[contractData.contractNumber];
+  const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onOpenChange: onWithdrawOpenChange } = useDisclosure();
+  const [showExtensionModal, setShowExtensionModal] = useState(false);
+  const [showRequestChangesModal, setShowRequestChangesModal] = useState(false);
+  const [changesMessage, setChangesMessage] = useState("");
+
+  // ===== Extension Request Modal =====
+  const [showViewExtensionModal, setShowViewExtensionModal] = useState(false);
+  const [showDeclinedExtensionModal, setShowDeclinedExtensionModal] = useState(false);
+
   // ===== Reject Flow =====
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showComplaintModal, setShowComplaintModal] = useState(false);
@@ -144,8 +147,8 @@ export default function OngoingDetailsPage({ params }) {
           <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 gap-0 -mx-4 lg:mx-0">
             {/* Left Column - Contract Details & Documents */}
             <div className="lg:col-span-2 space-y-[6px] lg:space-y-4">
-              {/* Banner Notification */}
-              {contractData.isSubmitted && (
+              {/* Banner Notification - Waiting Approval */}
+              {isWaitingApproval && (
                 <div className="flex items-center justify-between bg-[#FAFAFA] border border-[#3A98BB] rounded-[10px] px-4 py-3 md:mb-6 mb-4">
                   <div className="flex items-center gap-2 md:gap-3">
                     <ExclamationTriangleIcon className="w-5 h-5 text-[#3A98BB] flex-shrink-0" />
@@ -159,6 +162,22 @@ export default function OngoingDetailsPage({ params }) {
                 </div>
               )}
 
+              {/* Banner Notification - Extension Requested */}
+              {isExtensionRequested && (
+                <div className="flex items-center justify-between border border-[#F5A623] bg-[#FFFBF0] text-[#F5A623] px-4 py-3 rounded-[10px] mb-4">
+                  <div className="flex items-center gap-2">
+                    <ExclamationTriangleIcon className="w-5 h-5 flex-shrink-0" />
+                    <span className="font-medium text-[13px] md:text-sm">Artist has requested for a deadline extension</span>
+                  </div>
+                  <span
+                    className="font-semibold text-[13px] md:text-sm cursor-pointer hover:underline whitespace-nowrap pl-2"
+                    onClick={() => setShowViewExtensionModal(true)}
+                  >
+                    Click to View
+                  </span>
+                </div>
+              )}
+
               {/* Contract Details Card */}
               <Card className="bg-white border border-gray-200" shadow="none">
                 <CardBody className="p-4 lg:p-6 pb-8 lg:pb-12">
@@ -166,8 +185,16 @@ export default function OngoingDetailsPage({ params }) {
                   <div className="flex  items-start lg:items-center justify-between mb-4 lg:mb-6 lg:border-b lg:pb-2">
                     <h2 className="text-[20px] lg:text-2xl font-bold lg:font-semibold text-gray-900">Contract Details</h2>
                     <div className="flex flex-wrap items-center gap-1.5 justify-end">
-                      {contractData.isSubmitted ? (
-                        <span className="bg-[#E0F2FE] text-[#2563EB] px-3 py-1 rounded-full text-[11px] lg:text-xs font-medium whitespace-nowrap">Waiting Approval</span>
+                      {isWaitingApproval ? (
+                        <span className="bg-[#FEF3C7] text-[#B45309] px-3 py-1 rounded-full text-[11px] lg:text-xs font-semibold whitespace-nowrap">Waiting Approval</span>
+                      ) : isExtensionRequested ? (
+                        <span className="bg-[#F3E8FF] text-[#7C3AED] px-3 py-1 rounded-full text-[11px] lg:text-xs font-semibold whitespace-nowrap">Extension Requested</span>
+                      ) : contractStatus === 'Deadline Approved' ? (
+                        <span className="bg-[#DCFCE7] text-[#16A34A] px-3 py-1 rounded-full text-[11px] lg:text-xs font-semibold whitespace-nowrap">Deadline Approved</span>
+                      ) : isExtended ? (
+                        <span className="bg-[#E0F2FE] text-[#0284C7] px-3 py-1 rounded-full text-[11px] lg:text-xs font-semibold whitespace-nowrap">Deadline Extended</span>
+                      ) : contractStatus === 'Extension Rejected' ? (
+                        <span className="bg-[#FEE2E2] text-[#DC2626] px-3 py-1 rounded-full text-[11px] lg:text-xs font-semibold whitespace-nowrap">Extension Rejected</span>
                       ) : (
                         <span className="border border-[#279711] text-[#279711] px-3 py-1 bg-transparent rounded-full text-[11px] lg:text-xs font-semibold whitespace-nowrap">Ongoing</span>
                       )}
@@ -175,7 +202,7 @@ export default function OngoingDetailsPage({ params }) {
                   </div>
 
                   {/* Deadline Extended Banner */}
-                  {isExtended && (
+                  {isExtended && !isExtensionRequested && (
                     <div className="flex items-start gap-3 bg-[#EAF9FF] border border-[#CCE7F2] rounded-xl px-4 py-3 mb-5">
                       <div className="w-5 h-5 rounded-full bg-[#035A7A] flex items-center justify-center flex-shrink-0 mt-0.5">
                         <svg width="10" height="8" viewBox="0 0 12 10" fill="none">
@@ -200,7 +227,8 @@ export default function OngoingDetailsPage({ params }) {
                         { label: "Contract Type", value: contractData.contractType },
                         { label: "Role", value: contractData.role },
                         { label: "Budget", value: contractData.budget },
-                        { label: "Contract Duration", value: contractData.timeframe },
+                        { label: "Contract Starts", value: contractData.startDate },
+                        { label: "Contract Ends", value: contractData.endDate },
                       ].map((item, index) => (
                         <div
                           key={index}
@@ -266,7 +294,7 @@ export default function OngoingDetailsPage({ params }) {
                   <Button
                     className="w-full bg-[#EAEAEA] h-[44px] text-[#222222] font-semibold rounded-full border-0 shadow-sm text-sm"
                     radius="full"
-                    onPress={() => contractData.isSubmitted ? setShowRejectModal(true) : null}
+                    onPress={() => setShowRejectModal(true)}
                   >
                     Reject
                   </Button>
@@ -281,8 +309,15 @@ export default function OngoingDetailsPage({ params }) {
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu aria-label="More Actions">
-                      <DropdownItem key="extension" className="text-sm">Request Extension</DropdownItem>
-                      <DropdownItem key="dispute" className="text-sm text-danger" color="danger">Report Dispute</DropdownItem>
+                      <DropdownItem key="extension" className="text-sm cursor-pointer" onPress={() => setShowExtensionModal(true)}>Request Extension</DropdownItem>
+                      <DropdownItem
+                        key="dispute"
+                        className="text-sm text-danger cursor-pointer"
+                        color="danger"
+                        onPress={() => router.push(`/fashion-designers/report-dispute?contractId=${encodeURIComponent(contractId || '')}`)}
+                      >
+                        Report Dispute
+                      </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                 </CardBody>
@@ -360,7 +395,7 @@ export default function OngoingDetailsPage({ params }) {
             <Button
               className="flex-1 bg-[#EAEAEA] h-[44px] text-[#222222] font-semibold rounded-full border-0 shadow-sm text-sm"
               radius="full"
-              onPress={() => contractData.isSubmitted ? setShowRejectModal(true) : null}
+              onPress={() => setShowRejectModal(true)}
             >
               Reject
             </Button>
@@ -376,8 +411,15 @@ export default function OngoingDetailsPage({ params }) {
               </Button>
             </DropdownTrigger>
             <DropdownMenu aria-label="More Actions">
-              <DropdownItem key="extension" className="text-sm text-center justify-center">Request Extension</DropdownItem>
-              <DropdownItem key="dispute" className="text-sm text-danger text-center justify-center" color="danger">Report Dispute</DropdownItem>
+              <DropdownItem key="extension" className="text-sm text-center justify-center cursor-pointer" onPress={() => setShowExtensionModal(true)}>Request Extension</DropdownItem>
+              <DropdownItem
+                key="dispute"
+                className="text-sm text-danger text-center justify-center cursor-pointer"
+                color="danger"
+                onPress={() => router.push(`/fashion-designers/report-dispute?contractId=${encodeURIComponent(contractId || '')}`)}
+              >
+                Report Dispute
+              </DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
@@ -386,6 +428,7 @@ export default function OngoingDetailsPage({ params }) {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         classNames={{
+                    wrapper: 'z-[9999]',
           base: "bg-white w-[90vw] max-w-md",
           backdrop: "bg-black/50",
           header: "border-b-0 pb-2",
@@ -523,6 +566,10 @@ export default function OngoingDetailsPage({ params }) {
                 <Button
                   variant="bordered"
                   className="bg-transparent border border-[#3A98BB] text-[#222222] font-semibold rounded-full px-8 h-[44px]"
+                  onPress={() => {
+                    onClose();
+                    setShowRequestChangesModal(true);
+                  }}
                 >
                   Request Changes
                 </Button>
@@ -543,6 +590,7 @@ export default function OngoingDetailsPage({ params }) {
         isOpen={showCongratulationsModal}
         onOpenChange={setShowCongratulationsModal}
         classNames={{
+                    wrapper: 'z-[9999]',
           base: "bg-white w-[90vw] max-w-sm mx-auto",
           backdrop: "bg-black/50",
           body: "px-8 py-8",
@@ -624,85 +672,55 @@ export default function OngoingDetailsPage({ params }) {
         </ModalContent>
       </Modal>
 
-      {/* ===== Reject Modal ===== */}
+      {/* Reject Modal */}
       <Modal
         isOpen={showRejectModal}
         onOpenChange={setShowRejectModal}
         classNames={{
-          base: "bg-white w-[90vw] max-w-2xl p-4",
-          backdrop: "bg-black/50",
-          closeButton: "top-6 right-8"
+                    wrapper: 'z-[9999]',
+          base: 'bg-white w-[90vw] max-w-md',
+          backdrop: 'bg-black/50',
+          body: 'py-4',
+          footer: 'pt-4 border-t-0',
         }}
-        size="2xl"
+        size="md"
         backdrop="blur"
+        hideCloseButton
         placement="center"
       >
-        <ModalContent className="rounded-[2.5rem] p-4">
-          <ModalBody className="flex flex-col gap-6 p-8">
-            <h3 className="text-2xl font-bold text-[#222222]">
-              Please state the reason for rejection
-            </h3>
-
-            <div className="flex flex-col gap-4">
-              <div
-                className="flex items-center justify-between cursor-pointer"
-                onClick={() => setSelectedReason("Work Not Completed")}
-              >
-                <span className="text-xs font-satoshi">Work Not Completed</span>
-                <Checkbox
-                  isSelected={selectedReason === "Work Not Completed"}
-                  onChange={() => setSelectedReason("Work Not Completed")}
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody>
+                <p className="text-sm font-satoshi leading-relaxed px-1 pt-2 text-left">
+                  Are you sure you want to reject the work submitted by{' '}
+                  <strong>{contractData.artist?.name || 'the Artist'}</strong>?
+                </p>
+              </ModalBody>
+              <ModalFooter className="w-full flex justify-center items-center font-satoshi gap-5 -mt-4">
+                <Button
+                  variant="bordered"
+                  onPress={onClose}
+                  className="w-full bg-radial from-[#EAF9FF] to-[#E8E8E8] text-[#222222] font-medium rounded-full border-0 shadow-sm"
+                  radius="full"
                   size="md"
-                />
-              </div>
-
-              <div
-                className="flex items-center justify-between cursor-pointer"
-                onClick={() => setSelectedReason("Not Satisfied")}
-              >
-                <span className="text-xs font-satoshi">Not Satisfied</span>
-                <Checkbox
-                  isSelected={selectedReason === "Not Satisfied"}
-                  onChange={() => setSelectedReason("Not Satisfied")}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="w-full bg-red-500 text-white font-medium rounded-full border-0 shadow-sm hover:!bg-red-600"
+                  radius="full"
                   size="md"
-                />
-              </div>
-
-              <div
-                className="flex items-center justify-between cursor-pointer"
-                onClick={() => setSelectedReason("Others")}
-              >
-                <span className="text-xs font-satoshi">Others</span>
-                <Checkbox
-                  isSelected={selectedReason === "Others"}
-                  onChange={() => setSelectedReason("Others")}
-                  size="md"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <label className="text-lg font-bold text-[#222222]">
-                Kindly state a reason
-              </label>
-              <textarea
-                className="w-full border border-[#E1E1E1] rounded-2xl p-5 text-md resize-none focus:outline-none focus:ring-2 focus:ring-[#CCE7F2] bg-[#F9F9F9]"
-                rows={4}
-                placeholder="Type your explanation here..."
-                value={explanation}
-                onChange={(e) => setExplanation(e.target.value)}
-              />
-            </div>
-          </ModalBody>
-
-          <ModalFooter className="px-8 pb-10 pt-0">
-            <Button
-              className="w-full bg-[#CCE7F2] text-[#222222] font-bold py-7 rounded-full text-lg shadow-sm"
-              onPress={handleRejectSubmit}
-            >
-              Submit
-            </Button>
-          </ModalFooter>
+                  onPress={() => {
+                    console.log('Contract rejected:', contractData.jobTitle);
+                    onClose();
+                  }}
+                >
+                  Yes, Reject
+                </Button>
+              </ModalFooter>
+            </>
+          )}
         </ModalContent>
       </Modal>
 
@@ -711,6 +729,7 @@ export default function OngoingDetailsPage({ params }) {
         isOpen={showComplaintModal}
         onOpenChange={setShowComplaintModal}
         classNames={{
+                    wrapper: 'z-[9999]',
           base: "bg-white w-[90vw] max-w-sm mx-auto",
           backdrop: "bg-black/50",
         }}
@@ -749,6 +768,333 @@ export default function OngoingDetailsPage({ params }) {
         name={contractData.artist.name}
         redirectPath='/fashion-designers/contracts'
       />
+
+      {/* Extension Request View Modal */}
+      <Modal
+        isOpen={showViewExtensionModal}
+        onOpenChange={setShowViewExtensionModal}
+        classNames={{
+          wrapper: 'items-center justify-center',
+          base: 'bg-white w-[90vw] max-w-lg p-0 border-0 rounded-2xl m-0 sm:m-0',
+          backdrop: 'bg-black/50',
+          closeButton: 'top-4 right-4 text-gray-500 hover:text-gray-700 z-10',
+        }}
+        size="lg"
+        backdrop="blur"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              {/* Header Strip */}
+              <div className="bg-[#FFF9E6] px-6 py-5 flex items-center gap-3 relative rounded-t-2xl">
+                <div className="flex items-center justify-center w-10 h-10 bg-[#E5A443] rounded-full shrink-0">
+                  <ExclamationTriangleIcon className="w-5 h-5 text-white" />
+                </div>
+                <h2 className="text-xl font-bold text-[#D97706] font-satoshi tracking-wide">Extension Request</h2>
+              </div>
+
+              <ModalBody className="px-6 py-6 font-satoshi mt-1">
+                <p className="text-[#222222] text-[15px] mb-6">
+                  Artist has requested extension of project deadline.
+                </p>
+
+                <div className="flex flex-col gap-5 text-sm">
+                  <div className="grid grid-cols-[190px_1fr] items-center gap-2 md:gap-4">
+                    <span className="font-bold text-[#222222]">New Deadline :</span>
+                    <span className="text-gray-600">24th April, 2026</span>
+                  </div>
+
+                  <div className="grid grid-cols-[190px_1fr] items-start gap-2 md:gap-4">
+                    <span className="font-bold text-[#222222]">Reason :</span>
+                    <span className="text-gray-600">Additional 5 sketches</span>
+                  </div>
+
+                  <div className="grid grid-cols-[190px_1fr] items-center gap-2 md:gap-4">
+                    <span className="font-bold text-[#222222]">Additional Payment Offer :</span>
+                    <div className="flex items-center flex-wrap">
+                      <span className="text-[15px]">N20,000</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 mt-10 mb-1">
+                  <Button
+                    className="flex-1 bg-white border border-[#3A98BB] text-[#222222] font-semibold tracking-wide rounded-full shadow-sm h-11"
+                    onPress={() => {
+                      setShowViewExtensionModal(false);
+                      setShowDeclinedExtensionModal(true);
+                    }}
+                  >
+                    Decline
+                  </Button>
+                  <Button
+                    className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] tracking-wide font-semibold rounded-full border-0 shadow-sm h-11"
+                    onPress={() => setShowViewExtensionModal(false)}
+                  >
+                    Accept Request
+                  </Button>
+                </div>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
+      {/* Extension Declined Confirmation Modal */}
+      <Modal
+        isOpen={showDeclinedExtensionModal}
+        onOpenChange={setShowDeclinedExtensionModal}
+        classNames={{
+          wrapper: 'items-center justify-center',
+          base: 'bg-white w-[90vw] max-w-lg p-0 border-0 rounded-2xl m-0 sm:m-0',
+          backdrop: 'bg-black/50',
+          closeButton: 'top-4 right-4 text-gray-500 hover:text-gray-700 z-10',
+        }}
+        size="lg"
+        backdrop="blur"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              {/* Header Strip */}
+              <div className="bg-[#FFF0E6] px-6 py-5 flex items-center gap-3 relative rounded-t-2xl">
+                <div className="flex items-center justify-center w-8 h-8 bg-[#E67E41] rounded-full shrink-0">
+                  <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 5L5 9L13 1" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <h2 className="text-xl font-bold text-[#E67E41] font-satoshi tracking-wide">Extension Request Declined</h2>
+              </div>
+
+              <ModalBody className="px-6 py-8 font-satoshi">
+                <p className="text-[#222222] text-[16px] mb-2 font-medium">
+                  The extension request has been declined.
+                </p>
+                <p className="text-[#222222] text-[16px] mb-10 font-medium">
+                  You can renegotiate with the artist.
+                </p>
+
+                <div className="flex justify-center">
+                  <Button
+                    className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] tracking-wide font-bold rounded-full border-0 shadow-sm h-11 px-12 min-w-[140px]"
+                    onPress={onClose}
+                  >
+                    Okay
+                  </Button>
+                </div>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    
+      
+      {/* ===== Request Changes Modal ===== */}
+      <Modal
+        isOpen={showRequestChangesModal}
+        onOpenChange={(open) => {
+          setShowRequestChangesModal(open);
+          if (!open) setChangesMessage("");
+        }}
+        classNames={{
+                    wrapper: 'z-[9999]',
+          base: "bg-white w-[90vw] max-w-lg p-0 rounded-2xl",
+          backdrop: "bg-black/50",
+          closeButton: "top-4 right-4 text-gray-400 hover:text-gray-600 z-10",
+        }}
+        size="lg"
+        backdrop="blur"
+        placement="center"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody className="p-6 md:p-8">
+                <h2 className="text-[17px] md:text-[18px] font-bold text-[#222222] font-satoshi mb-4 text-left">
+                  Request Changes
+                </h2>
+
+                <textarea
+                  value={changesMessage}
+                  onChange={(e) => setChangesMessage(e.target.value)}
+                  placeholder="Leave a message"
+                  className="w-full h-[140px] border border-gray-200 rounded-xl p-4 text-[14px] text-[#222222] placeholder:text-[#A0A0A0] focus:outline-none focus:border-[#3A98BB] resize-none"
+                />
+
+                <div className="flex gap-4 mt-6 justify-end items-center">
+                  <Button
+                    className="w-[140px] h-[44px] bg-[#F4F4F5] hover:bg-gray-200 text-[#333333] font-semibold rounded-full border-0 text-[14px]"
+                    radius="full"
+                    onPress={onClose}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className="w-[140px] h-[44px] bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full border-0 shadow-sm text-[14px] hover:opacity-90 transition-opacity"
+                    radius="full"
+                    onPress={() => {
+                      console.log("Changes requested:", changesMessage);
+                      onClose();
+                    }}
+                  >
+                    Send
+                  </Button>
+                </div>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
+      {/* ===== Request Extension Modal ===== */}
+      <Modal
+        isOpen={showExtensionModal}
+        onOpenChange={setShowExtensionModal}
+        classNames={{
+                    wrapper: 'z-[9999]',
+          base: 'bg-white w-[90vw] max-w-md p-0',
+          backdrop: 'bg-black/50',
+          closeButton: 'top-3 right-3 text-gray-400 hover:text-gray-600',
+        }}
+        size="md"
+        backdrop="blur"
+        placement="center"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody className="py-5 px-6">
+                <div className="text-center mb-4">
+                  <h2 className="text-xl font-bold text-[#E68A1D] mb-1 font-satoshi">Request Extension</h2>
+                  <p className="text-xs text-gray-600 font-satoshi">Extend the contract deadline by days.</p>
+                </div>
+
+                <div className="space-y-3">
+                  {/* Current Deadline */}
+                  <div>
+                    <label className="text-xs font-bold text-[#222222] mb-1 block">Current Deadline</label>
+                    <div className="bg-[#F5F5F5] border-0 rounded-lg px-4 py-2 text-xs text-gray-500 w-3/5 font-satoshi">
+                      {contractData.endDate || "23, June, 2024"}
+                    </div>
+                  </div>
+
+                  {/* New Deadline */}
+                  <div>
+                    <label className="text-xs font-bold text-[#222222] mb-1 block">New Deadline</label>
+                    <div className="relative w-3/5">
+                      <Input
+                        type="date"
+                        placeholder="DD/MM/YY"
+                        classNames={{
+                    wrapper: 'z-[9999]',
+                    backdrop: 'z-[9998]',
+                          input: "text-xs font-satoshi text-gray-600",
+                          inputWrapper: "bg-white border border-[#E5E5E5] hover:border-gray-400 focus-within:border-[#3A98BB] shadow-sm rounded-lg h-9 min-h-9",
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Reason */}
+                  <div>
+                    <label className="text-xs font-bold text-[#222222] mb-1 block">Reason</label>
+                    <textarea
+                      placeholder=""
+                      className="w-full min-h-[70px] bg-white border border-[#E5E5E5] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#3A98BB] p-3 text-sm font-satoshi resize-none shadow-sm"
+                    />
+                  </div>
+
+                  {/* Additional Payment */}
+                  <div>
+                    <label className="text-xs font-bold text-[#222222] mb-1 block">Additional Payment</label>
+                    <div className="w-2/5">
+                      <Input
+                        type="number"
+                        placeholder="0.00"
+                        classNames={{
+                          input: "text-xs font-satoshi text-gray-600",
+                          inputWrapper: "bg-white border border-[#E5E5E5] hover:border-gray-400 shadow-sm rounded-lg h-9 min-h-9",
+                        }}
+                      />
+                      <p className="text-[10px] text-gray-400 mt-1 font-satoshi">(Commission: 10%)</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 mt-5">
+                  <Button
+                    className="flex-1 bg-[#EBEBEB] text-[#555555] font-semibold rounded-full border-0 h-10"
+                    onPress={onClose}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full border-0 h-10 shadow-sm"
+                    onPress={() => {
+                      onClose();
+                    }}
+                  >
+                    Send Request
+                  </Button>
+                </div>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
+      {/* ===== Withdraw Dispute Modal ===== */}
+      <Modal
+        isOpen={isWithdrawOpen}
+        onOpenChange={onWithdrawOpenChange}
+        classNames={{
+                    wrapper: 'z-[9999]',
+          base: 'bg-white w-[90vw] max-w-sm',
+          backdrop: 'bg-black/50',
+          body: 'py-6 px-6',
+          footer: 'pt-2 pb-6 px-6 border-t-0',
+        }}
+        size="sm"
+        backdrop="blur"
+        placement="center"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody>
+                <div className="text-center">
+                  <h3 className="text-[18px] font-bold text-[#222222] mb-2 font-satoshi">Withdraw Dispute</h3>
+                  <p className="text-sm font-satoshi leading-relaxed text-gray-600">
+                    Are you sure you want to withdraw your reported dispute for this contract?
+                  </p>
+                </div>
+              </ModalBody>
+              <ModalFooter className="w-full flex justify-center items-center font-satoshi gap-3 -mt-2">
+                <Button
+                  variant="bordered"
+                  onPress={onClose}
+                  className="flex-1 border border-gray-300 text-[#222222] font-medium rounded-full shadow-sm"
+                  radius="full"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="flex-1 bg-red-500 text-white font-medium rounded-full border-0 shadow-sm hover:!bg-red-600"
+                  radius="full"
+                  onPress={() => {
+                    withdrawDispute(contractId);
+                    withdrawDispute(contractData.contractNumber);
+                    onClose();
+                  }}
+                >
+                  Yes, withdraw
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
     </>
   );
 }

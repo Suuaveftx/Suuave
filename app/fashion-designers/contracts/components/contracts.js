@@ -101,11 +101,15 @@ export default function ContractPage() {
   };
 
   //handle ongoing contract click
-  const handleOngoingClick = (contractId) => {
+  const handleOngoingClick = (contractId, contractStatus) => {
+    const statusParam = contractStatus ? `&status=${encodeURIComponent(contractStatus)}` : '';
     if (contractId === '24t64755') {
-      router.push(`/fashion-designers/contracts/ongoing/24t64755?newDeadline=24th%20April%2C%202026&initialDeadline=20th%20April%2C%202026&extendedAt=15%20September%202026`);
+      router.push(`/fashion-designers/contracts/ongoing/24t64755?newDeadline=24th%20April%2C%202026&initialDeadline=20th%20April%2C%202026&extendedAt=15%20September%202026${statusParam}`);
+    } else if (contractId === '24t64757') {
+      // Deadline Extended — also pass isExtended flag
+      router.push(`/fashion-designers/contracts/ongoing/${contractId}?isExtended=true${statusParam}`);
     } else {
-      router.push(`/fashion-designers/contracts/ongoing/${contractId}`);
+      router.push(`/fashion-designers/contracts/ongoing/${contractId}?${statusParam.slice(1)}`);
     }
   };
 

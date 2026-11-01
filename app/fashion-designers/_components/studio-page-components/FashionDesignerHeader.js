@@ -86,7 +86,7 @@ const FashionDesignerHeader = () => {
       <Navbar
         shouldHideOnScroll={false}
         maxWidth='full'
-        className={`sticky top-0 z-[200] w-full border-b bg-[#D8EEF8] ${NAVBAR_HEIGHT_CLASS}`}
+        className={`sticky top-0 z-[30] w-full border-b bg-[#D8EEF8] ${NAVBAR_HEIGHT_CLASS}`}
         classNames={{
           wrapper: 'w-full max-w-full px-0 h-full',
         }}

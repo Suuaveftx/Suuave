@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 import React, { useState } from "react";
-import { Card, CardBody, Button, Modal, ModalContent, ModalBody, ModalFooter, useDisclosure } from "@heroui/react";
+import { Card, CardBody, Button, Modal, ModalContent, ModalBody, ModalFooter, useDisclosure, Input } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import CustomButton from "../../../../components/CustomButton";
@@ -45,16 +45,21 @@ export default function OngoingContract() {
     const searchParams = useSearchParams();
     const id = searchParams.get("id") || contractDetails.contractNumber;
     const timeStatus = searchParams.get("timeStatus") || "(14d left)";
-    const color = searchParams.get("color") || "#22C55E";
-    const isWaitingApproval = id === "24t64754-A";
+    const color = timeStatus?.includes("1h") ? "#E05656" : "#6B7280";
+    const contractStatus = searchParams.get('status');
+    const isWaitingApproval = contractStatus === 'Waiting Approval' || id === "98k21456-B";
     const router = useRouter();
-    const isExtended = searchParams.get('isExtended') === 'true';
-    const isExtensionRequested = searchParams.get('status') === 'Extension Requested' || id === '12m78390-C';
+    const isExtended = searchParams.get('isExtended') === 'true' || contractStatus === 'Deadline Extended' || id === '44f89312-D';
+    const isExtensionRequested = contractStatus === 'Extension Requested' || id === '12m78390-C';
 
     const { reportedDisputes, withdrawDispute } = useAppStore();
     const isDisputed = reportedDisputes[id];
     const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onOpenChange: onWithdrawOpenChange } = useDisclosure();
     const [showViewExtensionModal, setShowViewExtensionModal] = useState(false);
+    const [showRequestExtensionModal, setShowRequestExtensionModal] = useState(false);
+    const [extensionNewDeadline, setExtensionNewDeadline] = useState("");
+    const [extensionReason, setExtensionReason] = useState("");
+    const [extensionPayment, setExtensionPayment] = useState("");
 
     return (
         <>
@@ -91,34 +96,47 @@ export default function OngoingContract() {
                             </div>
                         )}
 
-                        {/* Banner Notification - Extension Requested */}
-                        {isExtensionRequested && (
-                            <div className="flex items-center justify-between border border-[#F5A623] bg-[#FFFBF0] text-[#F5A623] px-4 py-3 rounded-[10px] mb-6">
-                                <div className="flex items-center gap-2">
-                                    <ExclamationTriangleIcon className="w-5 h-5 flex-shrink-0" />
-                                    <span className="font-medium text-[13px] md:text-sm">Client has requested for deadline extension</span>
-                                </div>
-                                <span 
-                                    className="font-semibold text-[13px] md:text-sm cursor-pointer hover:underline text-[#F5A623]"
-                                    onClick={() => setShowViewExtensionModal(true)}
-                                >
-                                    Click to View
-                                </span>
-                            </div>
-                        )}
 
                         {/* Contract Details Card */}
                         <Card className="w-full p-4 md:p-6 shadow-sm border border-gray-100 rounded-2xl bg-white">
                             <div className="hidden md:flex justify-between items-start mb-6 border-b border-gray-100 pb-4">
                                 <h2 className="text-xl font-bold">Contract Details </h2>
                                 <div className="flex gap-2 items-center">
-                                    <span className="border border-green-200 text-green-600 px-4 py-1 bg-transparent rounded-full text-[12px] font-semibold whitespace-nowrap">
-                                        Ongoing
-                                    </span>
-                                    <div className="flex items-center border border-gray-200 rounded-full overflow-hidden text-[12px] font-semibold h-[28px]">
-                                        <span className="px-3 py-1 text-gray-500 border-r border-gray-200 h-full flex items-center">Ends</span>
-                                        <span className="px-3 py-1 text-gray-700 bg-white h-full flex items-center">2 days</span>
-                                    </div>
+                                    {contractStatus === 'Change Requested' ? (
+                                        <span className="bg-[#E0F2FE] text-[#0284C7] px-4 py-1 rounded-full text-[12px] font-semibold whitespace-nowrap">
+                                            Change Requested
+                                        </span>
+                                    ) : isWaitingApproval ? (
+                                        <span className="bg-[#FEF3C7] text-[#B45309] px-4 py-1 rounded-full text-[12px] font-semibold whitespace-nowrap">
+                                            Waiting Approval
+                                        </span>
+                                    ) : isExtensionRequested ? (
+                                        <span className="bg-[#F3E8FF] text-[#7C3AED] px-4 py-1 rounded-full text-[12px] font-semibold whitespace-nowrap">
+                                            Extension Requested
+                                        </span>
+                                    ) : contractStatus === 'Deadline Approved' ? (
+                                        <span className="bg-[#DCFCE7] text-[#16A34A] px-4 py-1 rounded-full text-[12px] font-semibold whitespace-nowrap">
+                                            Deadline Approved
+                                        </span>
+                                    ) : isExtended ? (
+                                        <span className="bg-[#E0F2FE] text-[#0284C7] px-4 py-1 rounded-full text-[12px] font-semibold whitespace-nowrap">
+                                            Deadline Extended
+                                        </span>
+                                    ) : contractStatus === 'Extension Rejected' ? (
+                                        <span className="bg-[#FEE2E2] text-[#DC2626] px-4 py-1 rounded-full text-[12px] font-semibold whitespace-nowrap">
+                                            Extension Rejected
+                                        </span>
+                                    ) : (
+                                        <>
+                                            <span className="border border-green-200 text-green-600 px-4 py-1 bg-transparent rounded-full text-[12px] font-semibold whitespace-nowrap">
+                                                Ongoing
+                                            </span>
+                                            <div className="flex items-center border border-gray-200 rounded-full overflow-hidden text-[12px] font-semibold h-[28px]">
+                                                <span className="px-3 py-1 text-gray-500 border-r border-gray-200 h-full flex items-center">Ends</span>
+                                                <span className="px-3 py-1 text-gray-700 bg-white h-full flex items-center">2 days</span>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </div>
 
@@ -215,7 +233,7 @@ export default function OngoingContract() {
                                       </Button>
                                     } />
                                 </div>
-                                <Button className="w-full h-[46px] rounded-full border border-gray-100 bg-[#FAFAFA] text-[#222222] font-semibold text-[15px] shadow-sm">
+                                <Button className="w-full h-[46px] rounded-full border border-gray-100 bg-[#FAFAFA] text-[#222222] font-semibold text-[15px] shadow-sm" onPress={() => setShowRequestExtensionModal(true)}>
                                     <div className="flex items-center justify-center gap-2 w-full">
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                                         <span>Request Extension</span>
@@ -223,7 +241,7 @@ export default function OngoingContract() {
                                 </Button>
                                 {isDisputed ? (
                                     <Button
-                                        className="w-full h-[46px] rounded-full border border-gray-100 bg-[#FAFAFA] text-gray-500 font-semibold text-[15px] shadow-sm hover:bg-gray-50"
+                                        className="w-full h-[46px] rounded-full border border-gray-100 bg-[#FAFAFA] text-gray-500 font-semibold text-[15px] shadow-sm hover:bg-default transition-colors"
                                         onPress={() => withdrawDispute(id)}
                                     >
                                         <div className="flex items-center justify-center gap-2 w-full">
@@ -232,12 +250,12 @@ export default function OngoingContract() {
                                     </Button>
                                 ) : (
                                     <Button
-                                        className="w-full h-[46px] rounded-full border border-gray-100 bg-[#FAFAFA] text-[#222222] font-semibold text-[15px] shadow-sm"
+                                        className="w-full h-[46px] rounded-full border border-gray-100 bg-[#FAFAFA] text-[#ef4444] font-semibold text-[15px] shadow-sm hover:bg-default transition-colors"
                                         onPress={() => router.push(`/artist-page/report-dispute?contractId=${id}`)}
                                     >
                                         <div className="flex items-center justify-center gap-2 w-full">
-                                            <IoFlagSharp size={16} className="text-[#222222]" />
-                                            <span>Report</span>
+                                            <IoFlagSharp size={16} className="text-[#ef4444]" />
+                                            <span>Report Dispute</span>
                                         </div>
                                     </Button>
                                 )}
@@ -310,20 +328,38 @@ export default function OngoingContract() {
 
                 {/* ── MOBILE UI IMPLEMENTATION ── */}
                 <div className="flex flex-col md:hidden -mx-4 mt-2 pb-44 w-screen">
-                    {/* Banner Notification */}
+                    {/* Banner Notification - Waiting Approval */}
                     {isWaitingApproval && (
-                        <div className="w-full bg-[#FAFAFA] border-y border-[#3A98BB] px-4 py-3 mb-2 flex items-center justify-between">
-                            <div className="flex items-center gap-2">
+                        <div className="w-full bg-[#FAFAFA] border-y border-[#3A98BB] px-4 py-3 mb-2 flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2 flex-1 min-w-0">
                                 <ExclamationTriangleIcon className="w-5 h-5 text-[#3A98BB] flex-shrink-0" />
-                                <p className="text-[13px] text-[#3A98BB]">
+                                <p className="text-[13px] text-[#3A98BB] leading-snug">
                                     You have submitted this project as completed. Waiting for client's approval.
                                 </p>
                             </div>
                             <SubmitWorkModal trigger={
-                                <span className="cursor-pointer text-[13px] font-semibold text-[#3A98BB] whitespace-nowrap pl-2">
+                                <span className="cursor-pointer text-[13px] font-semibold text-[#3A98BB] whitespace-nowrap pl-2 shrink-0">
                                     Click to Review
                                 </span>
                             } />
+                        </div>
+                    )}
+
+
+                    {/* Deadline Extended Banner */}
+                    {isExtended && (
+                        <div className="w-full bg-[#EAF9FF] border-y border-[#CCE7F2] px-4 py-3 mb-2 flex items-start gap-3">
+                            <div className="w-5 h-5 rounded-full bg-[#035A7A] flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg width="10" height="8" viewBox="0 0 12 10" fill="none">
+                                    <path d="M1 5L4.5 8.5L11 1.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p className="text-sm font-bold text-[#035A7A]">Deadline Extended</p>
+                                <p className="text-xs text-[#035A7A] mt-0.5">
+                                    Contract deadline updated to <span className="font-bold">24th April, 2026</span>
+                                </p>
+                            </div>
                         </div>
                     )}
 
@@ -333,9 +369,29 @@ export default function OngoingContract() {
                         <div className="flex items-start justify-between mb-4">
                             <h2 className="text-[18px] font-bold text-gray-900">Contract Details</h2>
                             <div className="flex flex-wrap items-center gap-1.5 justify-end">
-                                {isWaitingApproval ? (
-                                    <span className="inline-flex items-center bg-[#EAF5FB] text-[#3A98BB] text-[11px] font-semibold px-2 rounded-full h-[22px]">
+                                {contractStatus === 'Change Requested' ? (
+                                    <span className="inline-flex items-center bg-[#E0F2FE] text-[#0284C7] text-[11px] font-semibold px-2 rounded-full h-[22px]">
+                                        Change Requested
+                                    </span>
+                                ) : isWaitingApproval ? (
+                                    <span className="inline-flex items-center bg-[#FEF3C7] text-[#B45309] text-[11px] font-semibold px-2 rounded-full h-[22px]">
                                         Waiting Approval
+                                    </span>
+                                ) : isExtensionRequested ? (
+                                    <span className="inline-flex items-center bg-[#F3E8FF] text-[#7C3AED] text-[11px] font-semibold px-2 rounded-full h-[22px]">
+                                        Extension Requested
+                                    </span>
+                                ) : contractStatus === 'Deadline Approved' ? (
+                                    <span className="inline-flex items-center bg-[#DCFCE7] text-[#16A34A] text-[11px] font-semibold px-2 rounded-full h-[22px]">
+                                        Deadline Approved
+                                    </span>
+                                ) : isExtended ? (
+                                    <span className="inline-flex items-center bg-[#E0F2FE] text-[#0284C7] text-[11px] font-semibold px-2 rounded-full h-[22px]">
+                                        Deadline Extended
+                                    </span>
+                                ) : contractStatus === 'Extension Rejected' ? (
+                                    <span className="inline-flex items-center bg-[#FEE2E2] text-[#DC2626] text-[11px] font-semibold px-2 rounded-full h-[22px]">
+                                        Extension Rejected
                                     </span>
                                 ) : (
                                     <>
@@ -343,7 +399,7 @@ export default function OngoingContract() {
                                             Ongoing
                                         </span>
                                         {timeStatus && (
-                                            <span className="text-[11px] font-semibold" style={{ color: color }}>{timeStatus}</span>
+                                            <span className={`text-[11px] font-semibold ${timeStatus?.includes('1h') ? 'text-[#E05656]' : 'text-gray-500'}`}>{timeStatus}</span>
                                         )}
                                     </>
                                 )}
@@ -358,7 +414,15 @@ export default function OngoingContract() {
                                 { label: "Role", value: contractDetails.role },
                                 { label: "Budget", value: contractDetails.budget },
                                 { label: "Contract Starts", value: "7th May, 2026" },
-                                { label: "Contract Ends", value: "12th May, 2026" },
+                                { 
+                                    label: "Contract Ends", 
+                                    value: isExtended ? (
+                                        <div className="flex items-center gap-2 flex-wrap">
+                                            <span>24th April, 2026</span>
+                                            <span className="text-[10px] bg-[#FFA500] text-white px-2 py-0.5 rounded-full font-semibold whitespace-nowrap">Extended</span>
+                                        </div>
+                                    ) : "12th May, 2026" 
+                                },
                             ].map((item, index) => (
                                 <div key={index} className="grid grid-cols-[38%_62%] gap-2 items-start text-[14px]">
                                     <span className="text-gray-500 font-light">{item.label}</span>
@@ -421,9 +485,10 @@ export default function OngoingContract() {
                                 </Button>
                             } />
                         </div>
+                        <Button className="w-full h-[44px] rounded-full border border-gray-100 bg-[#FAFAFA] text-[#222222] font-semibold text-[15px] shadow-sm flex items-center justify-center gap-2" radius="full" onPress={() => setShowRequestExtensionModal(true)}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><span>Request Extension</span></Button>
                         {isDisputed ? (
                             <Button
-                                className="w-full h-[44px] rounded-full bg-[#FAFAFA] border border-gray-100 text-gray-500 font-semibold text-[15px] shadow-sm flex items-center justify-center gap-2 hover:bg-gray-50"
+                                className="w-full h-[44px] rounded-full bg-[#FAFAFA] border border-gray-100 text-gray-500 font-semibold text-[15px] shadow-sm flex items-center justify-center gap-2 hover:bg-default transition-colors"
                                 radius="full"
                                 onPress={onWithdrawOpen}
                             >
@@ -431,7 +496,7 @@ export default function OngoingContract() {
                             </Button>
                         ) : (
                             <Button
-                                className="w-full h-[44px] rounded-full bg-[#FAFAFA] border border-gray-100 text-[#ef4444] font-semibold text-[15px] shadow-sm flex items-center justify-center gap-2"
+                                className="w-full h-[44px] rounded-full bg-[#FAFAFA] border border-gray-100 text-[#ef4444] font-semibold text-[15px] shadow-sm flex items-center justify-center gap-2 hover:bg-default transition-colors"
                                 radius="full"
                                 onPress={() => router.push(`/artist-page/report-dispute?contractId=${id}`)}
                             >
@@ -527,18 +592,18 @@ export default function OngoingContract() {
                                     Client has requested extension of project deadline.
                                 </p>
 
-                                <div className="flex flex-col gap-6 text-[15px]">
-                                    <div className="grid grid-cols-[210px_1fr] items-center gap-2 md:gap-4">
+                                <div className="flex flex-col gap-5 sm:gap-6 text-[15px]">
+                                    <div className="grid grid-cols-1 sm:grid-cols-[210px_1fr] items-start sm:items-center gap-1 sm:gap-4">
                                         <span className="font-bold text-[#222222]">New Deadline :</span>
                                         <span className="text-[#333333]">24th April, 2026</span>
                                     </div>
 
-                                    <div className="grid grid-cols-[210px_1fr] items-start gap-2 md:gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-[210px_1fr] items-start gap-1 sm:gap-4">
                                         <span className="font-bold text-[#222222]">Reason :</span>
                                         <span className="text-[#333333]">Additional 5 sketches</span>
                                     </div>
 
-                                    <div className="grid grid-cols-[210px_1fr] items-center gap-2 md:gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-[210px_1fr] items-start sm:items-center gap-1 sm:gap-4">
                                         <span className="font-bold text-[#222222]">Additional Payment Offer :</span>
                                         <div className="flex items-center flex-wrap gap-2">
                                             <span className="text-[#333333]">+N20,000</span>
@@ -559,6 +624,102 @@ export default function OngoingContract() {
                                         onPress={() => onClose()}
                                     >
                                         Accept Request
+                                    </Button>
+                                </div>
+                            </ModalBody>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+            {/* Request Extension Modal */}
+            <Modal
+                isOpen={showRequestExtensionModal}
+                onOpenChange={setShowRequestExtensionModal}
+                classNames={{
+                    wrapper: 'z-[9999]',
+                    base: 'bg-white w-[90vw] max-w-md p-0',
+                    backdrop: 'bg-black/50',
+                    closeButton: 'top-3 right-3 text-gray-400 hover:text-gray-600',
+                }}
+                size="md"
+                backdrop="blur"
+                placement="center"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalBody className="py-5 px-6">
+                                <div className="text-center mb-4">
+                                    <h2 className="text-xl font-bold text-[#E68A1D] mb-1 font-satoshi">Request Extension</h2>
+                                    <p className="text-xs text-gray-600 font-satoshi">Extend the contract deadline by days.</p>
+                                </div>
+
+                                <div className="space-y-3">
+                                    {/* Current Deadline */}
+                                    <div>
+                                        <label className="text-xs font-bold text-[#222222] mb-1 block">Current Deadline</label>
+                                        <div className="bg-[#F5F5F5] border-0 rounded-lg px-4 py-2 text-xs text-gray-500 w-3/5 font-satoshi">
+                                            23, June, 2024
+                                        </div>
+                                    </div>
+
+                                    {/* New Deadline */}
+                                    <div>
+                                        <label className="text-xs font-bold text-[#222222] mb-1 block">New Deadline</label>
+                                        <div className="relative w-3/5">
+                                            <Input
+                                                type="date"
+                                                placeholder="DD/MM/YY"
+                                                classNames={{
+                    wrapper: 'z-[9999]',
+                    backdrop: 'z-[9998]',
+                                                    input: "text-xs font-satoshi text-gray-600",
+                                                    inputWrapper: "bg-white border border-[#E5E5E5] hover:border-gray-400 focus-within:border-[#3A98BB] shadow-sm rounded-lg h-9 min-h-9",
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Reason */}
+                                    <div>
+                                        <label className="text-xs font-bold text-[#222222] mb-1 block">Reason</label>
+                                        <textarea
+                                            placeholder=""
+                                            className="w-full min-h-[70px] bg-white border border-[#E5E5E5] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#3A98BB] p-3 text-sm font-satoshi resize-none shadow-sm"
+                                        />
+                                    </div>
+
+                                    {/* Additional Payment */}
+                                    <div>
+                                        <label className="text-xs font-bold text-[#222222] mb-1 block">Additional Payment</label>
+                                        <div className="w-2/5">
+                                            <Input
+                                                type="number"
+                                                placeholder="0.00"
+                                                classNames={{
+                                                    input: "text-xs font-satoshi text-gray-600",
+                                                    inputWrapper: "bg-white border border-[#E5E5E5] hover:border-gray-400 shadow-sm rounded-lg h-9 min-h-9",
+                                                }}
+                                            />
+                                            <p className="text-[10px] text-gray-400 mt-1 font-satoshi">(Commission: 10%)</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-4 mt-5">
+                                    <Button
+                                        className="flex-1 bg-[#EBEBEB] text-[#555555] font-semibold rounded-full border-0 h-10"
+                                        onPress={onClose}
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full border-0 h-10 shadow-sm"
+                                        onPress={() => {
+                                            onClose();
+                                        }}
+                                    >
+                                        Send Request
                                     </Button>
                                 </div>
                             </ModalBody>

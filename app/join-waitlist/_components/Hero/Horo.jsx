@@ -27,7 +27,7 @@ const HeroSection = () => {
         </div>
         <div className='lg:pr-14 py-14 relative pr-5 px-5 lg:px-0 lg:mt-0 mt-7'>
           <p className='font-medium mb-10 lg:mb-0 text-[33px] text-white lg:pl-14 pl-0 md:p-2 lg:leading-[60px] leading-[40px] z-30 lg:w-[84%] lg:text-start text-center w-full '>
-            Join the Global marketplace for premium{' '}
+            Join the global marketplace for premium{' '}
             <span className='italic font-[40]'>African</span> fashion Artistry.
           </p>
           <ScrollParallax isAbsolutelyPositioned strength={0.1} zIndex={30}>
