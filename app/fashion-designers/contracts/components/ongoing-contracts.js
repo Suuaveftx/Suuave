@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -42,6 +43,7 @@ const OngoingContracts = ({
   onMessageArtist = () => { },
   onMoreOptions = () => { },
 }) => {
+  const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     isOpen: isRateOpen,
@@ -314,7 +316,7 @@ const OngoingContracts = ({
           <div
             key={contract.id || index}
             className='bg-white border border-gray-200 rounded-[12px] p-4 lg:p-6 transition-all hover:border-[#3A98BB]/40 hover:shadow-md cursor-pointer'
-            onClick={() => onContractClick(contract.id)}
+            onClick={() => onContractClick(contract.id, contract.status)}
           >
             <div className='md:px-2 px-1 py-1 overflow-visible'>
               {/* Card content container — switches to flex-row on md */}
@@ -326,21 +328,49 @@ const OngoingContracts = ({
                   {/* Title & Mobile 3-dot row */}
                   <div className='flex items-start justify-between w-full min-w-0 mb-2 md:mb-0'>
                     <div className='flex flex-col items-start gap-1 flex-1 min-w-0'>
-                      <h3 className='font-semibold text-[15px] md:text-[16px] text-[#3A98BB] truncate w-full group-hover:text-[#3A98BB] transition-colors leading-snug'>
+                      <h3 className='font-bold text-[15px] md:text-[16px] text-[#111111] truncate w-full transition-colors leading-snug'>
                         {contract.title} {contract.id ? `(${contract.id})` : ''}
                       </h3>
-                      {/* Optional Status Chip below title */}
-                      {contract.status && contract.status === 'Waiting Approval' && (
+                      {/* Status Chip below title matching fashion artist page */}
+                      {contract.status === 'Change Requested' && (
                         <div className='mt-1 mb-1'>
-                          <span className='bg-[#EAF5FB] text-[#3A98BB] text-[11px] font-semibold px-2 py-1 rounded-full'>
+                          <span className='inline-flex items-center bg-[#E0F2FE] text-[#0284C7] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]'>
+                            Change Requested
+                          </span>
+                        </div>
+                      )}
+                      {contract.status === 'Waiting Approval' && (
+                        <div className='mt-1 mb-1'>
+                          <span className='inline-flex items-center bg-[#FEF3C7] text-[#B45309] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]'>
                             Waiting Approval
                           </span>
                         </div>
                       )}
-                      {contract.status && contract.status !== 'Ongoing' && contract.status !== 'Waiting Approval' && (
+                      {contract.status === 'Extension Requested' && (
                         <div className='mt-1 mb-1'>
-                          <span className='bg-[#E0F2FE] text-[#2563EB] text-[11px] font-semibold px-2 py-1 rounded-full'>
-                            {contract.status}
+                          <span className='inline-flex items-center bg-[#F3E8FF] text-[#7C3AED] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]'>
+                            Extension Requested
+                          </span>
+                        </div>
+                      )}
+                      {contract.status === 'Deadline Approved' && (
+                        <div className='mt-1 mb-1'>
+                          <span className='inline-flex items-center bg-[#DCFCE7] text-[#16A34A] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]'>
+                            Deadline Approved
+                          </span>
+                        </div>
+                      )}
+                      {contract.status === 'Deadline Extended' && (
+                        <div className='mt-1 mb-1'>
+                          <span className='inline-flex items-center bg-[#E0F2FE] text-[#0284C7] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]'>
+                            Deadline Extended
+                          </span>
+                        </div>
+                      )}
+                      {contract.status === 'Extension Rejected' && (
+                        <div className='mt-1 mb-1'>
+                          <span className='inline-flex items-center bg-[#FEE2E2] text-[#DC2626] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]'>
+                            Extension Rejected
                           </span>
                         </div>
                       )}
@@ -377,20 +407,26 @@ const OngoingContracts = ({
                       <span className='font-light md:font-normal flex-shrink-0'>Start Date -</span>
                       <span className='whitespace-nowrap font-semibold text-[#222222]'>{contract.startDate}</span>
                     </div>
-                    <div className='flex items-center gap-2'>
-                      <span className='font-light md:font-normal flex-shrink-0'>End Date -</span>
-                      <span className='whitespace-nowrap font-semibold text-[#222222]'>{contract.endDate}</span>
-                      {contract.isExpiringSoon && (
-                        <span className='text-[#056D16] text-[12px] font-medium ml-1 whitespace-nowrap'>
-                          ({contract.remainingDays}d left)
-                        </span>
-                      )}
-                      {contract.isLate && (
-                        <span className='text-[#E33629] text-[12px] font-medium ml-1 whitespace-nowrap'>
-                          ({contract.daysLate}d late)
+                    <div className='flex items-center justify-between w-full md:w-auto gap-2'>
+                      <div className='flex items-center gap-2'>
+                        <span className='font-light md:font-normal flex-shrink-0'>End Date -</span>
+                        <span className='whitespace-nowrap font-semibold text-[#222222]'>{contract.endDate}</span>
+                      </div>
+                      {contract.timeLeft && (
+                        <span className={`md:hidden text-[13px] font-medium ${contract.timeLeft.includes('1h') ? 'text-[#E05656]' : 'text-[#333333]'}`}>
+                          {contract.timeLeft}
                         </span>
                       )}
                     </div>
+                  </div>
+
+                  {/* Timer Column (Desktop) */}
+                  <div className='hidden md:flex items-center justify-start min-w-[65px]'>
+                    {contract.timeLeft && (
+                      <span className={`text-[13px] md:text-[14px] font-medium whitespace-nowrap ${contract.timeLeft.includes('1h') ? 'text-[#E05656]' : 'text-[#333333]'}`}>
+                        {contract.timeLeft}
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -431,7 +467,13 @@ const OngoingContracts = ({
                         <DropdownItem key="request_extension" className="text-sm font-medium text-[#222222]" onPress={() => { setCurrentContract(contract); setShowExtensionModal(true); }}>
                           Request Extension
                         </DropdownItem>
-                        <DropdownItem key="report" className="text-sm font-medium text-red-500 hover:text-red-600">
+                        <DropdownItem
+                          key="report"
+                          className="text-sm font-medium text-red-500 hover:text-red-600"
+                          onPress={() => {
+                            router.push(`/fashion-designers/report-dispute?contractId=${encodeURIComponent(contract.id || '')}`);
+                          }}
+                        >
                           Report Dispute
                         </DropdownItem>
                       </DropdownMenu>
@@ -501,10 +543,12 @@ const OngoingContracts = ({
               </button>
               {/* Report Dispute */}
               <button
-                className='w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors font-medium'
+                className='w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors font-medium cursor-pointer'
                 onClick={(e) => {
                   e.stopPropagation();
+                  const contract = openMenuContract;
                   setOpenMenuContract(null);
+                  router.push(`/fashion-designers/report-dispute?contractId=${encodeURIComponent(contract?.id || '')}`);
                 }}
               >
                 Report Dispute
@@ -529,10 +573,12 @@ const OngoingContracts = ({
               </button>
               {/* Report Dispute */}
               <button
-                className='w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors font-medium'
+                className='w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors font-medium cursor-pointer'
                 onClick={(e) => {
                   e.stopPropagation();
+                  const contract = openMenuContract;
                   setOpenMenuContract(null);
+                  router.push(`/fashion-designers/report-dispute?contractId=${encodeURIComponent(contract?.id || '')}`);
                 }}
               >
                 Report Dispute

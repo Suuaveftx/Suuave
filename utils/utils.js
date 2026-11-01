@@ -89,7 +89,7 @@ export const homePageCardData = [
 export const fashionSection = [
   {
     title: 'Register',
-    text: 'Join 5,000+ elite creators and build your professional global profile.',
+    text: 'Create your free creator profile and showcase your portfolio to international fashion brands',
     image: '/dev-images/register.png',
   },
   {
