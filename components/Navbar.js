@@ -31,12 +31,12 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
     { title: "How It Works", url: "/#howitworks" },
     { title: "FAQs", url: "#" },
     { title: "Blog", url: "#" },
-    { title: "Join Waitlist", url: "/join-waitlist" },
+    { title: "Join the Waitlist", url: "/join-waitlist" },
   ];
 
   return (
     <Navbar
-      className={`w-full ${bgColor} font-satoshi ${textStyle} z-[60] relative lg:!sticky h-[80px]`}
+      className={`w-full ${bgColor} font-satoshi ${textStyle} z-[30] relative lg:!sticky h-[80px]`}
       classNames={{ wrapper: "w-full max-w-full px-0 h-full" }}
       onMenuOpenChange={setIsMenuOpen}
     >
@@ -86,7 +86,7 @@ const CustomNavbar = ({ bgColor, mobileLogo = "/dev-images/logomobile.png", desk
           </NavbarItem>
           <NavbarItem>
             <Link href='/join-waitlist' className={`text-white transition duration-300`}>
-              Join Waitlist
+              Join the Waitlist
             </Link>
           </NavbarItem>
         </NavbarContent>
