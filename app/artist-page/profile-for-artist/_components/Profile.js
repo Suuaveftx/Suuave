@@ -10,16 +10,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import EditOccupationModal from './EditOccupationModal';
 import EditAboutModal from './EditAboutModal';
-import { useGetArtistProfile } from '../queries/artist-profile-queries';
-
-
 
 const ProfileArtist = ({ isVisitor = false }) => {
   const fullText = `Sorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex.`;
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [aboutValue, setAboutValue] = useState(fullText);
-  const [titleValue, setTitleValue] = useState("Fashion Artist | 3D Illustrator");
+  const [titleValue, setTitleValue] = useState('Fashion Artist | 3D Illustrator');
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [previewProfileUrl, setPreviewProfileUrl] = useState(null);
   const [userRole, setUserRole] = useState(null);
@@ -29,14 +26,12 @@ const ProfileArtist = ({ isVisitor = false }) => {
   const [tempAboutValue, setTempAboutValue] = useState(fullText);
   const fileInputRef = useRef(null);
   const router = useRouter();
-  const {data: artistProfile, isLoading: loadingProfile} = useGetArtistProfile()
-
-  console.log(artistProfile);
-  
 
   const handleRetainArtist = () => {
     const returnPath = encodeURIComponent('/artist-page/profile-for-artist');
-    router.push(`/fashion-designers/contracts/retain?artist=Ocean&returnUrl=${returnPath}`);
+    router.push(
+      `/fashion-designers/contracts/retain?artist=Ocean&returnUrl=${returnPath}`
+    );
   };
 
   useEffect(() => {
@@ -73,8 +68,6 @@ const ProfileArtist = ({ isVisitor = false }) => {
     localStorage.setItem(storageKey, newOccupation);
   };
 
-
-
   return (
     <div
       className='w-full h-full lg:h-fit lg:w-[320px] lg:bg-white rounded-lg lg:space-y-2 
@@ -82,13 +75,13 @@ const ProfileArtist = ({ isVisitor = false }) => {
     >
       <div className='bg-white lg:bg-[#ffffff] w-full lg:px-6 lg:py-6 px-4 py-8 rounded-lg shadow-sm relative'>
         {userRole === 'artist' && (
-          <div className="absolute top-6 right-4 z-10">
+          <div className='absolute top-6 right-4 z-10'>
             <Link
-              href="/artist-page/edit-profile"
-              className="px-6 py-2 rounded-full transition-all flex items-center justify-center shadow-md font-proximanova font-medium"
+              href='/artist-page/edit-profile'
+              className='px-6 py-2 rounded-full transition-all flex items-center justify-center shadow-md font-proximanova font-medium'
               style={{
-                background: "radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)",
-                color: "#035A7A",
+                background: 'radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)',
+                color: '#035A7A',
               }}
             >
               Edit
@@ -111,11 +104,11 @@ const ProfileArtist = ({ isVisitor = false }) => {
               {!isVisitor && (
                 <>
                   <input
-                    type="file"
+                    type='file'
                     ref={fileInputRef}
                     onChange={handleFileChange}
-                    className="hidden"
-                    accept="image/*"
+                    className='hidden'
+                    accept='image/*'
                   />
                   <button
                     onClick={() => fileInputRef.current?.click()}
@@ -128,7 +121,6 @@ const ProfileArtist = ({ isVisitor = false }) => {
             </div>
           </div>
 
-
           {/* Name */}
           <div className='w-full flex flex-col items-center'>
             <h4 className='lg:text-2xl font-bold text-[28px] text-[#222222] flex items-center gap-2'>
@@ -138,13 +130,14 @@ const ProfileArtist = ({ isVisitor = false }) => {
           </div>
 
           {/* Occupation */}
-          <div className="flex flex-col items-center gap-2 w-full">
-            <div className="flex items-center gap-2">
-              <p className="text-[#222222] text-[16px] font-medium">
-                {titleValue}
-              </p>
+          <div className='flex flex-col items-center gap-2 w-full'>
+            <div className='flex items-center gap-2'>
+              <p className='text-[#222222] text-[16px] font-medium'>{titleValue}</p>
               {!isVisitor && (
-                <button onClick={() => setIsModalOpen(true)} className="text-[#3A98BB] hover:opacity-75 transition-opacity">
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className='text-[#3A98BB] hover:opacity-75 transition-opacity'
+                >
                   <Pencil size={18} />
                 </button>
               )}
@@ -160,23 +153,29 @@ const ProfileArtist = ({ isVisitor = false }) => {
             <div className='flex items-center gap-2 mt-2 w-full justify-center'>
               <div className='flex gap-0.5 flex-shrink-0'>
                 {[...Array(5)].map((_, i) => (
-                  <FaStar key={i} size={15} className={i < 4 ? 'text-[#F8B73B]' : 'text-gray-300'} />
+                  <FaStar
+                    key={i}
+                    size={15}
+                    className={i < 4 ? 'text-[#F8B73B]' : 'text-gray-300'}
+                  />
                 ))}
               </div>
-              <div className="flex items-center gap-1.5 text-sm whitespace-nowrap flex-shrink-0">
-                <span className="text-[#222222] font-semibold">4.0</span>
-                <span className='text-[#3A98BB] cursor-pointer hover:underline'>(5.0 reviews)</span>
+              <div className='flex items-center gap-1.5 text-sm whitespace-nowrap flex-shrink-0'>
+                <span className='text-[#222222] font-semibold'>4.0</span>
+                <span className='text-[#3A98BB] cursor-pointer hover:underline'>
+                  (5.0 reviews)
+                </span>
               </div>
             </div>
 
             {isVisitor && (
-              <div className="mt-4 w-full">
+              <div className='mt-4 w-full'>
                 <button
                   onClick={handleRetainArtist}
-                  className="w-full px-6 py-2 rounded-full transition-all flex items-center justify-center shadow-md font-proximanova font-medium"
+                  className='w-full px-6 py-2 rounded-full transition-all flex items-center justify-center shadow-md font-proximanova font-medium'
                   style={{
-                    background: "radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)",
-                    color: "#035A7A",
+                    background: 'radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)',
+                    color: '#035A7A',
                   }}
                 >
                   Retain Artist
@@ -188,7 +187,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
       </div>
 
       {/* Brand specific divider if needed */}
-      <div className="w-full h-2 bg-[#F1F1F1] lg:hidden"></div>
+      <div className='w-full h-2 bg-[#F1F1F1] lg:hidden'></div>
 
       {/* Stats */}
       <div className='bg-white w-full py-6 lg:py-6 lg:px-6 px-4 border-y border-[#f1f1f1] lg:border-none'>
@@ -209,19 +208,17 @@ const ProfileArtist = ({ isVisitor = false }) => {
         </div>
       </div>
 
-      <div className="w-full h-2 bg-[#F1F1F1] lg:hidden"></div>
+      <div className='w-full h-2 bg-[#F1F1F1] lg:hidden'></div>
 
       {/* About Us Section */}
       <div className='bg-white lg:bg-[#ffffff] w-full flex flex-col items-start lg:px-6 px-4 py-8 text-left lg:mt-0 rounded-lg shadow-sm mb-10'>
         {/* Heading */}
         <div className='flex items-center w-full justify-between mb-4'>
-          <h4 className='text-[28px] text-[#222222] font-bold'>
-            Description
-          </h4>
+          <h4 className='text-[28px] text-[#222222] font-bold'>Description</h4>
           {!isVisitor && (
             <button
               onClick={() => setIsAboutModalOpen(true)}
-              className="text-[#3A98BB] hover:opacity-75 transition-opacity"
+              className='text-[#3A98BB] hover:opacity-75 transition-opacity'
             >
               <Pencil size={18} />
             </button>
@@ -229,7 +226,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
         </div>
 
         {/* Text Area */}
-        <div className="w-full">
+        <div className='w-full'>
           <p
             className={`text-[#222222] text-sm leading-relaxed ${isExpanded ? '' : 'line-clamp-3'}`}
           >
@@ -237,7 +234,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
           </p>
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="text-[#3A98BB] font-semibold text-sm mt-1 hover:underline"
+            className='text-[#3A98BB] font-semibold text-sm mt-1 hover:underline'
           >
             {isExpanded ? 'Show less' : 'Read more'}
           </button>
@@ -255,7 +252,7 @@ const ProfileArtist = ({ isVisitor = false }) => {
         initialValue={aboutValue}
         onSave={(newAbout) => setAboutValue(newAbout)}
       />
-    </div >
+    </div>
   );
 };
 
