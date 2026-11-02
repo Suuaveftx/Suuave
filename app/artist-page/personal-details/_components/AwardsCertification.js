@@ -1,40 +1,132 @@
-import React, { useState, useEffect } from 'react';
-import { X, ChevronLeft, Plus } from 'lucide-react';
-import { Button, Input as HeroInput } from '@heroui/react';
+import React, { useState } from 'react';
+import { X, Plus, LoaderCircle } from 'lucide-react';
+import { addToast, Button, Input as HeroInput, useDisclosure } from '@heroui/react';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import FormLabel from '@/components/ui/FormLabel';
 import Image from 'next/image';
+import {
+  useDeleteArtistCertification,
+  useUploadProfileFile,
+} from '../queries/artist-profile-queries';
+import ConfirmDeleteModal from './ConfirmDeleteModal';
 
-const AwardsCertification = ({ setSelected, setHoveredField, isEdit = false, submitHref = '/artist-page/profile-for-artist' }) => {
+const AwardsCertification = ({
+  setSelected,
+  setHoveredField,
+  isEdit = false,
+  submitHref = '/artist-page/profile-for-artist',
+  profileId,
+  onSubmit,
+  isSubmitting = false,
+}) => {
   const router = useRouter();
   const { control, register, trigger, setValue, getValues, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "awards"
+    name: 'awards',
   });
 
-  const watchedAwards = watch("awards");
+  const watchedAwards = watch('awards');
+  const [uploadingIndex, setUploadingIndex] = useState(null);
+  const [pendingRemovalIndex, setPendingRemovalIndex] = useState(null);
+  const deleteModal = useDisclosure();
+  const uploadMutation = useUploadProfileFile();
+  const deleteMutation = useDeleteArtistCertification();
 
-  const handleFileChange = (index, e) => {
-    const files = Array.from(e.target.files || []);
-    if (files.length > 0) {
-      const newPreviews = files.map((f) => URL.createObjectURL(f));
-      const currentPreviews = getValues(`awards.${index}.previews`) || [];
-      setValue(`awards.${index}.previews`, [...currentPreviews, ...newPreviews], { shouldValidate: true });
+  const handleFileChange = async (index, e) => {
+    const file = e.currentTarget.files?.[0];
+    e.currentTarget.value = '';
+    if (!file || !profileId) return;
+    if (!file.type.startsWith('image/')) {
+      addToast({
+        title: 'Unsupported file',
+        description: 'Please select an image file for the certificate.',
+        color: 'danger',
+      });
+      return;
+    }
+
+    setUploadingIndex(index);
+    const previewPath = `awards.${index}.previews`;
+    const previousPreviews = getValues(previewPath) || [];
+    const localPreview = URL.createObjectURL(file);
+    setValue(previewPath, [localPreview], { shouldDirty: true });
+    try {
+      const uploadedFile = await uploadMutation.mutateAsync({
+        file,
+        fileableType: 'certificate',
+        fileableId: profileId,
+      });
+      setValue(previewPath, [uploadedFile.storage_url], {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+      setValue(`awards.${index}.documentUrl`, uploadedFile.storage_url, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+      addToast({
+        title: 'Certificate uploaded',
+        description: 'The certificate preview is ready.',
+        color: 'success',
+      });
+    } catch (error) {
+      setValue(previewPath, previousPreviews, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+      addToast({
+        title: 'Certificate upload failed',
+        description:
+          error?.response?.data?.message || error?.message || 'Please try again.',
+        color: 'danger',
+      });
+    } finally {
+      URL.revokeObjectURL(localPreview);
+      setUploadingIndex(null);
     }
   };
 
   const removeImage = (awardIndex, imageIndex) => {
-    const currentPreviews = getValues(`awards.${awardIndex}.previews`) || [];
+    const previewPath = `awards.${awardIndex}.previews`;
+    const currentPreviews = getValues(previewPath) || [];
     const updatedPreviews = currentPreviews.filter((_, i) => i !== imageIndex);
-    setValue(`awards.${awardIndex}.previews`, updatedPreviews, { shouldValidate: true });
+    setValue(previewPath, updatedPreviews, { shouldDirty: true, shouldValidate: true });
+    setValue(`awards.${awardIndex}.documentUrl`, updatedPreviews.at(-1) || '', {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
+
+  const confirmRemoveCertification = async () => {
+    const award = getValues(`awards.${pendingRemovalIndex}`);
+    if (!award) return;
+
+    try {
+      if (award.id) await deleteMutation.mutateAsync(award.id);
+      remove(pendingRemovalIndex);
+      deleteModal.onClose();
+      setPendingRemovalIndex(null);
+      addToast({
+        title: award.id ? 'Certification deleted' : 'Certification removed',
+        description: award.id
+          ? 'The certification has been deleted from your profile.'
+          : 'The unsaved certification has been removed.',
+        color: 'success',
+      });
+    } catch (error) {
+      addToast({
+        title: 'Unable to delete certification',
+        description:
+          error?.response?.data?.message || error?.message || 'Please try again.',
+        color: 'danger',
+      });
+    }
   };
 
   return (
     <div className='bg-[#FAFAFA] border border-[#DEDEDE] rounded-2xl p-3 md:p-6 w-full h-full'>
-
-
       {/* Header row: title + Add button */}
       <div className='flex items-start justify-between gap-3 flex-wrap'>
         <div>
@@ -46,7 +138,7 @@ const AwardsCertification = ({ setSelected, setHoveredField, isEdit = false, sub
           </p>
         </div>
         <button
-          type="button"
+          type='button'
           onClick={() => append({ name: '', issuedBy: '', previews: [] })}
           className='flex items-center gap-1 border border-[#3A98BB] text-[#3A98BB] rounded-full px-4 py-2 text-sm font-semibold hover:bg-[#EAF9FF] transition-colors mt-1'
         >
@@ -62,10 +154,15 @@ const AwardsCertification = ({ setSelected, setHoveredField, isEdit = false, sub
             className='border border-[#DEDEDE] rounded-xl p-4 space-y-6 relative'
           >
             {/* Remove entry (only if more than one) */}
-            {fields.length > 1 && (
+            {(fields.length > 1 || watchedAwards[index]?.id) && (
               <button
-                type="button"
-                onClick={() => remove(index)}
+                type='button'
+                onClick={() => {
+                  setPendingRemovalIndex(index);
+                  deleteModal.onOpen();
+                }}
+                disabled={uploadingIndex !== null || deleteMutation.isPending}
+                aria-label={`Remove ${watchedAwards[index]?.name || 'certification'}`}
                 className='absolute top-3 right-3 bg-white border border-[#D1D1D1] rounded-full p-1 shadow-sm hover:bg-red-50 transition-colors'
               >
                 <X size={14} className='text-red-500' />
@@ -78,14 +175,18 @@ const AwardsCertification = ({ setSelected, setHoveredField, isEdit = false, sub
               onMouseEnter={() => setHoveredField('Name')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor={`awardName-${index}`} text='Name Of Award/Certificate' />
+              <FormLabel
+                htmlFor={`awardName-${index}`}
+                text='Name Of Award/Certificate'
+              />
               <HeroInput
                 id={`awardName-${index}`}
                 placeholder='Eg Best Illustrator Award'
-                variant="bordered"
+                variant='bordered'
                 classNames={{
-                  inputWrapper: 'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
-                  input: 'text-black text-base'
+                  inputWrapper:
+                    'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
+                  input: 'text-black text-base',
                 }}
                 {...register(`awards.${index}.name`)}
               />
@@ -101,10 +202,11 @@ const AwardsCertification = ({ setSelected, setHoveredField, isEdit = false, sub
               <HeroInput
                 id={`issuedBy-${index}`}
                 placeholder='Organization that issued/awarded'
-                variant="bordered"
+                variant='bordered'
                 classNames={{
-                  inputWrapper: 'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
-                  input: 'text-black text-base'
+                  inputWrapper:
+                    'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
+                  input: 'text-black text-base',
                 }}
                 {...register(`awards.${index}.issuedBy`)}
               />
@@ -126,31 +228,98 @@ const AwardsCertification = ({ setSelected, setHoveredField, isEdit = false, sub
                     key={pi}
                     className='relative w-full h-32 rounded-lg overflow-hidden border border-[#D1D1D1]'
                   >
-                    <Image src={src} alt={`award-${index}-${pi}`} fill className='object-cover' />
+                    <label
+                      htmlFor={`cert-${field.id}`}
+                      className='group absolute inset-0 block cursor-pointer'
+                      aria-label='Replace certificate image'
+                    >
+                      <Image
+                        src={src}
+                        alt={`award-${index}-certificate-${pi}`}
+                        fill
+                        unoptimized
+                        className={`object-cover transition-opacity ${
+                          uploadingIndex === index
+                            ? 'opacity-40'
+                            : 'group-hover:brightness-75'
+                        }`}
+                      />
+                      {uploadingIndex === index ? (
+                        <span
+                          className='absolute inset-0 flex items-center justify-center bg-black/10 text-white'
+                          role='status'
+                          aria-label='Uploading certificate image'
+                        >
+                          <LoaderCircle size={30} className='animate-spin' />
+                        </span>
+                      ) : (
+                        <span className='absolute inset-0 flex items-center justify-center bg-black/40 text-sm font-medium text-white opacity-0 transition-opacity group-hover:opacity-100'>
+                          Replace image
+                        </span>
+                      )}
+                      <input
+                        id={`cert-${field.id}`}
+                        type='file'
+                        accept='image/*'
+                        onChange={(e) => handleFileChange(index, e)}
+                        className='sr-only'
+                        disabled={uploadingIndex !== null || !profileId}
+                        aria-label='Choose replacement certificate image'
+                      />
+                    </label>
                     <button
                       type='button'
                       onClick={() => removeImage(index, pi)}
+                      disabled={uploadingIndex !== null}
                       className='absolute top-1 right-1 bg-white/80 hover:bg-white rounded-full p-1 shadow-sm transition-colors'
                     >
                       <X size={14} className='text-red-500' />
                     </button>
                   </div>
                 ))}
-                {(!watchedAwards[index]?.previews || watchedAwards[index].previews.length === 0) && (
+                {(!watchedAwards[index]?.previews ||
+                  watchedAwards[index].previews.length === 0) && (
                   <label
-                    htmlFor={`cert-${index}`}
-                    className='flex flex-col items-center cursor-pointer justify-center gap-1 w-full h-32 rounded-lg border border-dashed border-[#3A98BB] bg-[#F4FBFE]'
+                    htmlFor={`cert-${field.id}`}
+                    className={`relative flex flex-col items-center justify-center gap-1 w-full h-32 rounded-lg border border-dashed border-[#3A98BB] bg-[#F4FBFE] ${
+                      uploadingIndex !== null || !profileId
+                        ? 'cursor-not-allowed opacity-60'
+                        : 'cursor-pointer'
+                    }`}
                   >
-                    <Image src='/svg/paper-clip.svg' alt='icon' width={20} height={20} />
-                    <p className='text-[#3A98BB] font-medium text-xs text-center px-2'>
-                      Upload Certificate
-                    </p>
+                    {uploadingIndex === index ? (
+                      <>
+                        <Image
+                          src='/svg/paper-clip.svg'
+                          alt=''
+                          width={20}
+                          height={20}
+                          className='opacity-40'
+                        />
+                        <span
+                          className='absolute inset-0 flex items-center justify-center text-[#035A7A]'
+                          role='status'
+                          aria-label='Uploading certificate image'
+                        >
+                          <LoaderCircle size={24} className='animate-spin' />
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <Image src='/svg/paper-clip.svg' alt='' width={20} height={20} />
+                        <p className='text-[#3A98BB] font-medium text-xs text-center px-2'>
+                          Upload Certificate
+                        </p>
+                      </>
+                    )}
                     <input
-                      id={`cert-${index}`}
+                      id={`cert-${field.id}`}
                       type='file'
                       accept='image/*'
                       onChange={(e) => handleFileChange(index, e)}
-                      className='hidden'
+                      className='sr-only'
+                      disabled={uploadingIndex !== null || !profileId}
+                      aria-label='Choose certificate image'
                     />
                   </label>
                 )}
@@ -161,8 +330,31 @@ const AwardsCertification = ({ setSelected, setHoveredField, isEdit = false, sub
 
         {/* Action buttons */}
         <div className='w-full flex flex-col md:flex-row items-center justify-between mt-12 gap-4'>
-          {isEdit ? (
-            <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4">
+          {isEdit && onSubmit ? (
+            <div className='w-full flex flex-col md:flex-row items-center justify-between gap-4'>
+              <button
+                onClick={() => setSelected('ProfessionalInformation')}
+                className='flex items-center justify-center cursor-pointer px-6 py-2 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold hover:bg-[#EAF9FF] transition-colors'
+              >
+                Previous
+              </button>
+              <Button
+                type='button'
+                onPress={async () => {
+                  const isValid = await trigger();
+                  if (isValid) await onSubmit();
+                }}
+                isLoading={isSubmitting}
+                isDisabled={
+                  isSubmitting || uploadingIndex !== null || deleteMutation.isPending
+                }
+                className='flex items-center justify-center w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
+              >
+                Update
+              </Button>
+            </div>
+          ) : isEdit ? (
+            <div className='w-full flex flex-col md:flex-row items-center justify-between gap-4'>
               <button
                 onClick={() => setSelected('ProfessionalInformation')}
                 className='flex items-center justify-center cursor-pointer px-6 py-2 border border-[#3A98BB] text-[#3A98BB] rounded-3xl w-full md:w-auto font-semibold hover:bg-[#EAF9FF] transition-colors'
@@ -172,10 +364,10 @@ const AwardsCertification = ({ setSelected, setHoveredField, isEdit = false, sub
               <a
                 href={submitHref}
                 onClick={async (e) => {
-                  const isValid = await trigger("awards");
+                  const isValid = await trigger('awards');
                   if (!isValid) e.preventDefault();
                 }}
-                className="w-full md:w-auto flex items-center justify-center transition-all border border-[#3A98BB] text-[#3A98BB] hover:bg-[#EAF9FF] font-semibold rounded-[40px] px-12 py-3.5"
+                className='flex items-center justify-center w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
               >
                 Update
               </a>
@@ -197,9 +389,10 @@ const AwardsCertification = ({ setSelected, setHoveredField, isEdit = false, sub
                 </button>
                 <button
                   onClick={async () => {
-                    const isValid = await trigger("awards");
+                    const isValid = await trigger('awards');
                     if (isValid) router.push('/artist-page/project-page');
                   }}
+                  disabled={uploadingIndex}
                   className='flex items-center justify-center w-full md:w-auto text-[#035A7A] font-semibold rounded-[40px] px-12 py-3.5 bg-[radial-gradient(circle_at_center,#EAF9FF,#CCE7F2)] shadow-[0px_4px_12px_rgba(3,90,122,0.1)]'
                 >
                   Submit
@@ -209,6 +402,15 @@ const AwardsCertification = ({ setSelected, setHoveredField, isEdit = false, sub
           )}
         </div>
       </section>
+
+      <ConfirmDeleteModal
+        deleteModal={deleteModal}
+        deleteMutation={deleteMutation}
+        pendingRemovalIndex={pendingRemovalIndex}
+        setPendingRemovalIndex={setPendingRemovalIndex}
+        getValues={getValues}
+        confirmRemoveCertification={confirmRemoveCertification}
+      />
     </div>
   );
 };

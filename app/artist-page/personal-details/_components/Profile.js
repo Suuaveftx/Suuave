@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { Camera } from "lucide-react";
+import React, { useId } from "react";
+import { Camera, LoaderCircle } from "lucide-react";
 import { Avatar } from "@heroui/react";
 import { useFormContext } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -10,6 +10,7 @@ const Profile = ({
   selected,
   className,
   handleImageChange,
+  isUploadingImage = false,
   preview,
   hoveredField,
   step,
@@ -18,6 +19,11 @@ const Profile = ({
   const router = useRouter();
   const { watch } = useFormContext();
   const formData = watch();
+  const profileUploadId = useId();
+  const hasValue = (value) => {
+    if (value instanceof Set || Array.isArray(value)) return value.size > 0 || value.length > 0;
+    return Boolean(value);
+  };
 
   return (
     <div
@@ -28,24 +34,37 @@ const Profile = ({
       </h1>
       <div className="md:mb-4 flex flex-col items-center md:items-start gap-2">
         <div className="flex flex-col items-center">
-          <label htmlFor="profile-upload" className="cursor-pointer relative group">
+          <label
+            htmlFor={profileUploadId}
+            className={`relative group ${isUploadingImage ? "cursor-wait" : "cursor-pointer"}`}
+            aria-label={isUploadingImage ? "Uploading profile photo" : "Upload profile photo"}
+          >
             <Avatar
               src={preview}
-              className="w-32 h-32 md:w-36 md:h-36 text-large shadow-lg hover:shadow-2xl transition-all bg-[#3A98BB]"
+              className={`w-32 h-32 md:w-36 md:h-36 text-large shadow-lg transition-all bg-[#3A98BB] ${isUploadingImage ? "opacity-60" : "hover:shadow-2xl"}`}
               color="primary"
             />
-            {/* Camera Overlay */}
             <div className="absolute bottom-2 right-2 bg-[#3A98BB] p-2.5 rounded-full border-2 border-white shadow-lg group-hover:scale-110 transition-transform">
-              <Camera size={18} className="text-white" />
+              {isUploadingImage ? (
+                <LoaderCircle size={18} className="text-white animate-spin" />
+              ) : (
+                <Camera size={18} className="text-white" />
+              )}
             </div>
           </label>
           <input
-            id="profile-upload"
+            id={profileUploadId}
             type="file"
             accept="image/*"
             onChange={handleImageChange}
             className="hidden"
+            disabled={isUploadingImage}
           />
+          {isUploadingImage && (
+            <p className="text-sm text-[#035A7A]" role="status">
+              Uploading profile photo...
+            </p>
+          )}
         </div>
         <div className="flex flex-col items-center md:items-start gap-1">
           <h2 className="font-bold text-2xl text-black tracking-tight">
@@ -70,11 +89,11 @@ const Profile = ({
             <List activeState={formData.fullName} text="Full Name" isHovered={hoveredField === "Full Name"} />
             <List activeState={formData.username} text="Username" isHovered={hoveredField === "Username"} />
             <List activeState={formData.email} text=" Email Address" isHovered={hoveredField === "Email Address"} />
-            <List activeState={formData.nationality?.size > 0} text="Nationality" isHovered={hoveredField === "Nationality"} />
-            <List activeState={formData.countryOfResidence?.size > 0} text="Country of Residence" isHovered={hoveredField === "Country of Residence"} />
+            <List activeState={hasValue(formData.nationality)} text="Nationality" isHovered={hoveredField === "Nationality"} />
+            <List activeState={hasValue(formData.countryOfResidence)} text="Country of Residence" isHovered={hoveredField === "Country of Residence"} />
             <List activeState={formData.phoneNumber} text="Phone Number" isHovered={hoveredField === "Phone Number"} />
             <List activeState={formData.currentCity} text="Current City" isHovered={hoveredField === "Current City"} />
-            <List activeState={formData.language?.size > 0} text="Language" isHovered={hoveredField === "Language"} />
+            <List activeState={hasValue(formData.language)} text="Language" isHovered={hoveredField === "Language"} />
             <List activeState={!!formData.dob} text=" Date of Birth" isHovered={hoveredField === "Date of Birth"} />
             <List activeState={formData.about} text="About Yourself" isHovered={hoveredField === "About Yourself"} />
           </ul>
