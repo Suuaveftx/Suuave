@@ -61,6 +61,7 @@ const PostProjectForm = () => {
   const [submissionError, setSubmissionError] = useState('');
   const [createdProjectId, setCreatedProjectId] = useState(null);
   const [uploadedReferenceCount, setUploadedReferenceCount] = useState(0);
+  const [uploadedImageUrls, setUploadedImageUrls] = useState([]);
   const [isUploadingReferences, setIsUploadingReferences] = useState(false);
   const [resetCount, setResetCount] = useState(0); // remounts TagInputs on Cancel
 
@@ -99,6 +100,7 @@ const PostProjectForm = () => {
     setSubmissionError('');
     setCreatedProjectId(null);
     setUploadedReferenceCount(0);
+    setUploadedImageUrls([]);
     setResetCount((count) => count + 1);
     reset(DEFAULT_VALUES);
     if (isEditMode && !isApiEditMode) clearEditProject();
@@ -115,7 +117,9 @@ const PostProjectForm = () => {
   const onSubmit = async (data) => {
     setSubmissionError('');
     if (isEditMode && (isApiEditMode ? !apiProject : !editProject)) {
-      setSubmissionError('This project could not be loaded. Return to My Projects and try again.');
+      setSubmissionError(
+        'This project could not be loaded. Return to My Projects and try again.'
+      );
       return;
     }
     if (fileValidationError) return;
@@ -178,23 +182,42 @@ const PostProjectForm = () => {
           currency: dataToSave.currency,
           durationType: dataToSave.durationType,
           projectTimeframe: dataToSave.timeframe,
-          duration: `${dataToSave.timeframe} ${dataToSave.durationType}`,
         });
         newProjectId = createdProject.projectId;
         setCreatedProjectId(newProjectId);
       }
 
       setIsUploadingReferences(true);
+      const imageUrls = [...uploadedImageUrls];
       for (let index = uploadedReferenceCount; index < selectedFiles.length; index += 1) {
-        await uploadReferenceMutation.mutateAsync({
+        const uploaded = await uploadReferenceMutation.mutateAsync({
           file: selectedFiles[index].originalFile,
           projectId: newProjectId,
         });
+        imageUrls.push(uploaded.storage_url);
+        setUploadedImageUrls([...imageUrls]);
         setUploadedReferenceCount(index + 1);
+      }
+
+      // GET /projects/{id} only returns what is stored on the project itself,
+      // so attach the uploaded Cloudinary URLs to it as referenceImages.
+      if (imageUrls.length > 0) {
+        try {
+          await updateProjectMutation.mutateAsync({
+            projectId: newProjectId,
+            input: { referenceImages: imageUrls },
+          });
+        } catch (attachError) {
+          setSubmissionError(
+            'Your project was created and the images uploaded, but the images could not be attached to the project. Please try again.'
+          );
+          return;
+        }
       }
 
       setCreatedProjectId(null);
       setUploadedReferenceCount(0);
+      setUploadedImageUrls([]);
       router.push('/fashion-designers/my-projects?created=true');
     } catch (error) {
       if (newProjectId) {
@@ -241,7 +264,9 @@ const PostProjectForm = () => {
 
       {/* Desktop Header */}
       <div className='hidden lg:flex items-center gap-3 mb-6'>
-        <p className='font-bold text-2xl'>{isEditMode ? 'Edit Project' : 'Post a Project'}</p>
+        <p className='font-bold text-2xl'>
+          {isEditMode ? 'Edit Project' : 'Post a Project'}
+        </p>
       </div>
 
       <Card
@@ -314,7 +339,9 @@ const PostProjectForm = () => {
               disabled={isLocked}
             />
 
-            {isApiEditMode && <ProjectStatusField control={control} disabled={isLocked} />}
+            {isApiEditMode && (
+              <ProjectStatusField control={control} disabled={isLocked} />
+            )}
 
             <TimeframeFields
               control={control}
