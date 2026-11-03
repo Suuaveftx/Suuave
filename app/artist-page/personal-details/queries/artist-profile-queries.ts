@@ -3,7 +3,7 @@ import {
   deleteArtistCertification,
   getArtistProfile,
   updateArtistProfile,
-  updateArtistProfileImage,
+  updateGeneralArtistProfile,
   uploadProfileFile,
 } from '../api/artist-profile';
 import { ProfileUpdateRequestType } from '../types/profile-types';
@@ -33,10 +33,20 @@ export function useUpdateArtistProfile() {
   });
 }
 
+export function useUpdateGeneralArtistProfile() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateGeneralArtistProfile,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: artistProfileQueryKey });
+    },
+  });
+}
+
 export function useUpdateArtistProfileImage() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: updateArtistProfileImage,
+    mutationFn: updateGeneralArtistProfile,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: artistProfileQueryKey });
     },

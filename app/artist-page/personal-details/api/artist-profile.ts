@@ -2,6 +2,7 @@ import { apiClient } from '@/lib/axios';
 import {
   ArtistProfileInfoResponse,
   FileUploadType,
+  GeneralProfileUpdatePayload,
   ProfileUpdateRequestType,
   ResponseData,
 } from '../types/profile-types';
@@ -49,12 +50,13 @@ export async function updateArtistProfile(
   return res.data;
 }
 
-export async function updateArtistProfileImage(
-  image: string
+export async function updateGeneralArtistProfile(
+  payload: GeneralProfileUpdatePayload
 ): Promise<ResponseData<ArtistProfileInfoResponse>> {
-  const res = await apiClient.patch<ResponseData<ArtistProfileInfoResponse>>('/profile', {
-    image,
-  });
+  const res = await apiClient.patch<ResponseData<ArtistProfileInfoResponse>>(
+    '/profile',
+    payload
+  );
   return res.data;
 }
 

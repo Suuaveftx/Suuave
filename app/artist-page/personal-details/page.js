@@ -117,14 +117,6 @@ export default function Page() {
     const file = e.target.files?.[0];
     e.target.value = '';
     if (!file || !profile?.id) return;
-    if (!file.type.startsWith('image/')) {
-      addToast({
-        title: 'Unsupported file',
-        description: 'Please select an image for your profile photo.',
-        color: 'danger',
-      });
-      return;
-    }
 
     const previousPreview = preview;
     const localPreview = URL.createObjectURL(file);
@@ -138,7 +130,7 @@ export default function Page() {
         fileableId: profile.id,
       });
       uploadComplete = true;
-      await updateImageMutation.mutateAsync(uploadedFile.storage_url);
+      await updateImageMutation.mutateAsync({ image: uploadedFile.storage_url });
       setPreview(uploadedFile.storage_url);
       addToast({
         title: 'Profile photo uploaded',
@@ -257,6 +249,7 @@ export default function Page() {
               handleImageChange={handleImageChange}
               isUploadingImage={isSavingImage}
               hoveredField={hoveredField}
+              profileImage={profile?.user?.image}
             />
 
             {/* Conditionally show content */}
@@ -273,6 +266,7 @@ export default function Page() {
                     handleImageChange={handleImageChange}
                     isUploadingImage={isSavingImage}
                     hoveredField={hoveredField}
+                    profileImage={profile?.user?.image}
                   />
                   <PersonalDetail
                     setSelected={setSelected}
