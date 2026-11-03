@@ -30,6 +30,24 @@ import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { useDeleteProject, useProjects } from '@/app/projects/queries/projects.queries';
 import { getProjectApiErrorMessage } from '@/app/projects/api/projects';
 
+// API status -> the label/colour the template shows ("Active" in green, ...)
+const STATUS_STYLES = {
+  open: { label: 'Active', color: 'text-[#056D16]' },
+  in_progress: { label: 'In progress', color: 'text-[#035A7A]' },
+  completed: { label: 'Completed', color: 'text-[#767676]' },
+  cancelled: { label: 'Cancelled', color: 'text-[#B42318]' },
+};
+
+const getStatus = (status) =>
+  STATUS_STYLES[status] ?? {
+    label: String(status ?? '').replace(/_/g, ' '),
+    color: 'text-[#767676]',
+  };
+
+// The projects API does not return a hired count yet; show "—" until it does
+// (template field name is `hired`).
+const getHiredCount = (project) => project.hiredCount ?? project.hired ?? '0';
+
 const MyProjects = () => {
   const router = useRouter();
   const pathname = usePathname();
@@ -254,6 +272,16 @@ const MyProjects = () => {
                               </span>
                             </div>
 
+                            {/* Hired badge for desktop */}
+                            <div className='flex gap-2 items-center border border-[#E1E1E1] rounded-full px-4 sm:px-5 py-1.5 bg-white'>
+                              <span className='text-[#767676] font-semibold text-sm sm:text-md'>
+                                {getHiredCount(project)}
+                              </span>
+                              <span className='text-[#767676] text-xs sm:text-sm'>
+                                Hired
+                              </span>
+                            </div>
+
                             <div
                               onClick={(e) => e.stopPropagation()}
                               className='shrink-0'
@@ -313,8 +341,10 @@ const MyProjects = () => {
 
                           <div className='flex items-center gap-2 text-md'>
                             <span className='text-[#222222]'>Status :</span>
-                            <span className='text-[#056D16] font-medium'>
-                              {project.status}
+                            <span
+                              className={`${getStatus(project.status).color} font-medium`}
+                            >
+                              {getStatus(project.status).label}
                             </span>
                           </div>
                           <div className='flex items-center gap-2 text-md'>
@@ -421,13 +451,22 @@ const MyProjects = () => {
 
                           <div className='flex justify-between items-center text-[15px]'>
                             <span className='text-[#767676]'>Job Status :</span>
-                            <span className='text-[#056D16]'>{project.status}</span>
+                            <span className={getStatus(project.status).color}>
+                              {getStatus(project.status).label}
+                            </span>
                           </div>
 
                           <div className='flex justify-between items-center text-[15px]'>
                             <span className='text-[#767676]'>Proposals</span>
                             <span className='text-[#3A98BB] font-medium'>
                               {project.proposalsCount ?? '—'}
+                            </span>
+                          </div>
+
+                          <div className='flex justify-between items-center text-[15px]'>
+                            <span className='text-[#767676]'>Hired</span>
+                            <span className='text-[#222222] font-medium'>
+                              {getHiredCount(project)}
                             </span>
                           </div>
 
