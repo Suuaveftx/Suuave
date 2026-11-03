@@ -4,9 +4,6 @@ import {
   Navbar,
   NavbarContent,
   NavbarItem,
-  NavbarMenuToggle,
-  NavbarMenuItem,
-  NavbarMenu,
   NavbarBrand,
   Dropdown,
   DropdownTrigger,
@@ -14,6 +11,7 @@ import {
   DropdownItem,
   Avatar,
   Button,
+  Skeleton,
 } from '@heroui/react';
 import { FaEnvelope } from 'react-icons/fa';
 import React, { useState } from 'react';
@@ -23,10 +21,7 @@ import CustomButton from './CustomButton';
 import { TourContext } from './tour/TourContext';
 import {
   ChevronDown,
-  Bell,
   CreditCard,
-  Mail,
-  Lock,
   User as UserIcon,
   Settings,
   HelpCircle,
@@ -40,12 +35,15 @@ import Image from 'next/image';
 import Notification from './Notification';
 import { signOut } from '../app/actions/services';
 import PageContainer from './layout/PageContainer';
+import { useGetArtistProfile } from '@/app/artist-page/personal-details/queries/artist-profile-queries';
 
 const ArtistNavbar = () => {
   const [textStyle, setTextStyle] = useState('font-bold text-[#222222]');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const { data, isLoading: loadingProfile } = useGetArtistProfile();
+  const profileImage = data?.data?.user?.image;
 
   // ── Tour context: auto-open hamburger for cross-page mobile steps ──
   const tourCtx = React.useContext(TourContext);
@@ -58,13 +56,17 @@ const ArtistNavbar = () => {
     const currentStep = steps[stepIndex];
     if (!currentStep) return;
 
-    const isActuallyMobile = tourIsMobile ?? (typeof window !== 'undefined' && window.innerWidth < 640);
+    const isActuallyMobile =
+      tourIsMobile ?? (typeof window !== 'undefined' && window.innerWidth < 640);
     if (!isActuallyMobile) return;
 
     const needsMenu =
-      (currentStep.id === 'artist-mobile-proposals' && !isActive('/artist-page/my-proposals')) ||
-      (currentStep.id === 'artist-mobile-contracts' && !isActive('/artist-page/my-contracts')) ||
-      (currentStep.id === 'artist-mobile-opportunities' && !isActive('/artist-page/project-page'));
+      (currentStep.id === 'artist-mobile-proposals' &&
+        !isActive('/artist-page/my-proposals')) ||
+      (currentStep.id === 'artist-mobile-contracts' &&
+        !isActive('/artist-page/my-contracts')) ||
+      (currentStep.id === 'artist-mobile-opportunities' &&
+        !isActive('/artist-page/project-page'));
 
     if (needsMenu) {
       // Scroll to top first so the navbar is visible, then open the menu.
@@ -72,7 +74,12 @@ const ArtistNavbar = () => {
       // Short delay so scroll completes before drawer opens
       setTimeout(() => setIsMenuOpen(true), 200);
     } else if (
-      ['artist-mobile-messages', 'artist-mobile-notifications', 'artist-mobile-account', 'artist-mobile-navigation'].includes(currentStep.id)
+      [
+        'artist-mobile-messages',
+        'artist-mobile-notifications',
+        'artist-mobile-account',
+        'artist-mobile-navigation',
+      ].includes(currentStep.id)
     ) {
       setIsMenuOpen(false);
     }
@@ -143,7 +150,7 @@ const ArtistNavbar = () => {
         className='w-full bg-[#CCE7F2] font-satoshi border-b border-gray-200 h-[80px]'
         classNames={{ wrapper: 'w-full max-w-full px-0 h-full' }}
       >
-        <PageContainer className="flex items-center justify-between w-full h-full">
+        <PageContainer className='flex items-center justify-between w-full h-full'>
           {/* LOGO */}
           <NavbarBrand>
             <div className='flex items-center gap-3'>
@@ -174,18 +181,27 @@ const ArtistNavbar = () => {
 
           {/* DESKTOP MENU */}
           <NavbarContent className='hidden sm:flex h-full flex-1' justify='start'>
-            <div data-tour="artist-navigation" className='flex h-full items-center gap-4 xl:gap-9'>
+            <div
+              data-tour='artist-navigation'
+              className='flex h-full items-center gap-4 xl:gap-9'
+            >
               {menuItems.map((item, index) => {
                 const navLink = (
                   <NavbarItem key={`link-${index}`} className='h-full flex items-center'>
                     <Link
                       data-tour={
                         item.label === 'Jobs'
-                          ? (!isActive(item.href) ? 'artist-opportunities-nav' : undefined)
+                          ? !isActive(item.href)
+                            ? 'artist-opportunities-nav'
+                            : undefined
                           : item.label === 'My Proposals'
-                            ? (!isActive(item.href) ? 'artist-proposals-nav' : undefined)
+                            ? !isActive(item.href)
+                              ? 'artist-proposals-nav'
+                              : undefined
                             : item.label === 'My Contracts'
-                              ? (!isActive(item.href) ? 'artist-contracts-nav' : undefined)
+                              ? !isActive(item.href)
+                                ? 'artist-contracts-nav'
+                                : undefined
                               : undefined
                       }
                       href={item.href}
@@ -212,7 +228,10 @@ const ArtistNavbar = () => {
 
                 if (index === menuItems.length - 1) {
                   return (
-                    <div key={`group-${index}`} className="flex h-full items-center gap-[8px]">
+                    <div
+                      key={`group-${index}`}
+                      className='flex h-full items-center gap-[8px]'
+                    >
                       {navLink}
                       <NavbarItem className='hidden lg:flex h-full items-center ml-[64px]'>
                         <CustomButton
@@ -230,7 +249,6 @@ const ArtistNavbar = () => {
           </NavbarContent>
 
           <NavbarContent justify='end' className='gap-3 sm:gap-6'>
-
             <NavbarItem className='flex'>
               <Notification />
             </NavbarItem>
@@ -238,9 +256,9 @@ const ArtistNavbar = () => {
             {/* MESSAGES */}
             <NavbarItem className='flex'>
               <Link
-                id="artist-mobile-messages-tour"
-                data-tour="artist-messages"
-                aria-label="Open messages"
+                id='artist-mobile-messages-tour'
+                data-tour='artist-messages'
+                aria-label='Open messages'
                 href='/artist-page/messages'
               >
                 <Button
@@ -260,15 +278,20 @@ const ArtistNavbar = () => {
               <Dropdown shouldBlockScroll={false}>
                 <DropdownTrigger>
                   <button
-                    id="artist-mobile-account-tour"
-                    data-tour="artist-account"
-                    aria-label="Open account menu"
+                    id='artist-mobile-account-tour'
+                    data-tour='artist-account'
+                    aria-label='Open account menu'
                     className='flex items-center gap-2 outline-none bg-transparent border-none cursor-pointer p-0'
                   >
-                    <Avatar
-                      src='/dev-images/Avatar.png'
-                      className='w-10 h-10 rounded-full border border-gray-200'
-                    />
+                    {loadingProfile ? (
+                      <Skeleton className='w-10 h-10 rounded-full !bg-[#AFC8D0] before:!via-white/70 border border-gray-200' />
+                    ) : (
+                      <Avatar
+                        src={profileImage}
+                        className='w-10 h-10 rounded-full border border-gray-200'
+                      />
+                    )}
+
                     <ChevronDown className='w-4 h-4 text-gray-600 flex-shrink-0' />
                   </button>
                 </DropdownTrigger>
@@ -320,7 +343,7 @@ const ArtistNavbar = () => {
 
             {/* MOBILE HAMBURGER */}
             <button
-              id="artist-mobile-navigation-tour"
+              id='artist-mobile-navigation-tour'
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
               className='sm:hidden flex items-center justify-center border border-gray-200 rounded-full p-2 h-10 w-10 text-gray-600 bg-white z-[9999]'
               onClick={(e) => {
@@ -329,25 +352,36 @@ const ArtistNavbar = () => {
                 setIsMenuOpen(!isMenuOpen);
               }}
             >
-              <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+              <svg
+                className='w-5 h-5 flex-shrink-0'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d={isMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
+                />
               </svg>
             </button>
           </NavbarContent>
         </PageContainer>
-
       </Navbar>
 
       {/* MOBILE MENU */}
       {isMenuOpen && (
-        <div className="NavbarMenu fixed inset-x-0 top-[80px] bottom-0 z-[9999] bg-[#CCE7F2] pt-8 px-6 sm:hidden flex flex-col gap-6 overflow-y-auto shadow-xl">
+        <div className='NavbarMenu fixed inset-x-0 top-[80px] bottom-0 z-[9999] bg-[#CCE7F2] pt-8 px-6 sm:hidden flex flex-col gap-6 overflow-y-auto shadow-xl'>
           {mobileMenuItems.map((item, index) => {
             const Icon = item.icon;
 
             let mobileLinkId;
             if (item.label === 'Jobs') mobileLinkId = 'artist-mobile-opportunities-nav';
-            if (item.label === 'My Proposals') mobileLinkId = 'artist-mobile-proposals-nav';
-            if (item.label === 'My Contracts') mobileLinkId = 'artist-mobile-contracts-nav';
+            if (item.label === 'My Proposals')
+              mobileLinkId = 'artist-mobile-proposals-nav';
+            if (item.label === 'My Contracts')
+              mobileLinkId = 'artist-mobile-contracts-nav';
 
             return (
               <Link
@@ -357,7 +391,7 @@ const ArtistNavbar = () => {
                 href={item.href}
                 onClick={() => setIsMenuOpen(false)}
               >
-                {Icon && <Icon className="w-6 h-6 text-[#888888]" />}
+                {Icon && <Icon className='w-6 h-6 text-[#888888]' />}
                 {item.label}
               </Link>
             );
