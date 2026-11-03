@@ -404,12 +404,20 @@ const AwardsCertification = ({
       </section>
 
       <ConfirmDeleteModal
-        deleteModal={deleteModal}
-        deleteMutation={deleteMutation}
-        pendingRemovalIndex={pendingRemovalIndex}
-        setPendingRemovalIndex={setPendingRemovalIndex}
-        getValues={getValues}
-        confirmRemoveCertification={confirmRemoveCertification}
+        isOpen={deleteModal.isOpen}
+        onOpenChange={(isOpen) => {
+          deleteModal.onOpenChange(isOpen);
+          if (!isOpen) setPendingRemovalIndex(null);
+        }}
+        title='Remove certification?'
+        message={
+          pendingRemovalIndex !== null &&
+          getValues(`awards.${pendingRemovalIndex}.id`)
+            ? 'This certification will be permanently removed from your profile.'
+            : 'This unsaved certification will be removed.'
+        }
+        isLoading={deleteMutation.isPending}
+        onConfirm={confirmRemoveCertification}
       />
     </div>
   );
