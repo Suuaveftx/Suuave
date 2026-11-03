@@ -109,6 +109,7 @@ export type UpdateProjectRequest = {
   description?: string;
   budget?: number;
   status?: ProjectStatus;
+  referenceImages?: string[];
 };
 
 export type DeleteProjectResponse = ProjectApiResponse<{

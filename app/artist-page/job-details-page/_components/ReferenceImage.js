@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { Paperclip } from 'lucide-react';
 
 // Set to false once the images show up.
@@ -37,12 +37,48 @@ const normalize = (item) => {
 // project whose items all look like files / image URLs.
 export const collectAttachments = (project) => {
   const items = Object.values(project || {})
-    .filter(
-      (value) => Array.isArray(value) && value.length > 0 && value.every(looksLikeFile)
-    )
+    .filter((value) => Array.isArray(value) && value.length > 0 && value.every(looksLikeFile))
     .flat();
   const seen = new Set();
-  return items.map(normalize).filter((a) => a && !seen.has(a.url) && seen.add(a.url));
+  return items
+    .map(normalize)
+    .filter((a) => a && !seen.has(a.url) && seen.add(a.url));
+};
+
+// One thumbnail. If the browser cannot load the image (blocked by a
+// Content-Security-Policy, bad URL, network...), show a visible fallback
+// with a link instead of an invisible broken image.
+const Thumb = ({ file }) => {
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <a
+      href={file.url}
+      target='_blank'
+      rel='noreferrer'
+      className='overflow-hidden rounded-xl border border-[#EAEAEA] bg-white'
+    >
+      {failed ? (
+        <div className='flex aspect-square w-full flex-col items-center justify-center gap-1 p-3 text-center'>
+          <span className='text-xs font-medium text-[#B42318]'>Image could not be loaded</span>
+          <span className='text-xs text-[#035A7A] underline'>Open image</span>
+        </div>
+      ) : (
+        <img
+          src={file.url}
+          alt={file.name}
+          loading='lazy'
+          referrerPolicy='no-referrer'
+          onError={() => {
+            // eslint-disable-next-line no-console
+            console.warn('[ReferenceImage] image failed to load:', file.url);
+            setFailed(true);
+          }}
+          className='aspect-square w-full object-cover'
+        />
+      )}
+    </a>
+  );
 };
 
 const ReferenceImage = ({ project }) => {
@@ -55,23 +91,15 @@ const ReferenceImage = ({ project }) => {
     console.log('[ReferenceImage] attachments found:', attachments);
   }
 
-  if (attachments.length === 0) return null;
+  const emptyMessage = (
+    <p className='text-sm text-[#767676]'>
+      No reference images were uploaded for this project.
+    </p>
+  );
 
   const renderItem = (file, desktop) =>
     file.isImage ? (
-      <a
-        key={file.url}
-        href={file.url}
-        target='_blank'
-        rel='noreferrer'
-        className='overflow-hidden rounded-xl border border-[#EAEAEA] bg-white'
-      >
-        <img
-          src={file.url}
-          alt={file.name}
-          className='aspect-square w-full object-cover'
-        />
-      </a>
+      <Thumb key={file.url} file={file} />
     ) : (
       <a
         key={file.url}
@@ -84,14 +112,8 @@ const ReferenceImage = ({ project }) => {
             : 'flex items-center gap-3'
         }
       >
-        <div
-          className={
-            desktop ? 'bg-[#CCE7F2] p-3 rounded-xl' : 'bg-[#E7F3F8] p-2.5 rounded-xl'
-          }
-        >
-          <Paperclip
-            className={desktop ? 'w-6 h-6 text-[#035A7A]' : 'w-5 h-5 text-[#146C94]'}
-          />
+        <div className={desktop ? 'bg-[#CCE7F2] p-3 rounded-xl' : 'bg-[#E7F3F8] p-2.5 rounded-xl'}>
+          <Paperclip className={desktop ? 'w-6 h-6 text-[#035A7A]' : 'w-5 h-5 text-[#146C94]'} />
         </div>
         <span
           className={
@@ -111,18 +133,26 @@ const ReferenceImage = ({ project }) => {
       <div className='lg:hidden mt-4'>
         <h4 className='font-bold text-[15px] text-[#2E2E2E] mb-3'>Reference Image</h4>
         <div className='bg-white rounded-[18px] p-5 border border-[#ECECEC] shadow-[0_1px_8px_rgba(0,0,0,0.04)] mb-4'>
-          <div className='grid grid-cols-2 gap-3'>
-            {attachments.map((file) => renderItem(file, false))}
-          </div>
+          {attachments.length === 0 ? (
+            emptyMessage
+          ) : (
+            <div className='grid grid-cols-2 gap-3'>
+              {attachments.map((file) => renderItem(file, false))}
+            </div>
+          )}
         </div>
       </div>
 
       {/* Desktop View */}
       <div className='hidden lg:block w-full bg-[#FAFAFA] border border-[#EAEAEA] px-8 py-6 mt-4 rounded-2xl'>
         <h4 className='font-bold text-[22px] text-[#222222] mb-4'>Reference Image</h4>
-        <div className='mt-4 grid grid-cols-3 gap-4 xl:grid-cols-4'>
-          {attachments.map((file) => renderItem(file, true))}
-        </div>
+        {attachments.length === 0 ? (
+          emptyMessage
+        ) : (
+          <div className='mt-4 grid grid-cols-3 gap-4 xl:grid-cols-4'>
+            {attachments.map((file) => renderItem(file, true))}
+          </div>
+        )}
       </div>
     </>
   );
