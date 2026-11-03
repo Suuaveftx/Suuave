@@ -14,6 +14,7 @@ import {
 } from './queries/artist-profile-queries';
 import ProfileSettingsSkeleton from './_components/ProfileSettingSkeleton';
 import { getErrorMessage } from '../../../utils/utils';
+import ProfileError from '../profile-for-artist/_components/ProfileError';
 
 const getSelectedValue = (value) => {
   if (value instanceof Set) return Array.from(value)[0] || '';
@@ -215,19 +216,7 @@ export default function Page() {
   if (isLoading || (profile && !profileReady)) return <ProfileSettingsSkeleton />;
 
   if (isError || !profile) {
-    return (
-      <div className='min-h-screen bg-[#DBDBDB]/30 px-5 py-10 md:px-10'>
-        <div className='mx-auto max-w-3xl rounded-2xl border border-[#DEDEDE] bg-[#FAFAFA] p-6'>
-          <h1 className='text-xl font-semibold text-[#222222]'>
-            Unable to load your profile
-          </h1>
-          <p role='alert' className='mt-2 text-sm text-danger'>
-            {error?.message ||
-              'The profile response did not contain any profile data. Please try again.'}
-          </p>
-        </div>
-      </div>
-    );
+    return <ProfileError error={error} />;
   }
 
   return (
