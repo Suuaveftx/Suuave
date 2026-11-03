@@ -96,3 +96,9 @@ export type GeneralProfileUpdatePayload = {
   portfolioFiles?: string[];
   image?: string;
 };
+
+export type ArtistCertificationPayload = {
+  name: string;
+  issuingOrganization: string;
+  documentUrl: string;
+};

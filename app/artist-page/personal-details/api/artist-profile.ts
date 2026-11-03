@@ -1,5 +1,6 @@
 import { apiClient } from '@/lib/axios';
 import {
+  ArtistCertificationPayload,
   ArtistProfileInfoResponse,
   FileUploadType,
   GeneralProfileUpdatePayload,
@@ -62,4 +63,14 @@ export async function updateGeneralArtistProfile(
 
 export async function deleteArtistCertification(id: string): Promise<void> {
   await apiClient.delete(`/profile/certifications/${encodeURIComponent(id)}`);
+}
+
+export async function addArtistCertification(
+  payload: ArtistCertificationPayload
+): Promise<ResponseData<ArtistProfileInfoResponse>> {
+  const res = await apiClient.post<ResponseData<ArtistProfileInfoResponse>>(
+    `/profile/certifications`,
+    payload
+  );
+  return res.data;
 }

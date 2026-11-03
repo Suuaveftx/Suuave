@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  addArtistCertification,
   deleteArtistCertification,
   getArtistProfile,
   updateArtistProfile,
@@ -27,6 +28,26 @@ export function useUpdateArtistProfile() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (payload: ProfileUpdateRequestType) => updateArtistProfile(payload),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: artistProfileQueryKey });
+    },
+  });
+}
+
+export function useAddArtistCertification() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateArtistProfile,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: artistProfileQueryKey });
+    },
+  });
+}
+
+export function useAddNewArtistAward() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: addArtistCertification,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: artistProfileQueryKey });
     },
