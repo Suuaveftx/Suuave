@@ -1,15 +1,13 @@
 'use client';
 import React from 'react';
-import Link from 'next/link';
 import { LoaderCircle, Pencil } from 'lucide-react';
 import { FaStar } from 'react-icons/fa';
 import { IoLocationSharp } from 'react-icons/io5';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import EditOccupationModal from './EditOccupationModal';
 import EditAboutModal from './EditAboutModal';
 import {
-  useGetArtistProfile,
   useUpdateArtistProfileImage,
   useUpdateGeneralArtistProfile,
   useUploadProfileFile,
@@ -18,8 +16,7 @@ import { addToast, Avatar } from '@heroui/react';
 import ProfileSkeleton from './ProfileSkeleton';
 import { getErrorMessage } from '../../../../utils/utils';
 
-const ProfileArtist = ({ isVisitor = false }) => {
-  const { data, isLoading: loadingArtistProfile } = useGetArtistProfile();
+const ProfileArtist = ({ isVisitor = false, data, loadingArtistProfile }) => {
   const { mutateAsync: uploadFile } = useUploadProfileFile();
   const { mutateAsync: updateProfileImage } = useUpdateArtistProfileImage();
   const { mutateAsync: updateGeneralProfile, isPending: updatingGeneralProfile } =
