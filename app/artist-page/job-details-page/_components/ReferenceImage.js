@@ -1,81 +1,161 @@
-"use client";
-import React from "react";
-import { Paperclip } from "lucide-react";
-import { useAppStore } from "@/store";
+'use client';
+import React, { useState } from 'react';
+import { Paperclip } from 'lucide-react';
 
-const ReferenceImage = ({ jobId }) => {
-    const [hasReference, setHasReference] = React.useState(false);
-    const [attachments, setAttachments] = React.useState([]);
+// Set to false once the images show up.
+const DEBUG_REFERENCES = true;
 
-    const { projects } = useAppStore();
+const IMAGE_EXT = /\.(avif|gif|jpe?g|png|webp)(\?.*)?$/i;
 
-    React.useEffect(() => {
-        // Get the most recently posted project
-        const postedProject = projects.length > 0 ? projects[projects.length - 1] : null;
+// The backend currently returns a generated Gravatar identicon as a placeholder
+// when a project has no real uploads. It is not a designer upload, so skip it.
+const isPlaceholder = (url) => /gravatar\.com/i.test(url);
 
-        // Always show for job-0, using posted data if available, otherwise default
-        if (jobId === 'job-0') {
-            setHasReference(true);
-            if (postedProject && postedProject.referenceImg) {
-                setAttachments([
-                    { name: postedProject.referenceImg, size: "N/A" }
-                ]);
-            } else {
-                setAttachments([
-                    { name: "Style-Reference.png", size: "2.4 MB" },
-                    { name: "Moodboard_v2.pdf", size: "1.8 MB" }
-                ]);
-            }
-        } else {
-            setHasReference(false);
+const looksLikeFile = (item) =>
+  typeof item === 'string'
+    ? /^https?:\/\//.test(item)
+    : Boolean(item && (item.storage_url || item.url));
+
+const normalize = (item) => {
+  if (!item) return null;
+  if (typeof item === 'string') {
+    return /^https?:\/\//.test(item) && !isPlaceholder(item)
+      ? { url: item, name: 'Project reference', isImage: true }
+      : null;
+  }
+  const url = item.storage_url || item.url;
+  if (!url || isPlaceholder(url)) return null;
+  return {
+    url,
+    name: item.original_filename || item.filename || 'Project reference',
+    isImage: (item.content_type || '').startsWith('image/') || IMAGE_EXT.test(url),
+  };
+};
+
+// Finds the uploaded files whatever the backend calls the field
+// (files, referenceImages, images, attachments, ...): any array on the
+// project whose items all look like files / image URLs.
+export const collectAttachments = (project) => {
+  const items = Object.values(project || {})
+    .filter((value) => Array.isArray(value) && value.length > 0 && value.every(looksLikeFile))
+    .flat();
+  const seen = new Set();
+  return items
+    .map(normalize)
+    .filter((a) => a && !seen.has(a.url) && seen.add(a.url));
+};
+
+// One thumbnail. If the browser cannot load the image (blocked by a
+// Content-Security-Policy, bad URL, network...), show a visible fallback
+// with a link instead of an invisible broken image.
+const Thumb = ({ file }) => {
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <a
+      href={file.url}
+      target='_blank'
+      rel='noreferrer'
+      className='overflow-hidden rounded-xl border border-[#EAEAEA] bg-white'
+    >
+      {failed ? (
+        <div className='flex aspect-square w-full flex-col items-center justify-center gap-1 p-3 text-center'>
+          <span className='text-xs font-medium text-[#B42318]'>Image could not be loaded</span>
+          <span className='text-xs text-[#035A7A] underline'>Open image</span>
+        </div>
+      ) : (
+        <img
+          src={file.url}
+          alt={file.name}
+          loading='lazy'
+          referrerPolicy='no-referrer'
+          onError={() => {
+            // eslint-disable-next-line no-console
+            console.warn('[ReferenceImage] image failed to load:', file.url);
+            setFailed(true);
+          }}
+          className='aspect-square w-full object-cover'
+        />
+      )}
+    </a>
+  );
+};
+
+const ReferenceImage = ({ project }) => {
+  const attachments = collectAttachments(project);
+
+  if (DEBUG_REFERENCES) {
+    // eslint-disable-next-line no-console
+    console.log('[ReferenceImage] project keys:', Object.keys(project || {}));
+    // eslint-disable-next-line no-console
+    console.log('[ReferenceImage] attachments found:', attachments);
+  }
+
+  const emptyMessage = (
+    <p className='text-sm text-[#767676]'>
+      No reference images were uploaded for this project.
+    </p>
+  );
+
+  const renderItem = (file, desktop) =>
+    file.isImage ? (
+      <Thumb key={file.url} file={file} />
+    ) : (
+      <a
+        key={file.url}
+        href={file.url}
+        target='_blank'
+        rel='noreferrer'
+        className={
+          desktop
+            ? 'flex items-center gap-3 bg-white p-4 rounded-xl border border-[#EAEAEA]'
+            : 'flex items-center gap-3'
         }
-    }, [jobId, projects]);
-
-    if (!hasReference) return null;
-
-    return (
-        <>
-            {/* Mobile View */}
-            <div className="lg:hidden mt-4">
-                <h4 className="font-bold text-[15px] text-[#2E2E2E] mb-3">Reference Image</h4>
-                <div className="bg-white rounded-[18px] p-5 border border-[#ECECEC] shadow-[0_1px_8px_rgba(0,0,0,0.04)] mb-4">
-                    <div className="space-y-4">
-                        {attachments.map((file, index) => (
-                            <div key={index} className="flex items-center gap-3">
-                                <div className="bg-[#E7F3F8] p-2.5 rounded-xl">
-                                    <Paperclip className="w-5 h-5 text-[#146C94]" />
-                                </div>
-                                <div className="flex flex-col">
-                                    <span className="text-[14px] font-medium text-[#2E2E2E]">{file.name}</span>
-                                    <span className="text-[13px] text-[#757575]">{file.size}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Desktop View */}
-            <div className="hidden lg:block w-full bg-[#FAFAFA] border border-[#EAEAEA] px-8 py-6 mt-4 rounded-2xl">
-                <h4 className="font-bold text-[22px] text-[#222222] mb-4">Reference Image</h4>
-                <div className="mt-4">
-                    <div className="flex gap-6">
-                        {attachments.map((file, index) => (
-                            <div key={index} className="flex items-center gap-3 bg-white p-4 rounded-xl border border-[#EAEAEA] min-w-[240px]">
-                                <div className="bg-[#CCE7F2] p-3 rounded-xl">
-                                    <Paperclip className="w-6 h-6 text-[#035A7A]" />
-                                </div>
-                                <div className="flex flex-col">
-                                    <span className="text-base font-medium text-[#222222]">{file.name}</span>
-                                    <span className="text-sm text-[#767676]">{file.size}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </>
+      >
+        <div className={desktop ? 'bg-[#CCE7F2] p-3 rounded-xl' : 'bg-[#E7F3F8] p-2.5 rounded-xl'}>
+          <Paperclip className={desktop ? 'w-6 h-6 text-[#035A7A]' : 'w-5 h-5 text-[#146C94]'} />
+        </div>
+        <span
+          className={
+            desktop
+              ? 'text-base font-medium text-[#222222] truncate'
+              : 'text-[14px] font-medium text-[#2E2E2E] truncate'
+          }
+        >
+          {file.name}
+        </span>
+      </a>
     );
+
+  return (
+    <>
+      {/* Mobile View */}
+      <div className='lg:hidden mt-4'>
+        <h4 className='font-bold text-[15px] text-[#2E2E2E] mb-3'>Reference Image</h4>
+        <div className='bg-white rounded-[18px] p-5 border border-[#ECECEC] shadow-[0_1px_8px_rgba(0,0,0,0.04)] mb-4'>
+          {attachments.length === 0 ? (
+            emptyMessage
+          ) : (
+            <div className='grid grid-cols-2 gap-3'>
+              {attachments.map((file) => renderItem(file, false))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Desktop View */}
+      <div className='hidden lg:block w-full bg-[#FAFAFA] border border-[#EAEAEA] px-8 py-6 mt-4 rounded-2xl'>
+        <h4 className='font-bold text-[22px] text-[#222222] mb-4'>Reference Image</h4>
+        {attachments.length === 0 ? (
+          emptyMessage
+        ) : (
+          <div className='mt-4 grid grid-cols-3 gap-4 xl:grid-cols-4'>
+            {attachments.map((file) => renderItem(file, true))}
+          </div>
+        )}
+      </div>
+    </>
+  );
 };
 
 export default ReferenceImage;

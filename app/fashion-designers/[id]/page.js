@@ -98,6 +98,7 @@ const ProductDetails = ({ params }) => {
 
   const [copied, setCopied] = useState(false);
   const [isLicenseOpen, setIsLicenseOpen] = useState(false);
+  const [showFullDescription, setShowFullDescription] = useState(false);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
 
@@ -225,9 +226,16 @@ const ProductDetails = ({ params }) => {
                 </div>
               </div>
               <CardBody className="p-0">
-                <p className="text-[13px] text-gray-600 leading-relaxed mb-6">
+                <p className={`text-[13px] text-gray-600 leading-relaxed mb-2 ${showFullDescription ? '' : 'line-clamp-4'}`}>
                   {product.description}
                 </p>
+                <button
+                  type="button"
+                  onClick={() => setShowFullDescription((current) => !current)}
+                  className="mb-6 text-sm font-semibold text-[#3A98BB] hover:underline"
+                >
+                  {showFullDescription ? 'Read less' : 'Read more'}
+                </button>
                 <div className="flex flex-wrap gap-3">
                   {product.tags.map((tag, i) => (
                     <Chip key={i} radius="full" size="sm" variant="flat" className="bg-gray-100 text-gray-800 text-[11px] px-2 h-6">
@@ -618,9 +626,16 @@ const ProductDetails = ({ params }) => {
           {/* Description */}
           <div className="px-4 mt-5 font-satoshi">
             <h3 className="font-bold text-[15px] text-[#222222] mb-[10px]">Description</h3>
-            <p className="text-[13px] text-[#767676] leading-[22px] tracking-[0.1px] mb-[18px]">
-              Yorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis.
+            <p className={`text-[13px] text-[#767676] leading-[22px] tracking-[0.1px] mb-2 ${showFullDescription ? '' : 'line-clamp-3'}`}>
+              {product.description}
             </p>
+            <button
+              type="button"
+              onClick={() => setShowFullDescription((current) => !current)}
+              className="mb-[18px] text-sm font-semibold text-[#3A98BB] hover:underline"
+            >
+              {showFullDescription ? 'Read less' : 'Read more'}
+            </button>
             <div className="flex flex-wrap gap-[10px]">
               {product.tags.map((tag, i) => (
                 <div key={i} className="bg-[#F2F2F2] px-4 py-[6px] rounded-md text-[12px] text-[#555555]">
@@ -764,5 +779,4 @@ function MobileLicenseAccordion({ hasCrown }) {
 }
 
 export default ProductDetails;
-
 
