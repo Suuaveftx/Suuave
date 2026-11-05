@@ -10,7 +10,7 @@ import ProfileError from './_components/ProfileError';
 export default function AppContainer() {
   const { data, isLoading: loadingArtistProfile, isError, error } = useGetArtistProfile();
 
-  if (isError || !data?.data) {
+  if (isError) {
     return <ProfileError error={error} />;
   }
 

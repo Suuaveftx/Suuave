@@ -2,7 +2,14 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Eye, LoaderCircle, Trash2, UploadCloudIcon } from 'lucide-react';
+import {
+  Eye,
+  FileIcon,
+  LoaderCircle,
+  Trash2,
+  UploadCloudIcon,
+  XCircleIcon,
+} from 'lucide-react';
 import { Paperclip } from 'lucide-react';
 import ThreeDotsDropdown from './ThreeDotsDropDown';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -14,17 +21,24 @@ import {
   ModalFooter,
   Button,
   addToast,
+  Skeleton,
 } from '@heroui/react';
 import { DocumentIcon } from '@heroicons/react/24/outline';
 import {
   useAddNewArtistAward,
   useDeleteArtistCertification,
+  useGetArtistDesigns,
+  useGetArtistReviews,
   useUploadProfileFile,
 } from '../../personal-details/queries/artist-profile-queries';
 import { useForm } from 'react-hook-form';
 import FashionCardSkeleton from './FashonCardSkeleton';
 import ConfirmDeleteModal from '../../personal-details/_components/ConfirmDeleteModal';
 import { getErrorMessage } from '../../../../utils/utils';
+import CustomButton from '../../../../components/CustomButton';
+import { MdErrorOutline } from 'react-icons/md';
+import ReviewsLoaderSkeleton from './ReviewsLoaderSkeleton';
+import { FaStar } from 'react-icons/fa';
 
 const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
   const {
@@ -35,6 +49,13 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
   } = useForm();
 
   const certifications = data?.data?.certifications;
+  const { data: userDesigns, isLoading: loadingDesigns } = useGetArtistDesigns();
+  const { data: userReviews, isLoading: loadingReviews } = useGetArtistReviews();
+
+  const designs = userDesigns?.data?.designs || [];
+  const designsMeta = userDesigns?.data?.meta;
+  const reviews = userReviews?.data?.reviews || [];
+  const reviewsMeta = userReviews?.data?.meta;
 
   const [activeTab, setActiveTab] = useState('design');
   const [showAll, setShowAll] = useState(false);
@@ -443,48 +464,52 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
     }
   };
 
+  if (loadingArtistProfile) {
+    return <FashionCardSkeleton />;
+  }
+
   return (
     <>
-      {loadingArtistProfile ? (
-        <FashionCardSkeleton />
-      ) : (
-        <div className='w-full h-4/5 p-6 bg-[#FDFDFD] rounded-lg'>
-          <div className='flex space-x-2 mb-6 border-b overflow-x-auto scrollbar-hide w-full'>
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex-shrink-0 px-6 py-2 text-[16px] md:text-[18px] font-medium leading-tight transition duration-300 relative
+      <div className='w-full h-4/5 p-6 bg-[#FDFDFD] rounded-lg'>
+        <div className='flex space-x-2 mb-6 border-b overflow-x-auto scrollbar-hide w-full'>
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex-shrink-0 px-6 py-2 text-[16px] md:text-[18px] font-medium leading-tight transition duration-300 relative
                 ${
                   activeTab === tab.id
                     ? 'text-[#035A7A]'
                     : 'text-[#767676] hover:text-[#035A7A]'
                 }`}
+            >
+              <motion.div
+                animate={activeTab === tab.id ? 'hovered' : 'initial'}
+                whileHover='hovered'
+                className='relative'
               >
+                {tab.label}
                 <motion.div
-                  animate={activeTab === tab.id ? 'hovered' : 'initial'}
-                  whileHover='hovered'
-                  className='relative'
-                >
-                  {tab.label}
-                  <motion.div
-                    variants={{
-                      initial: { scaleX: 0 },
-                      hovered: { scaleX: 1 },
-                    }}
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    className='absolute bottom-[-8px] left-0 w-full h-[2px] bg-[#222222] origin-left'
-                  />
-                </motion.div>
-              </button>
-            ))}
-          </div>
+                  variants={{
+                    initial: { scaleX: 0 },
+                    hovered: { scaleX: 1 },
+                  }}
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  className='absolute bottom-[-8px] left-0 w-full h-[2px] bg-[#222222] origin-left'
+                />
+              </motion.div>
+            </button>
+          ))}
+        </div>
 
-          {activeTab === 'design' && (
-            <div>
-              {/* GRID */}
-              <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
-                {collections.slice(0, visibleItems.design).map((item) => (
+        {activeTab === 'design' && (
+          <div className='w-full'>
+            {/* GRID */}
+            <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+              {loadingDesigns ? (
+                <FashionCardSkeleton />
+              ) : designsMeta.total >= 1 ? (
+                designs.slice(0, visibleItems.design).map((item) => (
                   <div
                     key={item.id}
                     className='group rounded-xl overflow-hidden shadow-sm bg-white relative aspect-[4/3]'
@@ -498,7 +523,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                       {/* Image Container */}
                       <div
                         className='absolute inset-0 bg-cover bg-center'
-                        style={{ backgroundImage: `url('/dev-images/FashionImg.png')` }}
+                        style={{ backgroundImage: `url(${item.thumbnail_url})` }}
                       >
                         {/* Overlay Gradient */}
                         <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
@@ -508,15 +533,17 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                       <div className='absolute bottom-0 left-0 right-0 p-4 text-white bg-black/30 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
                         <div className='flex justify-between items-center mb-1'>
                           <h3 className='font-semibold text-base'>{item.title}</h3>
-                          <span className='font-bold text-base'>{item.price}</span>
+                          <span className='font-bold text-base'>
+                            ${item.asking_price}
+                          </span>
                         </div>
 
                         <div className='flex items-center gap-4 text-xs text-gray-200'>
                           <div className='flex items-center gap-1'>
                             <Eye size={16} />
-                            <span>{item.views}</span>
+                            <span>{item.stats.views}</span>
                           </div>
-                          <span>Licensed {item.licensed}</span>
+                          <span>Licensed {item.stats.works_completed}</span>
                         </div>
                       </div>
                     </div>
@@ -531,12 +558,31 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                       </div>
                     )}
                   </div>
-                ))}
-              </div>
+                ))
+              ) : (
+                <aside className='h-64 w-full sm:col-span-2 md:col-span-3 flex flex-col justify-center gap-3 items-center text-center'>
+                  <MdErrorOutline color='red' size={60} />
+                  <div>
+                    <h3 className='text-xl font-medium'>No design collections found</h3>
+                    <p>
+                      {"You haven't listed or added any design to your collection yet"}
+                    </p>
+                  </div>
+                  {!isVisitor && (
+                    <CustomButton
+                      text='List a Design'
+                      href={'/artist-page/license-your-design'}
+                    />
+                  )}
+                </aside>
+              )}
+            </div>
 
-              {/* VIEW MORE / VIEW LESS BUTTONS */}
-              <div className='w-full flex justify-center mt-8 gap-4'>
-                {!isInfiniteDesign && visibleItems.design < collections.length && (
+            {/* VIEW MORE / VIEW LESS BUTTONS */}
+            <div className='w-full flex justify-center mt-8 gap-4'>
+              {!isInfiniteDesign &&
+                visibleItems.design < collections.length &&
+                designsMeta.total >= 1 && (
                   <button
                     onClick={() => setIsInfiniteDesign(true)}
                     className='px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors'
@@ -544,184 +590,191 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                     View more
                   </button>
                 )}
-                {!isInfiniteDesign && visibleItems.design > 6 && (
-                  <button
-                    onClick={() => handleViewLess('design')}
-                    className='px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors'
-                  >
-                    View Less
-                  </button>
-                )}
-              </div>
-              {isInfiniteDesign && visibleItems.design < collections.length && (
-                <div ref={designObserverRef} className='h-10 w-full' />
+              {!isInfiniteDesign && visibleItems.design > 6 && (
+                <button
+                  onClick={() => handleViewLess('design')}
+                  className='px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors'
+                >
+                  View Less
+                </button>
               )}
             </div>
-          )}
+            {isInfiniteDesign && visibleItems.design < collections.length && (
+              <div ref={designObserverRef} className='h-10 w-full' />
+            )}
+          </div>
+        )}
 
-          {activeTab === 'awards' && (
-            <div className='flex flex-col items-center w-full'>
-              {/* Awards grid */}
-              {certifications?.length > 0 ? (
-                <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-6xl'>
-                  {certifications?.slice(0, visibleItems.awards).map((item, i) => (
-                    <div
-                      key={i}
-                      className='group relative border rounded-lg shadow w-full h-[200px] bg-cover bg-center flex items-end overflow-hidden'
-                      style={{ backgroundImage: `url(${item?.documentUrl})` }}
-                    >
-                      <div className='absolute inset-0 bg-black/60 flex items-center justify-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
-                        <p className='text-white text-sm text-center'>
-                          {item?.name || item?.issuingOrganization}
-                        </p>
-                      </div>
-
-                      {/* Delete Icon */}
-                      {!isVisitor && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDelete('award', item?.id);
-                          }}
-                          className='absolute top-2 right-2 p-1.5 bg-red-200 text-red-600 backdrop-blur-md rounded-full transition-colors z-20'
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className='h-32 w-full flex flex-col items-center justify-center'>
-                  <DocumentIcon className='w-12 h-12 text-gray-400 mb-2' />
-                  <p>No Awards or certifications available.</p>
-                </div>
-              )}
-
-              {/* Action buttons */}
-              <div className='mt-6 flex justify-center gap-4'>
-                {!isVisitor ? (
-                  <button
-                    onClick={() => setIsUploadAwardOpen(true)}
-                    className='px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors'
+        {activeTab === 'awards' && (
+          <div className='flex flex-col items-center w-full'>
+            {/* Awards grid */}
+            {certifications?.length > 0 ? (
+              <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-6xl'>
+                {certifications?.slice(0, visibleItems.awards).map((item, i) => (
+                  <div
+                    key={i}
+                    className='group relative border rounded-lg shadow w-full h-[200px] bg-cover bg-center flex items-end overflow-hidden'
+                    style={{ backgroundImage: `url(${item?.documentUrl})` }}
                   >
-                    {certifications?.length > 0
-                      ? 'Add more'
-                      : 'Add Awards/Certifications'}
-                  </button>
-                ) : (
-                  !isInfiniteAwards &&
-                  visibleItems.awards < awardImages.length && (
-                    <button
-                      onClick={() => setIsInfiniteAwards(true)}
-                      className='px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors'
-                    >
-                      View more
-                    </button>
-                  )
-                )}
-              </div>
-              {isInfiniteAwards && visibleItems.awards < awardImages.length && (
-                <div ref={awardsObserverRef} className='h-10 w-full' />
-              )}
-            </div>
-          )}
-
-          {activeTab === 'work' && (
-            <div className='flex flex-col'>
-              {/* Grid of cards */}
-              <div className='grid grid-cols-2 lg:grid-cols-4 gap-6'>
-                {workSamples.slice(0, visibleItems.work).map((sample) => (
-                  <div key={sample.id} className='flex flex-col w-full'>
-                    {/* Card */}
-                    <div
-                      className='group relative border rounded-lg shadow aspect-square w-full bg-cover bg-center overflow-hidden'
-                      style={{
-                        backgroundImage: `url('/dev-images/Awards3.png')`,
-                      }}
-                    >
-                      <div className='absolute inset-0 bg-black/60 flex items-center justify-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
-                        <p className='text-white text-sm text-center'>
-                          {sample.description}
-                        </p>
-                      </div>
-
-                      {/* Delete Icon */}
-                      {!isVisitor && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDelete('work', sample.id);
-                          }}
-                          className='absolute top-2 right-2 p-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full text-white transition-colors z-20'
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      )}
+                    <div className='absolute inset-0 bg-black/60 flex items-center justify-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
+                      <p className='text-white text-sm text-center'>
+                        {item?.name || item?.issuingOrganization}
+                      </p>
                     </div>
 
-                    {/* Text under card */}
-                    <p className='mt-2 text-left text-sm font-medium text-gray-700'>
-                      {sample.title}
-                    </p>
+                    {/* Delete Icon */}
+                    {!isVisitor && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete('award', item?.id);
+                        }}
+                        className='absolute top-2 right-2 p-1.5 bg-red-200 text-red-600 backdrop-blur-md rounded-full transition-colors z-20'
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
+            ) : (
+              <div className='h-32 w-full flex flex-col items-center justify-center'>
+                <DocumentIcon className='w-12 h-12 text-gray-400 mb-2' />
+                <p>No Awards or certifications available.</p>
+              </div>
+            )}
 
-              {/* Action buttons */}
-              <div className='mt-6 flex justify-center gap-4'>
-                {!isVisitor ? (
+            {/* Action buttons */}
+            <div className='mt-6 flex justify-center gap-4'>
+              {!isVisitor ? (
+                <button
+                  onClick={() => setIsUploadAwardOpen(true)}
+                  className='px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors'
+                >
+                  {certifications?.length > 0 ? 'Add more' : 'Add Awards/Certifications'}
+                </button>
+              ) : (
+                !isInfiniteAwards &&
+                visibleItems.awards < awardImages.length && (
                   <button
-                    onClick={() => setIsUploadWorkOpen(true)}
+                    onClick={() => setIsInfiniteAwards(true)}
                     className='px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors'
                   >
-                    Add more
+                    View more
                   </button>
-                ) : (
-                  !isInfiniteWork &&
-                  visibleItems.work < workSamples.length && (
-                    <button
-                      onClick={() => setIsInfiniteWork(true)}
-                      className='px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors'
-                    >
-                      View more
-                    </button>
-                  )
-                )}
-              </div>
-              {isInfiniteWork && visibleItems.work < workSamples.length && (
-                <div ref={workObserverRef} className='h-10 w-full' />
+                )
               )}
             </div>
-          )}
+            {isInfiniteAwards && visibleItems.awards < awardImages.length && (
+              <div ref={awardsObserverRef} className='h-10 w-full' />
+            )}
+          </div>
+        )}
 
-          {activeTab === 'reviews' && (
+        {activeTab === 'work' && (
+          <div className='flex flex-col'>
+            {/* Grid of cards */}
+            <div className='grid grid-cols-2 lg:grid-cols-4 gap-6'>
+              {workSamples.slice(0, visibleItems.work).map((sample) => (
+                <div key={sample.id} className='flex flex-col w-full'>
+                  {/* Card */}
+                  <div
+                    className='group relative border rounded-lg shadow aspect-square w-full bg-cover bg-center overflow-hidden'
+                    style={{
+                      backgroundImage: `url('/dev-images/Awards3.png')`,
+                    }}
+                  >
+                    <div className='absolute inset-0 bg-black/60 flex items-center justify-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
+                      <p className='text-white text-sm text-center'>
+                        {sample.description}
+                      </p>
+                    </div>
+
+                    {/* Delete Icon */}
+                    {!isVisitor && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete('work', sample.id);
+                        }}
+                        className='absolute top-2 right-2 p-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full text-white transition-colors z-20'
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Text under card */}
+                  <p className='mt-2 text-left text-sm font-medium text-gray-700'>
+                    {sample.title}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Action buttons */}
+            <div className='mt-6 flex justify-center gap-4'>
+              {!isVisitor ? (
+                <button
+                  onClick={() => setIsUploadWorkOpen(true)}
+                  className='px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors'
+                >
+                  Add more
+                </button>
+              ) : (
+                !isInfiniteWork &&
+                visibleItems.work < workSamples.length && (
+                  <button
+                    onClick={() => setIsInfiniteWork(true)}
+                    className='px-8 py-2.5 bg-transparent border border-[#CCE7F2] text-[#222222] font-medium rounded-full hover:bg-[#F4FCFF] transition-colors'
+                  >
+                    View more
+                  </button>
+                )
+              )}
+            </div>
+            {isInfiniteWork && visibleItems.work < workSamples.length && (
+              <div ref={workObserverRef} className='h-10 w-full' />
+            )}
+          </div>
+        )}
+
+        {activeTab === 'reviews' &&
+          (loadingReviews ? (
+            <ReviewsLoaderSkeleton />
+          ) : reviewsMeta.total >= 1 ? (
             <div>
               <div className='flex flex-col justify-center items-center bg-[#fafafa] border-2 border-[#E6E6E6] rounded-md w-64 h-40 lg:ml-32 ml-8  text-center'>
-                <h2 className='text-2xl font-semibold text-[#F8B73B]'>4.0/5</h2>
-                <Image
-                  src='/dev-images/ratings3.png'
-                  width={150}
-                  height={30}
-                  alt='Review Stars'
-                  className='my-2'
-                />
+                <h2 className='text-2xl font-semibold text-[#F8B73B]'>
+                  {data?.data?.user?.reviewCount}/5
+                </h2>
+                {[...Array(5)].map((_, i) => (
+                  <FaStar
+                    key={i}
+                    size={15}
+                    className={
+                      i < data?.data?.user?.reviewCount
+                        ? 'text-[#F8B73B]'
+                        : 'text-gray-300'
+                    }
+                  />
+                ))}
                 <p className='text-gray-600'>15 Verified Ratings</p>
               </div>
 
               <div className='mt-6 lg:w-full lg:max-w-[70%] w-full border rounded-lg shadow p-4'>
                 <div className='divide-y'>
-                  {[...Array(visibleReviews)].map((_, i) => (
-                    <div key={i} className='py-4 flex items-start'>
+                  {reviews.slice(0, visibleReviews).map((item) => (
+                    <div key={item?.id} className='py-4 flex items-start'>
                       <Image
-                        src='/dev-images/Clients.png'
+                        src={item?.image || '/dev-images/Clients.png'}
                         width={50}
                         height={50}
                         alt='User'
                         className='rounded-full'
                       />
                       <div className='ml-4'>
-                        <p className='font-semibold'>Alinko Amin {i + 1}</p>
+                        <p className='font-semibold'>{item?.name || ''}</p>
                         <div className='flex items-center mt-1'>
                           <p className='text-gray-600'>Ratings:</p>
                           <Image
@@ -732,12 +785,8 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                             className='ml-2'
                           />
                         </div>
-                        <p className='mt-3 text-gray-700'>
-                          squ ad litora torquent per conubia nostra, per inceptos
-                          himenaeos. Praesent auctor purus luctus enim egestas, ac
-                          scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse .
-                        </p>
-                        <p className='text-gray-500 text-sm mt-2'>11 October, 2024</p>
+                        <p className='mt-3 text-gray-700'>{item?.rating || ''}</p>
+                        <p className='text-gray-500 text-sm mt-2'>{item?.date || ''}</p>
                       </div>
                     </div>
                   ))}
@@ -795,9 +844,13 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                 )}
               </div>
             </div>
-          )}
-        </div>
-      )}
+          ) : (
+            <div className='h-32 w-full flex flex-col items-center justify-center'>
+              <MdErrorOutline className='size-14 text-red-400 mb-2' />
+              <p className='text-xl font-medium'>You currently do no have any reviews</p>
+            </div>
+          ))}
+      </div>
 
       {/* Delete Confirmation Modal */}
       <ConfirmDeleteModal

@@ -3,6 +3,8 @@ import {
   addArtistCertification,
   deleteArtistCertification,
   getArtistProfile,
+  getUserDesigns,
+  getUserReviews,
   updateArtistProfile,
   updateGeneralArtistProfile,
   uploadProfileFile,
@@ -10,6 +12,8 @@ import {
 import { ProfileUpdateRequestType } from '../types/profile-types';
 
 export const artistProfileQueryKey = ['artist_profile'];
+export const artistsDesignsQueryKey = ['artist_designs'];
+export const artistsReviewsQueryKey = ['artist_reviews'];
 
 export function useGetArtistProfile() {
   return useQuery({
@@ -81,5 +85,19 @@ export function useDeleteArtistCertification() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: artistProfileQueryKey });
     },
+  });
+}
+
+export function useGetArtistDesigns() {
+  return useQuery({
+    queryKey: artistsDesignsQueryKey,
+    queryFn: getUserDesigns,
+  });
+}
+
+export function useGetArtistReviews() {
+  return useQuery({
+    queryKey: artistsReviewsQueryKey,
+    queryFn: getUserReviews,
   });
 }

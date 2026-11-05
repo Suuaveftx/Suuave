@@ -6,6 +6,8 @@ import {
   GeneralProfileUpdatePayload,
   ProfileUpdateRequestType,
   ResponseData,
+  UserDesignsType,
+  UserReviewsType,
 } from '../types/profile-types';
 
 export async function getArtistProfile(): Promise<
@@ -72,5 +74,15 @@ export async function addArtistCertification(
     `/profile/certifications`,
     payload
   );
+  return res.data;
+}
+
+export async function getUserDesigns(): Promise<ResponseData<UserDesignsType>> {
+  const res = await apiClient.get<ResponseData<UserDesignsType>>('/profile/designs');
+  return res.data;
+}
+
+export async function getUserReviews(): Promise<ResponseData<UserReviewsType>> {
+  const res = await apiClient.get<ResponseData<UserReviewsType>>('/reviews');
   return res.data;
 }

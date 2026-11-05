@@ -102,3 +102,56 @@ export type ArtistCertificationPayload = {
   issuingOrganization: string;
   documentUrl: string;
 };
+
+export type MetaType = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
+
+export type DesignType = {
+  id: string;
+  title: string;
+  description: string;
+  style: string;
+  asking_price: number;
+  license_type: string | null;
+  is_saved: boolean;
+  status: string;
+  thumbnail_url: string | null;
+  images: unknown[];
+  tags: unknown[];
+  stats: {
+    views: number;
+    works_completed: number;
+    designs_sold: number;
+  };
+  created_at: string;
+  published_at: string | null;
+  owner: {
+    id: string;
+    name: string;
+    display_name: string;
+    profile_picture: string | null;
+    location: string | null;
+    rating: number;
+    verified: boolean;
+    stats: {
+      total_designs: number;
+      total_sales: number;
+      total_reviews: number;
+      years_active: number;
+    };
+  };
+};
+
+export type UserDesignsType = {
+  designs: DesignType[];
+  meta: MetaType;
+};
+
+export type UserReviewsType = {
+  reviews: unknown[];
+  meta: MetaType;
+};
