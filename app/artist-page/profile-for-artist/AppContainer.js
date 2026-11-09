@@ -8,10 +8,17 @@ import { useGetArtistProfile } from '../personal-details/queries/artist-profile-
 import ProfileError from './_components/ProfileError';
 
 export default function AppContainer() {
-  const { data, isLoading: loadingArtistProfile, isError, error } = useGetArtistProfile();
+  const {
+    data,
+    isLoading: loadingArtistProfile,
+    refetch,
+    isRefetching,
+    isError,
+    error,
+  } = useGetArtistProfile();
 
   if (isError) {
-    return <ProfileError error={error} />;
+    return <ProfileError error={error} refetch={refetch} isRefetching={isRefetching} />;
   }
 
   return (

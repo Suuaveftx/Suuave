@@ -26,7 +26,14 @@ export default function Page() {
   const [preview, setPreview] = useState('');
   const [isSavingImage, setIsSavingImage] = useState(false);
   const [profileReady, setProfileReady] = useState(false);
-  const { data, isLoading, isError, error } = useGetArtistProfile();
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    isRefetching,
+  } = useGetArtistProfile();
   const uploadMutation = useUploadProfileFile();
   const updateMutation = useUpdateArtistProfile();
   const updateImageMutation = useUpdateArtistProfileImage();
@@ -218,7 +225,13 @@ export default function Page() {
   if (isLoading || (profile && !profileReady)) return <ProfileSettingsSkeleton />;
 
   if (isError || !profile) {
-    return <ProfileError error={error} />;
+    return (
+      <ProfileError
+        error={error}
+        refetch={refetch}
+        isRefetching={isRefetching}
+      />
+    );
   }
 
   return (

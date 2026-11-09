@@ -126,8 +126,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
     isFetchingNextDesignPage,
     visibleItems.design,
   ]);
-  const hasMoreDesigns =
-    visibleItems.design < designs.length || hasNextDesignPage;
+  const hasMoreDesigns = visibleItems.design < designs.length || hasNextDesignPage;
   const designObserverRef = useInfiniteScroll(
     activeTab === 'design' && !isFetchingNextDesignPage,
     hasMoreDesigns,
@@ -455,7 +454,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
               </>
             ) : (
               <aside className='h-64 w-full sm:col-span-2 md:col-span-3 flex flex-col justify-center gap-3 items-center text-center'>
-                <MdErrorOutline color='red' size={60} />
+                <MdErrorOutline color='blue' size={60} />
                 <div>
                   <h3 className='text-xl font-medium'>No design collections found</h3>
                   <p>{"You haven't listed or added any design to your collection yet"}</p>
@@ -521,9 +520,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                 </button>
               )}
             </div>
-            {hasMoreAwards && (
-              <div ref={awardsObserverRef} className='h-10 w-full' />
-            )}
+            {hasMoreAwards && <div ref={awardsObserverRef} className='h-10 w-full' />}
           </div>
         )}
 
@@ -574,7 +571,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
               </div>
             ) : (
               <aside className='h-64 w-full col-span-1 md:col-span-3 lg:col-span-4 flex flex-col justify-center gap-3 items-center text-center'>
-                <MdErrorOutline color='red' size={60} />
+                <MdErrorOutline color='blue' size={60} />
                 <div>
                   <h3 className='text-xl font-medium'>No work sample found</h3>
                   <p>{"You don't have any work sample associated with your profile"}</p>
@@ -599,9 +596,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                 </button>
               )}
             </div>
-            {hasMoreWorkSamples && (
-              <div ref={workObserverRef} className='h-10 w-full' />
-            )}
+            {hasMoreWorkSamples && <div ref={workObserverRef} className='h-10 w-full' />}
           </div>
         )}
 
@@ -712,7 +707,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
             </div>
           ) : (
             <div className='h-32 w-full flex flex-col items-center justify-center'>
-              <MdErrorOutline className='size-14 text-red-400 mb-2' />
+              <MdErrorOutline className='size-14 mb-2' color='blue' />
               <p className='text-xl font-medium text-center'>
                 You currently do no have any reviews
               </p>
