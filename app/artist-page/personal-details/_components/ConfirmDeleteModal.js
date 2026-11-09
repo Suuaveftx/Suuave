@@ -7,7 +7,7 @@ export default function ConfirmDeleteModal({
   onOpenChange,
   title = 'Confirm deletion',
   message = 'Are you sure you want to delete this item? This action cannot be undone.',
-  isLoading = false,
+  isLoading,
   onConfirm,
   confirmLabel = 'Remove',
 }) {

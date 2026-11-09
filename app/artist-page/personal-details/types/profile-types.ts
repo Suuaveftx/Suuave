@@ -155,3 +155,19 @@ export type UserReviewsType = {
   reviews: unknown[];
   meta: MetaType;
 };
+
+export type WorkSamplesResponseType = {
+  id: string;
+  profileId: string;
+  image: string;
+  title: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type WorkSamplePayloadType = {
+  image: string;
+  title: string;
+  description: string;
+};

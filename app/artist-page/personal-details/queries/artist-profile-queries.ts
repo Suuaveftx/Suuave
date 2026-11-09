@@ -1,12 +1,21 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import {
   addArtistCertification,
+  addWorkSample,
   deleteArtistCertification,
+  deleteWorkSample,
   getArtistProfile,
   getUserDesigns,
   getUserReviews,
+  getWorkSamples,
   updateArtistProfile,
   updateGeneralArtistProfile,
+  updateWorkSample,
   uploadProfileFile,
 } from '../api/artist-profile';
 import { ProfileUpdateRequestType } from '../types/profile-types';
@@ -14,6 +23,7 @@ import { ProfileUpdateRequestType } from '../types/profile-types';
 export const artistProfileQueryKey = ['artist_profile'];
 export const artistsDesignsQueryKey = ['artist_designs'];
 export const artistsReviewsQueryKey = ['artist_reviews'];
+export const workSamplesQueryKey = ['work_samples'];
 
 export function useGetArtistProfile() {
   return useQuery({
@@ -89,9 +99,14 @@ export function useDeleteArtistCertification() {
 }
 
 export function useGetArtistDesigns() {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: artistsDesignsQueryKey,
-    queryFn: getUserDesigns,
+    queryFn: ({ pageParam }) => getUserDesigns(pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      const { page, totalPages } = lastPage.data.meta;
+      return page < totalPages ? page + 1 : undefined;
+    },
   });
 }
 
@@ -99,5 +114,42 @@ export function useGetArtistReviews() {
   return useQuery({
     queryKey: artistsReviewsQueryKey,
     queryFn: getUserReviews,
+  });
+}
+
+export function useGetWorksSamples() {
+  return useQuery({
+    queryKey: workSamplesQueryKey,
+    queryFn: getWorkSamples,
+  });
+}
+
+export function useUpdateWorkSample() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateWorkSample,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: workSamplesQueryKey });
+    },
+  });
+}
+
+export function useDeleteWorkSample() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteWorkSample,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: workSamplesQueryKey });
+    },
+  });
+}
+
+export function useAddWorkSample() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: addWorkSample,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: workSamplesQueryKey });
+    },
   });
 }

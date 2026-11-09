@@ -8,6 +8,8 @@ import {
   ResponseData,
   UserDesignsType,
   UserReviewsType,
+  WorkSamplePayloadType,
+  WorkSamplesResponseType,
 } from '../types/profile-types';
 
 export async function getArtistProfile(): Promise<
@@ -77,12 +79,50 @@ export async function addArtistCertification(
   return res.data;
 }
 
-export async function getUserDesigns(): Promise<ResponseData<UserDesignsType>> {
-  const res = await apiClient.get<ResponseData<UserDesignsType>>('/profile/designs');
+export async function getUserDesigns(
+  page = 1
+): Promise<ResponseData<UserDesignsType>> {
+  const res = await apiClient.get<ResponseData<UserDesignsType>>('/profile/designs', {
+    params: { page },
+  });
   return res.data;
 }
 
 export async function getUserReviews(): Promise<ResponseData<UserReviewsType>> {
   const res = await apiClient.get<ResponseData<UserReviewsType>>('/reviews');
+  return res.data;
+}
+
+export async function getWorkSamples(): Promise<ResponseData<WorkSamplesResponseType>> {
+  const res = await apiClient.get<ResponseData<WorkSamplesResponseType>>(
+    '/profile/work-samples'
+  );
+  return res.data;
+}
+
+export async function addWorkSample(
+  payload: WorkSamplePayloadType
+): Promise<ResponseData<WorkSamplesResponseType>> {
+  const res = await apiClient.post<ResponseData<WorkSamplesResponseType>>(
+    `/profile/work-samples`,
+    payload
+  );
+  return res.data;
+}
+
+export async function updateWorkSample(
+  payload: WorkSamplePayloadType
+): Promise<ResponseData<WorkSamplesResponseType>> {
+  const res = await apiClient.patch<ResponseData<WorkSamplesResponseType>>(
+    `/profile/work-samples`,
+    payload
+  );
+  return res.data;
+}
+
+export async function deleteWorkSample(id: string): Promise<void> {
+  const res = await apiClient.delete<void>(
+    `/profile/work-samples/${encodeURIComponent(id)}`
+  );
   return res.data;
 }
