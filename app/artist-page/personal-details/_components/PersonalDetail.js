@@ -122,11 +122,12 @@ const PersonalDetail = ({
             labelPlacement='outside'
             placeholder='czysdgv@gmail.com'
             variant='bordered'
+            isReadOnly
             classNames={{
-              label: 'text-sm font-medium !text-[#767676]',
+              label: 'text-sm font-medium !text-[#767676] opacity-100',
               inputWrapper:
-                'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
-              input: 'text-black text-sm',
+                'bg-gray-100 !border-gray-300 opacity-100 data-[hover=true]:!border-gray-300 data-[focus=true]:!border-gray-300 hover:!border-gray-300 focus-within:!border-gray-300',
+              input: 'text-gray-500 text-sm',
             }}
             {...register('email', {
               required: 'Email is required',
