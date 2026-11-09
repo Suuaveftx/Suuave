@@ -174,7 +174,8 @@ export default function Page() {
         email: values.email || '',
         nationality: getSelectedValue(values.nationality),
         phone: values.phoneNumber || values.phone || '',
-        currentCity: values.currentCity || '',
+        currentCity: getSelectedValue(values.currentCity),
+        countryOfResidence: getSelectedValue(values.countryOfResidence),
         language: getSelectedValue(values.language),
         dateOfBirth: values.dob || '',
         bio: values.about || '',
@@ -189,6 +190,7 @@ export default function Page() {
           }))
           .filter((award) => award.name || award.organization || award.url),
       });
+      setSelected('PersonalDetail');
       addToast({
         title: 'Profile updated',
         description: 'Your profile changes have been saved.',
