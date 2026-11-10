@@ -65,7 +65,9 @@ const PersonalDetail = ({
 
   const handleContinue = async () => {
     const isValid = await trigger([
-      'fullName',
+      'firstName',
+      'lastName',
+      'username',
       'email',
       'phoneNumber',
       'language',
@@ -87,17 +89,17 @@ const PersonalDetail = ({
         Fill in the following information carefully
       </p>
       <section className='flex flex-col md:grid md:grid-cols-2 gap-6 md:gap-10'>
-        {/* Enter Full Name */}
+        {/* First and last name */}
         <div
           className='w-full flex flex-col gap-2'
-          onMouseEnter={() => setHoveredField('Full Name')}
+          onMouseEnter={() => setHoveredField('First Name')}
           onMouseLeave={() => setHoveredField(null)}
         >
           <HeroInput
-            id='fullName'
-            label='Full Name'
+            id='firstName'
+            label='First Name'
             labelPlacement='outside'
-            placeholder='Chinedu Ozulu'
+            placeholder='Chinedu'
             variant='bordered'
             classNames={{
               label: 'text-sm font-medium !text-[#767676]',
@@ -105,9 +107,53 @@ const PersonalDetail = ({
                 'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
               input: 'text-black text-sm',
             }}
-            {...register('fullName', { required: 'Full name is required' })}
-            isInvalid={!!errors.fullName}
-            errorMessage={errors.fullName?.message}
+            {...register('firstName', { required: 'First name is required' })}
+            isInvalid={!!errors.firstName}
+            errorMessage={errors.firstName?.message}
+          />
+        </div>
+        <div
+          className='w-full flex flex-col gap-2'
+          onMouseEnter={() => setHoveredField('Last Name')}
+          onMouseLeave={() => setHoveredField(null)}
+        >
+          <HeroInput
+            id='lastName'
+            label='Last Name'
+            labelPlacement='outside'
+            placeholder='Ozulu'
+            variant='bordered'
+            classNames={{
+              label: 'text-sm font-medium !text-[#767676]',
+              inputWrapper:
+                'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
+              input: 'text-black text-sm',
+            }}
+            {...register('lastName', { required: 'Last name is required' })}
+            isInvalid={!!errors.lastName}
+            errorMessage={errors.lastName?.message}
+          />
+        </div>
+        <div
+          className='w-full flex flex-col gap-2'
+          onMouseEnter={() => setHoveredField('Username')}
+          onMouseLeave={() => setHoveredField(null)}
+        >
+          <HeroInput
+            id='username'
+            label='Username'
+            labelPlacement='outside'
+            placeholder='username'
+            variant='bordered'
+            classNames={{
+              label: 'text-sm font-medium !text-[#767676]',
+              inputWrapper:
+                'bg-transparent border-[#D1D1D1] data-[hover=true]:!border-[#3A98BB] data-[focus=true]:!border-[#3A98BB] hover:!border-[#3A98BB] focus-within:!border-[#3A98BB] hover:!border-[1px] focus-within:!border-[1px] data-[hover=true]:!border-[1px] data-[focus=true]:!border-[1px]',
+              input: 'text-black text-sm',
+            }}
+            {...register('username', { required: 'Username is required' })}
+            isInvalid={!!errors.username}
+            errorMessage={errors.username?.message}
           />
         </div>
         {/* Email Address */}
@@ -446,7 +492,9 @@ const PersonalDetail = ({
           <button
             onClick={async () => {
               const isValid = await trigger([
-                'fullName',
+                'firstName',
+                'lastName',
+                'username',
                 'email',
                 'phoneNumber',
                 'language',

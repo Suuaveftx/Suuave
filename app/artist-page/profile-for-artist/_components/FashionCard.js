@@ -15,7 +15,7 @@ import {
 } from '@heroui/react';
 import { DocumentIcon } from '@heroicons/react/24/outline';
 import {
-  useAddNewArtistAward,
+  useAddArtistCertification,
   useAddWorkSample,
   useDeleteArtistCertification,
   useDeleteWorkSample,
@@ -88,7 +88,8 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
 
   // Mutations
   const { mutateAsync: uploadFile, isPending: uploadingFile } = useUploadProfileFile();
-  const { mutateAsync: addAward, isPending: addingAward } = useAddNewArtistAward();
+  const { mutateAsync: addCertificate, isPending: addingCertificate } =
+    useAddArtistCertification();
   const deleteAwardMutation = useDeleteArtistCertification();
   const { mutateAsync: addWorkSample, isPending: addingWorkSample } = useAddWorkSample();
   const deleteWorkSampleMutation = useDeleteWorkSample();
@@ -301,7 +302,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
 
   const handleUploadAward = async (formValues) => {
     try {
-      await addAward({
+      await addCertificate({
         name: formValues?.awardName,
         issuingOrganization: formValues?.issuingOrganization,
         documentUrl: uploadedFileUrl,
@@ -923,16 +924,16 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                         setUploadedFileUrl('');
                         setFileName('');
                       }}
-                      disabled={addingAward}
+                      disabled={addingCertificate}
                       className='bg-[#EAEAEA] rounded-full text-[#222222]'
                     >
                       Cancel
                     </Button>
                     <Button
-                      disabled={addingAward}
+                      disabled={addingCertificate}
                       type='submit'
                       className='bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] rounded-full text-[#0A4A66] disabled:cursor-not-allowed'
-                      isLoading={addingAward}
+                      isLoading={addingCertificate}
                     >
                       Send
                     </Button>

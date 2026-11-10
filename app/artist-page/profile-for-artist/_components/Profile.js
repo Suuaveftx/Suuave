@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import EditOccupationModal from './EditOccupationModal';
 import EditAboutModal from './EditAboutModal';
 import {
-  useUpdateArtistProfileImage,
   useUpdateGeneralArtistProfile,
   useUploadProfileFile,
 } from '../../personal-details/queries/artist-profile-queries';
@@ -18,7 +17,6 @@ import { getErrorMessage } from '../../../../utils/utils';
 
 const ProfileArtist = ({ isVisitor = false, data, loadingArtistProfile }) => {
   const { mutateAsync: uploadFile } = useUploadProfileFile();
-  const { mutateAsync: updateProfileImage } = useUpdateArtistProfileImage();
   const { mutateAsync: updateGeneralProfile, isPending: updatingGeneralProfile } =
     useUpdateGeneralArtistProfile();
 
@@ -57,7 +55,7 @@ const ProfileArtist = ({ isVisitor = false, data, loadingArtistProfile }) => {
         fileableId: artistProfile.id,
       });
       uploadComplete = true;
-      await updateProfileImage({ image: uploadedFile.storage_url });
+      await updateGeneralProfile({ image: uploadedFile.storage_url });
       setPreview(uploadedFile.storage_url);
       addToast({
         title: 'Profile photo uploaded',

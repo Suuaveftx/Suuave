@@ -79,16 +79,14 @@ export async function addArtistCertification(
   return res.data;
 }
 
-export async function getUserDesigns(
-  page = 1
-): Promise<ResponseData<UserDesignsType>> {
+export async function getArtistDesigns(page = 1): Promise<ResponseData<UserDesignsType>> {
   const res = await apiClient.get<ResponseData<UserDesignsType>>('/profile/designs', {
     params: { page },
   });
   return res.data;
 }
 
-export async function getUserReviews(): Promise<ResponseData<UserReviewsType>> {
+export async function getArtistReviews(): Promise<ResponseData<UserReviewsType>> {
   const res = await apiClient.get<ResponseData<UserReviewsType>>('/reviews');
   return res.data;
 }

@@ -16,6 +16,9 @@ const Profile = ({
 }) => {
   const { watch } = useFormContext();
   const formData = watch();
+  const fullName =
+    [formData.firstName, formData.lastName].filter(Boolean).join(' ') ||
+    formData.fullName;
   const profileUploadId = useId();
   const hasValue = (value) => {
     if (value instanceof Set || Array.isArray(value))
@@ -68,7 +71,7 @@ const Profile = ({
         </div>
         <div className='flex flex-col items-center md:items-start gap-1'>
           <h2 className='font-bold text-2xl text-black tracking-tight'>
-            {formData.fullName || 'Your Name'}
+            {fullName || 'Your Name'}
           </h2>
           <p className='font-medium text-[#767676] text-sm md:ml-1'>
             {formData.username ? `@${formData.username.replace(/^@/, '')}` : '@username'}
@@ -87,7 +90,7 @@ const Profile = ({
         {selected === 'PersonalDetail' && (
           <ul className='font-normal text-sm space-y-3 p-3'>
             <List
-              activeState={formData.fullName}
+              activeState={fullName}
               text='Full Name'
               isHovered={hoveredField === 'Full Name'}
             />

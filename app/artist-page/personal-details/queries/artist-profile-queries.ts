@@ -10,15 +10,15 @@ import {
   deleteArtistCertification,
   deleteWorkSample,
   getArtistProfile,
-  getUserDesigns,
-  getUserReviews,
+  getArtistDesigns,
+  getArtistReviews,
   getWorkSamples,
   updateArtistProfile,
   updateGeneralArtistProfile,
   updateWorkSample,
   uploadProfileFile,
 } from '../api/artist-profile';
-import { ProfileUpdateRequestType } from '../types/profile-types';
+import useMutationWithInvalidation from '@/lib/api-integration-helper';
 
 export const artistProfileQueryKey = ['artist_profile'];
 export const artistsDesignsQueryKey = ['artist_designs'];
@@ -39,69 +39,25 @@ export function useUploadProfileFile() {
 }
 
 export function useUpdateArtistProfile() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (payload: ProfileUpdateRequestType) => updateArtistProfile(payload),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: artistProfileQueryKey });
-    },
-  });
+  return useMutationWithInvalidation(updateArtistProfile, artistProfileQueryKey);
 }
 
 export function useAddArtistCertification() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: updateArtistProfile,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: artistProfileQueryKey });
-    },
-  });
-}
-
-export function useAddNewArtistAward() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: addArtistCertification,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: artistProfileQueryKey });
-    },
-  });
+  return useMutationWithInvalidation(addArtistCertification, artistProfileQueryKey);
 }
 
 export function useUpdateGeneralArtistProfile() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: updateGeneralArtistProfile,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: artistProfileQueryKey });
-    },
-  });
-}
-
-export function useUpdateArtistProfileImage() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: updateGeneralArtistProfile,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: artistProfileQueryKey });
-    },
-  });
+  return useMutationWithInvalidation(updateGeneralArtistProfile, artistProfileQueryKey);
 }
 
 export function useDeleteArtistCertification() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: deleteArtistCertification,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: artistProfileQueryKey });
-    },
-  });
+  return useMutationWithInvalidation(deleteArtistCertification, artistProfileQueryKey);
 }
 
 export function useGetArtistDesigns() {
   return useInfiniteQuery({
     queryKey: artistsDesignsQueryKey,
-    queryFn: ({ pageParam }) => getUserDesigns(pageParam),
+    queryFn: ({ pageParam }) => getArtistDesigns(pageParam),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       const { page, totalPages } = lastPage.data.meta;
@@ -113,7 +69,7 @@ export function useGetArtistDesigns() {
 export function useGetArtistReviews() {
   return useQuery({
     queryKey: artistsReviewsQueryKey,
-    queryFn: getUserReviews,
+    queryFn: getArtistReviews,
   });
 }
 
@@ -125,31 +81,13 @@ export function useGetWorksSamples() {
 }
 
 export function useUpdateWorkSample() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: updateWorkSample,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: workSamplesQueryKey });
-    },
-  });
+  return useMutationWithInvalidation(updateWorkSample, workSamplesQueryKey);
 }
 
 export function useDeleteWorkSample() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: deleteWorkSample,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: workSamplesQueryKey });
-    },
-  });
+  return useMutationWithInvalidation(deleteWorkSample, workSamplesQueryKey);
 }
 
 export function useAddWorkSample() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: addWorkSample,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: workSamplesQueryKey });
-    },
-  });
+  return useMutationWithInvalidation(addWorkSample, workSamplesQueryKey);
 }
