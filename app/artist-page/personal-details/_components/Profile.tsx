@@ -1,8 +1,19 @@
 'use client';
-import React, { useId } from 'react';
+import React, { Dispatch, SetStateAction, useId } from 'react';
 import { Camera, LoaderCircle } from 'lucide-react';
 import { Avatar } from '@heroui/react';
 import { useFormContext } from 'react-hook-form';
+
+type ProfilePropsType = {
+  setSelected: Dispatch<SetStateAction<string>>;
+  selected: string;
+  className?: string;
+  handleImageChange: (e: any) => Promise<void>;
+  preview: string;
+  hoveredField: string;
+  profileImage: string;
+  isUploadingImage?: boolean;
+};
 
 const Profile = ({
   setSelected,
@@ -13,16 +24,16 @@ const Profile = ({
   preview,
   hoveredField,
   profileImage,
-}) => {
+}: ProfilePropsType) => {
   const { watch } = useFormContext();
   const formData = watch();
   const fullName =
     [formData.firstName, formData.lastName].filter(Boolean).join(' ') ||
     formData.fullName;
   const profileUploadId = useId();
-  const hasValue = (value) => {
-    if (value instanceof Set || Array.isArray(value))
-      return value.size > 0 || value.length > 0;
+  const hasValue = (value: unknown) => {
+    if (value instanceof Set) return value.size > 0;
+    if (Array.isArray(value)) return value.length > 0;
     return Boolean(value);
   };
 
@@ -187,7 +198,15 @@ const Profile = ({
 
 export default Profile;
 
-const List = ({ text, activeState, isHovered }) => {
+const List = ({
+  text,
+  activeState,
+  isHovered,
+}: {
+  text?: string;
+  activeState: string | boolean;
+  isHovered?: boolean;
+}) => {
   return (
     <li
       className={`${

@@ -91,8 +91,10 @@ export async function getArtistReviews(): Promise<ResponseData<UserReviewsType>>
   return res.data;
 }
 
-export async function getWorkSamples(): Promise<ResponseData<WorkSamplesResponseType>> {
-  const res = await apiClient.get<ResponseData<WorkSamplesResponseType>>(
+export async function getWorkSamples(): Promise<
+  ResponseData<WorkSamplesResponseType[]>
+> {
+  const res = await apiClient.get<ResponseData<WorkSamplesResponseType[]>>(
     '/profile/work-samples'
   );
   return res.data;

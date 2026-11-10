@@ -14,8 +14,22 @@ import {
 import { addToast, Avatar } from '@heroui/react';
 import ProfileSkeleton from './ProfileSkeleton';
 import { getErrorMessage } from '../../../../utils/utils';
+import {
+  ArtistProfileInfoResponse,
+  ResponseData,
+} from '../../personal-details/types/profile-types';
 
-const ProfileArtist = ({ isVisitor = false, data, loadingArtistProfile }) => {
+type ProfileArtistPropType = {
+  data: ResponseData<ArtistProfileInfoResponse>;
+  isVisitor?: boolean;
+  loadingArtistProfile?: boolean;
+};
+
+const ProfileArtist = ({
+  isVisitor = false,
+  data,
+  loadingArtistProfile,
+}: ProfileArtistPropType) => {
   const { mutateAsync: uploadFile } = useUploadProfileFile();
   const { mutateAsync: updateGeneralProfile, isPending: updatingGeneralProfile } =
     useUpdateGeneralArtistProfile();
@@ -151,7 +165,7 @@ const ProfileArtist = ({ isVisitor = false, data, loadingArtistProfile }) => {
                 isDisabled={isSavingImage}
                 src={isSavingImage ? preview : userDetails?.image}
                 alt='Profile Picture'
-                fill
+                // fill
                 className={`w-full h-full disabled:cursor-not-allowed shadow-lg transition-all bg-[#3A98BB] ${isSavingImage ? 'opacity-60' : 'hover:shadow-2xl'}`}
               />
 

@@ -1,6 +1,16 @@
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@heroui/react';
 import { Button } from '../../../../components/ui/button';
-import { LoaderCircle } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+
+type ConfirmDeleteModalPropType = {
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+  onConfirm: () => Promise<void>;
+  isLoading?: boolean;
+  confirmLabel?: string;
+  title?: string;
+  message?: string;
+};
 
 export default function ConfirmDeleteModal({
   isOpen,
@@ -10,8 +20,8 @@ export default function ConfirmDeleteModal({
   isLoading,
   onConfirm,
   confirmLabel = 'Remove',
-}) {
-  const handleOpenChange = (nextIsOpen) => {
+}: ConfirmDeleteModalPropType) {
+  const handleOpenChange = (nextIsOpen: boolean) => {
     if (!isLoading) onOpenChange(nextIsOpen);
   };
 
@@ -42,8 +52,9 @@ export default function ConfirmDeleteModal({
             variant='destructive'
             onClick={onConfirm}
             disabled={isLoading}
-            isLoading={isLoading}
+            className='flex items-center justify-center gap-1.5'
           >
+            {isLoading && <Loader2 className='animate-spin' />}
             {confirmLabel}
           </Button>
         </ModalFooter>

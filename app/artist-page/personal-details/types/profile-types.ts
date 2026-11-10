@@ -5,6 +5,7 @@ export type ProfileUpdateRequestType = {
   nationality: string;
   phone: string;
   currentCity: string;
+  countryOfResidence: string;
   language: string;
   dateOfBirth: string;
   bio: string;
@@ -152,8 +153,16 @@ export type UserDesignsType = {
 };
 
 export type UserReviewsType = {
-  reviews: unknown[];
+  reviews: UserReviewType[];
   meta: MetaType;
+};
+
+export type UserReviewType = {
+  id: string | number;
+  image?: string | null;
+  name?: string | null;
+  rating?: number | string | null;
+  date?: string | null;
 };
 
 export type WorkSamplesResponseType = {

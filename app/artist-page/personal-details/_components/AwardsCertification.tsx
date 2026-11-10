@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { X, Plus, LoaderCircle } from 'lucide-react';
 import { addToast, Button, Input as HeroInput, useDisclosure } from '@heroui/react';
 import { useFormContext, useFieldArray } from 'react-hook-form';
@@ -11,6 +11,16 @@ import {
 } from '../queries/artist-profile-queries';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 
+type AwardsCertificationPropType = {
+  setSelected: Dispatch<SetStateAction<string>>;
+  setHoveredField: Dispatch<SetStateAction<string>>;
+  profileId: string;
+  onSubmit: () => Promise<void>;
+  isSubmitting?: boolean;
+  isEdit?: boolean;
+  submitHref?: string;
+};
+
 const AwardsCertification = ({
   setSelected,
   setHoveredField,
@@ -19,7 +29,7 @@ const AwardsCertification = ({
   profileId,
   onSubmit,
   isSubmitting = false,
-}) => {
+}: AwardsCertificationPropType) => {
   const router = useRouter();
   const { control, register, trigger, setValue, getValues, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
@@ -176,6 +186,7 @@ const AwardsCertification = ({
               onMouseLeave={() => setHoveredField(null)}
             >
               <FormLabel
+                required
                 htmlFor={`awardName-${index}`}
                 text='Name Of Award/Certificate'
               />
@@ -198,7 +209,11 @@ const AwardsCertification = ({
               onMouseEnter={() => setHoveredField('Issued/Awarded by')}
               onMouseLeave={() => setHoveredField(null)}
             >
-              <FormLabel htmlFor={`issuedBy-${index}`} text='Awarded/Issued By' />
+              <FormLabel
+                required
+                htmlFor={`issuedBy-${index}`}
+                text='Awarded/Issued By'
+              />
               <HeroInput
                 id={`issuedBy-${index}`}
                 placeholder='Organization that issued/awarded'
@@ -219,6 +234,7 @@ const AwardsCertification = ({
               onMouseLeave={() => setHoveredField(null)}
             >
               <FormLabel
+                required={false}
                 htmlFor={`cert-${index}`}
                 text='Upload Certificate/Award (Optional)'
               />
@@ -405,14 +421,13 @@ const AwardsCertification = ({
 
       <ConfirmDeleteModal
         isOpen={deleteModal.isOpen}
-        onOpenChange={(isOpen) => {
-          deleteModal.onOpenChange(isOpen);
+        onOpenChange={(isOpen: boolean) => {
+          deleteModal.onOpenChange();
           if (!isOpen) setPendingRemovalIndex(null);
         }}
         title='Remove certification?'
         message={
-          pendingRemovalIndex !== null &&
-          getValues(`awards.${pendingRemovalIndex}.id`)
+          pendingRemovalIndex !== null && getValues(`awards.${pendingRemovalIndex}.id`)
             ? 'This certification will be permanently removed from your profile.'
             : 'This unsaved certification will be removed.'
         }

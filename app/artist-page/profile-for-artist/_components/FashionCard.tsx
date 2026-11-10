@@ -131,7 +131,8 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
   const designObserverRef = useInfiniteScroll(
     activeTab === 'design' && !isFetchingNextDesignPage,
     hasMoreDesigns,
-    loadMoreDesigns
+    loadMoreDesigns,
+    visibleItems.design
   );
 
   const loadMoreAwards = useCallback(() => {
@@ -790,7 +791,9 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                       />
                     </div>
                     {errors.title && (
-                      <p className='text-red-500 text-sm'>{errors.title.message}</p>
+                      <p className='text-red-500 text-sm'>
+                        {errors.title.message as string as string}
+                      </p>
                     )}
                   </div>
 
@@ -808,7 +811,9 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                       />
                     </div>
                     {errors.description && (
-                      <p className='text-red-500 text-sm'>{errors.description.message}</p>
+                      <p className='text-red-500 text-sm'>
+                        {errors.description.message as string as string}
+                      </p>
                     )}
                   </div>
                   <aside className='mt-5 flex justify-end gap-3'>
@@ -891,7 +896,9 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                       />
                     </div>
                     {errors.awardName && (
-                      <p className='text-red-500 text-sm'>{errors.awardName.message}</p>
+                      <p className='text-red-500 text-sm'>
+                        {errors.awardName.message as string}
+                      </p>
                     )}
                   </div>
 
@@ -912,7 +919,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                     </div>
                     {errors.issuingOrganization && (
                       <p className='text-red-500 text-sm'>
-                        {errors.issuingOrganization.message}
+                        {errors.issuingOrganization.message as string}
                       </p>
                     )}
                   </div>

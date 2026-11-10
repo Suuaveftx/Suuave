@@ -1,6 +1,12 @@
 ﻿'use client';
 import React, { useState, useEffect } from 'react';
-import { DatePicker, Input as HeroInput, Textarea, Button } from '@heroui/react';
+import {
+  DatePicker,
+  Input as HeroInput,
+  Textarea,
+  Button,
+  type DatePickerProps,
+} from '@heroui/react';
 import { parseDate } from '@internationalized/date';
 import CustomSelect from '@/components/ui/CustomSelect';
 import PhoneInputCustom from '@/components/ui/PhoneInputCustom';
@@ -47,7 +53,9 @@ const PersonalDetail = ({
       })
       .catch((error) => {
         if (isMounted) {
-          setLocationError(error?.message || 'Unable to load country and state options.');
+          setLocationError(
+            (error?.message as string) || 'Unable to load country and state options.'
+          );
         }
       });
 
@@ -109,7 +117,7 @@ const PersonalDetail = ({
             }}
             {...register('firstName', { required: 'First name is required' })}
             isInvalid={!!errors.firstName}
-            errorMessage={errors.firstName?.message}
+            errorMessage={errors.firstName?.message as string}
           />
         </div>
         <div
@@ -131,7 +139,7 @@ const PersonalDetail = ({
             }}
             {...register('lastName', { required: 'Last name is required' })}
             isInvalid={!!errors.lastName}
-            errorMessage={errors.lastName?.message}
+            errorMessage={errors.lastName?.message as string}
           />
         </div>
         <div
@@ -153,7 +161,7 @@ const PersonalDetail = ({
             }}
             {...register('username', { required: 'Username is required' })}
             isInvalid={!!errors.username}
-            errorMessage={errors.username?.message}
+            errorMessage={errors.username?.message as string}
           />
         </div>
         {/* Email Address */}
@@ -183,7 +191,7 @@ const PersonalDetail = ({
               },
             })}
             isInvalid={!!errors.email}
-            errorMessage={errors.email?.message}
+            errorMessage={errors.email?.message as string}
           />
         </div>
         {/*Phone Number */}
@@ -215,7 +223,10 @@ const PersonalDetail = ({
                   }
                 }}
                 onBlur={field.onBlur}
-                error={errors.phoneNumber?.message || errors.phoneCode?.message}
+                error={
+                  (errors.phoneNumber?.message as string) ||
+                  (errors.phoneCode?.message as string)
+                }
               />
             )}
           />
@@ -235,9 +246,10 @@ const PersonalDetail = ({
             rules={{ required: 'Language is required' }}
             render={({ field }) => (
               <LanguageSelectCustom
+                label=''
                 value={field.value}
                 onChange={field.onChange}
-                error={errors.language?.message}
+                error={errors.language?.message as string}
               />
             )}
           />
@@ -263,7 +275,7 @@ const PersonalDetail = ({
             }}
             {...register('about', { required: 'Description is required' })}
             isInvalid={!!errors.about}
-            errorMessage={errors.about?.message}
+            errorMessage={errors.about?.message as string}
           />
         </div>
         {/* Company Name */}
@@ -282,7 +294,7 @@ const PersonalDetail = ({
             }}
             {...register('companyName')}
             isInvalid={!!errors.companyName}
-            errorMessage={errors.companyName?.message}
+            errorMessage={errors.companyName?.message as string}
           />
         </div>
         {/*Nationality */}
@@ -316,11 +328,7 @@ const PersonalDetail = ({
                 <div className='w-full suuave-location-select'>
                   <CountrySelect
                     key={selectedNationality?.id || 'empty-nationality'}
-                    defaultValue={
-                      field.value
-                        ? { id: 0, name: getSelectedValue(field.value) }
-                        : undefined
-                    }
+                    defaultValue={selectedNationality}
                     onChange={(e) => {
                       field.onChange(new Set([e.name]));
                     }}
@@ -331,7 +339,9 @@ const PersonalDetail = ({
             }}
           />
           {errors.nationality && (
-            <p className='text-danger text-xs'>{errors.nationality.message}</p>
+            <p className='text-danger text-xs'>
+              {errors?.nationality?.message as string}
+            </p>
           )}
         </div>
         {/*Country of Residence*/}
@@ -366,11 +376,7 @@ const PersonalDetail = ({
                 <div className='w-full suuave-location-select'>
                   <CountrySelect
                     key={selectedCountry?.id || 'empty-residence'}
-                    defaultValue={
-                      field.value
-                        ? { id: 0, name: getSelectedValue(field.value) }
-                        : undefined
-                    }
+                    defaultValue={selectedCountry}
                     onChange={(e) => {
                       setCountryid(e.id);
                       field.onChange(new Set([e.name]));
@@ -383,7 +389,9 @@ const PersonalDetail = ({
             }}
           />
           {errors.countryOfResidence && (
-            <p className='text-danger text-xs'>{errors.countryOfResidence.message}</p>
+            <p className='text-danger text-xs'>
+              {errors?.countryOfResidence?.message as string}
+            </p>
           )}
         </div>
         {/*Current City*/}
@@ -409,7 +417,7 @@ const PersonalDetail = ({
                   key={countryid}
                   countryid={countryid}
                   disabled={!countryid}
-                  defaultValue={field.value ? { id: 0, name: field.value } : undefined}
+                  defaultValue={field.value}
                   onChange={(e) => {
                     field.onChange(e.name);
                   }}
@@ -419,7 +427,9 @@ const PersonalDetail = ({
             )}
           />
           {errors.currentCity && (
-            <p className='text-danger text-xs'>{errors.currentCity.message}</p>
+            <p className='text-danger text-xs'>
+              {errors?.currentCity?.message as string}
+            </p>
           )}
         </div>
         {locationError && (
@@ -438,27 +448,25 @@ const PersonalDetail = ({
             control={control}
             rules={{ required: 'Date of birth is required' }}
             render={({ field }) => (
-              <DatePicker
+              <DatePicker<NonNullable<DatePickerProps['value']>>
                 id='dateofBirth'
                 label='Date Of Birth'
                 labelPlacement='outside'
                 variant='bordered'
                 isInvalid={!!errors.dob}
-                errorMessage={errors.dob?.message}
+                errorMessage={errors.dob?.message as string}
                 value={
                   field.value
-                    ? (() => {
-                        try {
-                          return parseDate(field.value);
-                        } catch {
-                          return null;
-                        }
-                      })()
+                    ? (parseDate(field.value) as unknown as NonNullable<
+                        DatePickerProps['value']
+                      >)
                     : null
                 }
-                onChange={(date) => field.onChange(date ? date.toString() : '')}
+                onChange={(date: DatePickerProps['value']) =>
+                  field.onChange(date ? date.toString() : '')
+                }
                 showMonthAndYearPickers
-                popoverProps={{ placement: 'bottom-start', shouldFlip: false }}
+                popoverProps={{ placement: 'top-start' }}
                 classNames={{
                   base: 'w-full',
                   label: 'text-sm font-medium !text-[#767676]',

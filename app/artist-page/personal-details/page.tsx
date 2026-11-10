@@ -22,15 +22,13 @@ const getSelectedValue = (value) => {
 };
 
 const getProfileNameParts = (profile) => {
-  const nameParts = (profile.user?.name || profile.name || '')
+  const nameParts = (profile?.user?.name || profile?.name || '')
     .trim()
     .split(/\s+/)
     .filter(Boolean);
-  const firstName = profile.firstName || profile.user?.firstName || nameParts[0];
+  const firstName = profile?.firstName || profile?.user?.firstName || nameParts[0];
   const lastName =
-    profile.lastName ||
-    profile.user?.lastName ||
-    nameParts.slice(1).join(' ');
+    profile?.lastName || profile?.user?.lastName || nameParts.slice(1).join(' ');
 
   return { firstName, lastName };
 };
@@ -92,30 +90,30 @@ export default function Page() {
       fullName: [firstName, lastName].filter(Boolean).join(' '),
       firstName,
       lastName,
-      username: profile.username || profile.user?.username || '',
-      email: profile.email || profile.user?.email || '',
-      nationality: new Set(profile.nationality ? [profile.nationality] : []),
+      username: profile?.user?.username || '',
+      email: profile?.user?.email || '',
+      nationality: new Set(profile?.nationality ? [profile?.nationality] : []),
       countryOfResidence: new Set(
-        profile.countryOfResidence ? [profile.countryOfResidence] : []
+        profile?.countryOfResidence ? [profile?.countryOfResidence] : []
       ),
       phoneCode: new Set(),
-      phoneNumber: profile.phone || '',
-      currentCity: profile.currentCity || '',
-      language: profile.language || '',
+      phoneNumber: profile?.phone || '',
+      currentCity: profile?.currentCity || '',
+      language: profile?.language || '',
       day: new Set(),
       month: new Set(),
       year: new Set(),
-      dob: profile.dateOfBirth ? profile.dateOfBirth.slice(0, 10) : '',
-      about: profile.bio || '',
-      skill: Array.isArray(profile.skills)
-        ? profile.skills.join(', ')
-        : profile.skills || '',
-      companyName: profile.businessName || '',
-      portfolioLink: profile.portfolioLink || '',
+      dob: profile?.dateOfBirth ? profile?.dateOfBirth.slice(0, 10) : '',
+      about: profile?.bio || '',
+      skill: Array.isArray(profile?.skills)
+        ? profile?.skills.join(', ')
+        : profile?.skills || '',
+      companyName: profile?.businessName || '',
+      portfolioLink: profile?.portfolioLink || '',
       availability: false,
-      weeklyAvailability: profile.weeklyAvailability || '',
-      awards: profile.certifications?.length
-        ? profile.certifications.map((certification) => ({
+      weeklyAvailability: profile?.weeklyAvailability || '',
+      awards: profile?.certifications?.length
+        ? profile?.certifications.map((certification) => ({
             ...certification,
             issuedBy: certification.issuingOrganization || '',
             previews: certification.documentUrl ? [certification.documentUrl] : [],
@@ -130,7 +128,7 @@ export default function Page() {
             },
           ],
     });
-    setPreview(profile.user?.image || '');
+    setPreview(profile?.user?.image || '');
     setProfileReady(true);
   }, [profile, profileReady, reset]);
 
@@ -148,7 +146,7 @@ export default function Page() {
       const uploadedFile = await uploadMutation.mutateAsync({
         file,
         fileableType: 'profile',
-        fileableId: profile.id,
+        fileableId: profile?.id,
       });
       uploadComplete = true;
       await updateImageMutation.mutateAsync({ image: uploadedFile.storage_url });
@@ -167,7 +165,7 @@ export default function Page() {
         description: getErrorMessage(
           uploadError,
           uploadComplete
-            ? 'The image uploaded, but could not be saved to your profile.'
+            ? 'The image uploaded, but could not be saved to your profile?.'
             : 'Please try again.'
         ),
         color: 'danger',
@@ -180,9 +178,9 @@ export default function Page() {
 
   const handleProfileUpdate = async () => {
     const values = methods.getValues();
-    const skills = Array.isArray(values.skill)
-      ? values.skill
-      : String(values.skill || '')
+    const skills = Array.isArray(values?.skill)
+      ? values?.skill
+      : String(values?.skill || '')
           .split(',')
           .map((skill) => skill.trim())
           .filter(Boolean);
@@ -190,22 +188,22 @@ export default function Page() {
     try {
       await updateMutation.mutateAsync({
         fullName:
-          [values.firstName, values.lastName].filter(Boolean).join(' ') ||
-          values.fullName ||
+          [values?.firstName, values?.lastName].filter(Boolean).join(' ') ||
+          values?.fullName ||
           '',
-        username: values.username || '',
-        email: values.email || '',
-        nationality: getSelectedValue(values.nationality),
-        phone: values.phoneNumber || values.phone || '',
-        currentCity: getSelectedValue(values.currentCity),
-        countryOfResidence: getSelectedValue(values.countryOfResidence),
-        language: getSelectedValue(values.language),
-        dateOfBirth: values.dob || '',
-        bio: values.about || '',
+        username: values?.username || '',
+        email: values?.email || '',
+        nationality: getSelectedValue(values?.nationality),
+        phone: values?.phoneNumber || '',
+        currentCity: getSelectedValue(values?.currentCity),
+        countryOfResidence: getSelectedValue(values?.countryOfResidence) || '',
+        language: getSelectedValue(values?.language),
+        dateOfBirth: values?.dob || '',
+        bio: values?.about || '',
         skills,
-        portfolioLink: values.portfolioLink || '',
-        weeklyAvailability: values.weeklyAvailability || '',
-        awards: (values.awards || [])
+        portfolioLink: values?.portfolioLink || '',
+        weeklyAvailability: values?.weeklyAvailability || '',
+        awards: (values?.awards || [])
           .map((award) => ({
             name: award.name || '',
             organization: award.issuedBy || award.issuingOrganization || '',
@@ -231,13 +229,6 @@ export default function Page() {
   const [step, setStep] = useState(1);
   const [hoveredField, setHoveredField] = useState(null);
 
-  const formData = watch();
-  const setFormData = (updates) => {
-    Object.entries(updates).forEach(([key, value]) => {
-      setValue(key, value);
-    });
-  };
-
   if (isLoading || (profile && !profileReady)) return <ProfileSettingsSkeleton />;
 
   if (isError || !profile) {
@@ -253,11 +244,11 @@ export default function Page() {
 
             <Profile
               setSelected={setSelected}
-              formData={formData}
-              setFormData={setFormData}
+              // formData={formData}
+              // setFormData={setFormData}
               selected={selected}
-              step={step}
-              setStep={setStep}
+              // step={step}
+              // setStep={setStep}
               className='hidden md:flex'
               preview={preview}
               handleImageChange={handleImageChange}
@@ -272,8 +263,8 @@ export default function Page() {
                 <>
                   <Profile
                     setSelected={setSelected}
-                    formData={formData}
-                    setFormData={setFormData}
+                    // formData={formData}
+                    // setFormData={setFormData}
                     selected={selected}
                     className='flex md:hidden'
                     preview={preview}
@@ -301,7 +292,7 @@ export default function Page() {
                 <AwardsCertification
                   setSelected={setSelected}
                   setHoveredField={setHoveredField}
-                  profileId={profile.id}
+                  profileId={profile?.id}
                   onSubmit={handleProfileUpdate}
                   isSubmitting={updateMutation.isPending}
                   isEdit
