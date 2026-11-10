@@ -73,32 +73,94 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
 
   const pendingProjects = [
     {
-      title: 'Modern Fashion Attire Illustration',
+      title: '•Modern Fashion Attire Illustration',
       id: '24t64754-A',
       StartDate: '18, June, 2024',
       EndDate: '23, June, 2024',
-      status: null,
+      status: 'Change Requested',
+      timeLeft: '1h left',
     },
     {
       title: 'Modern Fashion Attire Illustration',
       id: '98k21456-B',
       StartDate: '18, June, 2024',
       EndDate: '23, June, 2024',
-      status: 'Waiting Approval',
+      status: null,
+      timeLeft: '1h left',
     },
     {
       title: 'Modern Fashion Attire Illustration',
       id: '12m78390-C',
       StartDate: '18, June, 2024',
       EndDate: '23, June, 2024',
+      status: 'Waiting Approval',
+      timeLeft: '12h left',
+    },
+    {
+      title: 'Modern Fashion Attire Illustration',
+      id: '55d78219-E',
+      StartDate: '18, June, 2024',
+      EndDate: '23, June, 2024',
       status: 'Extension Requested',
+      timeLeft: '3d left',
     },
     {
       title: 'Modern Fashion Attire Illustration',
       id: '44f89312-D',
       StartDate: '18, June, 2024',
       EndDate: '23, June, 2024',
+      status: 'Deadline Approved',
+      timeLeft: '2d left',
+    },
+    {
+      title: 'Modern Fashion Attire Illustration',
+      id: '66g90431-F',
+      StartDate: '18, June, 2024',
+      EndDate: '23, June, 2024',
       status: 'Deadline Extended',
+      timeLeft: '0d left',
+    },
+    {
+      title: 'Modern Fashion Attire Illustration',
+      id: '77h12345-G',
+      StartDate: '18, June, 2024',
+      EndDate: '23, June, 2024',
+      status: null,
+    },
+    {
+      title: 'Modern Fashion Attire Illustration',
+      id: '88i23456-H',
+      StartDate: '18, June, 2024',
+      EndDate: '23, June, 2024',
+      status: 'Waiting Approval',
+    },
+    {
+      title: 'Modern Fashion Attire Illustration',
+      id: '99j34567-I',
+      StartDate: '18, June, 2024',
+      EndDate: '23, June, 2024',
+      status: 'Extension Requested',
+    },
+    {
+      title: 'Modern Fashion Attire Illustration',
+      id: '11k45678-J',
+      StartDate: '18, June, 2024',
+      EndDate: '23, June, 2024',
+      status: 'Deadline Approved',
+    },
+    {
+      title: 'Modern Fashion Attire Illustration',
+      id: '22l56789-K',
+      StartDate: '18, June, 2024',
+      EndDate: '23, June, 2024',
+      status: 'Deadline Extended',
+    },
+    {
+      title: 'Modern Fashion Attire Illustration',
+      id: '33m67890-L',
+      StartDate: '18, June, 2024',
+      EndDate: '23, June, 2024',
+      status: 'Extension Rejected',
     },
   ];
 
@@ -109,7 +171,7 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
 
   // Pagination state & calculations
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 6;
   const totalPages = Math.ceil(filteredContracts.length / itemsPerPage);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -289,39 +351,67 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
                     </button>
                   </div>
 
+                  {contract.status === 'Change Requested' && (
+                    <div className="mb-2">
+                      <span className="inline-flex items-center bg-[#E0F2FE] text-[#0284C7] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
+                        Change Requested
+                      </span>
+                    </div>
+                  )}
                   {contract.status === 'Waiting Approval' && (
                     <div className="mb-2">
-                      <span className="inline-flex items-center bg-[#EAF5FB] text-[#3A98BB] text-[11px] font-semibold px-2 py-0.5 rounded-sm">
+                      <span className="inline-flex items-center bg-[#FEF3C7] text-[#B45309] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                         Waiting Approval
                       </span>
                     </div>
                   )}
                   {contract.status === 'Extension Requested' && (
                     <div className="mb-2">
-                      <span className="inline-flex items-center bg-[#FFF4E5] text-[#E68A1D] text-[11px] font-semibold px-2 py-0.5 rounded-sm">
+                      <span className="inline-flex items-center bg-[#F3E8FF] text-[#7C3AED] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                         Extension Requested
+                      </span>
+                    </div>
+                  )}
+                  {contract.status === 'Deadline Approved' && (
+                    <div className="mb-2">
+                      <span className="inline-flex items-center bg-[#DCFCE7] text-[#16A34A] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
+                        Deadline Approved
                       </span>
                     </div>
                   )}
                   {contract.status === 'Deadline Extended' && (
                     <div className="mb-2">
-                      <span className="inline-flex items-center bg-[#E6F5EC] text-[#22C55E] text-[11px] font-semibold px-2 py-0.5 rounded-sm">
+                      <span className="inline-flex items-center bg-[#E0F2FE] text-[#0284C7] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                         Deadline Extended
+                      </span>
+                    </div>
+                  )}
+                  {contract.status === 'Extension Rejected' && (
+                    <div className="mb-2">
+                      <span className="inline-flex items-center bg-[#FEE2E2] text-[#DC2626] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
+                        Extension Rejected
                       </span>
                     </div>
                   )}
 
                   <div
                     className="space-y-1 cursor-pointer"
-                    onClick={() => router.push(`/artist-page/ongoing-contract-information?id=${encodeURIComponent(contract.id || '')}`)}
+                    onClick={() => router.push(`/artist-page/ongoing-contract-information?id=${encodeURIComponent(contract.id || '')}&status=${encodeURIComponent(contract.status || '')}${contract.status === 'Deadline Extended' ? '&isExtended=true' : ''}`)}
                   >
                     <div className='flex items-center gap-2 text-[13px]'>
                       <span className='text-gray-400'>Start Date -</span>
                       <span className='font-medium text-[#222222]'>{contract.StartDate}</span>
                     </div>
-                    <div className='flex items-center gap-2 text-[13px]'>
-                      <span className='text-gray-400'>End Date -</span>
-                      <span className='font-medium text-[#222222]'>{contract.EndDate}</span>
+                    <div className='flex items-center justify-between text-[13px]'>
+                      <div className='flex items-center gap-2'>
+                        <span className='text-gray-400'>End Date -</span>
+                        <span className='font-medium text-[#222222]'>{contract.EndDate}</span>
+                      </div>
+                      {contract.timeLeft && (
+                        <span className={`text-[13px] font-medium ${contract.timeLeft.includes('1h') ? 'text-[#E05656]' : 'text-[#333333]'}`}>
+                          {contract.timeLeft}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </CardBody>
@@ -331,55 +421,77 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
             {/* ── DESKTOP Card ── */}
             <div
               className='hidden lg:flex bg-white border border-[#EAEAEA] rounded-[10px] p-5 lg:px-8 lg:py-5 transition-all hover:bg-gray-50 cursor-pointer items-center justify-between'
-              onClick={() => router.push(`/artist-page/ongoing-contract-information?id=${encodeURIComponent(contract.id || '')}`)}
+              onClick={() => router.push(`/artist-page/ongoing-contract-information?id=${encodeURIComponent(contract.id || '')}&status=${encodeURIComponent(contract.status || '')}${contract.status === 'Deadline Extended' ? '&isExtended=true' : ''}`)}
             >
-              <div className='flex flex-col items-start gap-1.5 w-[35%] pr-4'>
+              <div className='flex flex-col items-start gap-1.5 w-[33%] pr-4'>
                 <h3 className='font-bold text-[15px] text-[#111111] truncate w-full'>
                   {contract.title}
                 </h3>
+                {contract.status === 'Change Requested' && (
+                  <span className="inline-flex items-center bg-[#E0F2FE] text-[#0284C7] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
+                    Change Requested
+                  </span>
+                )}
                 {contract.status === 'Waiting Approval' && (
-                  <span className="inline-flex items-center bg-[#EAF5FB] text-[#3A98BB] text-[11px] font-semibold px-2 py-0.5 rounded-sm">
+                  <span className="inline-flex items-center bg-[#FEF3C7] text-[#B45309] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                     Waiting Approval
                   </span>
                 )}
                 {contract.status === 'Extension Requested' && (
-                  <span className="inline-flex items-center bg-[#FFF4E5] text-[#E68A1D] text-[11px] font-semibold px-2 py-0.5 rounded-sm">
+                  <span className="inline-flex items-center bg-[#F3E8FF] text-[#7C3AED] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                     Extension Requested
                   </span>
                 )}
+                {contract.status === 'Deadline Approved' && (
+                  <span className="inline-flex items-center bg-[#DCFCE7] text-[#16A34A] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
+                    Deadline Approved
+                  </span>
+                )}
                 {contract.status === 'Deadline Extended' && (
-                  <span className="inline-flex items-center bg-[#E6F5EC] text-[#22C55E] text-[11px] font-semibold px-2 py-0.5 rounded-sm">
+                  <span className="inline-flex items-center bg-[#E0F2FE] text-[#0284C7] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                     Deadline Extended
+                  </span>
+                )}
+                {contract.status === 'Extension Rejected' && (
+                  <span className="inline-flex items-center bg-[#FEE2E2] text-[#DC2626] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
+                    Extension Rejected
                   </span>
                 )}
               </div>
 
-              <div className='flex flex-col items-start text-[13px] font-satoshi w-[25%]'>
-                <div className='flex items-center gap-2 mb-1'>
-                  <span className='text-gray-400'>Start Date -</span>
-                  <span className='font-medium text-[#222222]'>{contract.StartDate}</span>
+              <div className='flex items-center gap-6 w-[28%]'>
+                <div className='flex flex-col items-start text-[13px] font-satoshi'>
+                  <div className='flex items-center gap-2 mb-1'>
+                    <span className='text-gray-400'>Start Date -</span>
+                    <span className='font-medium text-[#222222]'>{contract.StartDate}</span>
+                  </div>
+                  <div className='flex items-center gap-2'>
+                    <span className='text-gray-400'>End Date -</span>
+                    <span className='font-medium text-[#222222]'>{contract.EndDate}</span>
+                  </div>
                 </div>
-                <div className='flex items-center gap-2'>
-                  <span className='text-gray-400'>End Date -</span>
-                  <span className='font-medium text-[#222222]'>{contract.EndDate}</span>
-                </div>
+                {contract.timeLeft && (
+                  <span className={`text-[13px] font-medium whitespace-nowrap ${contract.timeLeft.includes('1h') ? 'text-[#E05656]' : 'text-[#333333]'}`}>
+                    {contract.timeLeft}
+                  </span>
+                )}
               </div>
 
-              <div className='flex items-center justify-end gap-4 flex-1' onClick={(e) => e.stopPropagation()}>
+              <div className='flex items-center justify-end gap-3 flex-1' onClick={(e) => e.stopPropagation()}>
                 <SubmitWorkModal
                   trigger={
                     <Button
-                      className='bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full h-[40px] border-0 shadow-sm text-sm w-[150px]'
+                      className='bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full h-[40px] border-0 shadow-sm text-sm hover:opacity-90 transition-opacity w-[145px] shrink-0'
                       radius='full'
                     >
-                      {contract.status === 'Waiting Approval' ? 'Resubmit' : 'Submit Project'}
+                      {(contract.status === 'Waiting Approval' || contract.status === 'Change Requested') ? 'Resubmit' : 'Submit Project'}
                     </Button>
                   }
                 />
                 <ChatClientModal
                   trigger={
                     <Button
-                      className='bg-transparent text-[#222222] font-semibold rounded-full h-[40px] border border-gray-300 text-sm w-[130px]'
+                      className='bg-transparent text-[#222222] font-semibold rounded-full h-[40px] border border-gray-300 text-sm hover:bg-gray-50 transition-colors w-[125px] shrink-0'
                       radius='full'
                     >
                       Chat Client
@@ -387,17 +499,28 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
                   }
                 />
                 
-                <Dropdown placement="bottom-end" shouldBlockScroll={false}>
+                <Dropdown 
+                  placement="bottom-end" 
+                  shouldBlockScroll={false}
+                  classNames={{
+                    content: "bg-white rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] border border-gray-100 min-w-[170px] p-1.5",
+                  }}
+                >
                   <DropdownTrigger>
-                    <div className='flex items-center justify-end gap-1.5 cursor-pointer w-[70px]'>
+                    <div className='flex items-center justify-end gap-1.5 cursor-pointer py-2 px-1 hover:opacity-75 transition-opacity select-none w-[75px] shrink-0'>
                       <span className='text-sm font-semibold text-[#222222]'>More</span>
                       <EllipsisHorizontalIcon className='w-5 h-5 text-gray-500' />
                     </div>
                   </DropdownTrigger>
-                  <DropdownMenu aria-label="More Options">
+                  <DropdownMenu 
+                    aria-label="More Options"
+                    classNames={{
+                      base: "p-0",
+                    }}
+                  >
                     <DropdownItem 
                       key="request_extension" 
-                      className="text-sm font-medium text-[#222222]"
+                      className="text-sm font-medium text-[#222222] py-2 px-3 rounded-lg data-[hover=true]:bg-default"
                       onPress={() => {
                         setCurrentContract(contract);
                         setShowExtensionModal(true);
@@ -405,7 +528,14 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
                     >
                       Request Extension
                     </DropdownItem>
-                    <DropdownItem key="report" className="text-sm font-medium text-red-500 hover:text-red-600">
+                    <DropdownItem 
+                      key="report" 
+                      className="text-sm font-medium text-red-500 hover:text-red-600 data-[hover=true]:bg-default py-2 px-3 rounded-lg"
+
+                      onPress={() => {
+                        router.push(`/artist-page/report-dispute?contractId=${encodeURIComponent(contract.id || '')}`);
+                      }}
+                    >
                       Report Dispute
                     </DropdownItem>
                   </DropdownMenu>
@@ -439,7 +569,7 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
               setOpenMenuContract(null);
             }}
           >
-            Submit Project
+            {(openMenuContract?.status === 'Waiting Approval' || openMenuContract?.status === 'Change Requested') ? 'Resubmit' : 'Submit Project'}
           </button>
           <button
             className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium border-b border-gray-100 cursor-pointer'
@@ -456,6 +586,7 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
             className='w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors font-medium cursor-pointer'
             onClick={(e) => {
               e.stopPropagation();
+              router.push(`/artist-page/report-dispute?contractId=${encodeURIComponent(openMenuContract?.id || '')}`);
               setOpenMenuContract(null);
             }}
           >
