@@ -39,7 +39,7 @@ const HeroSection = () => {
               disableSkeleton
               draggable={false}
             />
-            <p className="text-white z-20">Over 5000 Fashion Artists</p>
+            <p className="text-white z-20">Verified Fashion Creators</p>
           </div>
           <p className="font-medium lg:text-[48px] text-[33px] text-white lg:pl-14 pl-0 md:p-2 lg:leading-[60px] leading-[40px] z-30 lg:w-[84%] lg:text-start text-center w-full ">
             The Global Marketplace for Premium{" "}
