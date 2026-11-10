@@ -9,7 +9,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import {
   useGetArtistProfile,
   useUpdateArtistProfile,
-  useUpdateArtistProfileImage,
+  useUpdateGeneralArtistProfile,
   useUploadProfileFile,
 } from './queries/artist-profile-queries';
 import ProfileSettingsSkeleton from './_components/ProfileSettingSkeleton';
@@ -21,27 +21,37 @@ const getSelectedValue = (value) => {
   return typeof value === 'string' ? value : '';
 };
 
+const getProfileNameParts = (profile) => {
+  const nameParts = (profile.user?.name || profile.name || '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  const firstName = profile.firstName || profile.user?.firstName || nameParts[0];
+  const lastName =
+    profile.lastName ||
+    profile.user?.lastName ||
+    nameParts.slice(1).join(' ');
+
+  return { firstName, lastName };
+};
+
 export default function Page() {
   const [selected, setSelected] = useState('PersonalDetail');
   const [preview, setPreview] = useState('');
   const [isSavingImage, setIsSavingImage] = useState(false);
   const [profileReady, setProfileReady] = useState(false);
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-    refetch,
-    isRefetching,
-  } = useGetArtistProfile();
+  const { data, isLoading, isError, error, refetch, isRefetching } =
+    useGetArtistProfile();
   const uploadMutation = useUploadProfileFile();
   const updateMutation = useUpdateArtistProfile();
-  const updateImageMutation = useUpdateArtistProfileImage();
+  const updateImageMutation = useUpdateGeneralArtistProfile();
   const profile = data?.data;
 
   const methods = useForm({
     defaultValues: {
       fullName: '',
+      firstName: '',
+      lastName: '',
       username: '',
       email: '',
       nationality: new Set(),
@@ -77,9 +87,12 @@ export default function Page() {
   useEffect(() => {
     if (!profile || profileReady) return;
 
+    const { firstName, lastName } = getProfileNameParts(profile);
     reset({
-      fullName: profile.user?.name || '',
-      username: profile.user?.username || '',
+      fullName: [firstName, lastName].filter(Boolean).join(' '),
+      firstName,
+      lastName,
+      username: profile.username || profile.user?.username || '',
       email: profile.email || profile.user?.email || '',
       nationality: new Set(profile.nationality ? [profile.nationality] : []),
       countryOfResidence: new Set(
@@ -176,7 +189,10 @@ export default function Page() {
 
     try {
       await updateMutation.mutateAsync({
-        fullName: values.fullName || '',
+        fullName:
+          [values.firstName, values.lastName].filter(Boolean).join(' ') ||
+          values.fullName ||
+          '',
         username: values.username || '',
         email: values.email || '',
         nationality: getSelectedValue(values.nationality),
@@ -225,13 +241,7 @@ export default function Page() {
   if (isLoading || (profile && !profileReady)) return <ProfileSettingsSkeleton />;
 
   if (isError || !profile) {
-    return (
-      <ProfileError
-        error={error}
-        refetch={refetch}
-        isRefetching={isRefetching}
-      />
-    );
+    return <ProfileError error={error} refetch={refetch} isRefetching={isRefetching} />;
   }
 
   return (
