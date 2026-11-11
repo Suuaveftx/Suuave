@@ -15,22 +15,11 @@ import {
 import ProfileSettingsSkeleton from './_components/ProfileSettingSkeleton';
 import { getErrorMessage } from '../../../utils/utils';
 import ProfileError from '../profile-for-artist/_components/ProfileError';
+import { getProfileNameParts } from '@/utils/profile-utils';
 
 const getSelectedValue = (value) => {
   if (value instanceof Set) return Array.from(value)[0] || '';
   return typeof value === 'string' ? value : '';
-};
-
-const getProfileNameParts = (profile) => {
-  const nameParts = (profile?.user?.name || profile?.name || '')
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
-  const firstName = profile?.firstName || profile?.user?.firstName || nameParts[0];
-  const lastName =
-    profile?.lastName || profile?.user?.lastName || nameParts.slice(1).join(' ');
-
-  return { firstName, lastName };
 };
 
 export default function Page() {
