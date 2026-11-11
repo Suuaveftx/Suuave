@@ -1,0 +1,221 @@
+'use client';
+import React, { Dispatch, SetStateAction, useId } from 'react';
+import { Camera, LoaderCircle } from 'lucide-react';
+import { Avatar } from '@heroui/react';
+import { useFormContext } from 'react-hook-form';
+
+type ProfilePropsType = {
+  setSelected: Dispatch<SetStateAction<string>>;
+  selected: string;
+  className?: string;
+  handleImageChange: (e: any) => Promise<void>;
+  preview: string;
+  hoveredField: string;
+  profileImage: string;
+  isUploadingImage?: boolean;
+};
+
+const Profile = ({
+  setSelected,
+  selected,
+  className,
+  handleImageChange,
+  isUploadingImage = false,
+  preview,
+  hoveredField,
+  profileImage,
+}: ProfilePropsType) => {
+  const { watch } = useFormContext();
+  const formData = watch();
+  const fullName =
+    [formData.firstName, formData.lastName].filter(Boolean).join(' ') ||
+    formData.fullName;
+  const profileUploadId = useId();
+  const hasValue = (value: unknown) => {
+    if (value instanceof Set) return value.size > 0;
+    if (Array.isArray(value)) return value.length > 0;
+    return Boolean(value);
+  };
+
+  return (
+    <div
+      className={`${className} flex-col items-center p-5 md:p-0 md:items-start gap-6 mb-4 w-full bg-[#FAFAFA] md:bg-transparent rounded-lg md:w-[40%] lg:w-[25%] transition-all duration-300`}
+    >
+      <h1 className='text-[#222222] font-bold text-2xl md:text-[32px] mb-2 md:mb-4 md:pt-12'>
+        Profile Settings
+      </h1>
+      <div className='md:mb-4 flex flex-col items-center md:items-start gap-2'>
+        <div className='flex flex-col items-center'>
+          <label
+            htmlFor={profileUploadId}
+            className={`relative group ${isUploadingImage ? 'cursor-wait' : 'cursor-pointer'}`}
+            aria-label={
+              isUploadingImage ? 'Uploading profile photo' : 'Upload profile photo'
+            }
+          >
+            <Avatar
+              src={isUploadingImage ? preview : profileImage}
+              className={`w-32 h-32 md:w-36 md:h-36 text-large shadow-lg transition-all bg-[#3A98BB] ${isUploadingImage ? 'opacity-60' : 'hover:shadow-2xl'}`}
+              color='primary'
+            />
+            <div className='absolute bottom-2 right-2 bg-[#3A98BB] p-2.5 rounded-full border-2 border-white shadow-lg group-hover:scale-110 transition-transform'>
+              {isUploadingImage ? (
+                <LoaderCircle size={18} className='text-white animate-spin' />
+              ) : (
+                <Camera size={18} className='text-white' />
+              )}
+            </div>
+          </label>
+          <input
+            id={profileUploadId}
+            type='file'
+            accept='image/*'
+            onChange={handleImageChange}
+            className='hidden'
+            disabled={isUploadingImage}
+          />
+          {isUploadingImage && (
+            <p className='text-sm text-[#035A7A]' role='status'>
+              Uploading profile photo...
+            </p>
+          )}
+        </div>
+        <div className='flex flex-col items-center md:items-start gap-1'>
+          <h2 className='font-bold text-2xl text-black tracking-tight'>
+            {fullName || 'Your Name'}
+          </h2>
+          <p className='font-medium text-[#767676] text-sm md:ml-1'>
+            {formData.username ? `@${formData.username.replace(/^@/, '')}` : '@username'}
+          </p>
+        </div>
+      </div>
+
+      {/* Personal Detail Section */}
+      <section className=' hidden md:flex flex-col w-full'>
+        <button
+          className={`text-start font-semibold text-lg mb-2 transition-all ${selected === 'PersonalDetail' ? 'text-[#3A98BB] border-l-4 border-[#3A98BB] pl-3' : 'text-black border-l-4 border-transparent pl-3 hover:text-[#3A98BB]'}`}
+          onClick={() => setSelected('PersonalDetail')}
+        >
+          Personal Details
+        </button>
+        {selected === 'PersonalDetail' && (
+          <ul className='font-normal text-sm space-y-3 p-3'>
+            <List
+              activeState={fullName}
+              text='Full Name'
+              isHovered={hoveredField === 'Full Name'}
+            />
+            <List
+              activeState={formData.username}
+              text='Username'
+              isHovered={hoveredField === 'Username'}
+            />
+            <List
+              activeState={formData.email}
+              text=' Email Address'
+              isHovered={hoveredField === 'Email Address'}
+            />
+            <List
+              activeState={hasValue(formData.nationality)}
+              text='Nationality'
+              isHovered={hoveredField === 'Nationality'}
+            />
+            <List
+              activeState={hasValue(formData.countryOfResidence)}
+              text='Country of Residence'
+              isHovered={hoveredField === 'Country of Residence'}
+            />
+            <List
+              activeState={formData.phoneNumber}
+              text='Phone Number'
+              isHovered={hoveredField === 'Phone Number'}
+            />
+            <List
+              activeState={formData.currentCity}
+              text='Current City'
+              isHovered={hoveredField === 'Current City'}
+            />
+            <List
+              activeState={hasValue(formData.language)}
+              text='Language'
+              isHovered={hoveredField === 'Language'}
+            />
+            <List
+              activeState={!!formData.dob}
+              text=' Date of Birth'
+              isHovered={hoveredField === 'Date of Birth'}
+            />
+            <List
+              activeState={formData.about}
+              text='About Yourself'
+              isHovered={hoveredField === 'About Yourself'}
+            />
+          </ul>
+        )}
+      </section>
+
+      {/* Professional Information Section */}
+      <section className=' hidden md:flex flex-col w-full mt-4'>
+        <button
+          className={`text-start font-semibold text-lg mb-2 transition-all ${selected === 'ProfessionalInformation' ? 'text-[#3A98BB] border-l-4 border-[#3A98BB] pl-3' : 'text-black border-l-4 border-transparent pl-3 hover:text-[#3A98BB]'}`}
+          onClick={() => setSelected('ProfessionalInformation')}
+        >
+          Professional Information
+        </button>
+        {selected === 'ProfessionalInformation' && (
+          <ul className='font-normal text-sm space-y-3 p-3'>
+            <List
+              activeState={formData.skill}
+              text='Skills'
+              isHovered={hoveredField === 'Skills'}
+            />
+          </ul>
+        )}
+      </section>
+
+      {/* Awards/Certifications Section */}
+      <section className=' hidden md:flex flex-col w-full mt-4'>
+        <button
+          className={`text-start font-semibold text-lg mb-2 transition-all ${selected === 'Awards/Certifications' ? 'text-[#3A98BB] border-l-4 border-[#3A98BB] pl-3' : 'text-black border-l-4 border-transparent pl-3 hover:text-[#3A98BB]'}`}
+          onClick={() => setSelected('Awards/Certifications')}
+        >
+          Awards/Certifications
+        </button>
+        {selected === 'Awards/Certifications' && (
+          <ul className='font-normal text-sm space-y-3 p-3'>
+            <List activeState={formData.awards?.[0]?.name} text='Name' />
+            <List activeState={formData.awards?.[0]?.issuedBy} text='Issued/Awarded by' />
+            <List
+              activeState={formData.awards?.[0]?.previews?.length > 0}
+              text=' Upload Certificate/Award'
+            />
+          </ul>
+        )}
+      </section>
+    </div>
+  );
+};
+
+export default Profile;
+
+const List = ({
+  text,
+  activeState,
+  isHovered,
+}: {
+  text?: string;
+  activeState: string | boolean;
+  isHovered?: boolean;
+}) => {
+  return (
+    <li
+      className={`${
+        activeState || isHovered
+          ? 'border-[#3A98BB] transition-colors duration-300'
+          : 'border-[#D1D1D1]'
+      } border-l-2 p-1 ${isHovered ? 'text-[#3A98BB] font-bold' : 'text-black'} font-normal text-base`}
+    >
+      {text}
+    </li>
+  );
+};

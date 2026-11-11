@@ -15,11 +15,11 @@ const SIZE_CLASSES = {
  */
 const CustomButton = ({
   text = 'Get Started',
-  href,
+  href = null,
   className = '',
-  onPress,
-  onClick,
-  icon,
+  onPress = null,
+  onClick = null,
+  icon = null,
   showIcon = true,
   style = {},
   size = 'md',
@@ -44,7 +44,7 @@ const CustomButton = ({
   );
 
   const sharedProps = {
-    radius: 'full',
+    radius: 'full' as const,
     className: `font-proximanova font-medium shadow-md transition-shadow hover:shadow-lg data-[pressed=true]:scale-[0.98] ${SIZE_CLASSES[size] || SIZE_CLASSES.md} ${className}`,
     style: defaultStyle,
     onPress: handlePress,

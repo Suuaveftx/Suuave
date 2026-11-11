@@ -8,6 +8,7 @@ import { signOut } from '../../actions/services';
 import { authClient } from '../../../lib/auth-client';
 import { useRouter } from 'next/navigation';
 import PageContainer from '../../../components/layout/PageContainer';
+import { useGetArtistProfile } from '../personal-details/queries/artist-profile-queries';
 
 const Page = () => {
   // const router = useRouter();
@@ -18,13 +19,22 @@ const Page = () => {
   //   router.push('/auth/login');
   // }
 
+  const { data, isLoading: loadingProfile } = useGetArtistProfile();
+  const isProfileComplete = data?.data?.isProfileCompleted;
+
   return (
     <>
       <PageContainer withTopSpacing>
-        <div className='flex items-center gap-2 bg-[#EFF8FB] text-[#3A98BB] px-4 py-3 mt-2 rounded-lg'>
-          <BsExclamationTriangle className='text-xl flex-shrink-0' />
-          <h3 className='font-bold text-sm lg:text-base'>Complete your profile setup</h3>
-        </div>
+        {loadingProfile
+          ? null
+          : !isProfileComplete && (
+              <div className='flex items-center gap-2 bg-[#EFF8FB] text-[#3A98BB] px-4 py-3 mt-2 rounded-lg'>
+                <BsExclamationTriangle className='text-xl flex-shrink-0' />
+                <h3 className='font-bold text-sm lg:text-base'>
+                  Complete your profile setup
+                </h3>
+              </div>
+            )}
 
         <div className='flex justify-center w-full mt-6'>
           <div className='w-full'>
