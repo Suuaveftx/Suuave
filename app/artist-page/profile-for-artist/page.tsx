@@ -1,8 +1,8 @@
-import React, { Suspense } from 'react';
-import AppContainer from './AppContainer';
+import React from 'react';
+import ProfilePageContainer from './ProfilePageContainer';
 
 const Page = () => {
-  return <AppContainer />;
+  return <ProfilePageContainer />;
 };
 
 export default Page;
