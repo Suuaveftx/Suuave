@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-const apiOrigin = process.env.API_URL?.replace(/\/api\/v1\/?$/, '');
+const apiOrigin = process.env.API_URL?.trim().replace(/\/api\/v1\/?$/, '');
 
 const nextConfig = {
   serverExternalPackages: ['@prisma/client', '@suuaveftx/prisma-shared'],
@@ -9,6 +9,10 @@ const nextConfig = {
   },
 
   async rewrites() {
+    if (!apiOrigin) {
+      return [];
+    }
+
     return [
       {
         source: '/api/backend/:path*',
