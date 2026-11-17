@@ -15,22 +15,25 @@ import WarningBanner from '../../../../components/contracts/WarningBanner';
 
 const PendingProjects = ({
   search = "",
-  onSearchChange = () => { },
+  onSearchChange = (_value: string) => { },
+}: {
+  search?: string;
+  onSearchChange?: (value: string) => void;
 }) => {
   const router = useRouter();
   const [openMenuContract, setOpenMenuContract] = useState(null);
-  const menuRef = useRef(null);
-  const menuButtonRefs = useRef({});
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const menuButtonRefs = useRef<Record<string, HTMLElement | null>>({});
   const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
   const [localSearch, setLocalSearch] = useState(search);
 
   useEffect(() => {
-    const handleClose = (e) => {
-      if (menuRef.current && menuRef.current.contains(e.target)) {
+    const handleClose = (e: Event) => {
+      if (menuRef.current && menuRef.current.contains(e.target as Node)) {
         return;
       }
       const isButton = Object.values(menuButtonRefs.current).some(
-        (btn) => btn && btn.contains(e.target)
+        (btn) => btn && btn.contains(e.target as Node)
       );
       if (isButton) {
         return;
