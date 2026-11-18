@@ -10,36 +10,23 @@ export type DesignType = {
   id: string;
   title: string;
   description: string;
-  style: string;
-  asking_price: number;
-  license_type: string | null;
-  is_saved: boolean;
+  style: string[];
+  asking_price: string;
   status: string;
-  thumbnail_url: string | null;
-  images: unknown[];
-  tags: unknown[];
-  stats: {
-    views: number;
-    works_completed: number;
-    designs_sold: number;
-  };
+  tags: string[];
+  views: number;
+  works_completed: number;
+  designs_sold: number;
   created_at: string;
   published_at: string | null;
-  owner: {
-    id: string;
-    name: string;
-    display_name: string;
-    profile_picture: string | null;
-    location: string | null;
-    rating: number;
-    verified: boolean;
-    stats: {
-      total_designs: number;
-      total_sales: number;
-      total_reviews: number;
-      years_active: number;
-    };
-  };
+  updated_at: string;
+  deleted_at: string | null;
+  owner_id: string;
+  images: string[];
+  rights_confirmed: boolean;
+  license_type: string;
+  source_file_id: string | null;
+  thumbnail_url: string;
 };
 
 export type UserDesignsType = {

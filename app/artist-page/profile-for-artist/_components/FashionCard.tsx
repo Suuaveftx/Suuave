@@ -424,9 +424,9 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                           <div className='flex items-center gap-4 text-xs text-gray-200'>
                             <div className='flex items-center gap-1'>
                               <Eye size={16} />
-                              <span>{item.stats.views}</span>
+                              <span>{item.views}</span>
                             </div>
-                            <span>Licensed {item.stats.works_completed}</span>
+                            <span>Licensed {item.works_completed}</span>
                           </div>
                         </div>
                       </div>
