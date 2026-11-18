@@ -17,6 +17,9 @@ export type ProfileUpdateRequestType = {
     organization: string;
     url: string;
   }[];
+  businessName?: string;
+  brandCategory?: string;
+  position?: string;
 };
 
 export type ProfileInfoResponse = {
