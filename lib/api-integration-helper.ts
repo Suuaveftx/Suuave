@@ -1,12 +1,14 @@
 import { QueryKey, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getProfile,
+  getReviews,
   updateGeneralProfile,
   updateProfile,
   uploadProfileFile,
 } from './api-calls-helper';
 
-export const artistProfileQueryKey = ['artist_profile'];
+export const profileQueryKey = ['artist_profile'];
+export const reviewsQueryKey = ['reviews'];
 
 export default function useMutationWithInvalidation<TData, TVariables>(
   mutationFn: (variables: TVariables) => Promise<TData>,
@@ -22,7 +24,7 @@ export default function useMutationWithInvalidation<TData, TVariables>(
 
 export function useGetProfile() {
   return useQuery({
-    queryKey: artistProfileQueryKey,
+    queryKey: profileQueryKey,
     queryFn: getProfile,
   });
 }
@@ -34,9 +36,16 @@ export function useUploadProfileFile() {
 }
 
 export function useUpdateProfile() {
-  return useMutationWithInvalidation(updateProfile, artistProfileQueryKey);
+  return useMutationWithInvalidation(updateProfile, profileQueryKey);
 }
 
 export function useUpdateGeneralProfile() {
-  return useMutationWithInvalidation(updateGeneralProfile, artistProfileQueryKey);
+  return useMutationWithInvalidation(updateGeneralProfile, profileQueryKey);
+}
+
+export function useGetReviews() {
+  return useQuery({
+    queryKey: reviewsQueryKey,
+    queryFn: getReviews,
+  });
 }

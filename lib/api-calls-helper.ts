@@ -1,3 +1,4 @@
+import { UserReviewsType } from '@/app/artist-page/personal-details/types/profile-types';
 import { apiClient } from './axios';
 import {
   FileUploadType,
@@ -55,5 +56,10 @@ export async function updateGeneralProfile(
     '/profile',
     payload
   );
+  return res.data;
+}
+
+export async function getReviews(): Promise<ResponseData<UserReviewsType>> {
+  const res = await apiClient.get<ResponseData<UserReviewsType>>('/reviews');
   return res.data;
 }

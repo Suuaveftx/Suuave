@@ -49,7 +49,16 @@ export type ProfileInfoResponse = {
   portfolioLink: string;
   position: string | null;
   skills: string[];
-  stats: { designCollections: number; completedProjects: number };
+  stats: {
+    designCollections: number;
+    completedProjects: number;
+    jobsPosted: number;
+    totalSpentByCurrency: {
+      currency: string;
+      value: number;
+      totalSpent: number;
+    };
+  };
   updatedAt: string;
   user: {
     id: string;

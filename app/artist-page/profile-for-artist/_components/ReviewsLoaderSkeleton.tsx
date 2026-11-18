@@ -1,9 +1,19 @@
+import { cn } from '@/lib/utils';
 import { Skeleton } from '@heroui/react';
 
-export default function ReviewsLoaderSkeleton() {
+type ReviewsLoaderProps = {
+  role?: 'artist' | 'brand';
+};
+
+export default function ReviewsLoaderSkeleton({ role = 'artist' }: ReviewsLoaderProps) {
   return (
-    <div>
-      <aside className='flex flex-col justify-center items-center bg-[#fafafa] border-2 border-[#E6E6E6] rounded-md w-64 h-40 lg:ml-32 ml-8  text-center'>
+    <div className={cn(role === 'brand' && 'bg-[#fafafa] mt-6 p-4 rounded-md')}>
+      <aside
+        className={cn(
+          'flex flex-col justify-center items-center border-2 border-[#E6E6E6] rounded-md  text-center',
+          role === 'brand' ? 'ml-6 w-44 h-28 ' : 'w-64 h-40 ml-8 lg:ml-32'
+        )}
+      >
         <Skeleton className='h-4 w-24 !bg-[#AFC8D0] before:!via-white/70 rounded-lg' />
         <Skeleton className='h-4 my-2 w-36 !bg-[#AFC8D0] before:!via-white/70 rounded-lg' />
         <Skeleton className='h-4 w-28 !bg-[#AFC8D0] before:!via-white/70 rounded-lg' />

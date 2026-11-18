@@ -56,6 +56,7 @@ export type UserReviewType = {
   id: string | number;
   image?: string | null;
   name?: string | null;
+  comment?: string | null;
   rating?: number | string | null;
   date?: string | null;
 };
