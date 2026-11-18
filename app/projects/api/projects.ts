@@ -16,7 +16,7 @@ import type {
   UpdateProjectRequest,
 } from '../types/project-types';
 
-const PROJECTS_ENDPOINT = '/api/v1/projects';
+const PROJECTS_ENDPOINT = '/projects';
 
 export type ProjectListResult = {
   projects: ProjectApiModel[];
@@ -92,7 +92,7 @@ export async function uploadProjectReference({
   formData.append('fileableId', projectId);
 
   const response = await apiClient.post<ProjectFileUploadResponse>(
-    '/api/v1/files/upload',
+    '/files/upload',
     formData,
     {
       headers: { 'Content-Type': 'multipart/form-data' },
