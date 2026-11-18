@@ -33,8 +33,8 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
   const [openMenuContract, setOpenMenuContract] = useState(null);
   const [showExtensionModal, setShowExtensionModal] = useState(false);
   const [currentContract, setCurrentContract] = useState(null);
-  const menuRef = useRef(null);
-  const menuButtonRefs = useRef({});
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const menuButtonRefs = useRef<Record<string, HTMLElement | null>>({});
   const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
 
   const warningMessages = [
@@ -51,12 +51,12 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && menuRef.current.contains(e.target)) {
+    const handleClickOutside = (e: Event) => {
+      if (menuRef.current && menuRef.current.contains(e.target as Node)) {
         return;
       }
       const isButton = Object.values(menuButtonRefs.current).some(
-        (btn) => btn && btn.contains(e.target)
+        (btn) => btn && btn.contains(e.target as Node)
       );
       if (isButton) {
         return;

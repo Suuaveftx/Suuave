@@ -106,16 +106,16 @@ export default function CompletedContracts() {
   ];
   const currencyOptions = ["USD ($)", "EUR (€)", "GBP (£)", "NGN (₦)", "CAD ($)"];
 
-  const isToday = (date) => {
+  const isToday = (date: Date) => {
     const today = new Date();
     return date.getDate() === today.getDate() &&
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear();
   };
 
-  const isWithinLastDays = (date, days) => {
+  const isWithinLastDays = (date: Date, days: number) => {
     const today = new Date();
-    const diffTime = Math.abs(today - date);
+    const diffTime = Math.abs(today.getTime() - date.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays <= days;
   };
@@ -160,7 +160,7 @@ export default function CompletedContracts() {
       });
     }
 
-    return [...filtered].sort((a, b) => b.dateValue - a.dateValue);
+    return [...filtered].sort((a, b) => b.dateValue.getTime() - a.dateValue.getTime());
   }, [search, currencyFilter, dateFilter, contracts]);
 
   const itemsPerPage = 5;
@@ -168,7 +168,7 @@ export default function CompletedContracts() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = filteredAndSortedContracts.slice(startIndex, startIndex + itemsPerPage);
 
-  const onSearchChange = (value) => {
+  const onSearchChange = (value: string) => {
     setSearch(value);
     setCurrentPage(1);
   };
@@ -202,14 +202,16 @@ export default function CompletedContracts() {
                     </DropdownTrigger>
                     <DropdownMenu
                       aria-label="Date Filter"
-                      onAction={(key) => { setDateFilter(key); setCurrentPage(1); }}
+                      onAction={(key) => { setDateFilter(String(key)); setCurrentPage(1); }}
                       selectedKeys={[dateFilter]}
                       selectionMode="single"
                     >
-                      {dateOptions.map((option) => (
+                      {[
+                        ...dateOptions.map((option) => (
                         <DropdownItem key={option}>{option}</DropdownItem>
-                      ))}
-                      <DropdownItem key="" className="text-danger" color="danger">Reset Date</DropdownItem>
+                        )),
+                        <DropdownItem key="" className="text-danger" color="danger">Reset Date</DropdownItem>,
+                      ]}
                     </DropdownMenu>
                   </Dropdown>
 
@@ -221,14 +223,16 @@ export default function CompletedContracts() {
                     </DropdownTrigger>
                     <DropdownMenu
                       aria-label="Currency Filter"
-                      onAction={(key) => { setCurrencyFilter(key); setCurrentPage(1); }}
+                      onAction={(key) => { setCurrencyFilter(String(key)); setCurrentPage(1); }}
                       selectedKeys={[currencyFilter]}
                       selectionMode="single"
                     >
-                      {currencyOptions.map((option) => (
+                      {[
+                        ...currencyOptions.map((option) => (
                         <DropdownItem key={option}>{option}</DropdownItem>
-                      ))}
-                      <DropdownItem key="Currency" className="text-danger" color="danger">Reset Currency</DropdownItem>
+                        )),
+                        <DropdownItem key="Currency" className="text-danger" color="danger">Reset Currency</DropdownItem>,
+                      ]}
                     </DropdownMenu>
                   </Dropdown>
                 </div>
@@ -250,17 +254,20 @@ export default function CompletedContracts() {
               </DropdownTrigger>
               <DropdownMenu
                 aria-label="Mobile Filters"
-                onAction={(key) => {
+                onAction={(rawKey) => {
+                  const key = String(rawKey);
                   if (dateOptions.includes(key)) { setDateFilter(key); setCurrentPage(1); }
                   if (currencyOptions.includes(key)) { setCurrencyFilter(key); setCurrentPage(1); }
                   if (key === "reset_date") { setDateFilter(""); setCurrentPage(1); }
                   if (key === "reset_currency") { setCurrencyFilter("Currency"); setCurrentPage(1); }
                 }}
               >
-                {dateOptions.map((option) => (
+                {[
+                  ...dateOptions.map((option) => (
                   <DropdownItem key={option}>{option}</DropdownItem>
-                ))}
-                <DropdownItem key="reset_date" className="text-danger" color="danger">Reset Date</DropdownItem>
+                  )),
+                  <DropdownItem key="reset_date" className="text-danger" color="danger">Reset Date</DropdownItem>,
+                ]}
               </DropdownMenu>
             </Dropdown>
           </div>

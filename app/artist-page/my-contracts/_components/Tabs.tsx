@@ -65,11 +65,7 @@ export default function UnderlinedTabs() {
               />
             )}
             {activeTab === 'completed' && (
-              <CompletedContracts
-                dateFilter={dateFilter}
-                setDateFilter={setDateFilter}
-                dateOptions={dateOptions}
-              />
+              <CompletedContracts />
             )}
             {activeTab === 'pending' && <PendingProjects />}
           </div>
