@@ -22,7 +22,6 @@ import {
   useGetArtistDesigns,
   useGetArtistReviews,
   useGetWorksSamples,
-  useUploadProfileFile,
 } from '../../personal-details/queries/artist-profile-queries';
 import { useForm } from 'react-hook-form';
 import FashionCardSkeleton from './FashonCardSkeleton';
@@ -32,6 +31,7 @@ import CustomButton from '../../../../components/CustomButton';
 import { MdErrorOutline } from 'react-icons/md';
 import ReviewsLoaderSkeleton from './ReviewsLoaderSkeleton';
 import { FaStar } from 'react-icons/fa';
+import { useUploadProfileFile } from '@/lib/api-integration-helper';
 
 const INITIAL_VISIBLE_ITEMS = { design: 6, awards: 4, work: 4 };
 const ITEMS_PER_LOAD = { design: 3, awards: 4, work: 4 };

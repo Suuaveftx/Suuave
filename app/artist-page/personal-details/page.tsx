@@ -6,16 +6,17 @@ import PersonalInformation from './_components/PersonalInformation';
 import AwardsCertification from './_components/AwardsCertification';
 import Profile from './_components/Profile';
 import { useForm, FormProvider } from 'react-hook-form';
-import {
-  useGetArtistProfile,
-  useUpdateArtistProfile,
-  useUpdateGeneralArtistProfile,
-  useUploadProfileFile,
-} from './queries/artist-profile-queries';
+import {} from './queries/artist-profile-queries';
 import ProfileSettingsSkeleton from './_components/ProfileSettingSkeleton';
 import { getErrorMessage } from '../../../utils/utils';
 import ProfileError from '../profile-for-artist/_components/ProfileError';
 import { getProfileNameParts } from '@/utils/profile-utils';
+import {
+  useGetProfile,
+  useUpdateGeneralProfile,
+  useUpdateProfile,
+  useUploadProfileFile,
+} from '@/lib/api-integration-helper';
 
 const getSelectedValue = (value) => {
   if (value instanceof Set) return Array.from(value)[0] || '';
@@ -27,11 +28,10 @@ export default function Page() {
   const [preview, setPreview] = useState('');
   const [isSavingImage, setIsSavingImage] = useState(false);
   const [profileReady, setProfileReady] = useState(false);
-  const { data, isLoading, isError, error, refetch, isRefetching } =
-    useGetArtistProfile();
+  const { data, isLoading, isError, error, refetch, isRefetching } = useGetProfile();
   const uploadMutation = useUploadProfileFile();
-  const updateMutation = useUpdateArtistProfile();
-  const updateImageMutation = useUpdateGeneralArtistProfile();
+  const updateMutation = useUpdateProfile();
+  const updateImageMutation = useUpdateGeneralProfile();
   const profile = data?.data;
 
   const methods = useForm({

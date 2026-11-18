@@ -8,7 +8,7 @@ import { signOut } from '../../actions/services';
 import { authClient } from '../../../lib/auth-client';
 import { useRouter } from 'next/navigation';
 import PageContainer from '../../../components/layout/PageContainer';
-import { useGetArtistProfile } from '../personal-details/queries/artist-profile-queries';
+import { useGetProfile } from '@/lib/api-integration-helper';
 
 const Page = () => {
   // const router = useRouter();
@@ -19,7 +19,7 @@ const Page = () => {
   //   router.push('/auth/login');
   // }
 
-  const { data, isLoading: loadingProfile } = useGetArtistProfile();
+  const { data, isLoading: loadingProfile } = useGetProfile();
   const isProfileComplete = data?.data?.isProfileCompleted;
 
   return (
@@ -38,7 +38,7 @@ const Page = () => {
 
         <div className='flex justify-center w-full mt-6'>
           <div className='w-full'>
-            <SearchBar placeholder='Search Jobs' />
+            <SearchBar width={'100%'} placeholder='Search Jobs' />
           </div>
         </div>
 
