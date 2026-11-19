@@ -29,7 +29,7 @@ const getSelectedValue = (value: unknown) => {
 };
 
 export default function ProfileDetailsPage({ role }: ProfileDetailsPageProps) {
-  const isArtist = role === 'artist';
+  const isArtist = role === Roles.artist;
   const [selected, setSelected] = useState('PersonalDetail');
   const [step, setStep] = useState(1);
   const [preview, setPreview] = useState('');
