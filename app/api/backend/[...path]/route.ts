@@ -1,18 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_URL = process.env.API_URL?.trim();
+const API_URL = process.env.API_URL!;
 
 async function handler(
   req: NextRequest,
   { params }: { params: Promise<{ path: string[] }> }
 ) {
-  if (!API_URL) {
-    return NextResponse.json(
-      { error: 'API_URL is not configured.' },
-      { status: 500 }
-    );
-  }
-
   const { path } = await params;
 
   const url = `${API_URL}/${path.join('/')}${req.nextUrl.search}`;
