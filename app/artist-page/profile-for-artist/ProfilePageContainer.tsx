@@ -6,6 +6,7 @@ import FashionCards from './_components/FashionCard';
 import ProfileArtist from './_components/Profile';
 import ProfileError from './_components/ProfileError';
 import { useGetProfile } from '@/lib/api-integration-helper';
+import { Roles } from '@suuaveftx/prisma-shared';
 
 export default function ProfilePageContainer() {
   const {
@@ -17,7 +18,7 @@ export default function ProfilePageContainer() {
     error,
   } = useGetProfile();
 
-  const isVisitor = data?.data?.user?.role === 'artist' ? false : true;
+  const isVisitor = data?.data?.user?.role === Roles.artist ? false : true;
 
   if (isError) {
     return <ProfileError error={error} refetch={refetch} isRefetching={isRefetching} />;

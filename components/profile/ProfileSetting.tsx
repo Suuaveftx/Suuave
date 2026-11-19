@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction, useId } from 'react';
 import { Camera, LoaderCircle } from 'lucide-react';
 import { Avatar } from '@heroui/react';
 import { useFormContext } from 'react-hook-form';
+import { Roles } from '@suuaveftx/prisma-shared';
 
 type ProfileSettingPropsType = {
   setSelected: Dispatch<SetStateAction<string>>;
@@ -96,7 +97,7 @@ const ProfileSetting = ({
         </div>
       </div>
 
-      {role === 'artist' ? (
+      {role === Roles.artist ? (
         <aside>
           {' '}
           {/* Personal Detail Section */}

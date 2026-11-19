@@ -181,7 +181,7 @@ export default function ProfileDetailsPage({ role }: ProfileDetailsPageProps) {
   const handleProfileUpdate = async () => {
     const values = methods.getValues();
     const skills =
-      role === 'artist'
+      role === Roles.artist
         ? String(values.skill || '')
             .split(',')
             .map((skill) => skill.trim())
@@ -205,7 +205,9 @@ export default function ProfileDetailsPage({ role }: ProfileDetailsPageProps) {
         bio: values.about || '',
         skills,
         portfolioLink:
-          role === 'artist' ? values.portfolioLink : 'https://brand-portfolio-link.com',
+          role === Roles.artist
+            ? values.portfolioLink
+            : 'https://brand-portfolio-link.com',
         // replace the dummy portfolio link if there's a field for it for fashion designers
         weeklyAvailability: values.weeklyAvailability || '',
         awards: (values.awards || [])
