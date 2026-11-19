@@ -17,7 +17,7 @@ import {
   useUploadProfileFile,
 } from '@/lib/api-integration-helper';
 import { getErrorMessage } from '@/utils/utils';
-import { Roles } from '@/lib/roles';
+import { Roles } from '@/utils/enum';
 
 type ProfileDetailsPageProps = {
   role: Roles;

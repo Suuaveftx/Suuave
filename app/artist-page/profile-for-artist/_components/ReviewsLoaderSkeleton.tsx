@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@heroui/react';
-import { Roles } from '@/lib/roles';
+import { Roles } from '@/utils/enum';
 
 type ReviewsLoaderProps = {
   role?: Roles;

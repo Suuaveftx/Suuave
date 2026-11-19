@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction, useId } from 'react';
 import { Camera, LoaderCircle } from 'lucide-react';
 import { Avatar } from '@heroui/react';
 import { useFormContext } from 'react-hook-form';
-import { Roles } from '@/lib/roles';
+import { Roles } from '@/utils/enum';
 
 type ProfileSettingPropsType = {
   setSelected: Dispatch<SetStateAction<string>>;
