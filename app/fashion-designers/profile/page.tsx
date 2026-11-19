@@ -28,7 +28,7 @@ import {
 import ReviewsLoaderSkeleton from '@/app/artist-page/profile-for-artist/_components/ReviewsLoaderSkeleton';
 import { InfoIcon, Loader2, PencilIcon } from 'lucide-react';
 import { getErrorMessage } from '@/utils/utils';
-import { Roles } from '@suuaveftx/prisma-shared';
+import { Roles } from '@/lib/roles';
 
 const Page = () => {
   const router = useRouter();

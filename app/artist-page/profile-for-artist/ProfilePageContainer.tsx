@@ -6,7 +6,7 @@ import FashionCards from './_components/FashionCard';
 import ProfileArtist from './_components/Profile';
 import ProfileError from './_components/ProfileError';
 import { useGetProfile } from '@/lib/api-integration-helper';
-import { Roles } from '@suuaveftx/prisma-shared';
+import { Roles } from '@/lib/roles';
 
 export default function ProfilePageContainer() {
   const {

@@ -17,7 +17,7 @@ import {
   useUploadProfileFile,
 } from '@/lib/api-integration-helper';
 import { getErrorMessage } from '@/utils/utils';
-import { Roles } from '@suuaveftx/prisma-shared';
+import { Roles } from '@/lib/roles';
 
 type ProfileDetailsPageProps = {
   role: Roles;

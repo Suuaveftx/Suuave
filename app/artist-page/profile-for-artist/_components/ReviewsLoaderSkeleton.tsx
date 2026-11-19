@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@heroui/react';
-import { Roles } from '@suuaveftx/prisma-shared';
+import { Roles } from '@/lib/roles';
 
 type ReviewsLoaderProps = {
   role?: Roles;

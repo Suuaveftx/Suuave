@@ -1,5 +1,5 @@
 import ProfileDetailsPage from '@/components/profile/ProfileDetailsPage';
-import { Roles } from '@suuaveftx/prisma-shared';
+import { Roles } from '@/lib/roles';
 
 export default function Page() {
   return <ProfileDetailsPage role={Roles.artist} />;
