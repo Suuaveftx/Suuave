@@ -17,9 +17,10 @@ import {
   useUploadProfileFile,
 } from '@/lib/api-integration-helper';
 import { getErrorMessage } from '@/utils/utils';
+import { Roles } from '@suuaveftx/prisma-shared';
 
 type ProfileDetailsPageProps = {
-  role: 'artist' | 'fashion-designer';
+  role: Roles;
 };
 
 const getSelectedValue = (value: unknown) => {

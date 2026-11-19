@@ -1,5 +1,5 @@
 import ProfileDetailsPage from '@/components/profile/ProfileDetailsPage';
 
 export default function Page() {
-  return <ProfileDetailsPage role='fashion-designer' />;
+  return <ProfileDetailsPage role='brand' />;
 }
