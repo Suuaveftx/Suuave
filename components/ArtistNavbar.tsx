@@ -35,14 +35,14 @@ import Image from 'next/image';
 import Notification from './Notification';
 import { signOut } from '../app/actions/services';
 import PageContainer from './layout/PageContainer';
-import { useGetArtistProfile } from '@/app/artist-page/personal-details/queries/artist-profile-queries';
+import { useGetProfile } from '@/lib/api-integration-helper';
 
 const ArtistNavbar = () => {
   const [textStyle, setTextStyle] = useState('font-bold text-[#222222]');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const { data, isLoading: loadingProfile } = useGetArtistProfile();
+  const { data, isLoading: loadingProfile } = useGetProfile();
   const profileImage = data?.data?.user?.image;
 
   // ── Tour context: auto-open hamburger for cross-page mobile steps ──
