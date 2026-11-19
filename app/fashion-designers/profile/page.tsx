@@ -28,6 +28,7 @@ import {
 import ReviewsLoaderSkeleton from '@/app/artist-page/profile-for-artist/_components/ReviewsLoaderSkeleton';
 import { InfoIcon, Loader2, PencilIcon } from 'lucide-react';
 import { getErrorMessage } from '@/utils/utils';
+import { Roles } from '@suuaveftx/prisma-shared';
 
 const Page = () => {
   const router = useRouter();
@@ -387,7 +388,7 @@ const Page = () => {
 
       {/* Reviews */}
       {loadingReviews ? (
-        <ReviewsLoaderSkeleton role='brand' />
+        <ReviewsLoaderSkeleton role={Roles.brand} />
       ) : reviewsMeta.total < 1 ? (
         <aside className='p-4 mt-6 rounded-md bg-white font-satoshi h-52 flex flex-col gap-3 text-center justify-center items-center text-xl font-medium'>
           <InfoIcon color='blue' size={50} />

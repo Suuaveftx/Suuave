@@ -1,17 +1,20 @@
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@heroui/react';
+import { Roles } from '@suuaveftx/prisma-shared';
 
 type ReviewsLoaderProps = {
-  role?: 'artist' | 'brand';
+  role?: Roles;
 };
 
-export default function ReviewsLoaderSkeleton({ role = 'artist' }: ReviewsLoaderProps) {
+export default function ReviewsLoaderSkeleton({
+  role = Roles.artist,
+}: ReviewsLoaderProps) {
   return (
-    <div className={cn(role === 'brand' && 'bg-[#fafafa] mt-6 p-4 rounded-md')}>
+    <div className={cn(role === Roles.brand && 'bg-[#fafafa] mt-6 p-4 rounded-md')}>
       <aside
         className={cn(
           'flex flex-col justify-center items-center border-2 border-[#E6E6E6] rounded-md  text-center',
-          role === 'brand' ? 'ml-6 w-44 h-28 ' : 'w-64 h-40 ml-8 lg:ml-32'
+          role === Roles.brand ? 'ml-6 w-44 h-28 ' : 'w-64 h-40 ml-8 lg:ml-32'
         )}
       >
         <Skeleton className='h-4 w-24 !bg-[#AFC8D0] before:!via-white/70 rounded-lg' />
