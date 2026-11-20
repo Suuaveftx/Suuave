@@ -116,3 +116,12 @@ export type MetaType = {
   limit: number;
   totalPages: number;
 };
+
+export type PaginationType = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+};
