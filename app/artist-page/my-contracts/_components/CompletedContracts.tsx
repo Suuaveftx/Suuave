@@ -111,7 +111,7 @@ export default function CompletedContracts() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = filteredAndSortedContracts.slice(startIndex, startIndex + itemsPerPage);
 
-  const onSearchChange = (value) => {
+  const onSearchChange = (value: string) => {
     setSearch(value);
     setCurrentPage(1);
   };

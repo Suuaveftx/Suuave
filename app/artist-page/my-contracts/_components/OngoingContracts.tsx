@@ -58,12 +58,12 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && menuRef.current.contains(e.target)) {
+    const handleClickOutside = (e: Event) => {
+      if (menuRef.current && menuRef.current.contains(e.target as Node)) {
         return;
       }
       const isButton = Object.values(menuButtonRefs.current).some(
-        (btn) => btn && btn.contains(e.target)
+        (btn) => btn && btn.contains(e.target as Node)
       );
       if (isButton) {
         return;
