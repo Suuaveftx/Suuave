@@ -1,54 +1,84 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardBody, Avatar, Button } from "@heroui/react";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { PaperClipIcon } from "@heroicons/react/24/outline";
 import { TiLocation } from "react-icons/ti";
 import { FaStar } from "react-icons/fa6";
-import { FiDownload } from "react-icons/fi";
 import PageContainer from "../../../../components/layout/PageContainer";
+import ContractListState from "../../my-contracts/_components/ContractListState";
+import { useCompletedContract } from "../../my-contracts/queries/artist-contracts.queries";
+import {
+    formatBudget,
+    formatContractDate,
+    formatDurationDays,
+    getContractErrorMessage,
+    humanizeStatus,
+} from "../../my-contracts/utils/contract-formatters";
 
-const contractData = {
-    jobTitle: "Modern Fashion Attire Illustration",
-    contractNumber: "24t64754",
-    contractType: "Hire",
-    role: "Fashion Artist",
-    budget: "N200,000",
-    timeframe: "7 Days",
-    duration: "3 Days",
-    status: "Completed",
-    attachedDocuments: [
-        { name: "Doc1534re", type: "document" },
-        { name: "Doc573", type: "legal" },
-    ],
-    submittedWork: {
-        message: "Hello Josh,\nHere is the final submission of the work. Kindly review and if any iteration please let me know. Thanks.",
-        files: [
-            { name: "Look 1.png", size: "1.3mb", image: "/dev-images/fashionImg1.png" },
-            { name: "Look 1.png", size: "1.3mb", image: "/dev-images/fashionImg2.png" },
-        ]
+const FALLBACK_AVATAR = "/dev-images/Clients.png";
+
+function attachmentName(url, index) {
+    try {
+        const last = decodeURIComponent(new URL(url).pathname.split("/").filter(Boolean).pop() || "");
+        return last || `Attachment ${index + 1}`;
+    } catch {
+        return `Attachment ${index + 1}`;
     }
-};
-
-const clientProfile = {
-    name: "Tolu",
-    handle: "@tolu",
-    role: "Fashion Brand",
-    location: "Lagos, Nigeria",
-    avatar: "/dev-images/Clients.png", // Placeholder
-    rating: 5,
-    reviewCount: 0,
-    stats: {
-        jobsPosted: 1,
-        hire: 0,
-        paymentMade: 0,
-    },
-};
+}
 
 export default function CompletedContract() {
     const router = useRouter();
+    const contractId = useSearchParams().get("id");
+    const { data, isLoading, isError, error, refetch } = useCompletedContract(contractId);
+
+    if (!contractId) {
+        return <ContractListState kind="error" message="No contract was selected." />;
+    }
+    if (isLoading) return <ContractListState kind="loading" />;
+    if (isError || !data) {
+        return (
+            <ContractListState
+                kind="error"
+                message={getContractErrorMessage(error, "We could not load this contract.")}
+                onRetry={() => refetch()}
+            />
+        );
+    }
+
+    const { contract, artist } = data;
+    const contractData = {
+        jobTitle: contract.jobTitle,
+        contractNumber: contract.contractNumber,
+        contractType: contract.contractType,
+        role: contract.role,
+        budget: formatBudget(contract.budget, contract.currency),
+        timeframe:
+            formatDurationDays(contract.duration?.startDate, contract.duration?.dueDate) || "Not specified",
+        completedOn: formatContractDate(contract.completedAt),
+        status: humanizeStatus(contract.status) || "Completed",
+        attachedDocuments: (contract.attachments || []).map((url, index) => ({
+            name: attachmentName(url, index),
+            url,
+        })),
+    };
+    // The API names this block `artist` (it mirrors the brand schema); it fills the counterpart profile card.
+    const clientProfile = {
+        name: artist.name,
+        handle: artist.username ? `@${artist.username}` : artist.name,
+        role: "Brand",
+        location: artist.location || "Location not set",
+        avatar: artist.image || FALLBACK_AVATAR,
+        rating: Math.max(0, Math.min(5, Math.round(artist.rating || 0))),
+        reviewCount: artist.reviewsCount,
+        stats: {
+            jobsPosted: contract.jobsPosted,
+            hire: contract.hire,
+            paymentMade: contract.paymentMade ? "Yes" : "No",
+        },
+    };
 
     return (
         <PageContainer>
@@ -127,54 +157,17 @@ export default function CompletedContract() {
                                     >
                                         <div className="flex items-center justify-center gap-2">
                                             <PaperClipIcon className="md:h-5 md:w-5 h-4 w-4" />
-                                            <p className="md:text-md text-sm font-proximanova text-[#3A98BB]">
+                                            <a
+                                                href={doc.url}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="md:text-md text-sm font-proximanova text-[#3A98BB]"
+                                            >
                                                 {doc.name}
-                                            </p>
+                                            </a>
                                         </div>
                                     </div>
                                 ))}
-                            </CardBody>
-                        </Card>
-
-                        {/* Submitted Work & Files Card */}
-                        <Card className="bg-white mt-[6px] lg:mt-2" shadow="none">
-                            <CardBody className="p-4 lg:p-6 pb-6 lg:pb-8">
-                                <h2 className="md:text-2xl text-lg font-semibold md:mb-6 mb-4">
-                                    Submitted Work
-                                </h2>
-                                <div className="border border-gray-100 rounded-xl p-5 md:p-6 bg-white shadow-sm">
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <Avatar
-                                            src={"/dev-images/ArtistProfile.png"}
-                                            className="w-8 h-8 rounded-full"
-                                            name={"Me"}
-                                        />
-                                        <span className="font-bold text-gray-900 text-[15px]">
-                                            Me (Artist)
-                                        </span>
-                                    </div>
-                                    <p className="text-[#333333] text-[14px] font-proximanova leading-relaxed whitespace-pre-wrap">
-                                        {contractData.submittedWork.message}
-                                    </p>
-                                </div>
-
-                                <h2 className="md:text-[19px] text-lg font-semibold text-gray-900 md:mb-4 mb-3 mt-6 md:mt-8">
-                                    Files
-                                </h2>
-                                <div className="flex flex-wrap gap-4">
-                                    {contractData.submittedWork.files.map((file, index) => (
-                                        <div key={index} className="border border-gray-200 rounded-xl p-3 flex items-center gap-4 bg-white hover:border-gray-300 transition-colors w-full sm:w-[240px]">
-                                            <img src={file.image} alt={file.name} className="w-[60px] h-[60px] object-cover rounded-lg flex-shrink-0" />
-                                            <div className="flex-1 overflow-hidden">
-                                                <p className="text-[13px] font-bold text-gray-900 truncate">{file.name}</p>
-                                                <p className="text-[12px] text-gray-500 mt-0.5">{file.size}</p>
-                                            </div>
-                                            <button className="text-gray-800 hover:text-black transition-colors flex-shrink-0 mr-2" onClick={() => {}}>
-                                                <FiDownload className="w-[18px] h-[18px]" />
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
                             </CardBody>
                         </Card>
                     </div>

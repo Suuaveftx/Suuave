@@ -204,7 +204,7 @@ const HelpSupportContent = () => {
             key: "3",
             title: "What is the difference between Non-Exclusive and Exclusive licensing?",
             content: <>
-                <p><strong>Non-Exclusive ("Get License"):</strong> Multi-buyer license; the artist retains ownership and the design stays live in the catalog.</p>
+                <p><strong>Non-Exclusive (&quot;Get License&quot;):</strong> Multi-buyer license; the artist retains ownership and the design stays live in the catalog.</p>
                 <p className="mt-2"><strong>Exclusive (&quot;Buy Exclusive&quot;):</strong> Sole commercial usage rights granted to one Brand, marked with a Crown (👑) icon. The design is delisted immediately after purchase. Compare options in the <a href="#studio" className="text-blue-600 hover:underline font-normal">Licensing Table</a>.</p>
             </>,
         },
@@ -300,12 +300,12 @@ const HelpSupportContent = () => {
                                 </TableHeader>
                                 <TableBody>
                                     <TableRow key="1">
-                                        <TableCell className="font-medium">Tier 3: Non-Exclusive ("Get License")</TableCell>
+                                        <TableCell className="font-medium">Tier 3: Non-Exclusive (&quot;Get License&quot;)</TableCell>
                                         <TableCell className="text-gray-700">Multi-buyer commercial license; Artist retains full ownership.</TableCell>
                                         <TableCell className="text-gray-700">Stays active in catalog. Button changes to <Button isDisabled size="sm" className="h-6 min-w-min px-2 mx-1 bg-[#035A7A] text-white opacity-50 cursor-not-allowed">Download</Button> post-payment.</TableCell>
                                     </TableRow>
                                     <TableRow key="2">
-                                        <TableCell className="font-medium">Tier 2: Exclusive ("Buy Exclusive")</TableCell>
+                                        <TableCell className="font-medium">Tier 2: Exclusive (&quot;Buy Exclusive&quot;)</TableCell>
                                         <TableCell className="text-gray-700">Sole commercial usage rights granted to one Brand.</TableCell>
                                         <TableCell className="text-gray-700">Delisted immediately. Marked with Crown (👑) icon. Source package and Ownership Certificate emailed automatically.</TableCell>
                                     </TableRow>

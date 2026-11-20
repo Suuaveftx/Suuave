@@ -5,10 +5,11 @@ import Link from "next/link";
 import { FaFacebook, FaArrowUp } from "react-icons/fa";
 import { FaXTwitter, FaInstagram, FaLinkedin, FaYoutube, FaTelegram } from "react-icons/fa6";
 
-/**
- * @param {{ source?: 'artist' | 'brand' }} [props]
- */
-const Footer = ({ source } = {}) => {
+type FooterProps = {
+  source?: 'artist' | 'brand';
+};
+
+const Footer = ({ source }: FooterProps = {}) => {
   const pathname = usePathname();
 
   // Allow explicit source prop to override pathname detection (e.g. on /help-support)
@@ -149,12 +150,12 @@ const Footer = ({ source } = {}) => {
           >
             <FaXTwitter className="w-5 h-5 text-black" />
           </a>
-          <a
+          <Link
             className="flex items-center justify-center w-10 h-10 rounded-full border border-[#1877F2] bg-white transition-colors"
             href="/"
           >
             <FaFacebook className="w-5 h-5 text-[#1877F2]" />
-          </a>
+          </Link>
           <a
             className="flex items-center justify-center w-10 h-10 rounded-full border border-[#E4405F] bg-white transition-colors"
             target="_blank"

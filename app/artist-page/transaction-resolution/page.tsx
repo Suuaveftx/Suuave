@@ -3,13 +3,11 @@
 import React, { useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Checkbox, Modal, ModalContent, ModalBody, ModalFooter, Button, useDisclosure } from '@heroui/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const ISSUES = [
-    "Incorrect amount charged",
-    "Delayed or pending transaction status",
-    "Suspicious or unrecognised transaction",
-    "Project/Payout mismatch",
+    "Payout delayed or not reflected in linked bank account",
+    "Incorrect payout split or commission calculation",
     "Others"
 ];
 
@@ -80,7 +78,7 @@ export default function TransactionResolutionPage() {
                     {/* Intro Text */}
                     <div className="mb-5">
                         <p className="text-[#222222] font-semibold text-[14px]">
-                            What's your reason for the report? You can select multiple answers.
+                            What&apos;s your reason for the report? You can select multiple answers.
                         </p>
                     </div>
 
@@ -284,10 +282,10 @@ export default function TransactionResolutionPage() {
                                     size='md'
                                     onPress={() => {
                                         onClose();
-                                        window.location.href = '/fashion-designers/transactions';
+                                        window.location.href = '/artist-page/wallet';
                                     }}
                                 >
-                                    Back to Transaction History
+                                    Back to Wallet
                                 </Button>
                             </ModalFooter>
                         </>
