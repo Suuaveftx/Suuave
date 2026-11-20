@@ -14,7 +14,7 @@ import {
   useGetProfile,
   useUpdateGeneralProfile,
   useUpdateProfile,
-  useUploadProfileFile,
+  useUploadFile,
 } from '@/lib/api-integration-helper';
 import { getErrorMessage } from '@/utils/utils';
 import { Roles } from '@/lib/roles';
@@ -37,7 +37,7 @@ export default function ProfileDetailsPage({ role }: ProfileDetailsPageProps) {
   const [profileReady, setProfileReady] = useState(false);
   const [hoveredField, setHoveredField] = useState<string | null>(null);
   const { data, isLoading, isError, error, refetch, isRefetching } = useGetProfile();
-  const uploadMutation = useUploadProfileFile();
+  const uploadMutation = useUploadFile();
   const updateMutation = useUpdateProfile();
   const updateImageMutation = useUpdateGeneralProfile();
   const profile = data?.data;

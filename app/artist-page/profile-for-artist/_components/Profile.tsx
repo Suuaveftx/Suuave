@@ -12,10 +12,7 @@ import ProfileSkeleton from './ProfileSkeleton';
 import { getErrorMessage } from '../../../../utils/utils';
 import {} from '../../personal-details/types/profile-types';
 import { ProfileInfoResponse, ResponseData } from '@/lib/common-app-types';
-import {
-  useUpdateGeneralProfile,
-  useUploadProfileFile,
-} from '@/lib/api-integration-helper';
+import { useUpdateGeneralProfile, useUploadFile } from '@/lib/api-integration-helper';
 
 type ProfileArtistPropType = {
   data: ResponseData<ProfileInfoResponse>;
@@ -28,7 +25,7 @@ const ProfileArtist = ({
   data,
   loadingArtistProfile,
 }: ProfileArtistPropType) => {
-  const { mutateAsync: uploadFile } = useUploadProfileFile();
+  const { mutateAsync: uploadFile } = useUploadFile();
   const { mutateAsync: updateGeneralProfile, isPending: updatingGeneralProfile } =
     useUpdateGeneralProfile();
 

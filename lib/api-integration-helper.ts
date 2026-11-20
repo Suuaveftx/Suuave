@@ -4,7 +4,7 @@ import {
   getReviews,
   updateGeneralProfile,
   updateProfile,
-  uploadProfileFile,
+  uploadFile,
 } from './api-calls-helper';
 
 export const profileQueryKey = ['artist_profile'];
@@ -29,9 +29,9 @@ export function useGetProfile() {
   });
 }
 
-export function useUploadProfileFile() {
+export function useUploadFile() {
   return useMutation({
-    mutationFn: uploadProfileFile,
+    mutationFn: uploadFile,
   });
 }
 

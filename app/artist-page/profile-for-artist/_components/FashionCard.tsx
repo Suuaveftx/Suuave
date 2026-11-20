@@ -31,7 +31,8 @@ import CustomButton from '../../../../components/CustomButton';
 import { MdErrorOutline } from 'react-icons/md';
 import ReviewsLoaderSkeleton from './ReviewsLoaderSkeleton';
 import { FaStar } from 'react-icons/fa';
-import { useUploadProfileFile } from '@/lib/api-integration-helper';
+import { useUploadFile } from '@/lib/api-integration-helper';
+import { useDeleteUserDesign } from '../../license-your-design/queries/designs-queries';
 
 const INITIAL_VISIBLE_ITEMS = { design: 6, awards: 4, work: 4 };
 const ITEMS_PER_LOAD = { design: 3, awards: 4, work: 4 };
@@ -87,10 +88,11 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
   const workSamples = workSamplesData?.data || [];
 
   // Mutations
-  const { mutateAsync: uploadFile, isPending: uploadingFile } = useUploadProfileFile();
+  const { mutateAsync: uploadFile, isPending: uploadingFile } = useUploadFile();
   const { mutateAsync: addCertificate, isPending: addingCertificate } =
     useAddArtistCertification();
   const deleteAwardMutation = useDeleteArtistCertification();
+  const deleteDesignMutation = useDeleteUserDesign();
   const { mutateAsync: addWorkSample, isPending: addingWorkSample } = useAddWorkSample();
   const deleteWorkSampleMutation = useDeleteWorkSample();
 
@@ -202,13 +204,12 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
     if (tabParam) setActiveTab(tabParam);
   }, [searchParams, tabParam]);
 
-  const handleEdit = (designId) => {
+  const handleEdit = (designId: string) => {
     // Mock data based on the card UI
+
     const params = new URLSearchParams({
-      title: 'Casual Top Design',
-      price: '253',
-      description: 'A beautiful casual top design perfect for summer.',
-      style: 'Casual',
+      designId,
+      edit: 'true',
     });
     router.push(`/artist-page/license-your-design?${params.toString()}`);
   };
@@ -231,8 +232,21 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
     if (!deleteItemType || deleteItemId == null) return;
 
     if (deleteItemType === 'design') {
-      // setCollections((prev) => prev.filter((item) => item.id !== deleteItemId));
-      return;
+      try {
+        await deleteDesignMutation.mutateAsync(deleteItemId);
+        addToast({
+          title: 'Design deleted',
+          description: 'The design has been deleted successfully.',
+          color: 'success',
+        });
+      } catch (error) {
+        addToast({
+          title: 'Unable to delete design',
+          description: getErrorMessage(error, 'Something went wrong, please try again'),
+          color: 'danger',
+        });
+        return;
+      }
     } else if (deleteItemType === 'award') {
       try {
         await deleteAwardMutation.mutateAsync(deleteItemId);
@@ -407,10 +421,28 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                         }
                       >
                         <div
-                          className='absolute inset-0 bg-cover bg-center'
-                          style={{ backgroundImage: `url(${item.thumbnail_url})` }}
+                          className={`absolute inset-0 ${
+                            item.thumbnail_url
+                              ? 'bg-cover bg-center'
+                              : 'flex items-center justify-center bg-[#EEF3F4]'
+                          }`}
+                          style={
+                            item.thumbnail_url
+                              ? { backgroundImage: `url(${item.thumbnail_url})` }
+                              : undefined
+                          }
                         >
-                          <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+                          {item.thumbnail_url ? (
+                            <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+                          ) : (
+                            <span
+                              role='img'
+                              aria-label='Image preview not available'
+                              className='px-4 text-center text-sm text-[#65777B]'
+                            >
+                              Image preview not available
+                            </span>
+                          )}
                         </div>
 
                         <div className='absolute bottom-0 left-0 right-0 p-4 text-white bg-black/30 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
@@ -430,6 +462,12 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                           </div>
                         </div>
                       </div>
+
+                      {item.status?.trim().toLowerCase() === 'draft' && (
+                        <span className='absolute top-3 left-3 z-20 rounded-full bg-[#FFF1C2] px-3 py-1 text-xs font-semibold text-[#725200]'>
+                          Draft
+                        </span>
+                      )}
 
                       {!isVisitor && (
                         <div className='absolute top-3 right-3 z-20'>
@@ -724,7 +762,9 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
         isLoading={
           deleteItemType === 'award'
             ? deleteAwardMutation.isPending
-            : deleteWorkSampleMutation.isPending
+            : deleteItemType === 'design'
+              ? deleteDesignMutation.isPending
+              : deleteWorkSampleMutation.isPending
         }
         onConfirm={confirmDelete}
         confirmLabel='Delete'
