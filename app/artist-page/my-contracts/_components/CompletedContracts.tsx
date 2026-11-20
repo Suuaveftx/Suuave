@@ -12,6 +12,9 @@ import {
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Calendar, CircleDollarSign, Ellipsis } from "lucide-react";
 import { useRouter } from "next/navigation";
+import ContractListState from './ContractListState';
+import { useCompletedContracts } from '../queries/artist-contracts.queries';
+import { getContractErrorMessage, toCompletedRow } from '../utils/contract-formatters';
 
 export default function CompletedContracts() {
   const router = useRouter();
@@ -20,85 +23,25 @@ export default function CompletedContracts() {
   const [currencyFilter, setCurrencyFilter] = useState("Currency");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const contracts = useMemo(() => [
-    {
-      id: 1,
-      startDate: "18, June, 2024",
-      endDate: "23, June, 2024",
-      dateValue: new Date("2024-06-23"),
-      project: "Modern Fashion Attire Illustration",
-      client: "SHOALA ADIN",
-      payment: "$700",
-      paymentValue: 700,
-      status: "completed",
-    },
-    {
-      id: 2,
-      startDate: "18, June, 2024",
-      endDate: "23, June, 2024",
-      dateValue: new Date("2024-06-23"),
-      project: "Eco-Friendly Fabric Pattern",
-      client: "LUX WEAR",
-      payment: "$1,200",
-      paymentValue: 1200,
-      status: "completed",
-    },
-    {
-      id: 3,
-      startDate: "18, June, 2024",
-      endDate: "23, June, 2024",
-      dateValue: new Date("2024-06-23"),
-      project: "Winter Season Lookbook",
-      client: "GLAMOUR CO",
-      payment: "$2,500",
-      paymentValue: 2500,
-      status: "completed",
-    },
-    {
-      id: 4,
-      startDate: "10, May, 2024",
-      endDate: "20, May, 2024",
-      dateValue: new Date("2024-05-20"),
-      project: "Abstract Pattern Pack",
-      client: "TREND SETTERS",
-      payment: "$1,800",
-      paymentValue: 1800,
-      status: "completed",
-    },
-    {
-      id: 5,
-      startDate: "1, May, 2024",
-      endDate: "8, May, 2024",
-      dateValue: new Date("2024-05-08"),
-      project: "Recycled Fiber Textile",
-      client: "GREEN EARTH APPAREL",
-      payment: "$950",
-      paymentValue: 950,
-      status: "completed",
-    },
-    {
-      id: 6,
-      startDate: "28, Apr, 2024",
-      endDate: "5, May, 2024",
-      dateValue: new Date("2024-05-05"),
-      project: "Avant Garde Collection Cover",
-      client: "FASHION FORWARD",
-      payment: "$3,200",
-      paymentValue: 3200,
-      status: "completed",
-    },
-    {
-      id: 7,
-      startDate: "1, Nov, 2023",
-      endDate: "20, Nov, 2023",
-      dateValue: new Date("2023-11-20"),
-      project: "Virtual Runway Accessories",
-      client: "METAVERSE STYLES",
-      payment: "$1,500",
-      paymentValue: 1500,
-      status: "completed",
-    },
-  ], []);
+  const { data, isLoading, isError, error, refetch } = useCompletedContracts();
+  const contracts = useMemo(
+    () =>
+      (data?.contracts ?? []).map((item) => {
+        const row = toCompletedRow(item);
+        return {
+          id: row.id,
+          startDate: row.startDate,
+          endDate: row.completedAt,
+          dateValue: row.completedAtRaw ? new Date(row.completedAtRaw) : new Date(0),
+          project: row.title,
+          client: row.client.name,
+          payment: row.budget,
+          paymentValue: item.budget,
+          status: 'completed',
+        };
+      }),
+    [data]
+  );
 
   const dateOptions = [
     "Today", "This week", "This month",
@@ -173,6 +116,17 @@ export default function CompletedContracts() {
     setCurrentPage(1);
   };
 
+  if (isLoading) return <ContractListState kind="loading" />;
+  if (isError) {
+    return (
+      <ContractListState
+        kind="error"
+        message={getContractErrorMessage(error, 'We could not load your completed contracts.')}
+        onRetry={() => refetch()}
+      />
+    );
+  }
+
   return (
     <div className="w-full max-w-full mx-auto px-4 lg:px-0">
       {/* Search and Filter Bar */}
@@ -205,13 +159,20 @@ export default function CompletedContracts() {
                       onAction={(key) => { setDateFilter(String(key)); setCurrentPage(1); }}
                       selectedKeys={[dateFilter]}
                       selectionMode="single"
-                    >
-                      {[
-                        ...dateOptions.map((option) => (
-                        <DropdownItem key={option}>{option}</DropdownItem>
-                        )),
-                        <DropdownItem key="" className="text-danger" color="danger">Reset Date</DropdownItem>,
+                      items={[
+                        ...dateOptions.map((option) => ({ key: option, label: option })),
+                        { key: '', label: 'Reset Date' },
                       ]}
+                    >
+                      {(item) => (
+                        <DropdownItem
+                          key={item.key}
+                          className={item.key === '' ? 'text-danger' : undefined}
+                          color={item.key === '' ? 'danger' : 'default'}
+                        >
+                          {item.label}
+                        </DropdownItem>
+                      )}
                     </DropdownMenu>
                   </Dropdown>
 
@@ -226,13 +187,20 @@ export default function CompletedContracts() {
                       onAction={(key) => { setCurrencyFilter(String(key)); setCurrentPage(1); }}
                       selectedKeys={[currencyFilter]}
                       selectionMode="single"
-                    >
-                      {[
-                        ...currencyOptions.map((option) => (
-                        <DropdownItem key={option}>{option}</DropdownItem>
-                        )),
-                        <DropdownItem key="Currency" className="text-danger" color="danger">Reset Currency</DropdownItem>,
+                      items={[
+                        ...currencyOptions.map((option) => ({ key: option, label: option })),
+                        { key: 'Currency', label: 'Reset Currency' },
                       ]}
+                    >
+                      {(item) => (
+                        <DropdownItem
+                          key={item.key}
+                          className={item.key === 'Currency' ? 'text-danger' : undefined}
+                          color={item.key === 'Currency' ? 'danger' : 'default'}
+                        >
+                          {item.label}
+                        </DropdownItem>
+                      )}
                     </DropdownMenu>
                   </Dropdown>
                 </div>
@@ -254,20 +222,28 @@ export default function CompletedContracts() {
               </DropdownTrigger>
               <DropdownMenu
                 aria-label="Mobile Filters"
-                onAction={(rawKey) => {
-                  const key = String(rawKey);
-                  if (dateOptions.includes(key)) { setDateFilter(key); setCurrentPage(1); }
-                  if (currencyOptions.includes(key)) { setCurrencyFilter(key); setCurrentPage(1); }
-                  if (key === "reset_date") { setDateFilter(""); setCurrentPage(1); }
-                  if (key === "reset_currency") { setCurrencyFilter("Currency"); setCurrentPage(1); }
+                onAction={(key) => {
+                  const value = String(key);
+                  if (dateOptions.includes(value)) { setDateFilter(value); setCurrentPage(1); }
+                  if (currencyOptions.includes(value)) { setCurrencyFilter(value); setCurrentPage(1); }
+                  if (value === "reset_date") { setDateFilter(""); setCurrentPage(1); }
+                  if (value === "reset_currency") { setCurrencyFilter("Currency"); setCurrentPage(1); }
                 }}
-              >
-                {[
-                  ...dateOptions.map((option) => (
-                  <DropdownItem key={option}>{option}</DropdownItem>
-                  )),
-                  <DropdownItem key="reset_date" className="text-danger" color="danger">Reset Date</DropdownItem>,
+                items={[
+                  ...dateOptions.map((option) => ({ key: option, label: option })),
+                  { key: 'reset_date', label: 'Reset Date' },
+                  { key: 'reset_currency', label: 'Reset Currency' },
                 ]}
+              >
+                {(item) => (
+                  <DropdownItem
+                    key={item.key}
+                    className={item.key.startsWith('reset_') ? 'text-danger' : undefined}
+                    color={item.key.startsWith('reset_') ? 'danger' : 'default'}
+                  >
+                    {item.label}
+                  </DropdownItem>
+                )}
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -294,7 +270,7 @@ export default function CompletedContracts() {
           currentItems.map((contract, index) => (
             <div
               key={contract.id}
-              onClick={() => router.push("/artist-page/completed-contract-information")}
+              onClick={() => router.push(`/artist-page/completed-contract-information?id=${encodeURIComponent(contract.id)}`)}
               className={`
                 flex flex-row items-start justify-between gap-4 cursor-pointer transition-all duration-150
                 bg-white rounded-[12px] border border-[#EAEAEA] px-4 py-4 md:bg-transparent md:rounded-xl md:border-0 md:px-6 md:py-5 md:items-center

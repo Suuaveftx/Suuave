@@ -37,11 +37,20 @@ import Link from "next/link";
 import SubmitModal from "../../../../components/SubmitModal";
 import PageContainer from "../../../../components/layout/PageContainer";
 import { useAppStore } from '@/store';
+import {
+  selectDisputeActions,
+  selectReportedDisputes,
+} from '@/app/disputes/slice/dispute-slice';
+import { useShallow } from 'zustand/react/shallow';
 
 
 import { ongoingContracts } from "../data";
 
-export default function OngoingDetailsPage({ params }) {
+export default function OngoingDetailsPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const unwrappedParams = React.use(params);
   const contractId = unwrappedParams?.id || "24t64755"; // fallback for demo
   const router = useRouter();
@@ -103,11 +112,9 @@ export default function OngoingDetailsPage({ params }) {
     useState(false);
 
   //function to handle the Rate Ocean button
-  const {
-    isOpen: isRateOpen,
-    onOpen: onRateOpen,
-    onOpenChange: onRateOpenChange
-  } = useDisclosure();
+  const [isRateOpen, setIsRateOpen] = useState(false);
+  const onRateOpen = () => setIsRateOpen(true);
+  const onRateOpenChange = (open: boolean) => setIsRateOpen(open);
 
   const handleRateOcean = () => {
     setShowCongratulationsModal(false);
@@ -116,7 +123,8 @@ export default function OngoingDetailsPage({ params }) {
 
   const [selectedReason, setSelectedReason] = useState("");
 
-  const { reportedDisputes, withdrawDispute } = useAppStore();
+  const reportedDisputes = useAppStore(selectReportedDisputes);
+  const { withdrawDispute } = useAppStore(useShallow(selectDisputeActions));
   const isDisputed = reportedDisputes[contractId] || reportedDisputes[contractData.contractNumber];
   const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onOpenChange: onWithdrawOpenChange } = useDisclosure();
   const [showExtensionModal, setShowExtensionModal] = useState(false);
@@ -763,6 +771,9 @@ export default function OngoingDetailsPage({ params }) {
         </ModalContent>
       </Modal>
       <SubmitModal
+        trigger={null}
+        onSuccess={() => router.refresh()}
+        onClose={() => setIsRateOpen(false)}
         isOpen={isRateOpen}
         onOpenChange={onRateOpenChange}
         name={contractData.artist.name}
@@ -986,8 +997,6 @@ export default function OngoingDetailsPage({ params }) {
                         type="date"
                         placeholder="DD/MM/YY"
                         classNames={{
-                    wrapper: 'z-[9999]',
-                    backdrop: 'z-[9998]',
                           input: "text-xs font-satoshi text-gray-600",
                           inputWrapper: "bg-white border border-[#E5E5E5] hover:border-gray-400 focus-within:border-[#3A98BB] shadow-sm rounded-lg h-9 min-h-9",
                         }}

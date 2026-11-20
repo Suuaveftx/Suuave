@@ -9,31 +9,37 @@ import {
 } from "@heroicons/react/24/outline";
 import { Input, Card, CardBody, Button, Chip, Pagination, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/react";
 import { createPortal } from 'react-dom';
-import AcceptModal from '../../../../components/AcceptModal';
-import DeclineModal from '../../../../components/DeclineModal';
+import { AcceptOffer, DeclineOffer } from './ContractActionModals';
+import ContractListState from './ContractListState';
+import { usePendingContracts } from '../queries/artist-contracts.queries';
+import { getContractErrorMessage, toPendingRow } from '../utils/contract-formatters';
 import WarningBanner from '../../../../components/contracts/WarningBanner';
+
+type PendingProjectsProps = {
+  search?: string;
+  onSearchChange?: (value: string) => void;
+};
 
 const PendingProjects = ({
   search = "",
-  onSearchChange = (_value: string) => { },
-}: {
-  search?: string;
-  onSearchChange?: (value: string) => void;
-}) => {
+  onSearchChange = () => { },
+}: PendingProjectsProps) => {
   const router = useRouter();
   const [openMenuContract, setOpenMenuContract] = useState(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
-  const menuButtonRefs = useRef<Record<string, HTMLElement | null>>({});
+  const menuButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
   const [localSearch, setLocalSearch] = useState(search);
 
   useEffect(() => {
     const handleClose = (e: Event) => {
-      if (menuRef.current && menuRef.current.contains(e.target as Node)) {
+      const target = e.target;
+      if (!(target instanceof Node)) return;
+      if (menuRef.current && menuRef.current.contains(target)) {
         return;
       }
       const isButton = Object.values(menuButtonRefs.current).some(
-        (btn) => btn && btn.contains(e.target as Node)
+        (btn) => btn && btn.contains(target)
       );
       if (isButton) {
         return;
@@ -48,57 +54,11 @@ const PendingProjects = ({
     };
   }, []);
 
-  const pendingProjects = [
-    {
-      title: 'Modern Fashion Attire Illustration',
-      id: '24t64754-A',
-      pendingSince: '18th June, 2024',
-      expiresIn: '28, July, 2024',
-      status: 'Waiting Approval',
-    },
-    {
-      title: 'Modern Fashion Attire Illustration',
-      id: '24t64754-B',
-      pendingSince: '18th June, 2024',
-      expiresIn: '28, July, 2024',
-      status: null,
-    },
-    {
-      title: 'Vintage Denim Redesign Sketch',
-      id: '24t64754-C',
-      pendingSince: '12th June, 2024',
-      expiresIn: '25th May, 2025',
-      status: null,
-    },
-    {
-      title: 'Minimalist Autumn Coat Concept',
-      id: '24t64754-D',
-      pendingSince: '10th June, 2024',
-      expiresIn: '22th May, 2025',
-      status: null,
-    },
-    {
-      title: 'Futuristic Accessary Draft',
-      id: '24t64754-E',
-      pendingSince: '5th June, 2024',
-      expiresIn: '18th May, 2025',
-      status: null,
-    },
-    {
-      title: 'Autumn Collection Preview',
-      id: '88k39211-F',
-      pendingSince: '3rd June, 2024',
-      expiresIn: '15th May, 2025',
-      status: null,
-    },
-    {
-      title: 'High Fashion Magazine Cover',
-      id: '99x39111-G',
-      pendingSince: '1st June, 2024',
-      expiresIn: '10th May, 2025',
-      status: null,
-    },
-  ];
+  const { data, isLoading, isError, error, refetch } = usePendingContracts();
+  const pendingProjects = React.useMemo(
+    () => (data?.contracts ?? []).map(toPendingRow),
+    [data]
+  );
 
   // Combined internal + external search
   const effectiveSearch = localSearch || search;
@@ -113,6 +73,17 @@ const PendingProjects = ({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentItems = filteredContracts.slice(startIndex, endIndex);
+
+  if (isLoading) return <ContractListState kind="loading" />;
+  if (isError) {
+    return (
+      <ContractListState
+        kind="error"
+        message={getContractErrorMessage(error, 'We could not load your pending contracts.')}
+        onRetry={() => refetch()}
+      />
+    );
+  }
 
   return (
     <div className="px-4 lg:px-0">
@@ -175,7 +146,7 @@ const PendingProjects = ({
                   <div className="flex items-start justify-between gap-2 w-full min-w-0 mb-1">
                     <button
                       className="flex-1 min-w-0 text-left"
-                      onClick={() => router.push('/artist-page/pending-contract-information')}
+                      onClick={() => router.push(`/artist-page/pending-contract-information?id=${encodeURIComponent(contract.id)}`)}
                     >
                       <h3 className="text-[15px] font-bold text-[#3A98BB] truncate leading-snug">
                         {contract.title}
@@ -210,7 +181,7 @@ const PendingProjects = ({
                   {/* Date info */}
                   <div
                     className="space-y-1 cursor-pointer"
-                    onClick={() => router.push('/artist-page/pending-contract-information')}
+                    onClick={() => router.push(`/artist-page/pending-contract-information?id=${encodeURIComponent(contract.id)}`)}
                   >
                     <div className='flex items-center gap-2 text-[13px]'>
                       <span className='text-gray-500 font-normal'>Start Date -</span>
@@ -232,13 +203,13 @@ const PendingProjects = ({
               classNames={{ base: 'overflow-visible' }}
               shadow="none"
             >
-              <div className="cursor-pointer" onClick={() => router.push('/artist-page/pending-contract-information')}>
+              <div className="cursor-pointer" onClick={() => router.push(`/artist-page/pending-contract-information?id=${encodeURIComponent(contract.id)}`)}>
                 <CardBody className="md:px-6 px-3 py-4 overflow-visible">
                   <div className="flex md:justify-between items-start w-full min-w-0">
                     <div className="flex-1 md:grid md:grid-cols-[1.5fr_1fr_1fr_auto] md:gap-x-8 md:items-center min-w-0">
                       <div className="flex flex-col gap-1 mb-1 md:mb-0 w-full min-w-0">
                         <h3 className="md:text-md text-sm font-proximanova truncate group-hover:text-[#3A98BB] transition-colors font-semibold text-[#222222] min-w-0">
-                          {contract.title} ({contract.id})
+                          {contract.title} ({contract.contractNumber})
                         </h3>
                       </div>
 
@@ -259,7 +230,7 @@ const PendingProjects = ({
 
                       {/* Desktop Buttons */}
                       <div className="hidden lg:flex gap-3 shrink-0" onClick={(e) => e.stopPropagation()}>
-                        <AcceptModal
+                        <AcceptOffer contractId={contract.id}
                           trigger={
                             <Button
                               className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-bold rounded-full px-6 h-[42px] border-0 shadow-md"
@@ -269,7 +240,7 @@ const PendingProjects = ({
                             </Button>
                           }
                         />
-                        <DeclineModal
+                        <DeclineOffer contractId={contract.id}
                           trigger={
                             <Button
                               className="bg-transparent text-[#035A7A] font-bold rounded-full px-6 h-[42px] border border-[#035A7A] shadow-sm"
@@ -303,7 +274,7 @@ const PendingProjects = ({
           }}
           className='w-44 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden'
         >
-          <AcceptModal
+          <AcceptOffer contractId={openMenuContract.id}
             trigger={
               <button
                 className="w-full text-left px-4 py-3 text-sm text-[#035A7A] hover:bg-gray-50 active:bg-gray-100 font-semibold border-b border-gray-100"
@@ -314,7 +285,7 @@ const PendingProjects = ({
             }
           />
           <div className="border-t border-gray-100" />
-          <DeclineModal
+          <DeclineOffer contractId={openMenuContract.id}
             trigger={
               <button
                 className="w-full text-left px-4 py-3 text-sm text-[#EF4444] hover:bg-gray-50 active:bg-gray-100 font-semibold rounded-b-xl"

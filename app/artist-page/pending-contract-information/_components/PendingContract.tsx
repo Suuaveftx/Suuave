@@ -4,44 +4,84 @@ import { Card, CardBody } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
-import AcceptModal from "../../../../components/AcceptModal";
-import DeclineModal from "../../../../components/DeclineModal";
+import { useRouter, useSearchParams } from "next/navigation";
+import { AcceptOffer, DeclineOffer } from "../../my-contracts/_components/ContractActionModals";
+import ContractListState from "../../my-contracts/_components/ContractListState";
+import { usePendingContract } from "../../my-contracts/queries/artist-contracts.queries";
+import {
+    formatBudget,
+    formatContractDate,
+    formatDurationDays,
+    getContractErrorMessage,
+} from "../../my-contracts/utils/contract-formatters";
 
 
 
-const contractDetails = {
-    jobTitle: "Modern Fashion Attire Illustration",
-    contractNumber: "24t64754",
-    contractType: "Hire",
-    role: "Fashion Artist",
-    budget: "N200,000",
-    timeframe: "7 Days",
-    duration: "2 Days",
-};
+const FALLBACK_AVATAR = "/dev-images/Clients.png";
 
-const attachments = [
-    { name: "Doc1534re", path: "/dev-images/Attach2.png" },
-    { name: "Doc1534re", path: "/dev-images/Attach2.png" },
-];
-
-const clientProfile = {
-    name: "Tolu",
-    handle: "@tolu",
-    role: "Fashion Brand",
-    location: "Lagos, Nigeria",
-    avatar: "/dev-images/Clients.png", // Placeholder, need to verify if this exists or use a generic one
-    rating: 5,
-    reviewCount: 0,
-    stats: {
-        jobsPosted: 1,
-        hire: 0,
-        paymentMade: 0,
-    },
-};
+function attachmentName(url, index) {
+    try {
+        const last = decodeURIComponent(new URL(url).pathname.split("/").filter(Boolean).pop() || "");
+        return last || `Attachment ${index + 1}`;
+    } catch {
+        return `Attachment ${index + 1}`;
+    }
+}
 
 export default function PendingContract() {
     const router = useRouter();
+    const contractId = useSearchParams().get("id");
+    const { data: contract, isLoading, isError, error, refetch } = usePendingContract(contractId);
+
+    if (!contractId) {
+        return <ContractListState kind="error" message="No contract was selected." />;
+    }
+    if (isLoading) return <ContractListState kind="loading" />;
+    if (isError || !contract) {
+        return (
+            <ContractListState
+                kind="error"
+                message={getContractErrorMessage(error, "We could not load this contract.")}
+                onRetry={() => refetch()}
+            />
+        );
+    }
+
+    const contractDetails = {
+        jobTitle: contract.jobTitle,
+        contractNumber: contract.contractNumber,
+        contractType: contract.contractType,
+        role: contract.role,
+        budget: formatBudget(contract.budget, contract.currency),
+        timeframe:
+            formatDurationDays(contract.contractDuration?.startDate, contract.contractDuration?.dueDate) ||
+            "Not specified",
+    };
+    const attachments = (contract.attachments || []).map((url, index) => ({
+        name: attachmentName(url, index),
+        url,
+    }));
+    const client = contract.client;
+    const clientProfile = {
+        name: client.name,
+        handle: client.username ? `@${client.username}` : client.name,
+        role: "Brand",
+        location: client.location || "Location not set",
+        avatar: client.image || FALLBACK_AVATAR,
+        rating: Math.max(0, Math.min(5, Math.round(client.rating || 0))),
+        reviewCount: client.reviewsCount,
+        stats: {
+            jobsPosted: client.jobsPosted,
+            hire: client.hire,
+            paymentMade: client.paymentMade ? "Yes" : "No",
+        },
+    };
+    const canAccept = contract.actions?.canAccept !== false;
+    const canDecline = contract.actions?.canDecline !== false;
+    const afterAccept = () => router.push("/artist-page/my-contracts?tab=ongoing");
+    const afterDecline = () => router.push("/artist-page/my-contracts?tab=pending");
+    const statusLabel = (contract.status || "pending").replace(/^./, (c) => c.toUpperCase());
+
     return (
         <>
             <div className="w-full max-w-[1400px] mx-auto pt-0 p-4 md:pt-0 md:p-6 lg:p-8 pb-32 md:pb-8 font-proximanova text-[#222222]">
@@ -65,7 +105,7 @@ export default function PendingContract() {
                             <div className="flex justify-between items-start mb-6">
                                 <h2 className="text-xl font-bold">Contract Details</h2>
                                 <span className="px-3 py-1 bg-transparent border border-gray-200 rounded-full text-xs text-gray-500 font-medium">
-                                    Pending
+                                    {statusLabel}
                                 </span>
                             </div>
 
@@ -105,8 +145,8 @@ export default function PendingContract() {
                                 {attachments.map((doc, index) => (
                                     <div key={index} className="flex items-center gap-2 text-[#3A98BB]">
                                         {/* Assuming image icon for attachment */}
-                                        <Image src={doc.path} width={20} height={20} alt="attachment" className="w-5 h-5 object-contain" />
-                                        <span className="text-sm cursor-pointer hover:underline">{doc.name}</span>
+                                        <Image src="/dev-images/Attach2.png" width={20} height={20} alt="attachment" className="w-5 h-5 object-contain" />
+                                        <a href={doc.url} target="_blank" rel="noreferrer" className="text-sm cursor-pointer hover:underline">{doc.name}</a>
                                     </div>
                                 ))}
                             </div>
@@ -121,10 +161,10 @@ export default function PendingContract() {
                         <Card className="w-full p-6 shadow-sm border border-gray-100 rounded-2xl hidden md:block">
                             <div className="flex flex-col gap-4 items-center">
                                 <div className="[&>button]:w-48 [&>button]:h-12 [&>button]:text-base [&>button]:font-medium">
-                                    <AcceptModal />
+                                    {canAccept && <AcceptOffer contractId={contractId} onSuccess={afterAccept} />}
                                 </div>
                                 <div className="[&>button]:w-48 [&>button]:h-12 [&>button]:rounded-full [&>button]:border [&>button]:border-[#3A98BB] [&>button]:bg-transparent [&>button]:text-[#222222] [&>button]:font-medium">
-                                    <DeclineModal />
+                                    {canDecline && <DeclineOffer contractId={contractId} onSuccess={afterDecline} />}
                                 </div>
                             </div>
                         </Card>
@@ -136,10 +176,8 @@ export default function PendingContract() {
                             <div className="flex flex-col items-center">
                                 <div className="w-20 h-20 rounded-full overflow-hidden mb-3 relative border-2 border-white shadow-sm hover:opacity-80 transition-opacity cursor-pointer">
                                     <Link href="/artist-page/client-profile">
-                                        <Image
+                                        <img
                                             src={clientProfile.avatar}
-                                            width={80}
-                                            height={80}
                                             alt={clientProfile.name}
                                             className="object-cover w-full h-full"
                                         />
@@ -168,7 +206,8 @@ export default function PendingContract() {
                                     <div className="flex items-center gap-2 text-xs text-gray-500 mb-8 cursor-pointer hover:opacity-80 transition-opacity">
                                         <span>Ratings</span>
                                         <div className="flex text-gray-300">
-                                            {"★".repeat(5)}
+                                            <span className="text-[#F5A623]">{"★".repeat(clientProfile.rating)}</span>
+                                            {"★".repeat(5 - clientProfile.rating)}
                                         </div>
                                         <span className="text-[#3A98BB]">({clientProfile.reviewCount} Reviews)</span>
                                     </div>
@@ -224,8 +263,8 @@ export default function PendingContract() {
                         <div className="space-y-4">
                             {attachments.map((doc, index) => (
                                 <div key={`mob-doc-${index}`} className="flex items-center gap-2">
-                                    <Image src={doc.path} width={16} height={16} alt="attachment" className="w-4 h-4 object-contain opacity-60" />
-                                    <span className="text-[14px] text-[#3A98BB] font-medium cursor-pointer">{doc.name}</span>
+                                    <Image src="/dev-images/Attach2.png" width={16} height={16} alt="attachment" className="w-4 h-4 object-contain opacity-60" />
+                                    <a href={doc.url} target="_blank" rel="noreferrer" className="text-[14px] text-[#3A98BB] font-medium cursor-pointer">{doc.name}</a>
                                 </div>
                             ))}
                         </div>
@@ -236,10 +275,10 @@ export default function PendingContract() {
                 <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 px-4 py-4 z-50 lg:hidden drop-shadow-[0_-4px_15px_rgba(0,0,0,0.08)]">
                     <div className="flex flex-row items-center justify-center gap-3 w-full">
                         <div className="flex-1 [&>button]:w-full [&>button]:h-[44px] [&>button]:text-[15px] [&>button]:rounded-full">
-                            <DeclineModal />
+                            {canDecline && <DeclineOffer contractId={contractId} onSuccess={afterDecline} />}
                         </div>
                         <div className="flex-1 [&>button]:w-full [&>button]:h-[44px] [&>button]:text-[15px] [&>button]:rounded-full">
-                            <AcceptModal />
+                            {canAccept && <AcceptOffer contractId={contractId} onSuccess={afterAccept} />}
                         </div>
                     </div>
                 </div>

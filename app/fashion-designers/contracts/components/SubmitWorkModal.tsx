@@ -12,12 +12,22 @@ import {
 import { X, Check } from 'lucide-react';
 import Image from 'next/image';
 
-const SubmitWorkModal = ({ trigger, isResubmit = false }) => {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+type WorkFile = {
+    id: string;
+    name: string;
+    size: number;
+    preview: string | null;
+    originalFile?: File;
+};
+
+// onSubmit({ files, message }): optional async handler that receives the real File objects. When it
+// is provided the modal starts empty, requires at least one file, and shows `errorMessage` on failure.
+const SubmitWorkModal = ({ trigger, isResubmit = false, onSubmit, isSubmitting = false, errorMessage }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const [isSubmitted, setIsSubmitted] = useState(false);
     
     // Initialize with 3 files from the design
-    const [files, setFiles] = useState([
+    const [files, setFiles] = useState<WorkFile[]>(onSubmit ? [] : [
         {
             id: '1',
             name: 'Look 1.png',
@@ -80,7 +90,7 @@ const SubmitWorkModal = ({ trigger, isResubmit = false }) => {
             name: file.name,
             size: file.size,
             preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
-            originalFile: file
+            originalFile: file,
         }));
 
         setFiles(prev => [...prev, ...newFileObjects]);
@@ -99,24 +109,33 @@ const SubmitWorkModal = ({ trigger, isResubmit = false }) => {
         return `${mb.toFixed(1)}mb`;
     };
 
-    const handleSubmit = () => {
-        console.log('Submitting work...', { files, message });
+    const handleSubmit = async () => {
+        if (onSubmit) {
+            try {
+                await onSubmit({
+                    files: files.flatMap((file) => file.originalFile ? [file.originalFile] : []),
+                    message: message.trim(),
+                });
+            } catch {
+                return; // errorMessage is shown above the buttons
+            }
+            setFiles([]);
+            setMessage('');
+        }
         setIsSubmitted(true);
     };
 
-    const handleModalOpenChange = (open) => {
+    const handleModalOpenChange = (open: boolean) => {
         if (!open) {
             setTimeout(() => setIsSubmitted(false), 300);
-        }
-        if (onOpenChange) {
-            onOpenChange(open);
+            onClose();
+        } else {
+            onOpen();
         }
     };
 
     const handleCloseSuccess = () => {
-        if (onOpenChange) {
-            onOpenChange(false);
-        }
+        onClose();
         setTimeout(() => setIsSubmitted(false), 300);
     };
 
@@ -145,7 +164,7 @@ const SubmitWorkModal = ({ trigger, isResubmit = false }) => {
                                 Work Submitted
                             </h2>
                             <p className="text-[14px] text-[#767676] text-center max-w-[320px] leading-relaxed mb-10">
-                                Your work has been successfully submitted. Kindly wait for client's review and approval.
+                                Your work has been successfully submitted. Kindly wait for client&apos;s review and approval.
                             </p>
                             <button
                                 onClick={handleCloseSuccess}
@@ -327,11 +346,15 @@ const SubmitWorkModal = ({ trigger, isResubmit = false }) => {
                                 >
                                     Cancel
                                 </button>
+                                {errorMessage && (
+                                    <p className="text-sm text-[#E05656] self-center" role="alert">{errorMessage}</p>
+                                )}
                                 <button
                                     onClick={handleSubmit}
+                                    disabled={isSubmitting || (Boolean(onSubmit) && files.length === 0)}
                                     className="w-[260px] h-[44px] bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] hover:opacity-90 text-[#035A7A] text-[14px] font-semibold rounded-full transition-opacity shadow-sm flex items-center justify-center"
                                 >
-                                    {isResubmit ? 'Resubmit' : 'Resubmit'}
+                                    {isSubmitting ? 'Submitting...' : isResubmit ? 'Resubmit' : 'Submit'}
                                 </button>
                             </ModalFooter>
                         </>

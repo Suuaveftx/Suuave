@@ -81,7 +81,7 @@ const TermsContent = () => {
                                     <li><a href="#p2-s1" className="text-[#035A7A] hover:underline">Section 1: Project Lifecycle & Custom Engagements</a></li>
                                     <li><a href="#p2-s2" className="text-[#035A7A] hover:underline">Section 2: Digital Rights Management (DRM) & Asset Licensing</a></li>
                                     <li><a href="#p2-s3" className="text-[#035A7A] hover:underline">Section 3: Deadline Extension Request Framework</a></li>
-                                    <li><a href="#p2-s4" className="text-[#035A7A] hover:underline">Section 4: Dispute Resolution Protocol ("Suuave Resolution Lab")</a></li>
+                                    <li><a href="#p2-s4" className="text-[#035A7A] hover:underline">Section 4: Dispute Resolution Protocol (&quot;Suuave Resolution Lab&quot;)</a></li>
                                     <li><a href="#p2-s5" className="text-[#035A7A] hover:underline">Section 5: Transaction Safeguards & Financial Resolution</a></li>
                                 </ul>
                             </div>
@@ -97,7 +97,7 @@ const TermsContent = () => {
                             <div>
                                 <h3 id="p1-s1" className="text-xl font-semibold text-[#035A7A] mb-3 scroll-mt-24">Section 1: Scope of Service & Platform Infrastructure</h3>
                                 <p className="text-lg leading-relaxed text-gray-700">
-                                    Suuave provides managed marketplace infrastructure connecting fashion designers and corporate brands ("Clients" or "Brands") with fashion artists, sketchers, and digital creators ("Artists") for custom project collaboration, digital asset management, and intellectual property (IP) licensing. Suuave acts as a managed technology facilitator and escrow agent; it is not an employer of Artists nor a partner in Client businesses.
+                                    Suuave provides managed marketplace infrastructure connecting fashion designers and corporate brands (&quot;Clients&quot; or &quot;Brands&quot;) with fashion artists, sketchers, and digital creators (&quot;Artists&quot;) for custom project collaboration, digital asset management, and intellectual property (IP) licensing. Suuave acts as a managed technology facilitator and escrow agent; it is not an employer of Artists nor a partner in Client businesses.
                                 </p>
                             </div>
 
@@ -113,7 +113,7 @@ const TermsContent = () => {
                                             <li>
                                                 <span className="font-semibold">Verification Outcomes:</span>
                                                 <ul className="list-[circle] list-inside ml-6 mt-2 space-y-2">
-                                                    <li><em>Successful Verification:</em> Grants a "Verified" badge, full platform features, and complete catalogue listing capabilities.</li>
+                                                    <li><em>Successful Verification:</em> Grants a &quot;Verified&quot; badge, full platform features, and complete catalogue listing capabilities.</li>
                                                     <li><em>Unsuccessful Verification:</em> Rejection notices trigger a mandatory 30-day cooldown period before re-application is permitted.</li>
                                                 </ul>
                                             </li>
@@ -123,7 +123,7 @@ const TermsContent = () => {
                                         <h4 className="text-xl font-semibold text-[#035A7A] mb-2">Brand Onboarding:</h4>
                                         <ul className="list-disc pl-6 space-y-2 text-gray-700">
                                             <li><span className="font-semibold">Data Intake:</span> Brands complete mandatory Brand Fundamentals and optional Personal Details. Corporate entities must provide valid business registration details.</li>
-                                            <li><span className="font-semibold">Setup Enforcement:</span> Dashboard access is granted upon initial submission. A persistent "Complete Your Profile Setup" reminder remains visible until full setup completion triggers an automated welcome email granting unrestricted marketplace access.</li>
+                                            <li><span className="font-semibold">Setup Enforcement:</span> Dashboard access is granted upon initial submission. A persistent &quot;Complete Your Profile Setup&quot; reminder remains visible until full setup completion triggers an automated welcome email granting unrestricted marketplace access.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -136,7 +136,7 @@ const TermsContent = () => {
                                     <li><span className="font-semibold">Release of Funds:</span> Escrowed funds are released to the Artist only upon Client confirmation of deliverable satisfaction or milestone approval.</li>
                                     <li><span className="font-semibold">Service Fees:</span> Suuave charges commission fees on Artist payouts and standard service fees on Client transactions, disclosed during proposal and contract generation.</li>
                                     <li><span className="font-semibold">Anti-Circumvention Rule:</span> Communicating or transferring payments off-platform to bypass transaction fees is a material breach of contract. Attempting off-platform disintermediation results in immediate account termination, forfeiture of escrow protection, and potential lost revenue penalties.</li>
-                                    <li><span className="font-semibold">Clear Digital Goods Terms of Service (No "Change of Mind" Refunds):</span> Digital design files (unlike physical clothing samples) can be copied instantly once accessed. Therefore, all digital downloads and exclusive design transfers are final upon delivery and download. They are strictly non-refundable, except in cases of proven file corruption, empty packages, or severe misrepresentation.</li>
+                                    <li><span className="font-semibold">Clear Digital Goods Terms of Service (No &quot;Change of Mind&quot; Refunds):</span> Digital design files (unlike physical clothing samples) can be copied instantly once accessed. Therefore, all digital downloads and exclusive design transfers are final upon delivery and download. They are strictly non-refundable, except in cases of proven file corruption, empty packages, or severe misrepresentation.</li>
                                 </ul>
                             </div>
 
@@ -184,7 +184,7 @@ const TermsContent = () => {
                                         <ul className="list-disc pl-6 space-y-2 text-gray-700">
                                             <li><span className="font-semibold">Post Project Intake:</span> Brands define project scope, budget, timeframes, design style, required skills, and optional reference images via the Post Project module. Publishing distributes the brief to the global Opportunities Feed.</li>
                                             <li><span className="font-semibold">Proposal Submission:</span> Artists submit structured proposals outlining creative approach, delivery timelines, and financial terms.</li>
-                                            <li><span className="font-semibold">Proposal Modification & Lock:</span> Upon submission, the listing updates to Applied. Primary actions transition to Withdraw Proposal (retracts bid from Brand review) and Edit Proposal (pre-populates existing bid data for updates). Proposals marked as "Inactive" or "Closed" cannot be edited or withdrawn.</li>
+                                            <li><span className="font-semibold">Proposal Modification & Lock:</span> Upon submission, the listing updates to Applied. Primary actions transition to Withdraw Proposal (retracts bid from Brand review) and Edit Proposal (pre-populates existing bid data for updates). Proposals marked as &quot;Inactive&quot; or &quot;Closed&quot; cannot be edited or withdrawn.</li>
                                         </ul>
                                     </div>
                                     <div>
@@ -202,10 +202,10 @@ const TermsContent = () => {
                                             <li><span className="font-semibold">In-Platform Engagement:</span> All technical specifications, scope adjustments, and Time & Action (T&A) reports must occur within the project chat client. A persistent banner enforces in-platform communication to preserve escrow coverage.</li>
                                             <li><span className="font-semibold">Submission & Review:</span> The Artist initiates Submit Project, completing a mandatory Rating & Review flow prior to final submission.</li>
                                             <li><span className="font-semibold">Deliverable Validation:</span> Brands evaluate submitted assets (technical sketches, tech packs, 3D renders, or master source files).</li>
-                                            <li><span className="font-semibold">Approve Work:</span> Releases escrow funds directly to the Artist's Wallet.</li>
+                                            <li><span className="font-semibold">Approve Work:</span> Releases escrow funds directly to the Artist&apos;s Wallet.</li>
                                             <li><span className="font-semibold">Reject:</span> Pauses the payment flow and initiates a revision cycle based on agreed tech pack specifications.</li>
                                             <li>
-                                                <span className="font-semibold">Deliverable Approval & 48-Hour Feedback Window:</span> Upon delivery of final assets, Brands must evaluate and approve the work. Deliverable approval initiates a mandatory 48-Hour Post-Purchase Review Window. Escrowed funds will be released to the Artist's Wallet upon either:
+                                                <span className="font-semibold">Deliverable Approval & 48-Hour Feedback Window:</span> Upon delivery of final assets, Brands must evaluate and approve the work. Deliverable approval initiates a mandatory 48-Hour Post-Purchase Review Window. Escrowed funds will be released to the Artist&apos;s Wallet upon either:
                                                 <ul className="list-[circle] pl-6 mt-2 space-y-1">
                                                     <li>The Brand’s submission of post-purchase feedback and rating within the 48-hour period; or</li>
                                                     <li>Automated system release upon the expiration of 48 hours post-approval, provided no technical dispute has been filed.</li>
@@ -266,7 +266,7 @@ const TermsContent = () => {
                             </div>
 
                             <div>
-                                <h3 id="p2-s4" className="text-xl font-semibold text-[#035A7A] mb-3 scroll-mt-24">Section 4: Dispute Resolution Protocol ("Suuave Resolution Lab")</h3>
+                                <h3 id="p2-s4" className="text-xl font-semibold text-[#035A7A] mb-3 scroll-mt-24">Section 4: Dispute Resolution Protocol (&quot;Suuave Resolution Lab&quot;)</h3>
                                 <div className="w-full my-8">
                                     <img
                                         src="/dev-images/Dispute.png"
@@ -303,9 +303,9 @@ const TermsContent = () => {
                                         </ul>
                                     </div>
                                     <div>
-                                        <h4 className="text-xl font-bold text-[#035A7A] mb-2">4.2 Intake Categories & Evidence Submission (The "Defect-Only" Dispute Standard):</h4>
+                                        <h4 className="text-xl font-bold text-[#035A7A] mb-2">4.2 Intake Categories & Evidence Submission (The &quot;Defect-Only&quot; Dispute Standard):</h4>
                                         <p className="text-lg leading-relaxed text-gray-700">
-                                            If a brand files a dispute over a purchased design, they must provide technical proof of defect, such as a corrupted file extension, missing core components promised in the design description, or a file that completely contradicts the preview. A brand cannot claim dissatisfaction or dispute a purchase simply because they "decided they didn't like the style" after downloading the source asset.
+                                            If a brand files a dispute over a purchased design, they must provide technical proof of defect, such as a corrupted file extension, missing core components promised in the design description, or a file that completely contradicts the preview. A brand cannot claim dissatisfaction or dispute a purchase simply because they &quot;decided they didn&apos;t like the style&quot; after downloading the source asset.
                                         </p>
                                     </div>
                                 </div>

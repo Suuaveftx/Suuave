@@ -9,57 +9,111 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { IoFlagSharp } from "react-icons/io5";
 import { useSearchParams, useRouter } from "next/navigation";
 import ChatClientModal from "../../../../components/ChatClientModal";
-import SubmitWorkModal from "../../../fashion-designers/contracts/components/SubmitWorkModal";
+import SubmitWork from "../../my-contracts/_components/ContractSubmitWork";
 import { useAppStore } from "@/store";
+import { selectDisputeActions, selectIsDisputed } from "@/app/disputes/slice/dispute-slice";
+import { useShallow } from "zustand/react/shallow";
+import ContractListState from "../../my-contracts/_components/ContractListState";
+import {
+    useApproveExtension,
+    useOngoingContract,
+    useRejectExtension,
+    useRequestExtension,
+} from "../../my-contracts/queries/artist-contracts.queries";
+import {
+    formatBudget,
+    formatContractDate,
+    formatDurationDays,
+    formatTimeLeft,
+    getContractErrorMessage,
+    readExtensionRequest,
+} from "../../my-contracts/utils/contract-formatters";
 
-const contractDetails = {
-    jobTitle: "Modern Fashion Attire Illustration",
-    contractNumber: "24t64754",
-    contractType: "Hire",
-    role: "Fashion Artist",
-    budget: "N200,000",
-    duration: "3 Days",
-};
+const FALLBACK_AVATAR = "/dev-images/Clients.png";
 
-const attachments = [
-    { name: "Doc1534re", path: "/dev-images/Attach2.png" },
-    { name: "Doc1534re", path: "/dev-images/Attach2.png" },
-];
-
-const clientProfile = {
-    name: "Tolu",
-    handle: "@tolu",
-    role: "Fashion Brand",
-    location: "Lagos, Nigeria",
-    avatar: "/dev-images/Clients.png",
-    rating: 5,
-    reviewCount: 0,
-    stats: {
-        jobsPosted: 1,
-        hire: 0,
-        paymentMade: 0,
-    },
-};
+function attachmentName(url, index) {
+    try {
+        const last = decodeURIComponent(new URL(url).pathname.split("/").filter(Boolean).pop() || "");
+        return last || `Attachment ${index + 1}`;
+    } catch {
+        return `Attachment ${index + 1}`;
+    }
+}
 
 export default function OngoingContract() {
     const searchParams = useSearchParams();
-    const id = searchParams.get("id") || contractDetails.contractNumber;
-    const timeStatus = searchParams.get("timeStatus") || "(14d left)";
-    const color = timeStatus?.includes("1h") ? "#E05656" : "#6B7280";
+    const id = searchParams.get("id");
     const contractStatus = searchParams.get('status');
-    const isWaitingApproval = contractStatus === 'Waiting Approval' || id === "98k21456-B";
+    const isWaitingApproval = contractStatus === 'Waiting Approval';
     const router = useRouter();
-    const isExtended = searchParams.get('isExtended') === 'true' || contractStatus === 'Deadline Extended' || id === '44f89312-D';
-    const isExtensionRequested = contractStatus === 'Extension Requested' || id === '12m78390-C';
+    const isExtended = searchParams.get('isExtended') === 'true' || contractStatus === 'Deadline Extended';
+    const isExtensionRequested = contractStatus === 'Extension Requested';
 
-    const { reportedDisputes, withdrawDispute } = useAppStore();
-    const isDisputed = reportedDisputes[id];
+    const isDisputed = useAppStore(selectIsDisputed(id));
+    const { withdrawDispute } = useAppStore(useShallow(selectDisputeActions));
     const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onOpenChange: onWithdrawOpenChange } = useDisclosure();
     const [showViewExtensionModal, setShowViewExtensionModal] = useState(false);
     const [showRequestExtensionModal, setShowRequestExtensionModal] = useState(false);
     const [extensionNewDeadline, setExtensionNewDeadline] = useState("");
     const [extensionReason, setExtensionReason] = useState("");
     const [extensionPayment, setExtensionPayment] = useState("");
+    const { data: contract, isLoading, isError, error, refetch } = useOngoingContract(id);
+    const requestExtension = useRequestExtension();
+    const approveExtension = useApproveExtension();
+    const rejectExtension = useRejectExtension();
+
+    if (!id) {
+        return <ContractListState kind="error" message="No contract was selected." />;
+    }
+    if (isLoading) return <ContractListState kind="loading" />;
+    if (isError || !contract) {
+        return (
+            <ContractListState
+                kind="error"
+                message={getContractErrorMessage(error, "We could not load this contract.")}
+                onRetry={() => refetch()}
+            />
+        );
+    }
+
+    const contractDetails = {
+        jobTitle: contract.jobTitle,
+        contractNumber: contract.contractNumber,
+        role: contract.role,
+        budget: formatBudget(contract.budget, contract.currency),
+        duration: formatDurationDays(contract.contractStarts, contract.updatedDeadline ?? contract.contractEnds),
+    };
+    const attachments = (contract.attachments || []).map((url, index) => ({
+        name: attachmentName(url, index),
+        url,
+    }));
+    const client = contract.client;
+    const clientProfile = {
+        name: client.name,
+        handle: client.username ? `@${client.username}` : client.name,
+        role: client.brandCategory || "Brand",
+        location: client.location || "Location not set",
+        avatar: client.image || FALLBACK_AVATAR,
+        rating: Math.max(0, Math.min(5, Math.round(client.rating || 0))),
+        reviewCount: client.reviewsCount,
+        stats: {
+            jobsPosted: client.jobsPosted,
+            hire: client.hire,
+            paymentMade: client.paymentMade ? "Yes" : "No",
+        },
+    };
+    const startsText = formatContractDate(contract.contractStarts) || "—";
+    const endsText = formatContractDate(contract.contractEnds) || "—";
+    const updatedText = formatContractDate(contract.updatedDeadline) || endsText;
+    const deadlineIso = contract.updatedDeadline ?? contract.contractEnds;
+    const timeStatus = searchParams.get("timeStatus") || (deadlineIso ? `(${formatTimeLeft(deadlineIso)})` : "");
+    const color = timeStatus?.includes("1h") ? "#E05656" : "#6B7280";
+    const latestExtension = readExtensionRequest(
+        (contract.extensionRequests || [])[(contract.extensionRequests || []).length - 1]
+    );
+    const canSubmit = contract.actions?.canSubmit !== false;
+    const canRequestExtension = contract.actions?.canRequestExtension !== false;
+    const canReport = contract.actions?.canReport !== false;
 
     return (
         <>
@@ -85,10 +139,10 @@ export default function OngoingContract() {
                                 <div className="flex items-center gap-2 md:gap-3">
                                     <ExclamationTriangleIcon className="w-5 h-5 text-[#3A98BB] flex-shrink-0" />
                                     <p className="text-[13px] md:text-sm text-[#3A98BB]">
-                                        You have submitted this project as completed. Waiting for client's approval.
+                                        You have submitted this project as completed. Waiting for client&apos;s approval.
                                     </p>
                                 </div>
-                                <SubmitWorkModal trigger={
+                                <SubmitWork contractId={id} isResubmit={isWaitingApproval || contractStatus === 'Change Requested'} trigger={
                                     <span className="cursor-pointer text-[13px] md:text-sm font-semibold text-[#3A98BB] whitespace-nowrap pl-2">
                                         Click to Review
                                     </span>
@@ -151,7 +205,7 @@ export default function OngoingContract() {
                                     <div>
                                         <p className="text-sm font-bold text-[#035A7A]">Deadline Extended</p>
                                         <p className="text-xs text-[#035A7A] mt-0.5">
-                                            Contract deadline updated to <span className="font-bold">24th April, 2026</span>
+                                            Contract deadline updated to <span className="font-bold">{updatedText}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -181,18 +235,18 @@ export default function OngoingContract() {
                                 {/* Contract Starts */}
                                 <div className="grid grid-cols-[200px_1fr] gap-4 items-center">
                                     <span className="text-gray-500 text-sm">Contract Starts :</span>
-                                    <span className="font-medium text-sm">7th May, 2026</span>
+                                    <span className="font-medium text-sm">{startsText}</span>
                                 </div>
                                 {/* Contract Ends */}
                                 <div className="grid grid-cols-[200px_1fr] gap-4 items-center">
                                     <span className="text-gray-500 text-sm">Contract Ends :</span>
                                     {isExtended ? (
                                         <div className="flex items-center gap-2 flex-wrap">
-                                            <span className="font-medium text-sm">24th April, 2026</span>
+                                            <span className="font-medium text-sm">{updatedText}</span>
                                             <span className="text-[10px] bg-[#FFA500] text-white px-2 py-0.5 rounded-full font-semibold whitespace-nowrap">Extended</span>
                                         </div>
                                     ) : (
-                                        <span className="font-medium text-sm">12th May, 2026</span>
+                                        <span className="font-medium text-sm">{endsText}</span>
                                     )}
                                 </div>
                             </div>
@@ -204,8 +258,8 @@ export default function OngoingContract() {
                             <div className="space-y-3">
                                 {attachments.map((doc, index) => (
                                     <div key={index} className="flex items-center gap-2 text-[#3A98BB]">
-                                        <Image src={doc.path} width={20} height={20} alt="attachment" className="w-5 h-5 object-contain" />
-                                        <span className="text-sm cursor-pointer hover:underline">{doc.name}</span>
+                                        <Image src="/dev-images/Attach2.png" width={20} height={20} alt="attachment" className="w-5 h-5 object-contain" />
+                                        <a href={doc.url} target="_blank" rel="noreferrer" className="text-sm cursor-pointer hover:underline">{doc.name}</a>
                                     </div>
                                 ))}
                             </div>
@@ -220,7 +274,7 @@ export default function OngoingContract() {
                         <Card className="w-full p-6 shadow-sm border border-gray-100 rounded-2xl hidden md:block bg-[#FDFDFD]">
                             <div className="flex flex-col gap-4 items-center">
                                 <div className="w-full">
-                                    <SubmitWorkModal trigger={
+                                    <SubmitWork contractId={id} isResubmit={isWaitingApproval || contractStatus === 'Change Requested'} trigger={
                                       <Button className="w-full h-[46px] text-[15px] font-semibold bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] rounded-full hover:opacity-90 transition-opacity border-0 shadow-sm">
                                           Submit Project
                                       </Button>
@@ -334,10 +388,10 @@ export default function OngoingContract() {
                             <div className="flex items-center gap-2 flex-1 min-w-0">
                                 <ExclamationTriangleIcon className="w-5 h-5 text-[#3A98BB] flex-shrink-0" />
                                 <p className="text-[13px] text-[#3A98BB] leading-snug">
-                                    You have submitted this project as completed. Waiting for client's approval.
+                                    You have submitted this project as completed. Waiting for client&apos;s approval.
                                 </p>
                             </div>
-                            <SubmitWorkModal trigger={
+                            <SubmitWork contractId={id} isResubmit={isWaitingApproval || contractStatus === 'Change Requested'} trigger={
                                 <span className="cursor-pointer text-[13px] font-semibold text-[#3A98BB] whitespace-nowrap pl-2 shrink-0">
                                     Click to Review
                                 </span>
@@ -410,18 +464,18 @@ export default function OngoingContract() {
                         <div className="flex flex-col gap-4">
                             {[
                                 { label: "Job Title", value: contractDetails.jobTitle },
-                                { label: "Contract Number", value: id },
+                                { label: "Contract Number", value: contractDetails.contractNumber },
                                 { label: "Role", value: contractDetails.role },
                                 { label: "Budget", value: contractDetails.budget },
-                                { label: "Contract Starts", value: "7th May, 2026" },
+                                { label: "Contract Starts", value: startsText },
                                 { 
                                     label: "Contract Ends", 
                                     value: isExtended ? (
                                         <div className="flex items-center gap-2 flex-wrap">
-                                            <span>24th April, 2026</span>
+                                            <span>{updatedText}</span>
                                             <span className="text-[10px] bg-[#FFA500] text-white px-2 py-0.5 rounded-full font-semibold whitespace-nowrap">Extended</span>
                                         </div>
-                                    ) : "12th May, 2026" 
+                                    ) : endsText
                                 },
                             ].map((item, index) => (
                                 <div key={index} className="grid grid-cols-[38%_62%] gap-2 items-start text-[14px]">
@@ -438,8 +492,8 @@ export default function OngoingContract() {
                         <div className="space-y-3">
                             {attachments.map((doc, index) => (
                                 <div key={`mob-doc-${index}`} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 py-1 rounded-lg transition-colors">
-                                    <img src={doc.path} width={16} height={16} alt="attachment" className="w-4 h-4 object-contain opacity-60" />
-                                    <span className="text-[14px] text-[#3A98BB] font-medium">{doc.name}</span>
+                                    <img src="/dev-images/Attach2.png" width={16} height={16} alt="attachment" className="w-4 h-4 object-contain opacity-60" />
+                                    <a href={doc.url} target="_blank" rel="noreferrer" className="text-[14px] text-[#3A98BB] font-medium">{doc.name}</a>
                                 </div>
                             ))}
                         </div>
@@ -476,7 +530,7 @@ export default function OngoingContract() {
                                     Chat Client
                                 </Button>
                             } />
-                            <SubmitWorkModal trigger={
+                            <SubmitWork contractId={id} isResubmit={isWaitingApproval || contractStatus === 'Change Requested'} trigger={
                                 <Button
                                     className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] h-[44px] text-[#035A7A] font-semibold rounded-full border-0 shadow-sm text-[15px]"
                                     radius="full"
@@ -595,33 +649,46 @@ export default function OngoingContract() {
                                 <div className="flex flex-col gap-5 sm:gap-6 text-[15px]">
                                     <div className="grid grid-cols-1 sm:grid-cols-[210px_1fr] items-start sm:items-center gap-1 sm:gap-4">
                                         <span className="font-bold text-[#222222]">New Deadline :</span>
-                                        <span className="text-[#333333]">24th April, 2026</span>
+                                        <span className="text-[#333333]">{formatContractDate(latestExtension.newDeadline) || "—"}</span>
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-[210px_1fr] items-start gap-1 sm:gap-4">
                                         <span className="font-bold text-[#222222]">Reason :</span>
-                                        <span className="text-[#333333]">Additional 5 sketches</span>
+                                        <span className="text-[#333333]">{latestExtension.reason || "—"}</span>
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-[210px_1fr] items-start sm:items-center gap-1 sm:gap-4">
                                         <span className="font-bold text-[#222222]">Additional Payment Offer :</span>
                                         <div className="flex items-center flex-wrap gap-2">
-                                            <span className="text-[#333333]">+N20,000</span>
+                                            <span className="text-[#333333]">{latestExtension.additionalPayment ? `+${formatBudget(latestExtension.additionalPayment, contract.currency)}` : "None"}</span>
                                             <span className="text-[#035A7A] text-[13px] font-medium">( 10% commission applies)</span>
                                         </div>
                                     </div>
                                 </div>
 
+                                {(approveExtension.isError || rejectExtension.isError) && (
+                                    <p className="text-xs text-[#E05656] mt-6" role="alert">
+                                        {getContractErrorMessage(approveExtension.error || rejectExtension.error)}
+                                    </p>
+                                )}
                                 <div className="flex gap-4 mt-12 mb-2">
                                     <Button
                                         className="flex-1 bg-white border border-[#3A98BB] text-[#111111] font-bold tracking-wide rounded-full shadow-sm h-[48px] text-[15px]"
-                                        onPress={() => onClose()}
+                                        isLoading={rejectExtension.isPending}
+                                        onPress={async () => {
+                                            try { await rejectExtension.mutateAsync(id); } catch { return; }
+                                            onClose();
+                                        }}
                                     >
                                         Decline
                                     </Button>
                                     <Button
                                         className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] tracking-wide font-bold rounded-full border-0 shadow-sm h-[48px] text-[15px]"
-                                        onPress={() => onClose()}
+                                        isLoading={approveExtension.isPending}
+                                        onPress={async () => {
+                                            try { await approveExtension.mutateAsync(id); } catch { return; }
+                                            onClose();
+                                        }}
                                     >
                                         Accept Request
                                     </Button>
@@ -659,7 +726,7 @@ export default function OngoingContract() {
                                     <div>
                                         <label className="text-xs font-bold text-[#222222] mb-1 block">Current Deadline</label>
                                         <div className="bg-[#F5F5F5] border-0 rounded-lg px-4 py-2 text-xs text-gray-500 w-3/5 font-satoshi">
-                                            23, June, 2024
+                                            {updatedText}
                                         </div>
                                     </div>
 
@@ -670,9 +737,9 @@ export default function OngoingContract() {
                                             <Input
                                                 type="date"
                                                 placeholder="DD/MM/YY"
+                                                value={extensionNewDeadline}
+                                                onValueChange={setExtensionNewDeadline}
                                                 classNames={{
-                    wrapper: 'z-[9999]',
-                    backdrop: 'z-[9998]',
                                                     input: "text-xs font-satoshi text-gray-600",
                                                     inputWrapper: "bg-white border border-[#E5E5E5] hover:border-gray-400 focus-within:border-[#3A98BB] shadow-sm rounded-lg h-9 min-h-9",
                                                 }}
@@ -685,6 +752,8 @@ export default function OngoingContract() {
                                         <label className="text-xs font-bold text-[#222222] mb-1 block">Reason</label>
                                         <textarea
                                             placeholder=""
+                                            value={extensionReason}
+                                            onChange={(e) => setExtensionReason(e.target.value)}
                                             className="w-full min-h-[70px] bg-white border border-[#E5E5E5] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#3A98BB] p-3 text-sm font-satoshi resize-none shadow-sm"
                                         />
                                     </div>
@@ -696,6 +765,8 @@ export default function OngoingContract() {
                                             <Input
                                                 type="number"
                                                 placeholder="0.00"
+                                                value={extensionPayment}
+                                                onValueChange={setExtensionPayment}
                                                 classNames={{
                                                     input: "text-xs font-satoshi text-gray-600",
                                                     inputWrapper: "bg-white border border-[#E5E5E5] hover:border-gray-400 shadow-sm rounded-lg h-9 min-h-9",
@@ -706,16 +777,39 @@ export default function OngoingContract() {
                                     </div>
                                 </div>
 
+                                {requestExtension.isError && (
+                                    <p className="text-xs text-[#E05656] mt-3" role="alert">
+                                        {getContractErrorMessage(requestExtension.error)}
+                                    </p>
+                                )}
                                 <div className="flex gap-4 mt-5">
                                     <Button
                                         className="flex-1 bg-[#EBEBEB] text-[#555555] font-semibold rounded-full border-0 h-10"
-                                        onPress={onClose}
+                                        onPress={() => {
+                                            requestExtension.reset();
+                                            onClose();
+                                        }}
                                     >
                                         Cancel
                                     </Button>
                                     <Button
                                         className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full border-0 h-10 shadow-sm"
-                                        onPress={() => {
+                                        isLoading={requestExtension.isPending}
+                                        isDisabled={!extensionNewDeadline || !extensionReason.trim()}
+                                        onPress={async () => {
+                                            try {
+                                                await requestExtension.mutateAsync({
+                                                    contractId: id,
+                                                    newDeadline: extensionNewDeadline,
+                                                    reason: extensionReason.trim(),
+                                                    ...(extensionPayment ? { additionalPayment: Number(extensionPayment) } : {}),
+                                                });
+                                            } catch {
+                                                return;
+                                            }
+                                            setExtensionNewDeadline("");
+                                            setExtensionReason("");
+                                            setExtensionPayment("");
                                             onClose();
                                         }}
                                     >
