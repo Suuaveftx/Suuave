@@ -7,20 +7,18 @@ import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import EditOccupationModal from './EditOccupationModal';
 import EditAboutModal from './EditAboutModal';
-import {
-  useUpdateGeneralArtistProfile,
-  useUploadProfileFile,
-} from '../../personal-details/queries/artist-profile-queries';
 import { addToast, Avatar } from '@heroui/react';
 import ProfileSkeleton from './ProfileSkeleton';
 import { getErrorMessage } from '../../../../utils/utils';
+import {} from '../../personal-details/types/profile-types';
+import { ProfileInfoResponse, ResponseData } from '@/lib/common-app-types';
 import {
-  ArtistProfileInfoResponse,
-  ResponseData,
-} from '../../personal-details/types/profile-types';
+  useUpdateGeneralProfile,
+  useUploadProfileFile,
+} from '@/lib/api-integration-helper';
 
 type ProfileArtistPropType = {
-  data: ResponseData<ArtistProfileInfoResponse>;
+  data: ResponseData<ProfileInfoResponse>;
   isVisitor?: boolean;
   loadingArtistProfile?: boolean;
 };
@@ -32,7 +30,7 @@ const ProfileArtist = ({
 }: ProfileArtistPropType) => {
   const { mutateAsync: uploadFile } = useUploadProfileFile();
   const { mutateAsync: updateGeneralProfile, isPending: updatingGeneralProfile } =
-    useUpdateGeneralArtistProfile();
+    useUpdateGeneralProfile();
 
   const artistProfile = data?.data;
   const userDetails = artistProfile?.user;
