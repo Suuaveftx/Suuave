@@ -15,8 +15,6 @@ import { formatProjectTimeline } from '@/app/projects/utils/project-formatters';
 
 const FILTERS = [
   { value: 'recently', label: 'Recently' },
-  { value: 'open', label: 'Open' },
-  { value: 'closed', label: 'Closed' },
 ];
 
 const getStatusClassName = (status) => {
@@ -34,6 +32,11 @@ const getStatusClassName = (status) => {
   }
 };
 
+const getStatusLabel = (status) => {
+  if (status === 'open') return 'Active';
+  return String(status ?? '').replace(/_/g, ' ');
+};
+
 const PAGE_SIZE = 10;
 
 const ProjectPage = ({ search = '' }) => {
@@ -42,7 +45,7 @@ const ProjectPage = ({ search = '' }) => {
   const [page, setPage] = useState(1);
   const isSavedTab = filter === 'saved';
 
-  // Paged list for the Recently / Open / Closed tabs (limit must be <= 50)
+  // Paged list for the Recently tab (limit must be <= 50)
   const projectsQuery = useProjects({
     page,
     limit: PAGE_SIZE,
@@ -76,11 +79,7 @@ const ProjectPage = ({ search = '' }) => {
   const projects = projectsQuery.data?.projects ?? [];
   const visibleProjects = isSavedTab
     ? savedPageItems
-    : filter === 'closed'
-      ? projects.filter((project) => ['completed', 'cancelled'].includes(project.status))
-      : filter === 'open'
-        ? projects.filter((project) => project.status === 'open')
-        : projects;
+    : projects;
   const pagination = isSavedTab
     ? {
         currentPage: savedPage,
@@ -258,11 +257,11 @@ const ProjectPage = ({ search = '' }) => {
                 </button>
               </div>
               <p className='text-xs leading-4 text-[#878787]'>
-                Project status:{' '}
+                Job Status:{' '}
                 <span
                   className={`font-medium capitalize ${getStatusClassName(project.status)}`}
                 >
-                  {project.status.replace('_', ' ')}
+                  {getStatusLabel(project.status)}
                 </span>
               </p>
               <Link

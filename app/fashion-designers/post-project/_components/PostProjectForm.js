@@ -140,7 +140,7 @@ const PostProjectForm = () => {
       budget: Number(data.projectBudget),
       currency: data.projectCurrency,
       timeframe: Number(data.projectTimeframe),
-      durationType: data.durationType,
+      durationType: 'days',
       referenceFiles: selectedFiles.map((f) => f.name),
     };
 
