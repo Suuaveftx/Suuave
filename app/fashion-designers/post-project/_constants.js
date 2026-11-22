@@ -13,7 +13,6 @@ export const DEFAULT_VALUES = {
 };
 
 export const CURRENCIES = ['USD', 'NGN', 'EUR', 'GBP'];
-export const DURATION_UNITS = ['days', 'weeks', 'months', 'years'];
 export const PROJECT_STATUSES = ['open', 'in_progress', 'completed', 'cancelled'];
 
 export const responsiveClasses = {

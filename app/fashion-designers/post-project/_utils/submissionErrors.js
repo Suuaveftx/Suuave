@@ -1,12 +1,11 @@
 import axios from 'axios';
 
 const FIELD_MAP = {
-  title: ['projectTitle', 'Title must be at least 10 characters.'],
+  title: ['projectTitle', 'Please enter a title.'],
   description: ['projectDetails', 'Description must be at least 50 characters.'],
   skillsRequired: ['fashionDesignerSkills', 'Add at least one required skill.'],
   designStyle: ['designStyles', 'Add at least one design style.'],
   budget: ['projectBudget', 'Budget must be at least 1,000.'],
-  durationType: ['durationType', 'Select a timeframe unit.'],
   projectTimeframe: ['projectTimeframe', 'Enter a valid timeframe.'],
   currency: ['projectCurrency', 'Select a currency.'],
 };
