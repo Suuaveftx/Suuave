@@ -56,7 +56,7 @@ const PendingProjects = ({
 
   const { data, isLoading, isError, error, refetch } = usePendingContracts();
   const pendingProjects = React.useMemo(
-    () => (data?.contracts ?? []).map(toPendingRow),
+    () => (data?.data.contracts ?? []).map(toPendingRow),
     [data]
   );
 
@@ -74,11 +74,11 @@ const PendingProjects = ({
   const endIndex = startIndex + itemsPerPage;
   const currentItems = filteredContracts.slice(startIndex, endIndex);
 
-  if (isLoading) return <ContractListState kind="loading" />;
+  if (isLoading) return <ContractListState type="loading" />;
   if (isError) {
     return (
       <ContractListState
-        kind="error"
+        type="error"
         message={getContractErrorMessage(error, 'We could not load your pending contracts.')}
         onRetry={() => refetch()}
       />

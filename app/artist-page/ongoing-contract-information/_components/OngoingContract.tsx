@@ -28,6 +28,7 @@ import {
     getContractErrorMessage,
     readExtensionRequest,
 } from "../../my-contracts/utils/contract-formatters";
+import { ContractStatus } from "../../my-contracts/types/contract-types";
 
 const FALLBACK_AVATAR = "/dev-images/Clients.png";
 
@@ -44,10 +45,10 @@ export default function OngoingContract() {
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
     const contractStatus = searchParams.get('status');
-    const isWaitingApproval = contractStatus === 'Waiting Approval';
+    const isWaitingApproval = contractStatus === ContractStatus.WaitingApproval;
     const router = useRouter();
-    const isExtended = searchParams.get('isExtended') === 'true' || contractStatus === 'Deadline Extended';
-    const isExtensionRequested = contractStatus === 'Extension Requested';
+    const isExtended = searchParams.get('isExtended') === 'true' || contractStatus === ContractStatus.DeadlineExtended;
+    const isExtensionRequested = contractStatus === ContractStatus.ExtensionRequested;
 
     const isDisputed = useAppStore(selectIsDisputed(id));
     const { withdrawDispute } = useAppStore(useShallow(selectDisputeActions));
@@ -57,19 +58,20 @@ export default function OngoingContract() {
     const [extensionNewDeadline, setExtensionNewDeadline] = useState("");
     const [extensionReason, setExtensionReason] = useState("");
     const [extensionPayment, setExtensionPayment] = useState("");
-    const { data: contract, isLoading, isError, error, refetch } = useOngoingContract(id);
+    const { data: contractResponse, isLoading, isError, error, refetch } = useOngoingContract(id);
+    const contract = contractResponse?.data;
     const requestExtension = useRequestExtension();
     const approveExtension = useApproveExtension();
     const rejectExtension = useRejectExtension();
 
     if (!id) {
-        return <ContractListState kind="error" message="No contract was selected." />;
+        return <ContractListState type="error" message="No contract was selected." />;
     }
-    if (isLoading) return <ContractListState kind="loading" />;
+    if (isLoading) return <ContractListState type="loading" />;
     if (isError || !contract) {
         return (
             <ContractListState
-                kind="error"
+                type="error"
                 message={getContractErrorMessage(error, "We could not load this contract.")}
                 onRetry={() => refetch()}
             />
@@ -142,7 +144,7 @@ export default function OngoingContract() {
                                         You have submitted this project as completed. Waiting for client&apos;s approval.
                                     </p>
                                 </div>
-                                <SubmitWork contractId={id} isResubmit={isWaitingApproval || contractStatus === 'Change Requested'} trigger={
+                                <SubmitWork contractId={id} isResubmit={isWaitingApproval || contractStatus === ContractStatus.ChangeRequested} trigger={
                                     <span className="cursor-pointer text-[13px] md:text-sm font-semibold text-[#3A98BB] whitespace-nowrap pl-2">
                                         Click to Review
                                     </span>
@@ -156,7 +158,7 @@ export default function OngoingContract() {
                             <div className="hidden md:flex justify-between items-start mb-6 border-b border-gray-100 pb-4">
                                 <h2 className="text-xl font-bold">Contract Details </h2>
                                 <div className="flex gap-2 items-center">
-                                    {contractStatus === 'Change Requested' ? (
+                                    {contractStatus === ContractStatus.ChangeRequested ? (
                                         <span className="bg-[#E0F2FE] text-[#0284C7] px-4 py-1 rounded-full text-[12px] font-semibold whitespace-nowrap">
                                             Change Requested
                                         </span>
@@ -168,7 +170,7 @@ export default function OngoingContract() {
                                         <span className="bg-[#F3E8FF] text-[#7C3AED] px-4 py-1 rounded-full text-[12px] font-semibold whitespace-nowrap">
                                             Extension Requested
                                         </span>
-                                    ) : contractStatus === 'Deadline Approved' ? (
+                                    ) : contractStatus === ContractStatus.DeadlineApproved ? (
                                         <span className="bg-[#DCFCE7] text-[#16A34A] px-4 py-1 rounded-full text-[12px] font-semibold whitespace-nowrap">
                                             Deadline Approved
                                         </span>
@@ -176,7 +178,7 @@ export default function OngoingContract() {
                                         <span className="bg-[#E0F2FE] text-[#0284C7] px-4 py-1 rounded-full text-[12px] font-semibold whitespace-nowrap">
                                             Deadline Extended
                                         </span>
-                                    ) : contractStatus === 'Extension Rejected' ? (
+                                    ) : contractStatus === ContractStatus.ExtensionRejected ? (
                                         <span className="bg-[#FEE2E2] text-[#DC2626] px-4 py-1 rounded-full text-[12px] font-semibold whitespace-nowrap">
                                             Extension Rejected
                                         </span>
@@ -274,7 +276,7 @@ export default function OngoingContract() {
                         <Card className="w-full p-6 shadow-sm border border-gray-100 rounded-2xl hidden md:block bg-[#FDFDFD]">
                             <div className="flex flex-col gap-4 items-center">
                                 <div className="w-full">
-                                    <SubmitWork contractId={id} isResubmit={isWaitingApproval || contractStatus === 'Change Requested'} trigger={
+                                    <SubmitWork contractId={id} isResubmit={isWaitingApproval || contractStatus === ContractStatus.ChangeRequested} trigger={
                                       <Button className="w-full h-[46px] text-[15px] font-semibold bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] rounded-full hover:opacity-90 transition-opacity border-0 shadow-sm">
                                           Submit Project
                                       </Button>
@@ -391,7 +393,7 @@ export default function OngoingContract() {
                                     You have submitted this project as completed. Waiting for client&apos;s approval.
                                 </p>
                             </div>
-                            <SubmitWork contractId={id} isResubmit={isWaitingApproval || contractStatus === 'Change Requested'} trigger={
+                            <SubmitWork contractId={id} isResubmit={isWaitingApproval || contractStatus === ContractStatus.ChangeRequested} trigger={
                                 <span className="cursor-pointer text-[13px] font-semibold text-[#3A98BB] whitespace-nowrap pl-2 shrink-0">
                                     Click to Review
                                 </span>
@@ -423,7 +425,7 @@ export default function OngoingContract() {
                         <div className="flex items-start justify-between mb-4">
                             <h2 className="text-[18px] font-bold text-gray-900">Contract Details</h2>
                             <div className="flex flex-wrap items-center gap-1.5 justify-end">
-                                {contractStatus === 'Change Requested' ? (
+                                {contractStatus === ContractStatus.ChangeRequested ? (
                                     <span className="inline-flex items-center bg-[#E0F2FE] text-[#0284C7] text-[11px] font-semibold px-2 rounded-full h-[22px]">
                                         Change Requested
                                     </span>
@@ -435,7 +437,7 @@ export default function OngoingContract() {
                                     <span className="inline-flex items-center bg-[#F3E8FF] text-[#7C3AED] text-[11px] font-semibold px-2 rounded-full h-[22px]">
                                         Extension Requested
                                     </span>
-                                ) : contractStatus === 'Deadline Approved' ? (
+                                ) : contractStatus === ContractStatus.DeadlineApproved ? (
                                     <span className="inline-flex items-center bg-[#DCFCE7] text-[#16A34A] text-[11px] font-semibold px-2 rounded-full h-[22px]">
                                         Deadline Approved
                                     </span>
@@ -443,7 +445,7 @@ export default function OngoingContract() {
                                     <span className="inline-flex items-center bg-[#E0F2FE] text-[#0284C7] text-[11px] font-semibold px-2 rounded-full h-[22px]">
                                         Deadline Extended
                                     </span>
-                                ) : contractStatus === 'Extension Rejected' ? (
+                                ) : contractStatus === ContractStatus.ExtensionRejected ? (
                                     <span className="inline-flex items-center bg-[#FEE2E2] text-[#DC2626] text-[11px] font-semibold px-2 rounded-full h-[22px]">
                                         Extension Rejected
                                     </span>
@@ -530,7 +532,7 @@ export default function OngoingContract() {
                                     Chat Client
                                 </Button>
                             } />
-                            <SubmitWork contractId={id} isResubmit={isWaitingApproval || contractStatus === 'Change Requested'} trigger={
+                            <SubmitWork contractId={id} isResubmit={isWaitingApproval || contractStatus === ContractStatus.ChangeRequested} trigger={
                                 <Button
                                     className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] h-[44px] text-[#035A7A] font-semibold rounded-full border-0 shadow-sm text-[15px]"
                                     radius="full"

@@ -3,11 +3,11 @@ import React from 'react';
 import { Button, Spinner } from '@heroui/react';
 
 type Props =
-  | { kind: 'loading' }
-  | { kind: 'error'; message?: string; onRetry?: () => void };
+  | { type: 'loading' }
+  | { type: 'error'; message?: string; onRetry?: () => void };
 
 export default function ContractListState(props: Props) {
-  if (props.kind === 'loading') {
+  if (props.type === 'loading') {
     return (
       <div className="flex justify-center py-16" role="status" aria-label="Loading contracts">
         <Spinner color="primary" />

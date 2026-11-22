@@ -5,6 +5,7 @@ import type {
   OngoingContractListItem,
   PendingContractListItem,
 } from '../types/contract-types';
+import { ContractStatus } from '../types/contract-types';
 
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -77,11 +78,11 @@ export function humanizeStatus(value: string | null | undefined): string {
 
 // The ongoing tab renders these labels. The API has no equivalent for
 // "Deadline Approved" or "Extension Rejected", so they are never produced here.
-const ONGOING_BADGE_LABELS: Record<OngoingContractBadge, string> = {
-  waiting_approval: 'Waiting Approval',
-  resubmit_required: 'Change Requested',
-  extension_requested: 'Extension Requested',
-  deadline_extended: 'Deadline Extended',
+const ONGOING_BADGE_LABELS: Record<OngoingContractBadge, ContractStatus> = {
+  waiting_approval: ContractStatus.WaitingApproval,
+  resubmit_required: ContractStatus.ChangeRequested,
+  extension_requested: ContractStatus.ExtensionRequested,
+  deadline_extended: ContractStatus.DeadlineExtended,
 };
 
 // ---------- Row adapters (API item -> the shape each tab already renders) ----------
@@ -110,7 +111,7 @@ export type OngoingRow = {
   contractNumber: string;
   StartDate: string;
   EndDate: string;
-  status: string | null;
+  status: ContractStatus | null;
   timeLeft?: string;
 };
 
@@ -122,7 +123,7 @@ export const toOngoingRow = (item: OngoingContractListItem): OngoingRow => {
     contractNumber: item.contractNumber,
     StartDate: formatContractDate(item.contractStarts),
     EndDate: formatContractDate(deadline),
-    status: item.badge ? ONGOING_BADGE_LABELS[item.badge] ?? humanizeStatus(item.badge) : null,
+    status: item.badge ? ONGOING_BADGE_LABELS[item.badge] : null,
     timeLeft: formatTimeLeft(deadline) || undefined,
   };
 };
@@ -168,8 +169,10 @@ export function readExtensionRequest(request: Record<string, unknown> | null | u
 /** Best-effort message from an Axios error shaped like the API's `{ success:false, message, error }`. */
 export function getContractErrorMessage(error: unknown, fallback = 'Something went wrong. Please try again.'): string {
   if (axios.isAxiosError(error)) {
-    const data = error.response?.data as { message?: string; error?: string } | undefined;
-    return data?.error || data?.message || fallback;
+    const data = error.response?.data as
+      | { message?: string; error?: string }
+      | undefined;
+    return data?.message || data?.error || fallback;
   }
   if (error instanceof Error && error.message) return error.message;
   return fallback;

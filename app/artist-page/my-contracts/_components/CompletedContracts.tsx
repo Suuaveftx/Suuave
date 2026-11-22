@@ -26,7 +26,7 @@ export default function CompletedContracts() {
   const { data, isLoading, isError, error, refetch } = useCompletedContracts();
   const contracts = useMemo(
     () =>
-      (data?.contracts ?? []).map((item) => {
+      (data?.data.contracts ?? []).map((item) => {
         const row = toCompletedRow(item);
         return {
           id: row.id,
@@ -116,11 +116,11 @@ export default function CompletedContracts() {
     setCurrentPage(1);
   };
 
-  if (isLoading) return <ContractListState kind="loading" />;
+  if (isLoading) return <ContractListState type="loading" />;
   if (isError) {
     return (
       <ContractListState
-        kind="error"
+        type="error"
         message={getContractErrorMessage(error, 'We could not load your completed contracts.')}
         onRetry={() => refetch()}
       />

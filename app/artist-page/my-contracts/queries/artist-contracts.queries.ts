@@ -1,4 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import useMutationWithInvalidation from '@/lib/api-integration-helper';
 import {
   acceptPendingContract,
   approveContractExtension,
@@ -77,61 +78,45 @@ export const useCompletedContract = (contractId: ContractId | null | undefined) 
 
 // Accepting or declining moves a contract between lists, so every contract list is refreshed.
 export function useAcceptContract() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (contractId: ContractId) => acceptPendingContract(contractId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: artistContractKeys.all }),
-  });
+  return useMutationWithInvalidation(acceptPendingContract, artistContractKeys.all);
 }
 
 export function useDeclineContract() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ contractId, ...input }: { contractId: ContractId } & DeclineOfferRequest) =>
+  return useMutationWithInvalidation(
+    ({ contractId, ...input }: { contractId: ContractId } & DeclineOfferRequest) =>
       declinePendingContract(contractId, input),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: artistContractKeys.all }),
-  });
+    artistContractKeys.all
+  );
 }
 
 export function useRequestExtension() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ contractId, ...input }: { contractId: ContractId } & RequestExtensionRequest) =>
+  return useMutationWithInvalidation(
+    ({ contractId, ...input }: { contractId: ContractId } & RequestExtensionRequest) =>
       requestContractExtension(contractId, input),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: artistContractKeys.all }),
-  });
+    artistContractKeys.all
+  );
 }
 
 export function useApproveExtension() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (contractId: ContractId) => approveContractExtension(contractId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: artistContractKeys.all }),
-  });
+  return useMutationWithInvalidation(approveContractExtension, artistContractKeys.all);
 }
 
 export function useRejectExtension() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (contractId: ContractId) => rejectContractExtension(contractId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: artistContractKeys.all }),
-  });
+  return useMutationWithInvalidation(rejectContractExtension, artistContractKeys.all);
 }
 
 export function useReportContract() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ contractId, ...input }: { contractId: ContractId } & ReportContractRequest) =>
+  return useMutationWithInvalidation(
+    ({ contractId, ...input }: { contractId: ContractId } & ReportContractRequest) =>
       reportContract(contractId, input),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: artistContractKeys.all }),
-  });
+    artistContractKeys.all
+  );
 }
 
 export function useSubmitContractWork() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ contractId, ...input }: { contractId: ContractId } & SubmitContractRequest) =>
+  return useMutationWithInvalidation(
+    ({ contractId, ...input }: { contractId: ContractId } & SubmitContractRequest) =>
       submitContractWork(contractId, input),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: artistContractKeys.all }),
-  });
+    artistContractKeys.all
+  );
 }

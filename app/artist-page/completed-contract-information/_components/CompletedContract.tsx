@@ -32,16 +32,17 @@ function attachmentName(url, index) {
 export default function CompletedContract() {
     const router = useRouter();
     const contractId = useSearchParams().get("id");
-    const { data, isLoading, isError, error, refetch } = useCompletedContract(contractId);
+    const { data: contractResponse, isLoading, isError, error, refetch } = useCompletedContract(contractId);
+    const data = contractResponse?.data;
 
     if (!contractId) {
-        return <ContractListState kind="error" message="No contract was selected." />;
+        return <ContractListState type="error" message="No contract was selected." />;
     }
-    if (isLoading) return <ContractListState kind="loading" />;
+    if (isLoading) return <ContractListState type="loading" />;
     if (isError || !data) {
         return (
             <ContractListState
-                kind="error"
+                type="error"
                 message={getContractErrorMessage(error, "We could not load this contract.")}
                 onRetry={() => refetch()}
             />

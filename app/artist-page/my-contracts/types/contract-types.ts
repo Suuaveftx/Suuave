@@ -3,9 +3,20 @@
 
 export type ContractId = string;
 
+export enum ContractStatus {
+  WaitingApproval = 'Waiting Approval',
+  ChangeRequested = 'Change Requested',
+  ExtensionRequested = 'Extension Requested',
+  DeadlineApproved = 'Deadline Approved',
+  DeadlineExtended = 'Deadline Extended',
+  ExtensionRejected = 'Extension Rejected',
+}
+
 export type ApiResponse<T> = {
   success: boolean;
   message: string;
+  statusCode?: number;
+  error?: string;
   data: T;
 };
 

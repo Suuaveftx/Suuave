@@ -23,36 +23,39 @@ const MAX_PAGES = 20; // safety cap
 
 const enc = encodeURIComponent;
 
-async function fetchList<T>(
+async function fetchContracts<T>(
   status: 'pending' | 'ongoing' | 'completed',
   params: ContractListParams = {}
-): Promise<ContractList<T>> {
+): Promise<ApiResponse<ContractList<T>>> {
   const response = await apiClient.get<ApiResponse<ContractList<T>>>(
     `${ARTIST_CONTRACTS}/${status}`,
     { params }
   );
-  return response.data.data;
+  return response.data;
 }
 
 // The tabs search, filter and paginate on the client, so they load every page up front.
-async function fetchAllPages<T>(
+async function fetchAllContracts<T>(
   status: 'pending' | 'ongoing' | 'completed'
-): Promise<ContractList<T>> {
-  const first = await fetchList<T>(status, { page: 1, limit: MAX_PAGE_SIZE });
-  const lastPage = Math.min(first.pagination.totalPages, MAX_PAGES);
+): Promise<ApiResponse<ContractList<T>>> {
+  const first = await fetchContracts<T>(status, { page: 1, limit: MAX_PAGE_SIZE });
+  const lastPage = Math.min(first.data.pagination.totalPages, MAX_PAGES);
   const rest = await Promise.all(
     Array.from({ length: Math.max(0, lastPage - 1) }, (_, i) =>
-      fetchList<T>(status, { page: i + 2, limit: MAX_PAGE_SIZE })
+      fetchContracts<T>(status, { page: i + 2, limit: MAX_PAGE_SIZE })
     )
   );
-  const contracts = [first, ...rest].flatMap((page) => page.contracts);
+  const contracts = [first, ...rest].flatMap((page) => page.data.contracts);
   return {
-    contracts,
-    pagination: {
-      ...first.pagination,
-      currentPage: 1,
-      limit: Math.max(1, contracts.length),
-      totalPages: 1,
+    ...first,
+    data: {
+      contracts,
+      pagination: {
+        ...first.data.pagination,
+        currentPage: 1,
+        limit: Math.max(1, contracts.length),
+        totalPages: 1,
+      },
     },
   };
 }
@@ -60,18 +63,18 @@ async function fetchAllPages<T>(
 // ---------- Pending ----------
 
 export const listPendingContracts = (params?: ContractListParams) =>
-  fetchList<PendingContractListItem>('pending', params);
+  fetchContracts<PendingContractListItem>('pending', params);
 
 export const listAllPendingContracts = () =>
-  fetchAllPages<PendingContractListItem>('pending');
+  fetchAllContracts<PendingContractListItem>('pending');
 
 export async function getPendingContract(
   contractId: ContractId
-): Promise<PendingContractDetail> {
+): Promise<ApiResponse<PendingContractDetail>> {
   const response = await apiClient.get<ApiResponse<PendingContractDetail>>(
     `${ARTIST_CONTRACTS}/pending/${enc(contractId)}`
   );
-  return response.data.data;
+  return response.data;
 }
 
 export async function acceptPendingContract(
@@ -97,18 +100,18 @@ export async function declinePendingContract(
 // ---------- Ongoing ----------
 
 export const listOngoingContracts = (params?: ContractListParams) =>
-  fetchList<OngoingContractListItem>('ongoing', params);
+  fetchContracts<OngoingContractListItem>('ongoing', params);
 
 export const listAllOngoingContracts = () =>
-  fetchAllPages<OngoingContractListItem>('ongoing');
+  fetchAllContracts<OngoingContractListItem>('ongoing');
 
 export async function getOngoingContract(
   contractId: ContractId
-): Promise<OngoingContractDetail> {
+): Promise<ApiResponse<OngoingContractDetail>> {
   const response = await apiClient.get<ApiResponse<OngoingContractDetail>>(
     `${ARTIST_CONTRACTS}/ongoing/${enc(contractId)}`
   );
-  return response.data.data;
+  return response.data;
 }
 
 export async function requestContractExtension(
@@ -186,16 +189,16 @@ export async function uploadContractFile(file: File, contractId: ContractId): Pr
 // ---------- Completed ----------
 
 export const listCompletedContracts = (params?: ContractListParams) =>
-  fetchList<CompletedContractListItem>('completed', params);
+  fetchContracts<CompletedContractListItem>('completed', params);
 
 export const listAllCompletedContracts = () =>
-  fetchAllPages<CompletedContractListItem>('completed');
+  fetchAllContracts<CompletedContractListItem>('completed');
 
 export async function getCompletedContract(
   contractId: ContractId
-): Promise<CompletedContractDetail> {
+): Promise<ApiResponse<CompletedContractDetail>> {
   const response = await apiClient.get<ApiResponse<CompletedContractDetail>>(
     `${ARTIST_CONTRACTS}/completed/${enc(contractId)}`
   );
-  return response.data.data;
+  return response.data;
 }

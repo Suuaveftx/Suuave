@@ -31,16 +31,17 @@ function attachmentName(url, index) {
 export default function PendingContract() {
     const router = useRouter();
     const contractId = useSearchParams().get("id");
-    const { data: contract, isLoading, isError, error, refetch } = usePendingContract(contractId);
+    const { data: contractResponse, isLoading, isError, error, refetch } = usePendingContract(contractId);
+    const contract = contractResponse?.data;
 
     if (!contractId) {
-        return <ContractListState kind="error" message="No contract was selected." />;
+        return <ContractListState type="error" message="No contract was selected." />;
     }
-    if (isLoading) return <ContractListState kind="loading" />;
+    if (isLoading) return <ContractListState type="loading" />;
     if (isError || !contract) {
         return (
             <ContractListState
-                kind="error"
+                type="error"
                 message={getContractErrorMessage(error, "We could not load this contract.")}
                 onRetry={() => refetch()}
             />
