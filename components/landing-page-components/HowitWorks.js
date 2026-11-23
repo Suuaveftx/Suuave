@@ -26,7 +26,7 @@ const HowItWorks = () => {
         <div className='w-full  aspect-video mx-auto mt-4'>
           <iframe
             className='w-full h-full rounded-lg'
-            src='https://www.youtube.com/embed/ONVt56eek8s?si=0im4jvm4a9ZA2Nmh'
+            src='https://www.youtube.com/embed/u7EqNANaNM0?si=XdoARuD1hl9GJWcM'
             title='YouTube video player'
             allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
             referrerPolicy='strict-origin-when-cross-origin'
