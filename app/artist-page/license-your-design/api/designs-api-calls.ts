@@ -88,11 +88,15 @@ export async function getRelatedDesigns(
   return res.data;
 }
 
-export async function publishUserDesign(
-  payload: PublishUserDesignsPayload
-): Promise<ResponseData<UserDesignDetailsResponseType>> {
+export async function publishUserDesign({
+  payload,
+  id,
+}: {
+  payload: PublishUserDesignsPayload | { rights_confirmed: boolean };
+  id?: string;
+}): Promise<ResponseData<UserDesignDetailsResponseType>> {
   const res = await apiClient.post<ResponseData<UserDesignDetailsResponseType>>(
-    DESIGN_API_URL,
+    id ? `${DESIGN_API_URL}/${id}/publish` : DESIGN_API_URL,
     payload
   );
   return res.data;

@@ -34,6 +34,7 @@ export type PublishUserDesignsPayload = {
   license_type: string;
   asking_price: number;
   file_ids?: string[];
+  source_file_id: string;
   rights_confirmed: true;
 };
 

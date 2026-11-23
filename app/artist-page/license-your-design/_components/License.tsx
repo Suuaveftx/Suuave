@@ -156,22 +156,23 @@ const License = () => {
       const fileIds = [
         ...existingImages.map((image) => image.id),
         ...uploadedPreviews.map((file) => file.id),
-        ...(uploadedSource
-          ? [uploadedSource.id]
-          : designDetails?.source_file_id
-            ? [designDetails.source_file_id]
-            : []),
+        // ...(uploadedSource
+        //   ? [uploadedSource.id]
+        //   : designDetails?.source_file_id
+        //     ? [designDetails.source_file_id]
+        //     : []),
       ];
       const designPayload = {
         title: formValues.title.trim(),
         description: formValues.description.trim(),
         style: formValues.designStyles.join(', '),
         license_type: formValues.licenseType,
+        source_file_id: uploadedSource.id,
         asking_price: price,
         rights_confirmed: true as const,
       };
 
-      if (isEdit) {
+      if (isEdit && designDetails?.status !== 'draft') {
         await updateMutation.mutateAsync({
           id: designId,
           payload: { ...designPayload, files: fileIds },
@@ -184,8 +185,14 @@ const License = () => {
         router.push('/artist-page/profile-for-artist');
       } else {
         await publishMutation.mutateAsync({
-          ...designPayload,
-          file_ids: fileIds,
+          payload:
+            designDetails?.status === 'draft'
+              ? { rights_confirmed: true }
+              : {
+                  ...designPayload,
+                  file_ids: fileIds,
+                },
+          id: designDetails?.status === 'draft' && designId,
         });
         onOpen();
       }
@@ -201,13 +208,31 @@ const License = () => {
   const handleSaveAsDraft = async () => {
     const formValues = getValues();
     try {
+      const uploadedPreviews = await Promise.all(
+        previewFiles.map((file) => uploadDesignFile(file, 'designFileUpload'))
+      );
+      const uploadedSource = sourceFile
+        ? await uploadDesignFile(sourceFile, 'designSourceUpload')
+        : null;
+      const file_ids = [
+        ...existingImages.map((image) => image.id),
+        ...uploadedPreviews.map((file) => file.id),
+        // ...(uploadedSource
+        //   ? [uploadedSource.id]
+        //   : designDetails?.source_file_id
+        //     ? [designDetails.source_file_id]
+        //     : []),
+      ];
+
       const payload = {
         title: formValues.title.trim(),
         description: formValues.description.trim(),
         style: formValues.designStyles.join(', '),
         license_type: formValues.licenseType,
         asking_price: Number(formValues.askingPrice),
+        source_file_id: uploadedSource.storage_url,
         rights_confirmed: true as const,
+        file_ids,
       };
 
       await draftMutation.mutateAsync(payload);
