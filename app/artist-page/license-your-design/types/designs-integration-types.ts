@@ -45,6 +45,7 @@ export type UpdateUserDesignsPayload = {
   license_type?: string;
   asking_price?: number;
   files?: string[];
+  file_ids?: string[];
   rights_confirmed?: true;
 };
 
@@ -87,6 +88,14 @@ export type ArtistProfileDetails = {
   stats: ArtistProfileStats;
 };
 
+export type SourceFileType = {
+  id: string;
+  filename: string;
+  storage_url: string;
+  content_type: string;
+  size: number;
+};
+
 export type UserDesignDetailsResponseType = UserDesignsResponseType & {
   description: string;
   style: string;
@@ -101,6 +110,7 @@ export type UserDesignDetailsResponseType = UserDesignsResponseType & {
   artist_name: string;
   owner: ArtistProfileDetails;
   artist: ArtistProfileDetails;
+  source_file: SourceFileType;
 };
 
 export type RelatedDesignsResponseType = { designs: UserDesignDetailsResponseType[] };

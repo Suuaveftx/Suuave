@@ -26,6 +26,8 @@ export function useGetProfile() {
   return useQuery({
     queryKey: profileQueryKey,
     queryFn: getProfile,
+    staleTime: Infinity,
+    gcTime: 1000 * 60 * 60,
   });
 }
 

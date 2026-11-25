@@ -84,7 +84,6 @@ const License = () => {
     handleSubmit,
     watch,
     setValue,
-    getValues,
     setError,
     clearErrors,
     formState: { errors, isSubmitting, isSubmitted },
@@ -101,11 +100,26 @@ const License = () => {
       sourceFileAttached: false,
     },
   });
-  const allChecked = watch('confirmMasterFiles') && watch('confirmOwnership');
+  const formValues = watch();
+  const askingPrice = Number(formValues.askingPrice);
+  const allFieldsComplete =
+    formValues.title.trim().length > 0 &&
+    formValues.description.trim().length > 0 &&
+    formValues.designStyles.some((style) => style.trim().length > 0) &&
+    formValues.previewCount > 0 &&
+    formValues.sourceFileAttached &&
+    formValues.askingPrice.trim() !== '' &&
+    Number.isFinite(askingPrice) &&
+    askingPrice >= 0 &&
+    formValues.licenseType !== '' &&
+    formValues.confirmMasterFiles &&
+    formValues.confirmOwnership;
   const [existingImages, setExistingImages] = useState<UserDesignImagesType[]>([]);
   const [previewFiles, setPreviewFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [sourceFile, setSourceFile] = useState<File | null>(null);
+  const [isSavingDraft, setIsSavingDraft] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
   const [styleInputValue, setStyleInputValue] = useState('');
   const [isStyleDropdownOpen, setIsStyleDropdownOpen] = useState(false);
 
@@ -129,7 +143,10 @@ const License = () => {
     setExistingImages(designDetails.images || []);
     setPreviewFiles([]);
     setSourceFile(null);
-    setValue('sourceFileAttached', Boolean(designDetails.source_file_id));
+    setValue(
+      'sourceFileAttached',
+      Boolean(designDetails.source_file_id || designDetails.source_file?.id)
+    );
   }, [designDetails, setValue]);
 
   useEffect(() => {
@@ -156,18 +173,13 @@ const License = () => {
       const fileIds = [
         ...existingImages.map((image) => image.id),
         ...uploadedPreviews.map((file) => file.id),
-        // ...(uploadedSource
-        //   ? [uploadedSource.id]
-        //   : designDetails?.source_file_id
-        //     ? [designDetails.source_file_id]
-        //     : []),
       ];
       const designPayload = {
         title: formValues.title.trim(),
         description: formValues.description.trim(),
         style: formValues.designStyles.join(', '),
         license_type: formValues.licenseType,
-        source_file_id: uploadedSource.id,
+        source_file_id: uploadedSource ? uploadedSource.id : designDetails.source_file_id,
         asking_price: price,
         rights_confirmed: true as const,
       };
@@ -175,7 +187,7 @@ const License = () => {
       if (isEdit && designDetails?.status !== 'draft') {
         await updateMutation.mutateAsync({
           id: designId,
-          payload: { ...designPayload, files: fileIds },
+          payload: { ...designPayload, files: fileIds, file_ids: fileIds },
         });
         addToast({
           title: 'Design updated',
@@ -205,8 +217,16 @@ const License = () => {
     }
   };
 
-  const handleSaveAsDraft = async () => {
-    const formValues = getValues();
+  const handlePublishSubmit = handleSubmit(async (formValues) => {
+    setIsPublishing(true);
+    try {
+      await handleSubmitPublish(formValues);
+    } finally {
+      setIsPublishing(false);
+    }
+  });
+
+  const handleSaveAsDraft = async (formValues: LicenseFormValues) => {
     try {
       const uploadedPreviews = await Promise.all(
         previewFiles.map((file) => uploadDesignFile(file, 'designFileUpload'))
@@ -214,14 +234,12 @@ const License = () => {
       const uploadedSource = sourceFile
         ? await uploadDesignFile(sourceFile, 'designSourceUpload')
         : null;
+      if (!uploadedSource) {
+        throw new Error('Upload a source file before saving this design.');
+      }
       const file_ids = [
         ...existingImages.map((image) => image.id),
         ...uploadedPreviews.map((file) => file.id),
-        // ...(uploadedSource
-        //   ? [uploadedSource.id]
-        //   : designDetails?.source_file_id
-        //     ? [designDetails.source_file_id]
-        //     : []),
       ];
 
       const payload = {
@@ -230,7 +248,7 @@ const License = () => {
         style: formValues.designStyles.join(', '),
         license_type: formValues.licenseType,
         asking_price: Number(formValues.askingPrice),
-        source_file_id: uploadedSource.storage_url,
+        source_file_id: uploadedSource.id,
         rights_confirmed: true as const,
         file_ids,
       };
@@ -242,12 +260,22 @@ const License = () => {
         description: 'Your design draft has been saved.',
         color: 'success',
       });
+      router.push('/artist-page/project-page');
     } catch (error) {
       addToast({
         title: 'Unable to save draft',
         description: getErrorMessage(error, 'Something went wrong. Please try again.'),
         color: 'danger',
       });
+    }
+  };
+
+  const handleSaveAsDraftPress = async () => {
+    setIsSavingDraft(true);
+    try {
+      await handleSubmit(handleSaveAsDraft)();
+    } finally {
+      setIsSavingDraft(false);
     }
   };
 
@@ -414,7 +442,7 @@ const License = () => {
 
         <form
           noValidate
-          onSubmit={handleSubmit(handleSubmitPublish)}
+          onSubmit={handlePublishSubmit}
           className='bg-[#FAFAFA] w-full text-[#222222] px-6 pt-[24px] pb-[32px] mt-7 mb-[99px] flex flex-col gap-6 rounded-lg'
         >
           {/* Design Title & Description */}
@@ -674,7 +702,7 @@ const License = () => {
               <div className='flex items-center gap-2'>
                 <h3 className='text-lg font-bold text-[#222222]'>
                   Upload Source File
-                  {!isEdit && <span className='text-red-500 ml-0.5'>*</span>}
+                  <span className='text-red-500 ml-0.5'>*</span>
                 </h3>
               </div>
               <p className='text-[15px] text-[#767676] mt-1'>
@@ -685,8 +713,8 @@ const License = () => {
 
             <div className='flex flex-col gap-4 mt-2'>
               {sourceFile ? (
-                <div className='bg-[#F4F4F4] rounded-lg px-4 py-2.5 flex items-center w-max gap-4'>
-                  <div className='flex items-center gap-2 text-[#3A98BB]'>
+                <div className='bg-[#F4F4F4] rounded-lg px-4 py-2.5 flex items-center md:w-max gap-4 flex-wrap'>
+                  <div className='flex items-center gap-2 text-[#3A98BB] flex-wrap'>
                     <Paperclip className='w-4 h-4' />
                     <span className='font-bold text-[15px]'>{sourceFile.name}</span>
                   </div>
@@ -696,7 +724,9 @@ const License = () => {
                       setSourceFile(null);
                       setValue(
                         'sourceFileAttached',
-                        Boolean(designDetails?.source_file_id),
+                        Boolean(
+                          designDetails?.source_file_id || designDetails?.source_file?.id
+                        ),
                         { shouldValidate: isSubmitted }
                       );
                     }}
@@ -706,10 +736,15 @@ const License = () => {
                     Delete
                   </button>
                 </div>
-              ) : designDetails?.source_file_id ? (
-                <p className='text-sm text-[#3A98BB]'>
-                  A source file is already attached. Upload a replacement if needed.
-                </p>
+              ) : designDetails?.source_file ? (
+                <div className='bg-[#F4F4F4] rounded-lg px-4 py-2.5 flex items-center md:w-max gap-4 flex-wrap'>
+                  <div className='flex items-center gap-2 text-[#3A98BB] flex-wrap'>
+                    <Paperclip className='w-4 h-4' />
+                    <span className='font-bold text-[15px]'>
+                      {designDetails?.source_file.filename}
+                    </span>
+                  </div>
+                </div>
               ) : null}
 
               <input
@@ -737,8 +772,7 @@ const License = () => {
                 name='sourceFileAttached'
                 control={control}
                 rules={{
-                  validate: (attached) =>
-                    isEdit || attached || 'Upload a source file to publish this design.',
+                  validate: (attached) => attached || 'Upload a source file to continue.',
                 }}
                 render={() => null}
               />
@@ -923,10 +957,12 @@ const License = () => {
                   
                   `}
                 style={{ background: '#EDEDED' }}
-                onPress={handleSaveAsDraft}
-                isLoading={draftMutation.isPending}
+                onPress={() => {
+                  void handleSaveAsDraftPress();
+                }}
+                isLoading={isSavingDraft}
                 isDisabled={
-                  !allChecked ||
+                  !allFieldsComplete ||
                   isSubmitting ||
                   loadingDesignDetail ||
                   draftMutation.isPending
@@ -944,11 +980,13 @@ const License = () => {
                   : 'Publish'
               }
               type='submit'
-              className={`flex-1 sm:flex-none sm:w-auto ${!allChecked ? 'opacity-40 cursor-not-allowed' : ''}`}
+              className={`flex-1 sm:flex-none sm:w-auto ${!allFieldsComplete ? 'opacity-40 cursor-not-allowed' : ''}`}
               style={{ color: '#035A7A' }}
-              isLoading={isSubmitting}
+              isLoading={isPublishing}
               isDisabled={
+                !allFieldsComplete ||
                 isSubmitting ||
+                isSavingDraft ||
                 loadingDesignDetail ||
                 draftMutation.isPending ||
                 (isEdit && (!designId || !designDetails))

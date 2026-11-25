@@ -26,7 +26,7 @@ import {
 import { useForm } from 'react-hook-form';
 import FashionCardSkeleton from './FashonCardSkeleton';
 import ConfirmDeleteModal from '../../personal-details/_components/ConfirmDeleteModal';
-import { getErrorMessage } from '../../../../utils/utils';
+import { formatToUSD, getErrorMessage } from '../../../../utils/utils';
 import CustomButton from '../../../../components/CustomButton';
 import { MdErrorOutline } from 'react-icons/md';
 import ReviewsLoaderSkeleton from './ReviewsLoaderSkeleton';
@@ -449,7 +449,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                           <div className='flex justify-between items-center mb-1'>
                             <h3 className='font-semibold text-base'>{item.title}</h3>
                             <span className='font-bold text-base'>
-                              ${item.asking_price}
+                              {formatToUSD(item.asking_price)}
                             </span>
                           </div>
 
