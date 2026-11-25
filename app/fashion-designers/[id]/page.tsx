@@ -203,6 +203,7 @@ const ProductDetails = ({ params }: { params: Promise<{ id: string }> }) => {
         index,
         images,
         artist: {
+          id: artist.id,
           userName: artistName,
           handle: artistName.startsWith('@') ? artistName : `@${artistName}`,
           photo: artist.profile_picture || '',
@@ -392,7 +393,7 @@ const ProductDetails = ({ params }: { params: Promise<{ id: string }> }) => {
     <div className='relative pb-24 lg:pb-12 bg-transparent min-h-screen'>
       <PageContainer className='hidden lg:block pt-5 md:pt-8'>
         <button
-          onClick={() => router.push('/fashion-designers')}
+          onClick={() => router.back()}
           className='flex items-center gap-2 text-gray-600 hover:text-[#3A98BB] transition-colors mb-2 mt-4 lg:mt-6'
         >
           <FaChevronLeft size={14} />

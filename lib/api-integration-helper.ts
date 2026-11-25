@@ -7,7 +7,7 @@ import {
   uploadFile,
 } from './api-calls-helper';
 
-export const profileQueryKey = ['artist_profile'];
+export const profileQueryKey = ['profile'];
 export const reviewsQueryKey = ['reviews'];
 
 export default function useMutationWithInvalidation<TData, TVariables>(
@@ -26,8 +26,6 @@ export function useGetProfile() {
   return useQuery({
     queryKey: profileQueryKey,
     queryFn: getProfile,
-    staleTime: Infinity,
-    gcTime: 1000 * 60 * 60,
   });
 }
 

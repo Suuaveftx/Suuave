@@ -20,6 +20,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import Link from 'next/link';
 import Image from 'next/image';
 import { formatNumberShort, formatToUSD } from '../../../../utils/utils';
+import { useAppStore } from '@/store';
 
 const UserInfoCard = ({ idx, userData }) => {
   const [isFollowed, setIsFollowed] = React.useState(false);
@@ -86,6 +87,7 @@ type FashionDesignersCardProps = {
   title?: string;
   productID?: string;
   userData: {
+    id: string;
     userName: string;
     handle: string;
     photo: string;
@@ -126,6 +128,7 @@ const FashionDesignersCard = ({
     dotsClass: 'slick-dots custom-dots',
   };
   const detailHref = `/fashion-designers/${encodeURIComponent(productID)}`;
+  const setArtistProfileId = useAppStore((state) => state.setArtistProfileId);
 
   return (
     <Card
@@ -235,6 +238,7 @@ const FashionDesignersCard = ({
         </p>
         <Link
           href='/artist-page/profile-vistor-view'
+          onClick={() => setArtistProfileId(userData.id)}
           className='flex items-center w-full hover:opacity-80 transition-opacity group cursor-pointer'
         >
           <p className='text-[13px] text-[#7A7A7A] font-normal group-hover:text-[#3A98BB] transition-colors'>

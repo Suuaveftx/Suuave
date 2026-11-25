@@ -27,6 +27,7 @@ function getDesigner(design: UserDesignDetailsResponseType) {
 
   const name = artist ? artist.display_name : design.artist_name;
   return {
+    id: artist.id,
     userName: name,
     handle: name.startsWith('@') ? name : `@${name}`,
     photo: artist ? artist.profile_picture : '',

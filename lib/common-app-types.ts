@@ -26,6 +26,9 @@ export type ProfileInfoResponse = {
   bio: string;
   brandCategory: null | string;
   businessName: null | string;
+  image: string;
+  name: string;
+  username: string;
   certifications: {
     createdAt: string;
     documentUrl: string;

@@ -12,6 +12,7 @@ import { proposalSlice } from './proposal-slice';
 import { jobSlice } from './job-slice';
 import { disputeSlice } from './dispute-slice';
 import type { Project } from '../app/projects/types/project-types';
+import { artistProfileForBrandSlice } from '@/app/fashion-designers/slice/artist-profile-slice';
 
 type Award = {
   name: string;
@@ -30,6 +31,8 @@ type Proposal = Record<string, unknown>;
 export type AppStore = {
   activeCategory: string;
   artistOccupation: string;
+  artistProfileId: string;
+  setArtistProfileId: (id: string) => void;
   setActiveCategory: (category: string) => void;
   setArtistOccupation: (occupation: string) => void;
 
@@ -117,6 +120,7 @@ export const useAppStore = create<AppStore>()(
       ...proposalSlice(set, get),
       ...jobSlice(set, get),
       ...disputeSlice(set),
+      ...artistProfileForBrandSlice(set),
     }),
     {
       name: 'suuave-app-storage',
@@ -126,6 +130,7 @@ export const useAppStore = create<AppStore>()(
         artistOccupation: state.artistOccupation,
         resetPasswordOTP: state.resetPasswordOTP,
         requestForgotPasswordEmail: state.requestForgotPasswordEmail,
+        artistProfileId: state.artistProfileId,
         // Hello Team , Persist only the necessary parts of the state that you want to survive page refrewshes or browser restarts. You can add more properties here as needed.
       }),
     }
