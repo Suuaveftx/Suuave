@@ -13,10 +13,6 @@ import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 import { FaCrown } from 'react-icons/fa';
 import { Loader2 } from 'lucide-react';
 import Slider from 'react-slick';
-// @ts-expect-error Slick's stylesheet is loaded by the app bundler.
-import 'slick-carousel/slick/slick.css';
-// @ts-expect-error Slick's stylesheet is loaded by the app bundler.
-import 'slick-carousel/slick/slick-theme.css';
 import Link from 'next/link';
 import Image from 'next/image';
 import { formatNumberShort, formatToUSD } from '../../../../utils/utils';
