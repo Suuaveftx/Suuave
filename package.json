@@ -17,7 +17,7 @@
     "@neondatabase/serverless": "^1.0.2",
     "@radix-ui/react-slot": "^1.1.2",
     "@suuaveftx/prisma-shared": "^0.1.33",
-    "@tanstack/react-query": "^5.104.5",
+    "@tanstack/react-query": "^5.108.2",
     "@tanstack/react-query-devtools": "^5.104.5",
     "@tanstack/react-query-next-experimental": "^5.104.5",
     "axios": "^1.20.0",
