@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { FaBookmark, FaRegBookmark, FaShareAlt } from 'react-icons/fa';
 import { FiPlus } from 'react-icons/fi';
 import {
@@ -12,8 +13,9 @@ import {
 } from '@/app/projects/queries/projects.queries';
 import { getProjectApiErrorMessage } from '@/app/projects/api/projects';
 import { formatProjectTimeline } from '@/app/projects/utils/project-formatters';
+import type { ProjectFilter } from '@/app/projects/types/project-types';
 
-const FILTERS = [
+const FILTERS: { value: ProjectFilter; label: string }[] = [
   { value: 'recently', label: 'Recently' },
 ];
 
@@ -41,7 +43,7 @@ const PAGE_SIZE = 10;
 
 const ProjectPage = ({ search = '' }) => {
   const router = useRouter();
-  const [filter, setFilter] = useState('recently');
+  const [filter, setFilter] = useState<ProjectFilter>('recently');
   const [page, setPage] = useState(1);
   const isSavedTab = filter === 'saved';
 
@@ -96,7 +98,7 @@ const ProjectPage = ({ search = '' }) => {
     setPage(1);
   }, [search]);
 
-  const changeFilter = (nextFilter) => {
+  const changeFilter = (nextFilter: ProjectFilter) => {
     setFilter(nextFilter);
     setPage(1);
   };
@@ -117,10 +119,14 @@ const ProjectPage = ({ search = '' }) => {
   };
 
   const queryError = activeQuery.error;
-  const statusCode = queryError?.response?.status;
+  const statusCode = axios.isAxiosError(queryError)
+    ? queryError.response?.status
+    : undefined;
   const isPermissionDenied = statusCode === 401 || statusCode === 403;
   const isUnavailable = statusCode >= 500;
-  const saveErrorStatus = saveMutation.error?.response?.status;
+  const saveErrorStatus = axios.isAxiosError(saveMutation.error)
+    ? saveMutation.error.response?.status
+    : undefined;
   const saveErrorMessage =
     saveErrorStatus === 401
       ? 'Please sign in with an artist account to save projects.'
@@ -135,7 +141,7 @@ const ProjectPage = ({ search = '' }) => {
           {[
             ...FILTERS,
             {
-              value: 'saved',
+              value: 'saved' as const,
               label: allProjectsQuery.isSuccess ? `Saved (${savedCount})` : 'Saved',
             },
           ].map(({ value, label }) => (

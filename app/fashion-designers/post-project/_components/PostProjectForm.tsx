@@ -36,6 +36,9 @@ const toList = (value) => {
   return [];
 };
 
+const toInputValue = (value: unknown) =>
+  typeof value === 'string' || typeof value === 'number' ? String(value) : '';
+
 const PostProjectForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -81,14 +84,14 @@ const PostProjectForm = () => {
     reset({
       ...DEFAULT_VALUES,
       projectTitle: projectToEdit.title || '',
-      projectDetails: projectToEdit.description || '',
+      projectDetails: toInputValue(projectToEdit.description),
       fashionDesignerSkills: toList(
         isApiEditMode ? (apiProject.skillsRequired ?? []) : editProject.skills
       ),
       designStyles: toList(isApiEditMode ? [] : editProject.style),
-      projectBudget: projectToEdit.budget || '',
-      projectTimeframe: isApiEditMode ? '' : projectToEdit.timeframe || '',
-      projectCurrency: projectToEdit.currency || 'USD',
+      projectBudget: toInputValue(projectToEdit.budget),
+      projectTimeframe: isApiEditMode ? '' : toInputValue(projectToEdit.timeframe),
+      projectCurrency: toInputValue(projectToEdit.currency) || 'USD',
       projectStatus: projectToEdit.status || 'open',
     });
   }, [isEditMode, isApiEditMode, apiProject, editProject, reset]);
@@ -140,7 +143,7 @@ const PostProjectForm = () => {
       budget: Number(data.projectBudget),
       currency: data.projectCurrency,
       timeframe: Number(data.projectTimeframe),
-      durationType: 'days',
+      durationType: 'days' as const,
       referenceFiles: selectedFiles.map((f) => f.name),
     };
 
