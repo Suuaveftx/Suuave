@@ -14,7 +14,6 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Skeleton,
 } from '@heroui/react';
 import React from 'react';
 import { NavLinks } from '../NavLinks';
@@ -33,7 +32,6 @@ import { TbSettings, TbLogout2 } from 'react-icons/tb';
 import { HiOutlinePhone } from 'react-icons/hi';
 import { ClipboardList, PenTool, Briefcase, FileSignature, Layers } from 'lucide-react';
 import { useTour } from '@/components/tour/ProductTour';
-import { useGetProfile } from '@/lib/api-integration-helper';
 
 const FashionDesignerHeader = () => {
   const menuItems = [
@@ -83,9 +81,6 @@ const FashionDesignerHeader = () => {
     }
   }, [isMenuOpen]);
 
-  const { data: profileData, isLoading: loadingProfile } = useGetProfile();
-  const profileImage = profileData?.data?.user?.image;
-
   return (
     <>
       <Navbar
@@ -96,7 +91,7 @@ const FashionDesignerHeader = () => {
           wrapper: 'w-full max-w-full px-0 h-full',
         }}
       >
-        <PageContainer className='flex items-center justify-between w-full h-full'>
+        <PageContainer className="flex items-center justify-between w-full h-full">
           <NavbarBrand>
             <Link2 href='/fashion-designers' className='flex items-center gap-2'>
               {/* Mobile: dolphin icon only */}
@@ -108,7 +103,7 @@ const FashionDesignerHeader = () => {
                     className='w-auto h-12 object-cover object-left'
                     width={82}
                     height={48}
-                    style={{ width: 'auto' }}
+                    style={{ width: "auto" }}
                   />
                 </div>
               </div>
@@ -142,11 +137,7 @@ const FashionDesignerHeader = () => {
             </Link2>
 
             {/* Mail button — mobile always visible */}
-            <Link2
-              data-tour='messages'
-              data-tour-mobile='mobile-messages'
-              href='/fashion-designers/messages'
-            >
+            <Link2 data-tour="messages" data-tour-mobile="mobile-messages" href='/fashion-designers/messages'>
               <Badge
                 content={<p className='text-[10px] text-white'>2</p>}
                 shape='circle'
@@ -171,71 +162,30 @@ const FashionDesignerHeader = () => {
             {/* Avatar with dropdown */}
             <Dropdown shouldBlockScroll={false}>
               <DropdownTrigger>
-                <button
-                  data-tour='profile-avatar'
-                  data-tour-mobile='mobile-profile-avatar'
-                  aria-label='Open account menu'
-                  className='flex items-center gap-1 outline-none bg-transparent border-none cursor-pointer p-0'
-                >
-                  {loadingProfile ? (
-                    <Skeleton className='w-10 h-10 rounded-full !bg-[#AFC8D0] before:!via-white/70 border border-gray-200' />
-                  ) : (
-                    <Avatar
-                      src={profileImage}
-                      className='w-10 h-10 rounded-full border border-gray-200'
-                    />
-                  )}
-                  <ChevronDown className='w-4 h-4 text-[#888888]' />
+                <button data-tour="profile-avatar" data-tour-mobile="mobile-profile-avatar" aria-label="Open account menu" className='flex items-center gap-1 outline-none bg-transparent border-none cursor-pointer p-0'>
+                  <Avatar
+                    src='https://i.pravatar.cc/150?img=8'
+                    isBordered
+                    color='success'
+                    size='sm'
+                    className='w-8 h-8 sm:w-10 sm:h-10'
+                  />
+                  <ChevronDown className="w-4 h-4 text-[#888888]" />
                 </button>
               </DropdownTrigger>
               <DropdownMenu aria-label='User actions'>
-                <DropdownItem
-                  startContent={<LuCircleUser className='size-4' />}
-                  key='profile'
-                  as={Link2}
-                  href='/fashion-designers/profile'
-                >
-                  Profile
-                </DropdownItem>
-                <DropdownItem
-                  startContent={<ClipboardList className='size-4' />}
-                  key='transactions'
-                  as={Link2}
-                  href='/fashion-designers/transactions'
-                >
-                  Transaction History
-                </DropdownItem>
-                <DropdownItem
-                  startContent={<TbSettings className='size-4' />}
-                  key='settings'
-                  as={Link2}
-                  href='/fashion-designers/settings'
-                >
-                  Settings
-                </DropdownItem>
-                <DropdownItem
-                  startContent={<HiOutlinePhone className='size-4' />}
-                  key='help'
-                  as={Link2}
-                  href='/help-support?source=brand'
-                >
-                  Help & Support
-                </DropdownItem>
-                <DropdownItem
-                  startContent={<TbLogout2 className='size-4' />}
-                  key='logout'
-                  className='text-danger'
-                  color='danger'
-                  onPress={handleLogout}
-                >
-                  Logout
-                </DropdownItem>
+                <DropdownItem startContent={<LuCircleUser className='size-4' />} key='profile' as={Link2} href='/fashion-designers/profile'>Profile</DropdownItem>
+                <DropdownItem startContent={<ClipboardList className='size-4' />} key='transactions' as={Link2} href='/fashion-designers/transactions'>Transaction History</DropdownItem>
+                <DropdownItem startContent={<TbSettings className='size-4' />} key='settings' as={Link2} href='/fashion-designers/settings'>Settings</DropdownItem>
+                <DropdownItem startContent={<HiOutlinePhone className='size-4' />} key='help' as={Link2} href='/help-support?source=brand'>Help & Support</DropdownItem>
+                <DropdownItem startContent={<TbLogout2 className='size-4' />} key='logout' className='text-danger' color='danger' onPress={handleLogout}>Logout</DropdownItem>
               </DropdownMenu>
             </Dropdown>
 
+
             <button
-              data-tour-mobile='mobile-navigation'
-              aria-label='Open navigation menu'
+              data-tour-mobile="mobile-navigation"
+              aria-label="Open navigation menu"
               aria-expanded={isMenuOpen}
               className='sm:hidden flex items-center justify-center border border-gray-200 rounded-full p-2 h-10 w-10 text-gray-600 bg-white z-[9999]'
               onClick={(e) => {
@@ -244,27 +194,18 @@ const FashionDesignerHeader = () => {
                 setIsMenuOpen(!isMenuOpen);
               }}
             >
-              <svg
-                className='w-5 h-5 flex-shrink-0'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d={isMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
-                />
+              <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
               </svg>
             </button>
           </NavbarContent>
         </PageContainer>
+
       </Navbar>
 
       {/* Mobile nav drawer — always in DOM so tour targets are always queryable */}
       <div
-        className='NavbarMenu fixed inset-x-0 top-[80px] bottom-0 z-[9999] bg-[#D8EEF8] pt-8 px-6 sm:hidden flex flex-col gap-6 overflow-y-auto shadow-xl'
+        className="NavbarMenu fixed inset-x-0 top-[80px] bottom-0 z-[9999] bg-[#D8EEF8] pt-8 px-6 sm:hidden flex flex-col gap-6 overflow-y-auto shadow-xl"
         style={{
           visibility: isMenuOpen ? 'visible' : 'hidden',
           opacity: isMenuOpen ? 1 : 0,
@@ -277,39 +218,41 @@ const FashionDesignerHeader = () => {
           href='/fashion-designers'
           onClick={() => setIsMenuOpen(false)}
         >
-          <PenTool className='w-6 h-6 text-[#888888]' />
+          <PenTool className="w-6 h-6 text-[#888888]" />
           Designs
         </Link2>
         <Link2
-          data-tour-mobile='mobile-manage-projects'
+          data-tour-mobile="mobile-manage-projects"
           className='w-full flex items-center gap-3 transition duration-300 text-[#222222] py-2 text-lg font-satoshi'
           href='/fashion-designers/my-projects'
           onClick={() => setIsMenuOpen(false)}
         >
-          <Briefcase className='w-6 h-6 text-[#888888]' />
+          <Briefcase className="w-6 h-6 text-[#888888]" />
           My Projects
         </Link2>
         <Link2
-          data-tour-mobile='mobile-manage-contracts'
+          data-tour-mobile="mobile-manage-contracts"
           className='w-full flex items-center gap-3 transition duration-300 text-[#222222] py-2 text-lg font-satoshi'
           href='/fashion-designers/contracts'
           onClick={() => setIsMenuOpen(false)}
         >
-          <FileSignature className='w-6 h-6 text-[#888888]' />
+          <FileSignature className="w-6 h-6 text-[#888888]" />
           My Contracts
         </Link2>
         <Link2
-          data-tour-mobile='mobile-manage-collections'
+          data-tour-mobile="mobile-manage-collections"
           className='w-full flex items-center gap-3 transition duration-300 text-[#222222] py-2 text-lg font-satoshi'
           href='/fashion-designers/my-collection'
           onClick={() => setIsMenuOpen(false)}
         >
-          <Layers className='w-6 h-6 text-[#888888]' />
+          <Layers className="w-6 h-6 text-[#888888]" />
           My Collections
         </Link2>
       </div>
+
     </>
   );
 };
 
 export default FashionDesignerHeader;
+

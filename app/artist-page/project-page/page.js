@@ -8,7 +8,7 @@ import { signOut } from '../../actions/services';
 import { authClient } from '../../../lib/auth-client';
 import { useRouter } from 'next/navigation';
 import PageContainer from '../../../components/layout/PageContainer';
-import { useGetProfile } from '@/lib/api-integration-helper';
+import { useGetArtistProfile } from '../personal-details/queries/artist-profile-queries';
 
 const Page = () => {
   const [search, setSearch] = useState('');
@@ -27,7 +27,7 @@ const Page = () => {
   //   router.push('/auth/login');
   // }
 
-  const { data, isLoading: loadingProfile } = useGetProfile();
+  const { data, isLoading: loadingProfile } = useGetArtistProfile();
   const isProfileComplete = data?.data?.isProfileCompleted;
 
   return (

@@ -5,9 +5,11 @@ import { useFormContext, useFieldArray } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import FormLabel from '@/components/ui/FormLabel';
 import Image from 'next/image';
-import { useDeleteArtistCertification } from '../queries/artist-profile-queries';
+import {
+  useDeleteArtistCertification,
+  useUploadProfileFile,
+} from '../queries/artist-profile-queries';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
-import { useUploadProfileFile } from '@/lib/api-integration-helper';
 
 type AwardsCertificationPropType = {
   setSelected: Dispatch<SetStateAction<string>>;

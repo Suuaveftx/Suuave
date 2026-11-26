@@ -1,22 +1,9 @@
-import { cn } from '@/lib/utils';
 import { Skeleton } from '@heroui/react';
-import { Roles } from '@/utils/enum';
 
-type ReviewsLoaderProps = {
-  role?: Roles;
-};
-
-export default function ReviewsLoaderSkeleton({
-  role = Roles.artist,
-}: ReviewsLoaderProps) {
+export default function ReviewsLoaderSkeleton() {
   return (
-    <div className={cn(role === Roles.brand && 'bg-[#fafafa] mt-6 p-4 rounded-md')}>
-      <aside
-        className={cn(
-          'flex flex-col justify-center items-center border-2 border-[#E6E6E6] rounded-md  text-center',
-          role === Roles.brand ? 'ml-6 w-44 h-28 ' : 'w-64 h-40 ml-8 lg:ml-32'
-        )}
-      >
+    <div>
+      <aside className='flex flex-col justify-center items-center bg-[#fafafa] border-2 border-[#E6E6E6] rounded-md w-64 h-40 lg:ml-32 ml-8  text-center'>
         <Skeleton className='h-4 w-24 !bg-[#AFC8D0] before:!via-white/70 rounded-lg' />
         <Skeleton className='h-4 my-2 w-36 !bg-[#AFC8D0] before:!via-white/70 rounded-lg' />
         <Skeleton className='h-4 w-28 !bg-[#AFC8D0] before:!via-white/70 rounded-lg' />

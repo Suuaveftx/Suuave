@@ -1,13 +1,22 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import {
   addArtistCertification,
   addWorkSample,
   deleteArtistCertification,
   deleteWorkSample,
+  getArtistProfile,
   getArtistDesigns,
   getArtistReviews,
   getWorkSamples,
+  updateArtistProfile,
+  updateGeneralArtistProfile,
   updateWorkSample,
+  uploadProfileFile,
 } from '../api/artist-profile';
 import useMutationWithInvalidation from '@/lib/api-integration-helper';
 
@@ -16,8 +25,29 @@ export const artistsDesignsQueryKey = ['artist_designs'];
 export const artistsReviewsQueryKey = ['artist_reviews'];
 export const workSamplesQueryKey = ['work_samples'];
 
+export function useGetArtistProfile() {
+  return useQuery({
+    queryKey: artistProfileQueryKey,
+    queryFn: getArtistProfile,
+  });
+}
+
+export function useUploadProfileFile() {
+  return useMutation({
+    mutationFn: uploadProfileFile,
+  });
+}
+
+export function useUpdateArtistProfile() {
+  return useMutationWithInvalidation(updateArtistProfile, artistProfileQueryKey);
+}
+
 export function useAddArtistCertification() {
   return useMutationWithInvalidation(addArtistCertification, artistProfileQueryKey);
+}
+
+export function useUpdateGeneralArtistProfile() {
+  return useMutationWithInvalidation(updateGeneralArtistProfile, artistProfileQueryKey);
 }
 
 export function useDeleteArtistCertification() {
