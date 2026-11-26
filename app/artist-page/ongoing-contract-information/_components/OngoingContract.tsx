@@ -29,6 +29,7 @@ import {
     readExtensionRequest,
 } from "../../my-contracts/utils/contract-formatters";
 import { ContractStatus } from "../../my-contracts/types/contract-types";
+import { Roles } from "@/utils/enum";
 
 const FALLBACK_AVATAR = "/dev-images/Clients.png";
 
@@ -93,7 +94,7 @@ export default function OngoingContract() {
     const clientProfile = {
         name: client.name,
         handle: client.username ? `@${client.username}` : client.name,
-        role: client.brandCategory || "Brand",
+        role: client.brandCategory || Roles.brand,
         location: client.location || "Location not set",
         avatar: client.image || FALLBACK_AVATAR,
         rating: Math.max(0, Math.min(5, Math.round(client.rating || 0))),

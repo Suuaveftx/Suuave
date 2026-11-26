@@ -17,6 +17,7 @@ import {
     getContractErrorMessage,
     humanizeStatus,
 } from "../../my-contracts/utils/contract-formatters";
+import { Roles } from "@/utils/enum";
 
 const FALLBACK_AVATAR = "/dev-images/Clients.png";
 
@@ -69,7 +70,7 @@ export default function CompletedContract() {
     const clientProfile = {
         name: artist.name,
         handle: artist.username ? `@${artist.username}` : artist.name,
-        role: "Brand",
+        role: Roles.brand,
         location: artist.location || "Location not set",
         avatar: artist.image || FALLBACK_AVATAR,
         rating: Math.max(0, Math.min(5, Math.round(artist.rating || 0))),

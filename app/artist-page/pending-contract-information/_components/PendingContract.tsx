@@ -14,6 +14,7 @@ import {
     formatDurationDays,
     getContractErrorMessage,
 } from "../../my-contracts/utils/contract-formatters";
+import { Roles } from "@/utils/enum";
 
 
 
@@ -66,7 +67,7 @@ export default function PendingContract() {
     const clientProfile = {
         name: client.name,
         handle: client.username ? `@${client.username}` : client.name,
-        role: "Brand",
+        role: Roles.brand,
         location: client.location || "Location not set",
         avatar: client.image || FALLBACK_AVATAR,
         rating: Math.max(0, Math.min(5, Math.round(client.rating || 0))),
