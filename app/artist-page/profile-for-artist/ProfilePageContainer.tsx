@@ -1,6 +1,7 @@
 'use client';
 
 import { Suspense } from 'react';
+import { Roles } from '@/utils/enum';
 import PageContainer from '../../../components/layout/PageContainer';
 import FashionCards from './_components/FashionCard';
 import ProfileArtist from './_components/Profile';
@@ -17,7 +18,7 @@ export default function ProfilePageContainer() {
     error,
   } = useGetArtistProfile();
 
-  const isVisitor = data?.data?.user?.role === 'artist' ? false : true;
+  const isVisitor = data?.data?.user?.role === Roles.artist ? false : true;
 
   if (isError) {
     return <ProfileError error={error} refetch={refetch} isRefetching={isRefetching} />;
