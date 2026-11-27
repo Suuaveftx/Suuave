@@ -64,9 +64,7 @@ export default function UnderlinedTabs() {
                 dateOptions={dateOptions}
               />
             )}
-            {activeTab === 'completed' && (
-              <CompletedContracts />
-            )}
+            {activeTab === 'completed' && <CompletedContracts />}
             {activeTab === 'pending' && <PendingProjects />}
           </div>
         </div>

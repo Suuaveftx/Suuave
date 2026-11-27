@@ -10,7 +10,8 @@ import { projectSlice } from '../app/projects/slice/project-slice';
 import { licenseSlice } from './license-slice';
 import { proposalSlice } from './proposal-slice';
 import { jobSlice } from './job-slice';
-import { disputeSlice } from './dispute-slice';
+import { disputeSlice } from '../app/disputes/slice/dispute-slice';
+import type { DisputeSlice } from '../app/disputes/slice/dispute-slice';
 import type { Project } from '../app/projects/types/project-types';
 import { artistProfileForBrandSlice } from '@/app/fashion-designers/slice/artist-profile-slice';
 
@@ -99,11 +100,7 @@ export type AppStore = {
   savedJobs: Array<string | number>;
   toggleSaveJob: (jobId: string | number) => void;
   isJobSaved: (jobId: string | number) => boolean;
-
-  reportedDisputes: Record<string, boolean>;
-  reportDispute: (contractId: string | number) => void;
-  withdrawDispute: (contractId: string | number) => void;
-};
+} & DisputeSlice;
 
 export const useAppStore = create<AppStore>()(
   persist(

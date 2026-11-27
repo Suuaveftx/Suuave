@@ -10,8 +10,13 @@ import {
   Textarea,
 } from "@heroui/react";
 
-const DeclineModal = ({ trigger }) => {
+// onConfirm(reason): optional async handler. When provided, the modal stays open while it runs,
+// shows `errorMessage` on failure, and calls onSuccess after it resolves.
+const DeclineModal = ({ trigger, onConfirm, isLoading = false, errorMessage, onSuccess }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [reason, setReason] = React.useState("");
+  const [submitting, setSubmitting] = React.useState(false);
+  const busy = isLoading || submitting;
 
   return (
     <>
@@ -55,6 +60,8 @@ const DeclineModal = ({ trigger }) => {
                   </p>
                   <Textarea
                     placeholder="type message..."
+                    value={reason}
+                    onValueChange={setReason}
                     className="w-full"
                     classNames={{
                       input: "text-sm",
@@ -65,12 +72,32 @@ const DeclineModal = ({ trigger }) => {
                 </div>
               </ModalBody>
               <ModalFooter className="p-0 justify-end">
+                {errorMessage && (
+                  <p className="text-sm text-[#E05656] mr-4 self-center" role="alert">{errorMessage}</p>
+                )}
                 <button
-                  onClick={onClose}
+                  disabled={busy}
+                  onClick={async () => {
+                    if (onConfirm) {
+                      setSubmitting(true);
+                      try {
+                        await onConfirm(reason.trim());
+                      } catch {
+                        setSubmitting(false);
+                        return;
+                      }
+                      setSubmitting(false);
+                      setReason("");
+                      onClose();
+                      if (onSuccess) onSuccess();
+                      return;
+                    }
+                    onClose();
+                  }}
                   className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] rounded-full px-12 py-3 text-base font-medium hover:opacity-90 transition-opacity"
                   type="button"
                 >
-                  Send
+                  {busy ? "Sending..." : "Send"}
                 </button>
               </ModalFooter>
             </>

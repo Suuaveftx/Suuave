@@ -13,9 +13,13 @@ import { useRouter } from "next/navigation";
 
 import Link from "next/link";
 
-const AcceptModal = ({ trigger }) => {
+// onConfirm: optional async handler. When provided, the modal stays open while it runs, shows
+// `errorMessage` on failure, and calls onSuccess after it resolves instead of navigating away.
+const AcceptModal = ({ trigger, onConfirm, isLoading = false, errorMessage, onSuccess }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
+  const [submitting, setSubmitting] = React.useState(false);
+  const busy = isLoading || submitting;
 
   return (
     <>
@@ -74,15 +78,32 @@ const AcceptModal = ({ trigger }) => {
                 </div>
               </ModalBody>
               <ModalFooter className="p-0 justify-end">
+                {errorMessage && (
+                  <p className="text-sm text-[#E05656] mr-4 self-center" role="alert">{errorMessage}</p>
+                )}
                 <button
-                  onClick={() => {
+                  disabled={busy}
+                  onClick={async () => {
+                    if (onConfirm) {
+                      setSubmitting(true);
+                      try {
+                        await onConfirm();
+                      } catch {
+                        setSubmitting(false);
+                        return;
+                      }
+                      setSubmitting(false);
+                      onClose();
+                      if (onSuccess) onSuccess();
+                      return;
+                    }
                     onClose();
                     router.push('/artist-page/my-contracts');
                   }}
                   className="bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] rounded-full px-12 py-3 text-base font-medium hover:opacity-90 transition-opacity"
                   type="button"
                 >
-                  Accept
+                  {busy ? "Accepting..." : "Accept"}
                 </button>
               </ModalFooter>
             </>

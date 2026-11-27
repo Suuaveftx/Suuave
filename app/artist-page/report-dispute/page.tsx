@@ -1,23 +1,26 @@
 'use client';
 
-import React, { useRef, useState, Suspense } from 'react';
+import React, { useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Checkbox } from '@heroui/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppStore } from '@/store';
+import { selectDisputeActions } from '@/app/disputes/slice/dispute-slice';
+import { useShallow } from 'zustand/react/shallow';
+import { useReportContract } from '../my-contracts/queries/artist-contracts.queries';
+import { getContractErrorMessage } from '../my-contracts/utils/contract-formatters';
 
 const REASONS = [
-    "Work was not submitted by the agreed date.",
-    "File format is incorrect/unusable for production.",
-    "Final work differs significantly from the brief/portfolio.",
-    "The artist has stopped responding for 48+ hours.",
-    "I suspect this work is copied or not original.",
+    "Client is asking for work not mentioned in the original brief.",
+    "Client is requesting changes beyond our agreement",
+    "Work was delivered, but the brand has ghosted the approval.",
+    "The client has stopped responding for 48+ hours.",
+    "Abusive or off-platform solicitation.",
     "Others"
 ];
 
-// useSearchParams() requires a Suspense boundary — extracted into its own component
-function ReportDisputeContent() {
-    const { control, handleSubmit, watch, register, formState: { errors } } = useForm({
+export default function ReportDisputePage() {
+    const { control, handleSubmit, watch, formState: { errors } } = useForm({
         defaultValues: {
             reasons: [],
             comment: "",
@@ -35,14 +38,26 @@ function ReportDisputeContent() {
 
     const router = useRouter();
     const searchParams = useSearchParams();
-    const contractId = searchParams.get('contractId') || 'unknown';
-    const { reportDispute } = useAppStore();
+    const contractId = searchParams.get('contractId');
+    const reportContract = useReportContract();
+    const { reportDispute } = useAppStore(useShallow(selectDisputeActions));
 
-    const onSubmit = (data) => {
-        // Handling form submission logic here
-        console.log("Form Submitted", { ...data, files });
+    const onSubmit = async (data) => {
+        if (!contractId) return;
+        const reason = data.reasons.join('; ');
+        const comment = (data.comment || '').trim();
+        try {
+            await reportContract.mutateAsync({
+                contractId,
+                reason,
+                // `description` is required by the API; fall back to the selected reasons when no comment was typed
+                description: comment || reason,
+            });
+        } catch {
+            return; // the error message is shown above the Submit button
+        }
         reportDispute(contractId);
-        router.push('/fashion-designers/contracts?tab=ongoing');
+        window.location.href = '/artist-page/my-contracts?tab=ongoing';
     };
 
     const handleFileDrop = (e) => {
@@ -63,13 +78,13 @@ function ReportDisputeContent() {
     };
 
     const customCheckboxClass = {
-        wrapper: "w-[16px] h-[16px] rounded-[2px] border border-gray-400 before:border-transparent after:bg-[#035A7A] group-data-[selected=true]:border-[#035A7A] text-white",
+        wrapper: "w-[16px] h-[16px] rounded-[2px] border border-gray-300 before:border-transparent after:bg-[#035A7A] group-data-[selected=true]:border-[#035A7A] text-white",
         base: "p-0 m-0 w-[16px] h-[16px]",
         icon: "text-white w-3 h-3"
     };
 
     return (
-        <div className="min-h-[calc(100vh-80px)] bg-[#F5F5F5] w-full flex justify-center pb-24 pt-[80px]">
+        <div className="w-full flex justify-center pb-24 pt-[80px]">
             <div className="w-full max-w-[680px] px-4 md:px-0">
                 <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-[24px] px-6 sm:px-10 py-10 shadow-[0_4px_24px_rgba(0,0,0,0.02)]">
                     {/* Header */}
@@ -80,7 +95,7 @@ function ReportDisputeContent() {
                     {/* Intro Text */}
                     <div className="mb-5">
                         <p className="text-[#222222] font-semibold text-[14px]">
-                            What's your reason for the report? You can select multiple answers.
+                            What&apos;s your reason for the report? You can select multiple answers.
                         </p>
                     </div>
 
@@ -131,28 +146,38 @@ function ReportDisputeContent() {
                     </div>
 
                     {/* Dynamic Comment Field */}
-                    <div className="mb-10 flex flex-col gap-[10px]">
-                        <label htmlFor="comment" className="text-[#222222] text-[13px] font-medium w-fit">
+                    <div className="mb-[30px] flex flex-col gap-[10px]">
+                        <label htmlFor="comment" className="text-[#222222] text-[13.5px] font-medium w-fit">
                             {isOthersSelected ? "Reason" : "Additional comment"}
                         </label>
-                        <textarea
-                            id="comment"
-                            {...register("comment")}
-                            className="w-full h-[100px] px-4 py-3 border border-gray-200 rounded-[8px] focus:outline-none focus:ring-1 focus:ring-[#035A7A] focus:border-[#035A7A] text-[13px] text-[#444444] resize-none bg-white placeholder:text-gray-300"
-                            placeholder="Comment"
+                        <Controller
+                            name="comment"
+                            control={control}
+                            rules={{ required: isOthersSelected ? "Please provide a reason." : false }}
+                            render={({ field }) => (
+                                <textarea
+                                    id="comment"
+                                    {...field}
+                                    className="w-full h-[120px] px-4 py-3 border border-gray-200 rounded-[8px] focus:outline-none focus:ring-1 focus:ring-[#035A7A] focus:border-[#035A7A] text-[13.5px] text-[#444444] resize-none bg-[#FAFAFA] placeholder:text-gray-400 placeholder:text-[13px]"
+                                    placeholder="Comment"
+                                />
+                            )}
                         />
+                        {errors.comment && (
+                            <span className="text-red-500 text-xs mt-1">{errors.comment.message}</span>
+                        )}
                     </div>
 
                     {/* Attach Files */}
-                    <div className="mb-[60px] flex flex-col gap-[10px]">
-                        <label className="text-[#222222] text-[13px] font-medium">
-                            Attach Files
+                    <div className="mb-[40px] flex flex-col gap-[10px]">
+                        <label className="text-[#222222] text-[13.5px] font-medium">
+                            Attach File
                         </label>
                         <div
                             onDrop={handleFileDrop}
                             onDragOver={handleDragOver}
                             onClick={() => fileInputRef.current?.click()}
-                            className="w-full sm:w-[260px] h-[120px] border-[1.5px] border-dashed border-gray-300 rounded-[8px] flex flex-col items-center justify-center bg-white cursor-pointer hover:border-[#035A7A] hover:bg-[#F3FBFE] transition-colors"
+                            className="w-[225px] h-[115px] border-[1.5px] border-dashed border-gray-300 rounded-[8px] flex flex-col items-center justify-center bg-white cursor-pointer hover:border-[#035A7A] hover:bg-[#F3FBFE] transition-colors"
                         >
                             <p className="text-[11.5px] text-[#222222] pointer-events-none">
                                 Drop file or <span className="underline decoration-gray-400">click here</span> to select file
@@ -166,7 +191,7 @@ function ReportDisputeContent() {
                             />
                         </div>
                         {files.length > 0 && (
-                            <div className="mt-2 flex flex-col gap-1">
+                            <div className="mt-2 flex flex-col gap-1 w-[225px]">
                                 {files.map((file, i) => (
                                     <span key={i} className="text-[12px] text-[#035A7A] truncate max-w-full">
                                         {file.name}
@@ -177,14 +202,14 @@ function ReportDisputeContent() {
                     </div>
 
                     {/* Confirmation Checkbox */}
-                    <div className="mb-8 pl-[2px]">
+                    <div className="mb-[60px] pl-[2px]">
                         <Controller
                             name="confirmation"
                             control={control}
                             rules={{ required: "You must check this box to submit." }}
                             render={({ field: { onChange, value } }) => (
-                                <div className="flex items-start gap-[18px]">
-                                    <div className="pt-[2px]">
+                                <div className="flex items-start gap-[16px]">
+                                    <div className="pt-[4px]">
                                         <Checkbox
                                             isSelected={value}
                                             onValueChange={onChange}
@@ -197,7 +222,7 @@ function ReportDisputeContent() {
                                         onClick={() => onChange(!value)}
                                         className="text-[#444444] text-[13px] leading-[1.6] cursor-pointer select-none"
                                     >
-                                        I understand that Suuave Admin's decision is final and that false reporting may lead to account suspension
+                                        I understand that Suuave Admin’s decision is final and that false reporting may lead to account suspension
                                     </label>
                                 </div>
                             )}
@@ -208,12 +233,21 @@ function ReportDisputeContent() {
                     </div>
 
                     {/* Submit Button */}
+                    {!contractId && (
+                        <p className="text-red-500 text-sm mb-3" role="alert">No contract was selected.</p>
+                    )}
+                    {reportContract.isError && (
+                        <p className="text-red-500 text-sm mb-3 text-right" role="alert">
+                            {getContractErrorMessage(reportContract.error)}
+                        </p>
+                    )}
                     <div className="flex justify-end w-full">
                         <button
                             type="submit"
-                            className="px-[32px] py-[8px] rounded-full border border-[#035A7A] text-[#111111] font-semibold text-[13.5px] hover:bg-[#F3FBFE] transition-colors"
+                            disabled={!contractId || reportContract.isPending}
+                            className="w-[110px] h-[48px] rounded-full border border-[#035A7A] text-[#111111] font-semibold text-[14px] hover:bg-[#F3FBFE] transition-colors flex items-center justify-center"
                         >
-                            Submit
+                            {reportContract.isPending ? 'Sending...' : 'Submit'}
                         </button>
                     </div>
                 </form>
@@ -222,11 +256,3 @@ function ReportDisputeContent() {
     );
 }
 
-// Default export wraps content in Suspense to satisfy Next.js useSearchParams() requirement
-export default function ReportDisputePage() {
-    return (
-        <Suspense fallback={null}>
-            <ReportDisputeContent />
-        </Suspense>
-    );
-}

@@ -25,14 +25,22 @@ import {
   ModalContent,
 } from '@heroui/react';
 import ChatClientModal from '../../../../components/ChatClientModal';
-import SubmitWorkModal from '../../../fashion-designers/contracts/components/SubmitWorkModal';
+import SubmitWork from './ContractSubmitWork';
+import ContractListState from './ContractListState';
+import { useOngoingContracts, useRequestExtension } from '../queries/artist-contracts.queries';
+import { getContractErrorMessage, toOngoingRow, type OngoingRow } from '../utils/contract-formatters';
+import { ContractStatus } from '../types/contract-types';
 
 const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
   const router = useRouter();
   const [search, setSearch] = useState('');
   const [openMenuContract, setOpenMenuContract] = useState(null);
   const [showExtensionModal, setShowExtensionModal] = useState(false);
-  const [currentContract, setCurrentContract] = useState(null);
+  const [currentContract, setCurrentContract] = useState<OngoingRow | null>(null);
+  const [newDeadline, setNewDeadline] = useState('');
+  const [extensionReason, setExtensionReason] = useState('');
+  const [additionalPayment, setAdditionalPayment] = useState('');
+  const requestExtension = useRequestExtension();
   const menuRef = useRef<HTMLDivElement | null>(null);
   const menuButtonRefs = useRef<Record<string, HTMLElement | null>>({});
   const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
@@ -71,98 +79,11 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
     };
   }, []);
 
-  const pendingProjects = [
-    {
-      title: '•Modern Fashion Attire Illustration',
-      id: '24t64754-A',
-      StartDate: '18, June, 2024',
-      EndDate: '23, June, 2024',
-      status: 'Change Requested',
-      timeLeft: '1h left',
-    },
-    {
-      title: 'Modern Fashion Attire Illustration',
-      id: '98k21456-B',
-      StartDate: '18, June, 2024',
-      EndDate: '23, June, 2024',
-      status: null,
-      timeLeft: '1h left',
-    },
-    {
-      title: 'Modern Fashion Attire Illustration',
-      id: '12m78390-C',
-      StartDate: '18, June, 2024',
-      EndDate: '23, June, 2024',
-      status: 'Waiting Approval',
-      timeLeft: '12h left',
-    },
-    {
-      title: 'Modern Fashion Attire Illustration',
-      id: '55d78219-E',
-      StartDate: '18, June, 2024',
-      EndDate: '23, June, 2024',
-      status: 'Extension Requested',
-      timeLeft: '3d left',
-    },
-    {
-      title: 'Modern Fashion Attire Illustration',
-      id: '44f89312-D',
-      StartDate: '18, June, 2024',
-      EndDate: '23, June, 2024',
-      status: 'Deadline Approved',
-      timeLeft: '2d left',
-    },
-    {
-      title: 'Modern Fashion Attire Illustration',
-      id: '66g90431-F',
-      StartDate: '18, June, 2024',
-      EndDate: '23, June, 2024',
-      status: 'Deadline Extended',
-      timeLeft: '0d left',
-    },
-    {
-      title: 'Modern Fashion Attire Illustration',
-      id: '77h12345-G',
-      StartDate: '18, June, 2024',
-      EndDate: '23, June, 2024',
-      status: null,
-    },
-    {
-      title: 'Modern Fashion Attire Illustration',
-      id: '88i23456-H',
-      StartDate: '18, June, 2024',
-      EndDate: '23, June, 2024',
-      status: 'Waiting Approval',
-    },
-    {
-      title: 'Modern Fashion Attire Illustration',
-      id: '99j34567-I',
-      StartDate: '18, June, 2024',
-      EndDate: '23, June, 2024',
-      status: 'Extension Requested',
-    },
-    {
-      title: 'Modern Fashion Attire Illustration',
-      id: '11k45678-J',
-      StartDate: '18, June, 2024',
-      EndDate: '23, June, 2024',
-      status: 'Deadline Approved',
-    },
-    {
-      title: 'Modern Fashion Attire Illustration',
-      id: '22l56789-K',
-      StartDate: '18, June, 2024',
-      EndDate: '23, June, 2024',
-      status: 'Deadline Extended',
-    },
-    {
-      title: 'Modern Fashion Attire Illustration',
-      id: '33m67890-L',
-      StartDate: '18, June, 2024',
-      EndDate: '23, June, 2024',
-      status: 'Extension Rejected',
-    },
-  ];
+  const { data, isLoading, isError, error, refetch } = useOngoingContracts();
+  const pendingProjects = React.useMemo(
+    () => (data?.data.contracts ?? []).map(toOngoingRow),
+    [data]
+  );
 
   // Filter by search
   let filteredContracts = pendingProjects.filter((contract) =>
@@ -177,6 +98,17 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentItems = filteredContracts.slice(startIndex, endIndex);
+
+  if (isLoading) return <ContractListState type="loading" />;
+  if (isError) {
+    return (
+      <ContractListState
+        type="error"
+        message={getContractErrorMessage(error, 'We could not load your ongoing contracts.')}
+        onRetry={() => refetch()}
+      />
+    );
+  }
 
   return (
     <div className="px-4 lg:px-0">
@@ -309,7 +241,7 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
                 classNames={{ base: 'overflow-visible' }}
               >
                 <CardBody className="px-4 py-4 overflow-visible">
-                  <SubmitWorkModal
+                  <SubmitWork contractId={contract.id} isResubmit={(contract.status === ContractStatus.WaitingApproval || contract.status === ContractStatus.ChangeRequested)}
                     trigger={
                       <button id={`submit-modal-btn-${contract.id || index}`} style={{ display: 'none' }}>
                         Submit Project
@@ -351,42 +283,42 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
                     </button>
                   </div>
 
-                  {contract.status === 'Change Requested' && (
+                  {contract.status === ContractStatus.ChangeRequested && (
                     <div className="mb-2">
                       <span className="inline-flex items-center bg-[#E0F2FE] text-[#0284C7] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                         Change Requested
                       </span>
                     </div>
                   )}
-                  {contract.status === 'Waiting Approval' && (
+                  {contract.status === ContractStatus.WaitingApproval && (
                     <div className="mb-2">
                       <span className="inline-flex items-center bg-[#FEF3C7] text-[#B45309] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                         Waiting Approval
                       </span>
                     </div>
                   )}
-                  {contract.status === 'Extension Requested' && (
+                  {contract.status === ContractStatus.ExtensionRequested && (
                     <div className="mb-2">
                       <span className="inline-flex items-center bg-[#F3E8FF] text-[#7C3AED] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                         Extension Requested
                       </span>
                     </div>
                   )}
-                  {contract.status === 'Deadline Approved' && (
+                  {contract.status === ContractStatus.DeadlineApproved && (
                     <div className="mb-2">
                       <span className="inline-flex items-center bg-[#DCFCE7] text-[#16A34A] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                         Deadline Approved
                       </span>
                     </div>
                   )}
-                  {contract.status === 'Deadline Extended' && (
+                  {contract.status === ContractStatus.DeadlineExtended && (
                     <div className="mb-2">
                       <span className="inline-flex items-center bg-[#E0F2FE] text-[#0284C7] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                         Deadline Extended
                       </span>
                     </div>
                   )}
-                  {contract.status === 'Extension Rejected' && (
+                  {contract.status === ContractStatus.ExtensionRejected && (
                     <div className="mb-2">
                       <span className="inline-flex items-center bg-[#FEE2E2] text-[#DC2626] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                         Extension Rejected
@@ -396,7 +328,7 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
 
                   <div
                     className="space-y-1 cursor-pointer"
-                    onClick={() => router.push(`/artist-page/ongoing-contract-information?id=${encodeURIComponent(contract.id || '')}&status=${encodeURIComponent(contract.status || '')}${contract.status === 'Deadline Extended' ? '&isExtended=true' : ''}`)}
+                    onClick={() => router.push(`/artist-page/ongoing-contract-information?id=${encodeURIComponent(contract.id || '')}&status=${encodeURIComponent(contract.status || '')}${contract.status === ContractStatus.DeadlineExtended ? '&isExtended=true' : ''}`)}
                   >
                     <div className='flex items-center gap-2 text-[13px]'>
                       <span className='text-gray-400'>Start Date -</span>
@@ -421,38 +353,38 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
             {/* ── DESKTOP Card ── */}
             <div
               className='hidden lg:flex bg-white border border-[#EAEAEA] rounded-[10px] p-5 lg:px-8 lg:py-5 transition-all hover:bg-gray-50 cursor-pointer items-center justify-between'
-              onClick={() => router.push(`/artist-page/ongoing-contract-information?id=${encodeURIComponent(contract.id || '')}&status=${encodeURIComponent(contract.status || '')}${contract.status === 'Deadline Extended' ? '&isExtended=true' : ''}`)}
+              onClick={() => router.push(`/artist-page/ongoing-contract-information?id=${encodeURIComponent(contract.id || '')}&status=${encodeURIComponent(contract.status || '')}${contract.status === ContractStatus.DeadlineExtended ? '&isExtended=true' : ''}`)}
             >
               <div className='flex flex-col items-start gap-1.5 w-[33%] pr-4'>
                 <h3 className='font-bold text-[15px] text-[#111111] truncate w-full'>
                   {contract.title}
                 </h3>
-                {contract.status === 'Change Requested' && (
+                {contract.status === ContractStatus.ChangeRequested && (
                   <span className="inline-flex items-center bg-[#E0F2FE] text-[#0284C7] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                     Change Requested
                   </span>
                 )}
-                {contract.status === 'Waiting Approval' && (
+                {contract.status === ContractStatus.WaitingApproval && (
                   <span className="inline-flex items-center bg-[#FEF3C7] text-[#B45309] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                     Waiting Approval
                   </span>
                 )}
-                {contract.status === 'Extension Requested' && (
+                {contract.status === ContractStatus.ExtensionRequested && (
                   <span className="inline-flex items-center bg-[#F3E8FF] text-[#7C3AED] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                     Extension Requested
                   </span>
                 )}
-                {contract.status === 'Deadline Approved' && (
+                {contract.status === ContractStatus.DeadlineApproved && (
                   <span className="inline-flex items-center bg-[#DCFCE7] text-[#16A34A] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                     Deadline Approved
                   </span>
                 )}
-                {contract.status === 'Deadline Extended' && (
+                {contract.status === ContractStatus.DeadlineExtended && (
                   <span className="inline-flex items-center bg-[#E0F2FE] text-[#0284C7] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                     Deadline Extended
                   </span>
                 )}
-                {contract.status === 'Extension Rejected' && (
+                {contract.status === ContractStatus.ExtensionRejected && (
                   <span className="inline-flex items-center bg-[#FEE2E2] text-[#DC2626] text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
                     Extension Rejected
                   </span>
@@ -478,13 +410,13 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
               </div>
 
               <div className='flex items-center justify-end gap-3 flex-1' onClick={(e) => e.stopPropagation()}>
-                <SubmitWorkModal
+                <SubmitWork contractId={contract.id} isResubmit={(contract.status === ContractStatus.WaitingApproval || contract.status === ContractStatus.ChangeRequested)}
                   trigger={
                     <Button
                       className='bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full h-[40px] border-0 shadow-sm text-sm hover:opacity-90 transition-opacity w-[145px] shrink-0'
                       radius='full'
                     >
-                      {(contract.status === 'Waiting Approval' || contract.status === 'Change Requested') ? 'Resubmit' : 'Submit Project'}
+                      {(contract.status === ContractStatus.WaitingApproval || contract.status === ContractStatus.ChangeRequested) ? 'Resubmit' : 'Submit Project'}
                     </Button>
                   }
                 />
@@ -569,7 +501,7 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
               setOpenMenuContract(null);
             }}
           >
-            {(openMenuContract?.status === 'Waiting Approval' || openMenuContract?.status === 'Change Requested') ? 'Resubmit' : 'Submit Project'}
+            {(openMenuContract?.status === ContractStatus.WaitingApproval || openMenuContract?.status === ContractStatus.ChangeRequested) ? 'Resubmit' : 'Submit Project'}
           </button>
           <button
             className='w-full text-left px-4 py-3 text-sm text-[#222222] hover:bg-[#F7FBFD] hover:text-[#3A98BB] transition-colors font-medium border-b border-gray-100 cursor-pointer'
@@ -623,7 +555,7 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
                   <div>
                     <label className="text-xs font-bold text-[#222222] mb-1 block">Current Deadline</label>
                     <div className="bg-[#F5F5F5] border-0 rounded-lg px-4 py-2 text-xs text-gray-500 w-3/5 font-satoshi">
-                      {currentContract?.EndDate || "20th April, 2026."}
+                      {currentContract?.EndDate || '—'}
                     </div>
                   </div>
 
@@ -634,6 +566,8 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
                       <Input
                         type="date"
                         placeholder="DD/MM/YY"
+                        value={newDeadline}
+                        onValueChange={setNewDeadline}
                         classNames={{
                           input: "text-xs font-satoshi text-gray-600",
                           inputWrapper: "bg-white border border-[#E5E5E5] hover:border-gray-400 focus-within:border-[#3A98BB] shadow-sm rounded-lg h-9 min-h-9",
@@ -647,6 +581,8 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
                     <label className="text-xs font-bold text-[#222222] mb-1 block">Reason</label>
                     <textarea
                       placeholder=""
+                      value={extensionReason}
+                      onChange={(e) => setExtensionReason(e.target.value)}
                       className="w-full min-h-[70px] bg-white border border-[#E5E5E5] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#3A98BB] p-3 text-sm font-satoshi resize-none shadow-sm"
                     />
                   </div>
@@ -658,6 +594,8 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
                       <Input
                         type="number"
                         placeholder="0.00"
+                        value={additionalPayment}
+                        onValueChange={setAdditionalPayment}
                         classNames={{
                           input: "text-xs font-satoshi text-gray-600",
                           inputWrapper: "bg-white border border-[#E5E5E5] hover:border-gray-400 shadow-sm rounded-lg h-9 min-h-9",
@@ -668,17 +606,39 @@ const OngoingContracts = ({ dateFilter, setDateFilter, dateOptions }) => {
                   </div>
                 </div>
 
+                {requestExtension.isError && (
+                  <p className="text-xs text-[#E05656] mt-3" role="alert">
+                    {getContractErrorMessage(requestExtension.error)}
+                  </p>
+                )}
                 <div className="flex gap-4 mt-5">
                   <Button
                     className="flex-1 bg-[#EBEBEB] text-[#555555] font-semibold rounded-full border-0 h-10"
-                    onPress={onClose}
+                    onPress={() => {
+                      requestExtension.reset();
+                      onClose();
+                    }}
                   >
                     Cancel
                   </Button>
                   <Button
                     className="flex-1 bg-[radial-gradient(circle,#EAF9FF_19%,#CCE7F2_100%)] text-[#035A7A] font-semibold rounded-full border-0 h-10 shadow-sm"
-                    onPress={() => {
-                      console.log('Extension requested!');
+                    isLoading={requestExtension.isPending}
+                    isDisabled={!currentContract?.id || !newDeadline || !extensionReason.trim()}
+                    onPress={async () => {
+                      try {
+                        await requestExtension.mutateAsync({
+                          contractId: currentContract.id,
+                          newDeadline,
+                          reason: extensionReason.trim(),
+                          ...(additionalPayment ? { additionalPayment: Number(additionalPayment) } : {}),
+                        });
+                      } catch {
+                        return; // the error message is shown above the buttons
+                      }
+                      setNewDeadline('');
+                      setExtensionReason('');
+                      setAdditionalPayment('');
                       onClose();
                     }}
                   >
