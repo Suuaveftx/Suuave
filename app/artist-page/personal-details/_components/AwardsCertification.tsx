@@ -7,7 +7,7 @@ import FormLabel from '@/components/ui/FormLabel';
 import Image from 'next/image';
 import { useDeleteArtistCertification } from '../queries/artist-profile-queries';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
-import { useUploadProfileFile } from '@/lib/api-integration-helper';
+import { useUploadFile } from '@/lib/api-integration-helper';
 
 type AwardsCertificationPropType = {
   setSelected: Dispatch<SetStateAction<string>>;
@@ -39,7 +39,7 @@ const AwardsCertification = ({
   const [uploadingIndex, setUploadingIndex] = useState(null);
   const [pendingRemovalIndex, setPendingRemovalIndex] = useState(null);
   const deleteModal = useDisclosure();
-  const uploadMutation = useUploadProfileFile();
+  const uploadMutation = useUploadFile();
   const deleteMutation = useDeleteArtistCertification();
 
   const handleFileChange = async (index, e) => {

@@ -7,8 +7,12 @@ import ProfileArtist from './_components/Profile';
 import ProfileError from './_components/ProfileError';
 import { useGetProfile } from '@/lib/api-integration-helper';
 import { Roles } from '@/utils/enum';
+import { useGetArtistProfileForBrand } from '../personal-details/queries/artist-profile-queries';
+import { useAppStore } from '@/store';
 
 export default function ProfilePageContainer() {
+  const artistProfileId = useAppStore((state) => state.artistProfileId);
+
   const {
     data,
     isLoading: loadingArtistProfile,
@@ -18,10 +22,25 @@ export default function ProfilePageContainer() {
     error,
   } = useGetProfile();
 
+  const {
+    data: artistProfileForBrand,
+    isLoading: loadingArtistProfileForBrand,
+    refetch: refetchArtistProfile,
+    isRefetching: refetchingArtistProfile,
+    isError: isArtistProfileError,
+    error: artistProfileError,
+  } = useGetArtistProfileForBrand(artistProfileId);
+
   const isVisitor = data?.data?.user?.role === Roles.artist ? false : true;
 
-  if (isError) {
-    return <ProfileError error={error} refetch={refetch} isRefetching={isRefetching} />;
+  if (isError || isArtistProfileError) {
+    return (
+      <ProfileError
+        error={isVisitor ? artistProfileError : error}
+        refetch={isVisitor ? refetchArtistProfile : refetch}
+        isRefetching={isVisitor ? refetchingArtistProfile : isRefetching}
+      />
+    );
   }
 
   return (
@@ -29,13 +48,15 @@ export default function ProfilePageContainer() {
       <PageContainer className='flex flex-col lg:flex-row items-start gap-4 pt-4 pb-4'>
         <Suspense fallback={<p>Loading...</p>}>
           <ProfileArtist
-            data={data}
+            data={isVisitor ? artistProfileForBrand : data}
             loadingArtistProfile={loadingArtistProfile}
+            loadingArtistProfileForBrand={loadingArtistProfileForBrand}
             isVisitor={isVisitor}
           />
           <FashionCards
-            data={data}
+            data={isVisitor ? artistProfileForBrand : data}
             loadingArtistProfile={loadingArtistProfile}
+            loadingArtistProfileForBrand={loadingArtistProfileForBrand}
             isVisitor={isVisitor}
           />
         </Suspense>

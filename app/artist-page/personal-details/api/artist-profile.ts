@@ -67,3 +67,34 @@ export async function deleteWorkSample(id: string): Promise<void> {
   );
   return res.data;
 }
+
+export async function getArtistDesignsForBrand(
+  page = 1,
+  artistId: string
+): Promise<ResponseData<UserDesignsType>> {
+  const res = await apiClient.get<ResponseData<UserDesignsType>>(
+    `/profile/artists/${artistId}/designs`,
+    {
+      params: { page },
+    }
+  );
+  return res.data;
+}
+
+export async function getArtistReviewsForBrand(
+  artistId: string
+): Promise<ResponseData<UserReviewsType>> {
+  const res = await apiClient.get<ResponseData<UserReviewsType>>(
+    `/profile/artists/${artistId}/reviews`
+  );
+  return res.data;
+}
+
+export async function getArtistProfileForBrand(
+  artistId: string
+): Promise<ResponseData<ProfileInfoResponse>> {
+  const res = await apiClient.get<ResponseData<ProfileInfoResponse>>(
+    `/profile/artists/${artistId}`
+  );
+  return res.data;
+}

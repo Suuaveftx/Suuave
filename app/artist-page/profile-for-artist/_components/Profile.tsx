@@ -12,23 +12,22 @@ import ProfileSkeleton from './ProfileSkeleton';
 import { getErrorMessage } from '../../../../utils/utils';
 import {} from '../../personal-details/types/profile-types';
 import { ProfileInfoResponse, ResponseData } from '@/lib/common-app-types';
-import {
-  useUpdateGeneralProfile,
-  useUploadProfileFile,
-} from '@/lib/api-integration-helper';
+import { useUpdateGeneralProfile, useUploadFile } from '@/lib/api-integration-helper';
 
 type ProfileArtistPropType = {
   data: ResponseData<ProfileInfoResponse>;
   isVisitor?: boolean;
   loadingArtistProfile?: boolean;
+  loadingArtistProfileForBrand?: boolean;
 };
 
 const ProfileArtist = ({
   isVisitor = false,
   data,
   loadingArtistProfile,
+  loadingArtistProfileForBrand,
 }: ProfileArtistPropType) => {
-  const { mutateAsync: uploadFile } = useUploadProfileFile();
+  const { mutateAsync: uploadFile } = useUploadFile();
   const { mutateAsync: updateGeneralProfile, isPending: updatingGeneralProfile } =
     useUpdateGeneralProfile();
 
@@ -130,7 +129,7 @@ const ProfileArtist = ({
     }
   };
 
-  if (loadingArtistProfile) {
+  if (loadingArtistProfile || loadingArtistProfileForBrand) {
     return <ProfileSkeleton />;
   }
 
@@ -159,13 +158,22 @@ const ProfileArtist = ({
           {/* Profile Initials */}
           <div className='flex justify-center w-full'>
             <div className='relative w-[100px] h-[100px]'>
-              <Avatar
-                isDisabled={isSavingImage}
-                src={isSavingImage ? preview : userDetails?.image}
-                alt='Profile Picture'
-                // fill
-                className={`w-full h-full disabled:cursor-not-allowed shadow-lg transition-all bg-[#3A98BB] ${isSavingImage ? 'opacity-60' : 'hover:shadow-2xl'}`}
-              />
+              {!isVisitor ? (
+                <Avatar
+                  isDisabled={isSavingImage}
+                  src={isSavingImage ? preview : userDetails?.image}
+                  alt='Profile Picture'
+                  // fill
+                  className={`w-full h-full disabled:cursor-not-allowed shadow-lg transition-all bg-[#3A98BB] ${isSavingImage ? 'opacity-60' : 'hover:shadow-2xl'}`}
+                />
+              ) : (
+                <Avatar
+                  src={artistProfile?.image}
+                  alt='Artist Profile Picture'
+                  // fill
+                  className={`w-full h-full shadow-lg transition-all bg-[#3A98BB]`}
+                />
+              )}
 
               {!isVisitor && (
                 <>
@@ -196,7 +204,7 @@ const ProfileArtist = ({
           {/* Name */}
           <div className='w-full flex flex-col items-center'>
             <h4 className='uppercase font-bold text-2xl flex items-center gap-2 text-center'>
-              {userDetails?.name || 'Your Name'}
+              {!isVisitor ? userDetails?.name || 'Your Name' : artistProfile?.name}
               <span className='w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white shadow-sm'></span>
             </h4>
           </div>
@@ -205,7 +213,7 @@ const ProfileArtist = ({
           <div className='flex flex-col items-center gap-2 w-full'>
             <div className='flex items-center gap-2'>
               <p className='text-gray-700 text-[16px] font-medium capitalize text-center'>
-                {artistProfile.position}
+                {artistProfile?.position}
               </p>
               {!isVisitor && (
                 <button

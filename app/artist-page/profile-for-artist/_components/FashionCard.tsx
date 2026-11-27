@@ -20,18 +20,22 @@ import {
   useDeleteArtistCertification,
   useDeleteWorkSample,
   useGetArtistDesigns,
+  useGetArtistDesignsForBrand,
   useGetArtistReviews,
+  useGetArtistReviewsForBrand,
   useGetWorksSamples,
 } from '../../personal-details/queries/artist-profile-queries';
 import { useForm } from 'react-hook-form';
 import FashionCardSkeleton from './FashonCardSkeleton';
 import ConfirmDeleteModal from '../../personal-details/_components/ConfirmDeleteModal';
-import { getErrorMessage } from '../../../../utils/utils';
+import { formatToUSD, getErrorMessage } from '../../../../utils/utils';
 import CustomButton from '../../../../components/CustomButton';
 import { MdErrorOutline } from 'react-icons/md';
 import ReviewsLoaderSkeleton from './ReviewsLoaderSkeleton';
 import { FaStar } from 'react-icons/fa';
-import { useUploadProfileFile } from '@/lib/api-integration-helper';
+import { useUploadFile } from '@/lib/api-integration-helper';
+import { useDeleteUserDesign } from '../../license-your-design/queries/designs-queries';
+import { useAppStore } from '@/store';
 
 const INITIAL_VISIBLE_ITEMS = { design: 6, awards: 4, work: 4 };
 const ITEMS_PER_LOAD = { design: 3, awards: 4, work: 4 };
@@ -59,7 +63,14 @@ function useInfiniteScroll(enabled, hasMore, loadMore, loadKey) {
   return observerRef;
 }
 
-const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
+const FashionCard = ({
+  isVisitor = false,
+  data,
+  loadingArtistProfile,
+  loadingArtistProfileForBrand,
+}) => {
+  const artistProfileId = useAppStore((state) => state.artistProfileId);
+
   const {
     register,
     handleSubmit,
@@ -68,29 +79,55 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
   } = useForm();
 
   // Queries
-  const certifications = data?.data?.certifications;
   const {
     data: userDesigns,
     isLoading: loadingDesigns,
     hasNextPage: hasNextDesignPage,
     fetchNextPage: fetchNextDesignPage,
     isFetchingNextPage: isFetchingNextDesignPage,
-  } = useGetArtistDesigns();
-  const { data: userReviews, isLoading: loadingReviews } = useGetArtistReviews();
+  } = useGetArtistDesigns(!isVisitor);
+
+  const {
+    data: artistDesignsForBrand,
+    isLoading: loadingArtistDesignsForBrand,
+    hasNextPage: hasNextDesignPageForBrand,
+    fetchNextPage: fetchNextDesignPageForBrand,
+    isFetchingNextPage: isFetchingNextDesignPageForBrand,
+  } = useGetArtistDesignsForBrand(artistProfileId, isVisitor);
+
+  const { data: userReviews, isLoading: loadingReviews } =
+    useGetArtistReviews(!isVisitor);
+
+  const { data: artistReviewsForBrand, isLoading: loadingArtistReviewsForBrand } =
+    useGetArtistReviewsForBrand(artistProfileId, isVisitor);
+
   const { data: workSamplesData, isLoading: loadingWorkSample } = useGetWorksSamples();
 
-  const designPages = userDesigns?.pages || [];
+  const designPages = isVisitor
+    ? artistDesignsForBrand?.pages || []
+    : userDesigns?.pages || [];
   const designs = designPages.flatMap((page) => page.data.designs);
   const designsMeta = designPages[designPages.length - 1]?.data?.meta;
-  const reviews = userReviews?.data?.reviews || [];
-  const reviewsMeta = userReviews?.data?.meta;
-  const workSamples = workSamplesData?.data || [];
+
+  const reviews = isVisitor
+    ? artistReviewsForBrand?.data?.reviews || []
+    : userReviews?.data?.reviews || [];
+  const reviewsMeta = isVisitor
+    ? artistReviewsForBrand?.data?.meta
+    : userReviews?.data?.meta;
+
+  const certifications = data?.data?.certifications || [];
+
+  const workSamples = !isVisitor
+    ? workSamplesData?.data || []
+    : data?.data?.workSamples || [];
 
   // Mutations
-  const { mutateAsync: uploadFile, isPending: uploadingFile } = useUploadProfileFile();
+  const { mutateAsync: uploadFile, isPending: uploadingFile } = useUploadFile();
   const { mutateAsync: addCertificate, isPending: addingCertificate } =
     useAddArtistCertification();
   const deleteAwardMutation = useDeleteArtistCertification();
+  const deleteDesignMutation = useDeleteUserDesign();
   const { mutateAsync: addWorkSample, isPending: addingWorkSample } = useAddWorkSample();
   const deleteWorkSampleMutation = useDeleteWorkSample();
 
@@ -103,8 +140,10 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
   const [visibleReviews, setVisibleReviews] = useState(5);
   const [isInfiniteReviews, setIsInfiniteReviews] = useState(false);
   const [isLoadingReviews, setIsLoadingReviews] = useState(false);
+  const [isLoadingReviewsForBrand, setIsLoadingReviewsForBrand] = useState(false);
   const observerRef = useRef(null);
   const [fileName, setFileName] = useState('');
+  const [uploadFieldError, setUploadFieldError] = useState('');
   const [uploadedFileUrl, setUploadedFileUrl] = useState('');
 
   const [visibleItems, setVisibleItems] = useState(INITIAL_VISIBLE_ITEMS);
@@ -117,19 +156,26 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
         ...prev,
         design: prev.design + ITEMS_PER_LOAD.design,
       }));
-    } else if (hasNextDesignPage && !isFetchingNextDesignPage) {
-      fetchNextDesignPage();
+    } else if (
+      (hasNextDesignPage || hasNextDesignPageForBrand) &&
+      (!isFetchingNextDesignPageForBrand || !isFetchingNextDesignPage)
+    ) {
+      fetchNextDesignPage() || fetchNextDesignPageForBrand;
     }
   }, [
     designs.length,
     fetchNextDesignPage,
+    fetchNextDesignPageForBrand,
+    hasNextDesignPageForBrand,
     hasNextDesignPage,
     isFetchingNextDesignPage,
+    isFetchingNextDesignPageForBrand,
     visibleItems.design,
   ]);
   const hasMoreDesigns = visibleItems.design < designs.length || hasNextDesignPage;
   const designObserverRef = useInfiniteScroll(
-    activeTab === 'design' && !isFetchingNextDesignPage,
+    (activeTab === 'design' && !isFetchingNextDesignPage) ||
+      !isFetchingNextDesignPageForBrand,
     hasMoreDesigns,
     loadMoreDesigns,
     visibleItems.design
@@ -170,10 +216,10 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setIsLoadingReviews(true);
+          isVisitor ? setIsLoadingReviewsForBrand(true) : setIsLoadingReviews(true);
           timeoutId = setTimeout(() => {
             setVisibleReviews((prev) => prev + 5);
-            setIsLoadingReviews(false);
+            isVisitor ? setIsLoadingReviewsForBrand(false) : setIsLoadingReviews(false);
           }, 1200);
         }
       },
@@ -186,7 +232,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
       observer.disconnect();
       clearTimeout(timeoutId);
     };
-  }, [isInfiniteReviews]);
+  }, [isVisitor, isInfiniteReviews]);
 
   const tabs = [
     { id: 'design', label: 'Design Collections' },
@@ -202,13 +248,12 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
     if (tabParam) setActiveTab(tabParam);
   }, [searchParams, tabParam]);
 
-  const handleEdit = (designId) => {
+  const handleEdit = (designId: string) => {
     // Mock data based on the card UI
+
     const params = new URLSearchParams({
-      title: 'Casual Top Design',
-      price: '253',
-      description: 'A beautiful casual top design perfect for summer.',
-      style: 'Casual',
+      designId,
+      edit: 'true',
     });
     router.push(`/artist-page/license-your-design?${params.toString()}`);
   };
@@ -231,8 +276,21 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
     if (!deleteItemType || deleteItemId == null) return;
 
     if (deleteItemType === 'design') {
-      // setCollections((prev) => prev.filter((item) => item.id !== deleteItemId));
-      return;
+      try {
+        await deleteDesignMutation.mutateAsync(deleteItemId);
+        addToast({
+          title: 'Design deleted',
+          description: 'The design has been deleted successfully.',
+          color: 'success',
+        });
+      } catch (error) {
+        addToast({
+          title: 'Unable to delete design',
+          description: getErrorMessage(error, 'Something went wrong, please try again'),
+          color: 'danger',
+        });
+        return;
+      }
     } else if (deleteItemType === 'award') {
       try {
         await deleteAwardMutation.mutateAsync(deleteItemId);
@@ -274,6 +332,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
     const file = e.target.files?.[0];
     e.target.value = '';
     if (!file || !data?.data?.id) return;
+    setUploadFieldError('');
 
     try {
       const uploadedFile = await uploadFile({
@@ -325,6 +384,10 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
   };
 
   const handleUploadWorkSample = async (formValues) => {
+    if (!fileName || !uploadedFileUrl) {
+      setUploadFieldError('Please select an image');
+      return;
+    }
     try {
       await addWorkSample({
         image: uploadedFileUrl,
@@ -339,6 +402,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
       setIsUploadWorkOpen(false);
       setUploadedFileUrl('');
       setFileName('');
+      setUploadFieldError('');
     } catch (error) {
       addToast({
         title: getErrorMessage(error, 'Something went wrong, please try again'),
@@ -347,7 +411,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
     }
   };
 
-  if (loadingArtistProfile) {
+  if (loadingArtistProfile || loadingArtistProfileForBrand) {
     return <FashionCardSkeleton />;
   }
 
@@ -388,7 +452,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
         {activeTab === 'design' && (
           <div className='w-full'>
             {/* GRID */}
-            {loadingDesigns ? (
+            {loadingDesigns || loadingArtistDesignsForBrand ? (
               <aside className='w-full sm:col-span-2 md:col-span-3'>
                 <FashionCardSkeleton />
               </aside>
@@ -403,21 +467,39 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                       <div
                         className={`block w-full h-full ${isVisitor ? 'cursor-pointer' : 'cursor-default'}`}
                         onClick={() =>
-                          isVisitor && router.push('/fashion-designers/card-5')
+                          isVisitor && router.push(`/fashion-designers/${item.id}`)
                         }
                       >
                         <div
-                          className='absolute inset-0 bg-cover bg-center'
-                          style={{ backgroundImage: `url(${item.thumbnail_url})` }}
+                          className={`absolute inset-0 ${
+                            item.thumbnail_url
+                              ? 'bg-cover bg-center'
+                              : 'flex items-center justify-center bg-[#EEF3F4]'
+                          }`}
+                          style={
+                            item.thumbnail_url
+                              ? { backgroundImage: `url(${item.thumbnail_url})` }
+                              : undefined
+                          }
                         >
-                          <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+                          {item.thumbnail_url ? (
+                            <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+                          ) : (
+                            <span
+                              role='img'
+                              aria-label='Image preview not available'
+                              className='px-4 text-center text-sm text-[#65777B]'
+                            >
+                              Image preview not available
+                            </span>
+                          )}
                         </div>
 
                         <div className='absolute bottom-0 left-0 right-0 p-4 text-white bg-black/30 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
                           <div className='flex justify-between items-center mb-1'>
                             <h3 className='font-semibold text-base'>{item.title}</h3>
                             <span className='font-bold text-base'>
-                              ${item.asking_price}
+                              {formatToUSD(item.asking_price)}
                             </span>
                           </div>
 
@@ -430,6 +512,12 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                           </div>
                         </div>
                       </div>
+
+                      {item.status?.trim().toLowerCase() === 'draft' && (
+                        <span className='absolute top-3 left-3 z-20 rounded-full bg-[#FFF1C2] px-3 py-1 text-xs font-semibold text-[#725200]'>
+                          Draft
+                        </span>
+                      )}
 
                       {!isVisitor && (
                         <div className='absolute top-3 right-3 z-20'>
@@ -529,7 +617,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
         {activeTab === 'work' && (
           <div className='flex flex-col'>
             {/* Grid of cards */}
-            {loadingWorkSample ? (
+            {loadingArtistProfile || loadingWorkSample ? (
               <aside className='w-full sm:col-span-2 lg:col-span-4'>
                 <FashionCardSkeleton />
               </aside>
@@ -603,7 +691,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
         )}
 
         {activeTab === 'reviews' &&
-          (loadingReviews ? (
+          (loadingReviews || loadingArtistReviewsForBrand ? (
             <ReviewsLoaderSkeleton />
           ) : reviewsMeta?.total >= 1 ? (
             <div>
@@ -660,23 +748,24 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                     ref={observerRef}
                     className='h-10 w-full flex justify-center items-center my-4'
                   >
-                    {isLoadingReviews && (
-                      <div className='flex gap-1.5 justify-center items-center h-full'>
-                        <div className='w-2 h-2 rounded-full bg-[#3A98BB] animate-bounce' />
-                        <div
-                          className='w-2 h-2 rounded-full bg-[#3A98BB] animate-bounce'
-                          style={{ animationDelay: '0.15s' }}
-                        />
-                        <div
-                          className='w-2 h-2 rounded-full bg-[#3A98BB] animate-bounce'
-                          style={{ animationDelay: '0.3s' }}
-                        />
-                      </div>
-                    )}
+                    {isLoadingReviews ||
+                      (isLoadingReviewsForBrand && (
+                        <div className='flex gap-1.5 justify-center items-center h-full'>
+                          <div className='w-2 h-2 rounded-full bg-[#3A98BB] animate-bounce' />
+                          <div
+                            className='w-2 h-2 rounded-full bg-[#3A98BB] animate-bounce'
+                            style={{ animationDelay: '0.15s' }}
+                          />
+                          <div
+                            className='w-2 h-2 rounded-full bg-[#3A98BB] animate-bounce'
+                            style={{ animationDelay: '0.3s' }}
+                          />
+                        </div>
+                      ))}
                   </div>
                 ) : (
                   <div className='w-full flex justify-center mt-4 pt-2'>
-                    {isLoadingReviews ? (
+                    {isLoadingReviews || isLoadingReviewsForBrand ? (
                       <div className='flex gap-1.5 justify-center items-center h-10'>
                         <div className='w-2 h-2 rounded-full bg-[#3A98BB] animate-bounce' />
                         <div
@@ -691,11 +780,15 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                     ) : (
                       <button
                         onClick={() => {
-                          setIsLoadingReviews(true);
+                          isVisitor
+                            ? setIsLoadingReviewsForBrand(true)
+                            : setIsLoadingReviews(true);
                           setTimeout(() => {
                             setVisibleReviews((prev) => prev + 5);
                             setIsInfiniteReviews(true);
-                            setIsLoadingReviews(false);
+                            isVisitor
+                              ? setIsLoadingReviewsForBrand(false)
+                              : setIsLoadingReviews(false);
                           }, 1200);
                         }}
                         className='px-6 py-2 bg-transparent border border-[#CCE7F2] text-[#222222] rounded-lg hover:bg-[#F4FCFF] transition-colors'
@@ -711,7 +804,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
             <div className='h-32 w-full flex flex-col items-center justify-center'>
               <MdErrorOutline className='size-14 mb-2' color='blue' />
               <p className='text-xl font-medium text-center'>
-                You currently do no have any reviews
+                {`${isVisitor ? 'This artist' : 'You'} currently do no have any reviews`}
               </p>
             </div>
           ))}
@@ -724,7 +817,9 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
         isLoading={
           deleteItemType === 'award'
             ? deleteAwardMutation.isPending
-            : deleteWorkSampleMutation.isPending
+            : deleteItemType === 'design'
+              ? deleteDesignMutation.isPending
+              : deleteWorkSampleMutation.isPending
         }
         onConfirm={confirmDelete}
         confirmLabel='Delete'
@@ -749,7 +844,7 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
           {(onClose) => (
             <>
               <ModalHeader>Upload Work Sample</ModalHeader>
-              <div className='mt-0.5 flex items-center gap-2 w-full max-w-[320px] mx-auto lg:max-w-[400px]'>
+              <div className='mt-0.5 flex flex-col gap-2 w-full max-w-[320px] mx-auto lg:max-w-[400px]'>
                 <label
                   htmlFor='award-file-upload'
                   className='w-full flex items-center justify-center gap-2 border border-gray-300 rounded-[8px] cursor-pointer text-sm text-gray-700 hover:bg-gray-100 transition px-8 py-3'
@@ -772,6 +867,9 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                   onChange={(e) => handleFileUpload(e, 'work')}
                   className='w-full hidden'
                 />
+                {uploadFieldError && (
+                  <p className='text-red-500 text-sm'>{uploadFieldError}</p>
+                )}
               </div>
               <ModalBody className=''>
                 <form className='w-full' onSubmit={handleSubmit(handleUploadWorkSample)}>
@@ -823,14 +921,15 @@ const FashionCard = ({ isVisitor = false, data, loadingArtistProfile }) => {
                         reset();
                         setUploadedFileUrl('');
                         setFileName('');
+                        setUploadFieldError('');
                       }}
-                      disabled={addingWorkSample}
+                      disabled={addingWorkSample || uploadingFile}
                       className='bg-[#EAEAEA] rounded-full text-[#222222]'
                     >
                       Cancel
                     </Button>
                     <Button
-                      disabled={addingWorkSample}
+                      disabled={addingWorkSample || uploadingFile}
                       type='submit'
                       className='bg-[radial-gradient(circle,#FFFFFF,#CCE7F2)] rounded-full text-[#0A4A66] disabled:cursor-not-allowed'
                       isLoading={addingWorkSample}

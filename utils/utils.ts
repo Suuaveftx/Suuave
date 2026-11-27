@@ -135,7 +135,7 @@ export const getActiveCategory = () => {
 };
 
 export const getErrorMessage = (error, fallback) =>
-  error?.response?.data?.errors[0].message ||
+  error?.response?.data?.errors?.[0]?.message ||
   error?.response?.data?.message ||
   error?.message ||
   fallback;

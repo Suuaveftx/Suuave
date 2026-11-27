@@ -1,9 +1,12 @@
+@import 'slick-carousel/slick/slick.css';
+@import 'slick-carousel/slick/slick-theme.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Force HeroUI modals above sticky/fixed navbars */
-[data-overlay-container="true"] {
+[data-overlay-container='true'] {
   z-index: 9999 !important;
 }
 
@@ -17,10 +20,9 @@
   scrollbar-width: none;
 }
 
-
 /* globals.css */
 :root {
-  --background: #F2F2F2;
+  --background: #f2f2f2;
   --foreground: #171717;
   --font-montserrat: 'Montserrat', sans-serif;
   --font-geist-sans: 'Geist Sans', sans-serif;
@@ -84,7 +86,6 @@
 }
 
 @media (max-width: 640px) {
-
   /* Tailwind's sm breakpoint is 640px */
   .line-clamp-2-css {
     display: none;
@@ -178,7 +179,7 @@ body::-webkit-scrollbar {
 
   /* Custom scrollbar for WebKit browsers (Chrome, Safari) */
   body {
-    background-color: #F2F2F2;
+    background-color: #f2f2f2;
   }
 
   .visible-scrollbar::-webkit-scrollbar {
@@ -187,7 +188,7 @@ body::-webkit-scrollbar {
   }
 
   .visible-scrollbar::-webkit-scrollbar-track {
-    background: #F2F2F2 !important;
+    background: #f2f2f2 !important;
     border-radius: 10px !important;
   }
 
@@ -202,35 +203,33 @@ body::-webkit-scrollbar {
 
   .visible-scrollbar {
     scrollbar-width: thin !important;
-    scrollbar-color: #3a98bb #F2F2F2 !important;
+    scrollbar-color: #3a98bb #f2f2f2 !important;
     overflow-y: auto !important;
   }
 }
 
 /* Force HeroUI Select listbox to scroll */
-[data-slot="listbox-wrapper"] {
+[data-slot='listbox-wrapper'] {
   max-height: 300px !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
   scrollbar-width: thin !important;
-  scrollbar-color: #3a98bb #F2F2F2 !important;
+  scrollbar-color: #3a98bb #f2f2f2 !important;
 }
 
-[data-slot="listbox-wrapper"]::-webkit-scrollbar {
+[data-slot='listbox-wrapper']::-webkit-scrollbar {
   width: 8px !important;
   display: block !important;
 }
 
-[data-slot="listbox-wrapper"]::-webkit-scrollbar-track {
-  background: #F2F2F2 !important;
+[data-slot='listbox-wrapper']::-webkit-scrollbar-track {
+  background: #f2f2f2 !important;
 }
 
-[data-slot="listbox-wrapper"]::-webkit-scrollbar-thumb {
+[data-slot='listbox-wrapper']::-webkit-scrollbar-thumb {
   background: #3a98bb !important;
   border-radius: 10px !important;
 }
-
-
 
 .heroui-tab {
   background-color: transparent !important;
@@ -254,7 +253,7 @@ body::-webkit-scrollbar {
   height: 360px;
 }
 
-.slider-container .slick-slide>div {
+.slider-container .slick-slide > div {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -310,14 +309,15 @@ body::-webkit-scrollbar {
 
 /* Aggressively hide all floating elements when mobile menu is open, 
    but explicitly EXCLUDE the navigation-related components. */
-body.menu-open [class*="fixed"]:not([class*="Navbar"]):not(nav):not(header):not([class*="navbar"]) {
+body.menu-open
+  [class*='fixed']:not([class*='Navbar']):not(nav):not(header):not([class*='navbar']) {
   display: none !important;
 }
 
 /* Ensure the navbar itself stays visible */
 body.menu-open header.fixed,
 body.menu-open nav.fixed,
-body.menu-open [class*="NavbarMenu"] {
+body.menu-open [class*='NavbarMenu'] {
   display: flex !important;
 }
 
@@ -337,7 +337,7 @@ body.menu-open [class*="NavbarMenu"] {
 .suuave-location-select .stdropdown-input {
   width: 100% !important;
   height: 40px !important;
-  border: 1px solid #D1D1D1 !important;
+  border: 1px solid #d1d1d1 !important;
   border-radius: 8px !important;
   padding: 0 12px !important;
   display: flex !important;
@@ -348,12 +348,12 @@ body.menu-open [class*="NavbarMenu"] {
 }
 
 .suuave-location-select .stdropdown-input:hover {
-  border-color: #3A98BB !important;
+  border-color: #3a98bb !important;
 }
 
 .suuave-location-select .stdropdown-input:focus-within {
-  border-color: #3A98BB !important;
-  box-shadow: 0 0 0 1px #3A98BB !important;
+  border-color: #3a98bb !important;
+  box-shadow: 0 0 0 1px #3a98bb !important;
 }
 
 .suuave-location-select input {
@@ -377,8 +377,10 @@ body.menu-open [class*="NavbarMenu"] {
   width: 100% !important;
   min-width: 250px !important;
   border-radius: 12px !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
-  border: 1px solid #EAEAEA !important;
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.2),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid #eaeaea !important;
   background-color: white !important;
   /* Force solid white background */
   max-height: 250px !important;
@@ -402,15 +404,15 @@ body.menu-open [class*="NavbarMenu"] {
 }
 
 .suuave-location-select .stdropdown-item:hover {
-  background-color: #EAF9FF !important;
-  color: #035A7A !important;
+  background-color: #eaf9ff !important;
+  color: #035a7a !important;
 }
 
 /* Ensure the search box matches */
 .suuave-location-select .stsearch-box {
   padding: 8px !important;
   background-color: white !important;
-  border-bottom: 1px solid #EAEAEA !important;
+  border-bottom: 1px solid #eaeaea !important;
 }
 
 .suuave-location-select .stsearch-box input {

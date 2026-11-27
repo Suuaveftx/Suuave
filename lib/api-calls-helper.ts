@@ -13,7 +13,7 @@ export async function getProfile(): Promise<ResponseData<ProfileInfoResponse>> {
   return res.data;
 }
 
-export async function uploadProfileFile({
+export async function uploadFile({
   file,
   fileableType,
   fileableId,

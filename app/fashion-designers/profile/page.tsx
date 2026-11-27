@@ -23,7 +23,7 @@ import {
   useGetProfile,
   useGetReviews,
   useUpdateGeneralProfile,
-  useUploadProfileFile,
+  useUploadFile,
 } from '@/lib/api-integration-helper';
 import ReviewsLoaderSkeleton from '@/app/artist-page/profile-for-artist/_components/ReviewsLoaderSkeleton';
 import { InfoIcon, Loader2, PencilIcon } from 'lucide-react';
@@ -73,7 +73,7 @@ const Page = () => {
     return () => observer.disconnect();
   }, [isInfiniteReviews, visibleReviews]);
 
-  const uploadFile = useUploadProfileFile();
+  const uploadFile = useUploadFile();
   const updateGeneralProfile = useUpdateGeneralProfile();
 
   // Generic file handler

@@ -26,6 +26,9 @@ export type ProfileInfoResponse = {
   bio: string;
   brandCategory: null | string;
   businessName: null | string;
+  image: string;
+  name: string;
+  username: string;
   certifications: {
     createdAt: string;
     documentUrl: string;
@@ -115,4 +118,13 @@ export type MetaType = {
   page: number;
   limit: number;
   totalPages: number;
+};
+
+export type PaginationType = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
 };
