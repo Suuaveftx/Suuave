@@ -19,6 +19,7 @@ import { getProjectApiErrorMessage } from '@/app/projects/api/projects';
 import { DEFAULT_VALUES, DESIGN_STYLE_LABELS, SKILL_LABELS } from '../_constants';
 import { useFileSelection } from '../_hooks/useFileSelection';
 import { getSubmissionErrors } from '../_utils/submissionErrors';
+import type { ProjectFormValues } from '../_types';
 import BasicDetailsFields from './BasicDetailsFields';
 import BudgetFields from './BudgetFields';
 import FormActions from './FormActions';
@@ -68,7 +69,7 @@ const PostProjectForm = () => {
   const [isUploadingReferences, setIsUploadingReferences] = useState(false);
   const [resetCount, setResetCount] = useState(0); // remounts TagInputs on Cancel
 
-  const { control, handleSubmit, setValue, setError, watch, reset } = useForm({
+  const { control, handleSubmit, setValue, setError, watch, reset } = useForm<ProjectFormValues>({
     defaultValues: DEFAULT_VALUES,
   });
   const formData = watch();

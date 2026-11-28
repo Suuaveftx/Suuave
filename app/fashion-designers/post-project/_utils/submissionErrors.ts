@@ -1,6 +1,10 @@
 import axios from 'axios';
+import type { FieldPath } from 'react-hook-form';
+import type { ProjectFormValues } from '../_types';
 
-const FIELD_MAP = {
+type SubmissionField = FieldPath<ProjectFormValues>;
+
+const FIELD_MAP: Record<string, [SubmissionField, string]> = {
   title: ['projectTitle', 'Please enter a title.'],
   description: ['projectDetails', 'Description must be at least 50 characters.'],
   skillsRequired: ['fashionDesignerSkills', 'Add at least one required skill.'],
@@ -14,7 +18,14 @@ const FIELD_MAP = {
  * Turns an API error into a plain object the form can apply:
  * { message, skills, styles, fields: [[fieldName, message], ...] }
  */
-export const getSubmissionErrors = (error) => {
+interface SubmissionErrors {
+  message: string;
+  skills: string;
+  styles: string;
+  fields: Array<[SubmissionField, string]>;
+}
+
+export const getSubmissionErrors = (error: unknown): SubmissionErrors => {
   const result = { message: '', skills: '', styles: '', fields: [] };
   const apiErrors = axios.isAxiosError(error) ? error.response?.data?.errors : null;
 

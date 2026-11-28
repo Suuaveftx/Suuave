@@ -35,7 +35,7 @@ const TimeframeFields = ({ control, isApiEditMode = false, disabled = false }) =
               Project Timeframe (Days) <span className='text-red-500'>*</span>
             </span>
           }
-          placeholder='e.g. 2'
+          placeholder='1 day, 2 days, 3 days, 10 days'
           type='number'
           min={1}
           step={1}

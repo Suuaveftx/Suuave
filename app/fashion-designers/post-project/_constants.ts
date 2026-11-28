@@ -1,6 +1,8 @@
 export const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 
-export const DEFAULT_VALUES = {
+import type { ProjectFormValues } from './_types';
+
+export const DEFAULT_VALUES: ProjectFormValues = {
   projectTitle: '',
   projectDetails: '',
   fashionDesignerSkills: [],

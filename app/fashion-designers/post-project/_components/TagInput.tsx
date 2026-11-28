@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { ChangeEvent, KeyboardEvent } from 'react';
 import { X } from 'lucide-react';
 
 const labelClass =
@@ -12,6 +13,19 @@ const inputClass =
  * Reusable chip input with inline autocomplete.
  * Used for both "Skills Required" and "Design Style".
  */
+interface TagInputProps {
+  id: string;
+  label: string;
+  required?: boolean;
+  values: string[];
+  onChange: (values: string[]) => void;
+  suggestions?: string[];
+  placeholderEmpty: string;
+  placeholderMore: string;
+  disabled?: boolean;
+  error?: string;
+}
+
 const TagInput = ({
   id,
   label,
@@ -23,7 +37,7 @@ const TagInput = ({
   placeholderMore,
   disabled = false,
   error,
-}) => {
+}: TagInputProps) => {
   const [input, setInput] = useState('');
   const [suggestion, setSuggestion] = useState('');
 
@@ -37,7 +51,7 @@ const TagInput = ({
     onChange(values.includes(tag) ? values : [...values, tag]);
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setInput(val);
     if (!val.length) {
@@ -48,7 +62,7 @@ const TagInput = ({
     setSuggestion(match ? val + match.slice(val.length) : '');
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if ((e.key === 'Tab' || e.key === 'ArrowRight') && suggestion) {
       e.preventDefault();
       addTag(suggestion);

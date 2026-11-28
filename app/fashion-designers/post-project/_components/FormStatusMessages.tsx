@@ -3,13 +3,21 @@
 import axios from 'axios';
 import { getProjectApiErrorMessage } from '@/app/projects/api/projects';
 
+interface FormStatusMessagesProps {
+  isApiEditMode: boolean;
+  isApiProjectPending: boolean;
+  apiProjectError: unknown;
+  submissionError: string;
+  missingLocalProject: boolean;
+}
+
 const FormStatusMessages = ({
   isApiEditMode,
   isApiProjectPending,
   apiProjectError,
   submissionError,
   missingLocalProject,
-}) => (
+}: FormStatusMessagesProps) => (
   <>
     {isApiEditMode && (
       <p className='w-full rounded-lg bg-blue-50 p-3 text-sm text-blue-800'>
