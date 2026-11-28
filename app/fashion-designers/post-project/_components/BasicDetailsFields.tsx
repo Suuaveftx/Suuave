@@ -11,9 +11,7 @@ const BasicDetailsFields = ({ control, disabled = false }) => (
       control={control}
       rules={{
         required: 'Please enter a title',
-        validate: (value) =>
-          value.trim().length >= 10 || 'Title must be at least 10 characters',
-        minLength: { value: 10, message: 'Title must be at least 10 characters' },
+        validate: (value) => value.trim().length > 0 || 'Please enter a title',
         maxLength: { value: 200, message: 'Title must be 200 characters or fewer' },
       }}
       render={({ field, fieldState }) => (

@@ -2,12 +2,19 @@
 
 import { Button } from '@heroui/react';
 
+interface FormActionsProps {
+  isEditMode: boolean;
+  hasCreatedProject: boolean;
+  isLoading: boolean;
+  isSubmitDisabled: boolean;
+}
+
 const FormActions = ({
   isEditMode,
   hasCreatedProject,
   isLoading,
   isSubmitDisabled,
-}) => (
+}: FormActionsProps) => (
   <>
     <div className='flex items-center lg:justify-start justify-between gap-3 lg:gap-2 w-full lg:w-48 pt-4 lg:pt-0'>
       <Button
@@ -26,7 +33,7 @@ const FormActions = ({
         isDisabled={isSubmitDisabled}
         size='sm'
         radius='full'
-        variant='outlined'
+        variant='bordered'
         className='flex-1 lg:flex-none border-none text-[#035A7A] lg:text-customWhiteBgText text-sm lg:text-xs shadow-md font-semibold px-4 lg:px-10 min-h-[52px] lg:min-h-8'
         style={{ background: 'radial-gradient(circle, #EAF9FF 19%, #CCE7F2 100%)' }}
       >

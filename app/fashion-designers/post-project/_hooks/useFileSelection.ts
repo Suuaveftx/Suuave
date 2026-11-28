@@ -1,14 +1,16 @@
 'use client';
 
 import { useState } from 'react';
+import type { ChangeEvent } from 'react';
 import { MAX_FILE_SIZE_BYTES } from '../_constants';
+import type { SelectedProjectFile } from '../_types';
 
 export const useFileSelection = () => {
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState<SelectedProjectFile[]>([]);
   const [fileValidationError, setFileValidationError] = useState('');
 
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? []);
     const invalidFiles = files.filter((file) => file.size > MAX_FILE_SIZE_BYTES);
     const validFiles = files.filter((file) => file.size <= MAX_FILE_SIZE_BYTES);
     const newFiles = validFiles.map((file) => ({

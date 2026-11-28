@@ -19,6 +19,7 @@ import { getProjectApiErrorMessage } from '@/app/projects/api/projects';
 import { DEFAULT_VALUES, DESIGN_STYLE_LABELS, SKILL_LABELS } from '../_constants';
 import { useFileSelection } from '../_hooks/useFileSelection';
 import { getSubmissionErrors } from '../_utils/submissionErrors';
+import type { ProjectFormValues } from '../_types';
 import BasicDetailsFields from './BasicDetailsFields';
 import BudgetFields from './BudgetFields';
 import FormActions from './FormActions';
@@ -35,6 +36,9 @@ const toList = (value) => {
   }
   return [];
 };
+
+const toInputValue = (value: unknown) =>
+  typeof value === 'string' || typeof value === 'number' ? String(value) : '';
 
 const PostProjectForm = () => {
   const router = useRouter();
@@ -65,7 +69,7 @@ const PostProjectForm = () => {
   const [isUploadingReferences, setIsUploadingReferences] = useState(false);
   const [resetCount, setResetCount] = useState(0); // remounts TagInputs on Cancel
 
-  const { control, handleSubmit, setValue, setError, watch, reset } = useForm({
+  const { control, handleSubmit, setValue, setError, watch, reset } = useForm<ProjectFormValues>({
     defaultValues: DEFAULT_VALUES,
   });
   const formData = watch();
@@ -81,14 +85,14 @@ const PostProjectForm = () => {
     reset({
       ...DEFAULT_VALUES,
       projectTitle: projectToEdit.title || '',
-      projectDetails: projectToEdit.description || '',
+      projectDetails: toInputValue(projectToEdit.description),
       fashionDesignerSkills: toList(
         isApiEditMode ? (apiProject.skillsRequired ?? []) : editProject.skills
       ),
       designStyles: toList(isApiEditMode ? [] : editProject.style),
-      projectBudget: projectToEdit.budget || '',
-      projectTimeframe: isApiEditMode ? '' : projectToEdit.timeframe || '',
-      projectCurrency: projectToEdit.currency || 'USD',
+      projectBudget: toInputValue(projectToEdit.budget),
+      projectTimeframe: isApiEditMode ? '' : toInputValue(projectToEdit.timeframe),
+      projectCurrency: toInputValue(projectToEdit.currency) || 'USD',
       projectStatus: projectToEdit.status || 'open',
     });
   }, [isEditMode, isApiEditMode, apiProject, editProject, reset]);
@@ -140,7 +144,7 @@ const PostProjectForm = () => {
       budget: Number(data.projectBudget),
       currency: data.projectCurrency,
       timeframe: Number(data.projectTimeframe),
-      durationType: data.durationType,
+      durationType: 'days' as const,
       referenceFiles: selectedFiles.map((f) => f.name),
     };
 

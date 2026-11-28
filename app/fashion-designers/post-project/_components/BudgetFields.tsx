@@ -3,8 +3,22 @@
 import { Input, Select, SelectItem } from '@heroui/react';
 import { Controller } from 'react-hook-form';
 import { CURRENCIES, responsiveClasses } from '../_constants';
+import type { Control } from 'react-hook-form';
+import type { ProjectFormValues } from '../_types';
 
-const BudgetFields = ({ control, currency, currencyDisabled = false, disabled = false }) => (
+interface BudgetFieldsProps {
+  control: Control<ProjectFormValues>;
+  currency: string;
+  currencyDisabled?: boolean;
+  disabled?: boolean;
+}
+
+const BudgetFields = ({
+  control,
+  currency,
+  currencyDisabled = false,
+  disabled = false,
+}: BudgetFieldsProps) => (
   <>
     <Controller
       name='projectCurrency'

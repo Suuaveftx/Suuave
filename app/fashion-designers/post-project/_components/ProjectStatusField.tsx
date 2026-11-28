@@ -11,7 +11,7 @@ const ProjectStatusField = ({ control, disabled = false }) => (
     rules={{ required: 'Please select a project status' }}
     render={({ field, fieldState }) => (
       <Select
-        label='Project Status'
+        label='Job Status'
         labelPlacement='outside'
         variant='bordered'
         radius='sm'
@@ -24,7 +24,9 @@ const ProjectStatusField = ({ control, disabled = false }) => (
         isInvalid={!!fieldState.error}
       >
         {PROJECT_STATUSES.map((status) => (
-          <SelectItem key={status}>{status.replace('_', ' ')}</SelectItem>
+          <SelectItem key={status}>
+            {status === 'open' ? 'Active' : status.replace('_', ' ')}
+          </SelectItem>
         ))}
       </Select>
     )}

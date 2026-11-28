@@ -1,8 +1,19 @@
 'use client';
 
 import { useRef } from 'react';
+import type { ChangeEventHandler } from 'react';
 import { Button } from '@heroui/react';
 import { Paperclip, X } from 'lucide-react';
+import type { SelectedProjectFile } from '../_types';
+
+interface ReferenceUploadProps {
+  files: SelectedProjectFile[];
+  error: string;
+  disabled?: boolean;
+  removeDisabled?: boolean;
+  onFileChange: ChangeEventHandler<HTMLInputElement>;
+  onRemove: (index: number) => void;
+}
 
 const ReferenceUpload = ({
   files,
@@ -11,8 +22,8 @@ const ReferenceUpload = ({
   removeDisabled = false,
   onFileChange,
   onRemove,
-}) => {
-  const fileInputRef = useRef(null);
+}: ReferenceUploadProps) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className='flex flex-col gap-3'>
@@ -33,7 +44,7 @@ const ReferenceUpload = ({
         <Button
           variant='bordered'
           radius='sm'
-          onPress={() => fileInputRef.current.click()}
+          onPress={() => fileInputRef.current?.click()}
           isDisabled={disabled}
           className='lg:w-fit w-full sm:w-1/2  border-1 border-[#EAEAEA] lg:border-[#d1d1d1] font-medium lg:font-medium text-gray-400 lg:text-default-foreground min-h-[52px] lg:min-h-10 !rounded-xl lg:!rounded-sm shadow-none'
           startContent={<Paperclip className='w-4 h-4 text-gray-500' />}

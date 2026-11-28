@@ -1,36 +1,11 @@
 'use client';
 
-import { Input, Select, SelectItem } from '@heroui/react';
+import { Input } from '@heroui/react';
 import { Controller } from 'react-hook-form';
-import { DURATION_UNITS, responsiveClasses } from '../_constants';
+import { responsiveClasses } from '../_constants';
 
 const TimeframeFields = ({ control, isApiEditMode = false, disabled = false }) => (
   <>
-    <Controller
-      name='durationType'
-      control={control}
-      rules={isApiEditMode ? {} : { required: 'Please select a timeframe unit' }}
-      render={({ field, fieldState }) => (
-        <Select
-          label='Timeframe Unit'
-          labelPlacement='outside'
-          variant='bordered'
-          radius='sm'
-          classNames={responsiveClasses}
-          selectedKeys={field.value ? [field.value] : []}
-          onSelectionChange={(keys) => field.onChange(Array.from(keys)[0] || '')}
-          onBlur={field.onBlur}
-          isDisabled={disabled}
-          errorMessage={fieldState.error?.message}
-          isInvalid={!!fieldState.error}
-        >
-          {DURATION_UNITS.map((unit) => (
-            <SelectItem key={unit}>{unit}</SelectItem>
-          ))}
-        </Select>
-      )}
-    />
-
     <Controller
       name='projectTimeframe'
       control={control}
@@ -57,10 +32,10 @@ const TimeframeFields = ({ control, isApiEditMode = false, disabled = false }) =
           isInvalid={!!fieldState.error}
           label={
             <span>
-              Project Timeframe <span className='text-red-500'>*</span>
+              Project Timeframe (Days) <span className='text-red-500'>*</span>
             </span>
           }
-          placeholder='e.g. 2'
+          placeholder='1 day, 2 days, 3 days, 10 days'
           type='number'
           min={1}
           step={1}
